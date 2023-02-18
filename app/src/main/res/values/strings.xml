@@ -1,0 +1,90 @@
+<resources>
+    <string name="app_name">Lista de la compra</string>
+    <string name="app_author">Roberto Rodríguez Jiménez</string>
+    <string name="app_version">v0.2023.02.17</string>
+
+    <string name="title_activity_almacen">Almacén</string>
+    <string name="title_activity_lista">Lista abierta</string>
+
+    <string name="str_cadenaVacia" />
+    <string name="str_cero">0</string>
+    <string name="str_ceroDecimal">0.00</string>
+    <string name="str_aceptar">Aceptar</string>
+    <string name="str_cancelar">Cancelar</string>
+
+    <!-- tabs -->
+    <string name="itemInicio">Inicio</string>
+    <string name="itemLista">Lista</string>
+    <string name="itemAlmacen">Almacén</string>
+    <string name="logo_de_la_app">Logo de la app</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <!-- fragments -->
+
+    <!-- Inicio -->
+
+    <!-- Almacén -->
+    <!-- Nuevo Producto -->
+    <string name="lblNuevoProducto">Nuevo producto</string>
+
+    <!-- Lista -->
+    <string name="itNueva">Nueva</string>
+    <string name="itCerrar">Cerrar</string>
+    <string name="itAbrir">Abrir</string>
+    <string name="fla_str_guardar_comercio">Guardar comercio</string>
+    <string name="fla_str_tv_totalLbl">Total:</string>
+    <string name="string_cero">0.00</string>
+    <string name="fla_str_tituloProducto">PRODUCTO</string>
+    <string name="fla_str_tituloud">Ud.</string>
+    <string name="fla_str_tituloPrecio">PRECIO</string>
+    <string name="fla_str_tituloPagado">PAGADO</string>
+    <string name="anc_str_motivo">Esto ocurre porque se han creado dos compras en menos de un minuto.</string>
+    <string name="anc_str_solucion">Puede borrar la compra anterior o esperar unos segundos.\nTiene que esperar hasta las </string>
+    <string name="anc_str_tv_tituloMotivo">Motivo</string>
+    <string name="anc_str_tv_tituloSolucion">Solución</string>
+    <string name="anc_str_tv_titulo">El identificador de la compra ya existe</string>
+    <string name="mp_str_it_comercio">Añadir comercio</string>
+    <string name="mp_str_it_etiqueta">Añadir etiqueta</string>
+    <string name="mp_str_it_marca">Añadir marca</string>
+    <string name="mp_str_it_ayuda">Ayuda</string>
+    <string name="mp_str_it_acercade">Acerca de...</string>
+
+    <string name="dnp_str_lbl_codigo">Código de barras o en blanco</string>
+    <string name="dnp_str_lbl_denominacion">Denominación (Obligatorio)</string>
+    <string name="dnp_str_lbl_marca">Marca</string>
+    <string name="dnp_str_lbl_unidades">Unidades</string>
+    <string name="dnp_str_lbl_medida">Medida</string>
+    <string name="dnp_str_lbl_imagen">Imagen</string>
+    <string name="dnp_str_lbl_cantidad">Cantidad</string>
+    <string name="dnp_str_lbl_titulo">AGREGAR PRODUCTO</string>
+    <string name="aep_str_titulo">EDITAR PRODUCTO</string>
+
+    <!-- menu_edit_producto.xml -->
+    <string name="mep_str_it_cancelar">Cancelar</string>
+    <string name="mep_str_it_limpiar">Limpiar</string>
+    <string name="mep_str_it_eliminar">Eliminar</string>
+    <string name="mep_str_it_guardar">Guardar</string>
+    <string name="ap_str_infoTitulo">Info</string>
+    <string name="ap_str_comparativaTitulo">Comparativa</string>
+    <string name="ap_str_evolucionTitulo">Evolución</string>
+    <string name="fpi_str_tv_cantidad">CANTIDAD</string>
+    <string name="fpi_str_btn_guardarSinSalir">Guardar y salir</string>
+    <string name="str_fpi_btn_guardarYSalir">Guardar y salir</string>
+    <string name="str_fpi_salirSinGuardar">salir sin guardar</string>
+    <string name="fpi_str_lblPrecioMedida">Precio por</string>
+    <string name="str_moneda">€/</string>
+    <string name="fpi_str_3x2">3 x 2</string>
+    <string name="fpi_str_2x1">2 x 1</string>
+    <string name="fpi_str_tv_pagado">TOTAL</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+
+</resources>
