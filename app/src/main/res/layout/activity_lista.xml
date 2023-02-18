@@ -4,18 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.lista.ListaActivity"
-    android:padding="8dp">
+    android:padding="8dp"
+    tools:context=".activities.lista.ListaActivity">
 
 
-    <TextView
-        android:id="@+id/textView"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/listaContenedor"
+        android:name="dam.proyecto.activities.lista.ListaListaFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="lista"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout="@layout/fragment_lista_lista" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/navegador"
@@ -24,6 +25,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/bottom_nav_menu"/>
+        app:menu="@menu/bottom_nav_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
