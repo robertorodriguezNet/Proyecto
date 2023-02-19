@@ -47,6 +47,10 @@ public class AlmacenActivity extends AppCompatActivity {
                             startActivity(new Intent( this, ListaActivity.class));
                             overridePendingTransition(0, 0);
                             return true;
+                        case R.id.itCompras:
+                            startActivity(new Intent( this, ComprasActivity.class));
+                            overridePendingTransition(0,0);
+                            return true;
 
                     }
                     return false;

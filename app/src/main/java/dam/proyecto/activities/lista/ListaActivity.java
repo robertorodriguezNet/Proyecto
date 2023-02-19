@@ -49,6 +49,10 @@ public class ListaActivity extends AppCompatActivity {
                             return true;
                         case R.id.itLista:
                             return true;
+                        case R.id.itCompras:
+                            startActivity(new Intent( this, ComprasActivity.class));
+                            overridePendingTransition(0,0);
+                            return true;
 
                     }
                     return false;
