@@ -2,15 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/itLista"
-        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
-        android:title="@string/itemLista" />
-    <item
         android:id="@+id/itInicio"
         android:icon="@drawable/ic_baseline_home_24"
         android:title="@string/itemInicio" />
     <item
+        android:id="@+id/itLista"
+        android:icon="@drawable/ic_baseline_shopping_basket_24"
+        android:title="@string/itemLista" />
+    <item
+        android:id="@+id/itCompras"
+        android:icon="@drawable/ic_baseline_format_list_bulleted_24"
+        android:title="@string/itCompras" />
+    <item
         android:id="@+id/itAlamacen"
         android:icon="@drawable/ic_baseline_warehouse_24"
         android:title="@string/itemAlmacen" />
+
 </menu>

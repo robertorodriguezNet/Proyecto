@@ -9,8 +9,10 @@ import android.widget.Toast;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
+import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
 import dam.proyecto.database.data.Ejemplos;
+import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.databinding.ActivityMainBinding;
 
 
@@ -52,6 +54,10 @@ public class MainActivity extends AppCompatActivity {
                             return true;
                         case R.id.itLista:
                             startActivity(new Intent( this, ListaActivity.class));
+                            overridePendingTransition(0,0);
+                            return true;
+                        case R.id.itCompras:
+                            startActivity(new Intent( this, ComprasActivity.class));
                             overridePendingTransition(0,0);
                             return true;
                     }

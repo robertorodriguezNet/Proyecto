@@ -11,6 +11,7 @@ import android.view.View;
 
 import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.AlmacenActivity;
+import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.databinding.ActivityListaBinding;
 
 /**
@@ -48,6 +49,7 @@ public class ListaActivity extends AppCompatActivity {
                             return true;
                         case R.id.itLista:
                             return true;
+
                     }
                     return false;
                 }

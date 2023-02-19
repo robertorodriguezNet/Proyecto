@@ -2,6 +2,7 @@ package dam.proyecto.database.repositories;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
@@ -31,6 +32,14 @@ public class MarcaRepository extends Repositorio{
      */
     public void insertAll( List<MarcaEntity> data ){
         db.marcaDao().insertAll( data );
+    }
+
+    /**
+     * Devuelve la colección entera de objetos guardados.
+     * @return los datos.
+     */
+    public ArrayList<MarcaEntity> getAll(){
+        return (ArrayList<MarcaEntity>) getDb().marcaDao().getAll();
     }
 
     @Override

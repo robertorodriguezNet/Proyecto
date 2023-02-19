@@ -4,6 +4,7 @@ import android.content.Context;
 
 import androidx.annotation.NonNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
@@ -33,6 +34,14 @@ public class ProductoRepository extends Repositorio {
      */
     public void insertAll( List<ProductoEntity> data ){
         db.productoDao().insertAll( data );
+    }
+
+    /**
+     * Devuelve un listado completo de los registros.
+     * @return
+     */
+    public ArrayList<ProductoEntity> getAll(){
+        return (ArrayList<ProductoEntity>) getDb().productoDao().getAll();
     }
 
     @Override

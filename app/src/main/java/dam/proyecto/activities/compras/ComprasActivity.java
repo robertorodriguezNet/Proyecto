@@ -1,4 +1,4 @@
-package dam.proyecto.activities.almacen;
+package dam.proyecto.activities.compras;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -8,36 +8,34 @@ import android.view.View;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
-import dam.proyecto.activities.compras.ComprasActivity;
+import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.lista.ListaActivity;
 import dam.proyecto.databinding.ActivityAlmacenBinding;
+import dam.proyecto.databinding.ActivityComprasBinding;
 
-/**
- * @author Roberto Rodríguez Jiménez
- * @version 2023.02.17
- * @since 17/02/2023
- */
-public class AlmacenActivity extends AppCompatActivity {
+public class ComprasActivity extends AppCompatActivity {
 
-    private final String TAG = "AlmacenActivity";
+    private final String TAG = "ComprasActivity";
 
-    ActivityAlmacenBinding  bindingAlmacen;
+    ActivityComprasBinding bindingCompras;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // Obtener la vista mediante ViewBinding
-        bindingAlmacen = ActivityAlmacenBinding.inflate(getLayoutInflater());
-        View view = bindingAlmacen.getRoot();
+        bindingCompras = ActivityComprasBinding.inflate(getLayoutInflater());
+        View view = bindingCompras.getRoot();
         setContentView(view);
 
-        bindingAlmacen.navegador.setSelectedItemId(R.id.itAlamacen);
+        bindingCompras.navegador.setSelectedItemId(R.id.itAlamacen);
 
         // Oyente para el navegador
-        bindingAlmacen.navegador.setOnItemSelectedListener(item -> {
+        bindingCompras.navegador.setOnItemSelectedListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.itAlamacen:
+                            startActivity(new Intent(this, AlmacenActivity.class ));
+                            overridePendingTransition(0,0);
                             return true;
                         case R.id.itInicio:
                             startActivity(new Intent( this, MainActivity.class));
