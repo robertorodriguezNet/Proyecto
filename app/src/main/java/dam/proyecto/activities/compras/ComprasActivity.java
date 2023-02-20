@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -30,7 +31,7 @@ import dam.proyecto.utilities.Fecha;
  */
 public class ComprasActivity extends AppCompatActivity {
 
-    private final String TAG = "ComprasActivity";
+    private final String TAG = "CA";
     private ListenerCompras listenerCompras;
 
     ActivityComprasBinding bindingCompras;
@@ -42,6 +43,11 @@ public class ComprasActivity extends AppCompatActivity {
     private EditText inputNombre;                       // Input para indicar el nombre de la compra
     private ImageView checkAceptar;                                  // Check para aceptar el nombre
 
+    AdaptadorCompras adaptadorCompras;                  // Adapatador para el listado de las compras
+
+    /*********************************************************************************************/
+    /***** FUNCIONES *****************************************************************************/
+    /*********************************************************************************************/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,14 +77,14 @@ public class ComprasActivity extends AppCompatActivity {
         dataNombreCompra = new NombreCompraRepository( this).getAll();
 
         // Crear el adaptador que vamos a pasar al ListView
-        AdaptadorCompras adaptadorCompras = new AdaptadorCompras(
+        adaptadorCompras = new AdaptadorCompras(
                 this,
                 R.layout.item_compra,
                 dataNombreCompra,
                 new ListenerCompras() {
                     @Override
-                    public void cli_img_deleteOnClik(NombreCompraEntity compra) {
-                        borrarCompra( compra );
+                    public void cli_img_deleteOnClik(NombreCompraEntity compra, int posicion) {
+                        borrarCompra( compra, posicion );
                     }
 
                     @Override
@@ -123,8 +129,21 @@ public class ComprasActivity extends AppCompatActivity {
      *
      * @param compra la compra que se quiere borrar
      */
-    public void borrarCompra(NombreCompraEntity compra) {
-        Toast.makeText(this, "Eliminar una compra", Toast.LENGTH_SHORT).show();
+    public void borrarCompra(NombreCompraEntity compra, int posicion) {
+
+        // 1.- Borrar la compra de dataNombreCompra
+        dataNombreCompra.remove( compra );
+
+        // 2.- Borrar la compra de la base de datos
+        NombreCompraRepository repository = new NombreCompraRepository( this );
+        repository.delete( compra );
+
+        // 3.- Informar al adptador del cambio
+        adaptadorCompras.notifyDataSetChanged();
+
+        Log.d( TAG, "Borrar la poscion: " + posicion
+            + "\nque se corresponde con : " + compra.toString()
+            + "\nLa posición es ocupada por: " + dataNombreCompra.get( posicion ));
     }
 
     /**

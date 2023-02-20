@@ -43,6 +43,9 @@ public class NombreCompraRepository extends Repositorio {
         return (ArrayList<NombreCompraEntity>) getDb().nombreCompraDao().getAll();
     }
 
+    public void delete( NombreCompraEntity compra ){
+        db.nombreCompraDao().delete( compra );
+    }
 
     @Override
     public String toString() {

@@ -6,8 +6,9 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /**
- * Los registros de la tabla se identifican un entero.
- * Cuando la lista se guarda, tan sólo se indica el nombre.
+ * Existen dos identificadores: el del registro y el del comercio.
+ * Ambos son únicos.
+ *
  *
  */
 @Entity( tableName = "Nombrecompra")
@@ -48,5 +49,14 @@ public class NombreCompraEntity {
 
     public void setComercio(int comercio) {
         this.comercio = comercio;
+    }
+
+    @Override
+    public String toString() {
+        return "NombreCompraEntity{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", comercio=" + comercio +
+                '}';
     }
 }

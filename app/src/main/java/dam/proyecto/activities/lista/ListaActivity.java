@@ -36,6 +36,8 @@ public class ListaActivity extends AppCompatActivity {
 
         bindingLista.navegador.setSelectedItemId(R.id.itLista);
 
+        // Debemos cargar alguna lista, que debe ser abierta desde el listado de listas
+
         // Oyente para el navegador
         bindingLista.navegador.setOnItemSelectedListener(item -> {
                     switch (item.getItemId()) {

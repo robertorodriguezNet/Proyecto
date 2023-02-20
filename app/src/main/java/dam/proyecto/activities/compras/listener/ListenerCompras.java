@@ -9,7 +9,7 @@ public interface ListenerCompras {
      *
      * @param compra la compra que se quiere borrar
      */
-    public void cli_img_deleteOnClik(NombreCompraEntity compra);
+    public void cli_img_deleteOnClik(NombreCompraEntity compra, int posicion);
 
     /**
      * Edita una lista

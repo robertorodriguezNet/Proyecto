@@ -104,7 +104,7 @@ public class AdaptadorCompras extends ArrayAdapter<NombreCompraEntity> {
         // Asignamos un oyente al icono de borrar
         deleteIcon.setOnClickListener( v -> {
             if( null != oyente ){
-                oyente.cli_img_deleteOnClik( actual );
+                oyente.cli_img_deleteOnClik( actual, position );
             }
 
         });
