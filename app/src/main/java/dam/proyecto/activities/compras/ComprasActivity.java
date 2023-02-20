@@ -26,6 +26,7 @@ import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.databinding.ActivityAlmacenBinding;
 import dam.proyecto.databinding.ActivityComprasBinding;
 import dam.proyecto.utilities.Fecha;
+import dam.proyecto.utilities.Preferencias;
 
 /**
  * @author Roberto Rodríguez Jiménez
@@ -59,7 +60,7 @@ public class ComprasActivity extends AppCompatActivity {
         bindingCompras = ActivityComprasBinding.inflate(getLayoutInflater());
         View view = bindingCompras.getRoot();
         setContentView(view);
-        
+
         bindingCompras.navegador.setSelectedItemId(R.id.itCompras);
 
 
@@ -137,16 +138,24 @@ public class ComprasActivity extends AppCompatActivity {
         // 1.- Borrar la compra de dataNombreCompra
         dataNombreCompra.remove( compra );
 
-        // 2.- Borrar la compra de la base de datos
+        // 2.- Hay que asegurarse de que la compra borrada no esté guardada en preferencias
+        String compraPreferencias = Preferencias.getListaAbiertaId( this );
+        if( compraPreferencias.equals( compra.getId()) ){
+            Preferencias.removeListaAbiertaId( this );
+        }
+
+        // 3.- Borrar la compra de la base de datos
         NombreCompraRepository repository = new NombreCompraRepository( this );
         repository.delete( compra );
 
-        // 3.- Informar al adptador del cambio
+        // 4.- Informar al adptador del cambio
         adaptadorCompras.notifyDataSetChanged();
 
         Toast.makeText(this,
                 "Compra " + compra.getNombre() + " eliminada",
                 Toast.LENGTH_SHORT).show();
+
+
 
         Log.d( TAG, "Borrar la poscion: " + posicion
             + "\nque se corresponde con : " + compra.toString()
@@ -160,10 +169,10 @@ public class ComprasActivity extends AppCompatActivity {
     public void editarCompra(NombreCompraEntity compra) {
 
         // Abrimos la lista
-        // NombreCompraEntity implementa serializable
-        Intent intent = new Intent( this, ListaActivity.class );
-        intent.putExtra( "compra", compra.getId() );
-        startActivity( intent );
+        Log.d("PREF", "editar listaAbiertaId: " + compra.getId() );
+        Preferencias.setListaAbiertaId( compra.getId(), this);
+        Log.d("PREF", "proferencia guardada: " + Preferencias.getListaAbiertaId( this ) );
+        startActivity( new Intent( this, ListaActivity.class ) );
     }
 
     /**
@@ -205,10 +214,11 @@ public class ComprasActivity extends AppCompatActivity {
             repository.insert( compra );
 
             // 3.- Abrimos la lista
-            // NombreCompraEntity implementa serializable
-            Intent intent = new Intent( this, ListaActivity.class );
-            intent.putExtra( "compra", compra );
-            startActivity( intent );
+            // Se guarda en preferencias para que está disponible
+            // aunque se cierre la app
+            Preferencias.setListaAbiertaId( compra.getId(), this);
+            Log.d("PREF", "creamos listaAbiertaId: " + compra.getId() );
+            startActivity( new Intent( this, ListaActivity.class ) );
 
         }else{
 

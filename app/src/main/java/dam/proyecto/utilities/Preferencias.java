@@ -3,6 +3,7 @@ package dam.proyecto.utilities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 
 public class Preferencias {
 
@@ -17,23 +18,46 @@ public class Preferencias {
     }
 
     // -- GETTERS ----------------------------------------------------------------------------------
-    public static String getListaAbiertaId( Activity activity ){
-        return sp( activity ).getString( LISTA_ABIERTA_ID, null );
+    public static String getListaAbiertaId(Context context ){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( context );
+        return  preferences.getString( LISTA_ABIERTA_ID, null );
     }
+
     public static boolean isDatosCargados( Activity activity ){
         return  (sp( activity ).getInt( DATOS_CARGADOS, 0 ) == 0 ) ? false : true;
     }
 
     // -- SETTERS ----------------------------------------------------------------------------------
-    public static void setListaAbiertaId( String id, Activity activity ){
-        // Guardamos el nombre de la lista que, ahora, está abierta
-        SharedPreferences.Editor editor = sp( activity ).edit();
-        editor.putString(LISTA_ABIERTA_ID, id ).commit();
+    public static void setListaAbiertaId( String id, Context context ){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( context );
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putString( LISTA_ABIERTA_ID, id);
+        editor.commit();
     }
 
     public static void setDatosCargados( boolean cargados, Activity activity ){
         SharedPreferences.Editor editor = sp( activity ).edit();
         editor.putInt(DATOS_CARGADOS, (cargados) ? 1 : 0 ).commit();
     }
+
+    // -- REMOVE -----------------------------------------------------------------------------------
+    // -- Borrar LISTA_ABIERTA_ID
+    public static void removeListaAbiertaId( Context context ){
+        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences( context );
+        preferences.edit().remove( LISTA_ABIERTA_ID).commit();
+    }
+
+    // -- Borrar las prepreferencias
+    public static void clear( Activity activity ){
+        SharedPreferences.Editor editor = sp( activity ).edit();
+        editor.clear().commit();
+
+        // Indicamos que tenemos los datos cargados
+        setDatosCargados( true, activity );
+    }
+
+
+
+
 
 }

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import androidx.fragment.app.Fragment;
 
 import android.os.ConditionVariable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +22,7 @@ import dam.proyecto.utilities.Preferencias;
 
 public class ListaListaFragment extends Fragment {
 
+    private static final String TAG = "LL";
     private Context context;
 
     // Componentes
@@ -40,26 +42,31 @@ public class ListaListaFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lista_lista, container, false);
         context = view.getContext();
 
-        // Inicializar componente
-        lblNombreDeLaCompra = ( TextView ) view.findViewById( R.id.fla_tv_nombreCompra );
-        btnSalir = ( ImageView ) view.findViewById( R.id.fla_img_cerrar );
-
+        // Lo primero es comprobar que tengamos una compra editada
         // Obtenemos el id de la compra desde las preferencias
-        String idCompra = Preferencias.getListaAbiertaId( this.getActivity() );
+        String idCompra = Preferencias.getListaAbiertaId(this.getActivity());
 
-        // Obtener el objeto Nombre de la compra.
-        // En NombreCompraEntity se establece el comercio
-        NombreCompraRepository repository = new NombreCompraRepository( context );
-        NombreCompraEntity nombreCompra = repository.getById( idCompra );
+        // Inicializar componente
+        lblNombreDeLaCompra = (TextView) view.findViewById(R.id.fla_tv_nombreCompra);
+        btnSalir = (ImageView) view.findViewById(R.id.fla_img_cerrar);
 
-        // Nombre de la compra
-        lblNombreDeLaCompra.setText( nombreCompra.getNombre().toString() );
+        // Solo si la compra no es nula
+        if (idCompra != null) {
+
+            // Obtener el objeto Nombre de la compra.
+            // En NombreCompraEntity se establece el comercio
+            NombreCompraRepository repository = new NombreCompraRepository(context);
+            NombreCompraEntity nombreCompra = repository.getById(idCompra);
+
+            // Nombre de la compra
+            lblNombreDeLaCompra.setText(nombreCompra.getNombre().toString());
+        }
 
         // Botón salir
         btnSalir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity( new Intent( context, ComprasActivity.class) );
+                startActivity(new Intent(context, ComprasActivity.class));
             }
         });
 
