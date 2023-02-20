@@ -1,8 +1,10 @@
 package dam.proyecto.database.data;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import dam.proyecto.activities.MainActivity;
 import dam.proyecto.database.AppDatabase;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
@@ -14,6 +16,7 @@ import dam.proyecto.database.repositories.OfertaRespository;
 import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.database.repositories.TagProductoRepository;
 import dam.proyecto.database.repositories.TagRepository;
+import dam.proyecto.utilities.Preferencias;
 
 /**
  * Clase creada para cargar datos de ejemplo.
@@ -26,23 +29,29 @@ public class Ejemplos {
     /**
      * Método que es llamado para insertar los datos de ejemplo.
      * Necesitamos saber si ya hay datos guardadados, si los hay,
-     * no se guardan nuevamente
+     * no se guardan nuevamente.
+     * @param c es el contexto, necesario para la conexión a la BD
+     * @param activity es necesario para obtener las SharedPreferences de la actividad
      */
-    public static void cargarDatos(Context c) {
+    public static void cargarDatos(Context c, Activity activity) {
 
-        Log.d(TAG, "Ejemplos.class: llamada a cargarDatos");
         context = c;
 
-        cargarProductos();
-        cargarNombreCompra();
-        cargarTag();
-        cargarComercio();
-        cargarMedidas();
-        cargarCompraEntitys();
-        cargarMarcas();
-        cargarTagsProductoEntity();
-        cargarOfertaEntity();
+        if (!Preferencias.isDatosCargados(  activity )) {
+            Log.d(TAG, "Ejemplos.class: llamada a cargarDatos");
 
+            cargarProductos();
+            cargarNombreCompra();
+            cargarTag();
+            cargarComercio();
+            cargarMedidas();
+            cargarCompraEntitys();
+            cargarMarcas();
+            cargarTagsProductoEntity();
+            cargarOfertaEntity();
+
+            Preferencias.setDatosCargados(true, activity );
+        }
     }
 
     private static void cargarProductos() {
