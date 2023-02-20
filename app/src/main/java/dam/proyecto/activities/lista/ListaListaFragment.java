@@ -15,9 +15,12 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import java.util.ArrayList;
 
 import dam.proyecto.R;
+import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
@@ -34,6 +37,7 @@ public class ListaListaFragment extends Fragment {
     TextView lblNombreDeLaCompra;
     ImageView btnSalir;
     Spinner spinner;
+    FloatingActionButton fab;
 
     // Datos
     // NombreCompraEntity
@@ -82,6 +86,7 @@ public class ListaListaFragment extends Fragment {
             lblNombreDeLaCompra = (TextView) view.findViewById(R.id.fla_tv_nombreCompra);
             btnSalir = (ImageView) view.findViewById(R.id.fla_img_cerrar);
             spinner =  (Spinner) view.findViewById(R.id.fla_spn_seleccionarComercio);
+            fab = ( FloatingActionButton ) view.findViewById( R.id.fla_fab_addProduct );
 
             // Spinner
             ArrayAdapter<ComercioEntity> adapter = new ArrayAdapter<>(
@@ -96,6 +101,14 @@ public class ListaListaFragment extends Fragment {
 
             // Nombre de la compra
             lblNombreDeLaCompra.setText(nombreCompra.getNombre().toString());
+
+            // fab para añadir productos
+            fab.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity( new Intent( context, AlmacenActivity.class ) );
+                }
+            });
 
             // Botón salir
             btnSalir.setOnClickListener(new View.OnClickListener() {
