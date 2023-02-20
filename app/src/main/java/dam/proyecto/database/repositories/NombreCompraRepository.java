@@ -84,8 +84,13 @@ public class NombreCompraRepository extends Repositorio {
         return objeto != null;
     }
 
+    public void update(NombreCompraEntity nombreCompra) {
+        db.nombreCompraDao().update( nombreCompra );
+    }
+
     @Override
     public String toString() {
         return super.toString();
     }
+
 }

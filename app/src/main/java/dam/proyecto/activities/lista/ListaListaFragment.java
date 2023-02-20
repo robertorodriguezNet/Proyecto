@@ -6,6 +6,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -100,13 +101,10 @@ public class ListaListaFragment extends Fragment {
             btnSalir.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(context, ComprasActivity.class));
+                    salir();
                 }
             });
         }
-
-
-
 
         return view;
     }
@@ -135,6 +133,21 @@ public class ListaListaFragment extends Fragment {
             count++;
         }
         return( ( c == null ) ? 1 : --count );
+    }
+
+
+    /**
+     * Salimos de la lista de la compra hcia Compras.
+     * Al salir, debemos actualizar el comercio de NombreDeLaCompra
+     */
+    public void salir(){
+
+        // Obtnemos el comercio directamente del spinner
+        nombreCompra.setComercio( ((ComercioEntity) spinner.getSelectedItem()).getId() );
+        nombreCompraRepository.update( nombreCompra );
+
+        startActivity(new Intent(context, ComprasActivity.class));
+
     }
 
 }
