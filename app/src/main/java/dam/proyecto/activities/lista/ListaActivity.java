@@ -18,6 +18,7 @@ import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.databinding.ActivityListaBinding;
+import dam.proyecto.utilities.Preferencias;
 
 /**
  * @author Roberto Rodríguez Jiménez
@@ -41,14 +42,7 @@ public class ListaActivity extends AppCompatActivity {
 
         bindingLista.navegador.setSelectedItemId(R.id.itLista);
 
-        // Debemos cargar alguna lista, que debe ser abierta desde el listado de listas
-        // La actividad que quiera cargar una lista, debe enviar NombreCompraEntity
-        CompraEntity compra = (CompraEntity) getIntent().getSerializableExtra( "compra");
-
-        // Si la compra es nula, cargamos la actividad Compras
-        if ( compra == null ){
-            abrirCompras();
-        }
+        cargarLista();                           // Cargar la lista que se quiera o se esté editando
 
         // Oyente para el navegador
         bindingLista.navegador.setOnItemSelectedListener(item -> {
@@ -73,6 +67,27 @@ public class ListaActivity extends AppCompatActivity {
                 }
         );
 
+    }
+
+    /**
+     * Carga lalista solicitada
+     */
+    private void cargarLista(){
+
+        // Debemos cargar alguna lista, que debe ser abierta desde el listado de listas
+        // La actividad que quiera cargar una lista, debe enviar NombreCompraEntity
+        String compra = (String) getIntent().getStringExtra( "compra");
+
+        // Si la compra es nula, cargamos la actividad Compras
+        if ( compra != null ){
+
+            // Crear una preferencia con el nombre de la lista
+            Preferencias.setListaAbiertaId(  compra, this );
+
+        } else {
+            // Si no hay datos, abrimos Compras
+            abrirCompras();
+        }
     }
 
     /**

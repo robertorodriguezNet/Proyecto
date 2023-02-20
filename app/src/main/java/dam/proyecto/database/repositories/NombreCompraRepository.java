@@ -50,7 +50,16 @@ public class NombreCompraRepository extends Repositorio {
      * @return
      */
     public ArrayList<NombreCompraEntity> getAll(){
-        return (ArrayList<NombreCompraEntity>) getDb().nombreCompraDao().getAll();
+        return (ArrayList<NombreCompraEntity>) db.nombreCompraDao().getAll();
+    }
+
+    /**
+     * Obtener un nombre de la compra a partir del id
+     * @param id el id de la compra, con formato aammddhhmm
+     * @return
+     */
+    public NombreCompraEntity getById( String id ){
+        return (NombreCompraEntity) db.nombreCompraDao().findById( id );
     }
 
     /**

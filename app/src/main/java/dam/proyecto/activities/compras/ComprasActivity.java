@@ -158,7 +158,12 @@ public class ComprasActivity extends AppCompatActivity {
      * @param compra
      */
     public void editarCompra(NombreCompraEntity compra) {
-        Toast.makeText(this, "Editar una compra", Toast.LENGTH_SHORT).show();
+
+        // Abrimos la lista
+        // NombreCompraEntity implementa serializable
+        Intent intent = new Intent( this, ListaActivity.class );
+        intent.putExtra( "compra", compra.getId() );
+        startActivity( intent );
     }
 
     /**
