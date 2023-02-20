@@ -1,13 +1,16 @@
 package dam.proyecto.activities.compras;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -141,6 +144,10 @@ public class ComprasActivity extends AppCompatActivity {
         // 3.- Informar al adptador del cambio
         adaptadorCompras.notifyDataSetChanged();
 
+        Toast.makeText(this,
+                "Compra " + compra.getNombre() + " eliminada",
+                Toast.LENGTH_SHORT).show();
+
         Log.d( TAG, "Borrar la poscion: " + posicion
             + "\nque se corresponde con : " + compra.toString()
             + "\nLa posición es ocupada por: " + dataNombreCompra.get( posicion ));
@@ -155,9 +162,75 @@ public class ComprasActivity extends AppCompatActivity {
     }
 
     /**
-     * Crear una compra
+     * Crear una compra.
+     * En la vista recibimos el nombre que se le quiere dar a la nueva compra.
+     * Este nombre puede estar en blanco o puede estar repetido.
+     * Al crear la compra, se genera un id único con formato: aammddhhmm
+     * Si el nombre de la compra se ha dejado en blanco, se le asigna el id.
+     *
+     * @param view la vista del formualrio
      */
     private void crearCompra( View view ){
-        Toast.makeText(ComprasActivity.this, "Crear la compra", Toast.LENGTH_SHORT).show();
+
+        // Crear una instancia del repositorio de NombreCompra
+        NombreCompraRepository repository = new NombreCompraRepository( this );
+
+        // Obtenemos el id para la nueva lista
+        String id = Fecha.getNuevaFecha();
+
+        // Nombre de la lista del formualrio
+        String nombre = bindingCompras.acInpNuevoNombre.getText().toString();
+
+        // 1.- Comprobamos si el id ya existe
+        // Comprobamos si el nombre ya existe
+        if (!repository.existsIdDeLaCompra(id)) {
+
+            // El id no existe
+
+            // Si no hay nombre o tiene menos de 3 caracteres, se toma el id
+            String nombreDeLaLista = (nombre.length() >= 3) ? nombre : id;
+
+
+            // Creamos el objeto NombreCompra
+            // Por defecto se crea el comercio 1 -> ""
+            NombreCompraEntity compra = new NombreCompraEntity(id, nombreDeLaLista, 1);
+
+            // 2.- Lo agregamos al listado
+            dataNombreCompra.add( 0, compra );
+
+            // 3.- Lo guardamos en la base de datos en la
+            // posición 0 para que se muestre al inicio
+            repository.insert( compra );
+
+            // 4.- Notificamos el cambio al adaptador
+            adaptadorCompras.notifyDataSetChanged();
+
+            Toast.makeText(ComprasActivity.this,
+                    "Creada la compra " + nombreDeLaLista,
+                    Toast.LENGTH_SHORT).show();
+
+            Log.d( TAG, "Creando una compra: " + nombreDeLaLista );
+
+        }else{
+
+            int minuto = Integer.parseInt( id.substring(8,10) );
+            minuto++;
+            String hora = id.substring(6,8) + ":" + minuto;
+
+            // El nombre ya existe
+            LayoutInflater inflater = this.getLayoutInflater();
+            AlertDialog.Builder builder = new AlertDialog.Builder( this );
+            View v = inflater.inflate( R.layout.alert_nueva_compra, null );
+
+            TextView solucion = v.findViewById(R.id.anc_tv_solucion);
+            solucion.setText( solucion.getText() + " " + hora);
+
+            builder.setPositiveButton( "Aceptar", null );
+            builder.setView( v );
+
+            AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
     }
 }
