@@ -5,14 +5,18 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+import java.io.Serializable;
+
 /**
  * Existen dos identificadores: el del registro y el del comercio.
  * Ambos son únicos.
- *
- *
+
+ * @since 19/02/2023
+ * @version 2023.02.19
+ * @version 2023.02.20 Implementa serializable
  */
 @Entity( tableName = "Nombrecompra")
-public class NombreCompraEntity {
+public class NombreCompraEntity implements Serializable {
 
     @PrimaryKey()
     @NonNull

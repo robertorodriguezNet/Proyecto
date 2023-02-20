@@ -87,6 +87,9 @@
     <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
     <string name="itemCompras">Compras</string>
     <string name="itCompras">Compras</string>
+    <string name="alert_noListaAbierta">No hay una lista abierta</string>
+    <string name="alert_motivo_noListaAbierta">No se está editando ninguna lista de la compra</string>
+    <string name="alert_solucion_noListaAbierta">Abra alguna de las listas o cree una nueva</string>
 
 
 </resources>

@@ -195,21 +195,15 @@ public class ComprasActivity extends AppCompatActivity {
             // Por defecto se crea el comercio 1 -> ""
             NombreCompraEntity compra = new NombreCompraEntity(id, nombreDeLaLista, 1);
 
-            // 2.- Lo agregamos al listado
-            dataNombreCompra.add( 0, compra );
-
-            // 3.- Lo guardamos en la base de datos en la
+            // 2.- Lo guardamos en la base de datos en la
             // posición 0 para que se muestre al inicio
             repository.insert( compra );
 
-            // 4.- Notificamos el cambio al adaptador
-            adaptadorCompras.notifyDataSetChanged();
-
-            Toast.makeText(ComprasActivity.this,
-                    "Creada la compra " + nombreDeLaLista,
-                    Toast.LENGTH_SHORT).show();
-
-            Log.d( TAG, "Creando una compra: " + nombreDeLaLista );
+            // 3.- Abrimos la lista
+            // NombreCompraEntity implementa serializable
+            Intent intent = new Intent( this, ListaActivity.class );
+            intent.putExtra( "compra", compra );
+            startActivity( intent );
 
         }else{
 
