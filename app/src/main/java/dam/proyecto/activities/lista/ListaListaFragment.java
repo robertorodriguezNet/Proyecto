@@ -228,9 +228,6 @@ public class ListaListaFragment extends Fragment {
 
     }
 
-    private void editarProducto( View view ){
-        Toast.makeText(context, "algo que hacer: ", Toast.LENGTH_SHORT).show();
-    }
 
 
 }

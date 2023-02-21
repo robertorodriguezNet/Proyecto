@@ -112,6 +112,9 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
 
     }
 
+    /**
+     * Cargar la actividad Compras
+     */
     private void irACompras(){
         startActivity(new Intent( this, ComprasActivity.class));
     }
@@ -119,6 +122,8 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
     // -- LISTENERS --------------------------------------------------------------------------------
     @Override
     public void onProductoCompradoClick( View view ) {
-        Toast.makeText(this, "cargar el fragment del producto ", Toast.LENGTH_SHORT).show();
-    }
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.listaContenedor, new DetalleListaFragment() )
+                .commit();    }
 }
