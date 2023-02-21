@@ -50,12 +50,6 @@ public class ListaListaFragment extends Fragment {
 
     public ListaListaFragment() {
 
-        // Cargar los datos de los comercios
-        comercioRespository = new ComercioRespository( getContext() );
-        dataComercio = comercioRespository.getAll();
-
-        // repositorio para el nombre de la compra
-        nombreCompraRepository = new NombreCompraRepository( getContext() );
 
     }
 
@@ -76,6 +70,13 @@ public class ListaListaFragment extends Fragment {
 
         // Solo si la compra no es nula
         if (idCompra != null) {
+
+            // Cargar los datos de los comercios
+            comercioRespository = new ComercioRespository( context );
+            dataComercio = comercioRespository.getAll();
+
+            // repositorio para el nombre de la compra
+            nombreCompraRepository = new NombreCompraRepository( context );
 
             // Obtener el objeto Nombre de la compra.
             // En NombreCompraEntity se establece el comercio
