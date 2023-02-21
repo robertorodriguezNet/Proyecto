@@ -6,7 +6,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,8 +16,6 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -43,7 +40,7 @@ public class ListaListaFragment extends Fragment {
     TextView lblNombreDeLaCompra;
     ImageView btnSalir;
     Spinner spinner;
-    FloatingActionButton fab;
+    ImageView btnAgregar;
 
     // Datos
     // NombreCompraEntity
@@ -96,7 +93,7 @@ public class ListaListaFragment extends Fragment {
             lblNombreDeLaCompra = (TextView) view.findViewById(R.id.fla_tv_nombreCompra);
             btnSalir = (ImageView) view.findViewById(R.id.fla_img_cerrar);
             spinner =  (Spinner) view.findViewById(R.id.fla_spn_seleccionarComercio);
-            fab = ( FloatingActionButton ) view.findViewById( R.id.fla_fab_addProduct );
+            btnAgregar = ( ImageView ) view.findViewById( R.id.fla_fab_addProduct );
 
             // Spinner
             ArrayAdapter<ComercioEntity> adapter = new ArrayAdapter<>(
@@ -113,7 +110,7 @@ public class ListaListaFragment extends Fragment {
             lblNombreDeLaCompra.setText(nombreCompra.getNombre().toString());
 
             // fab para añadir productos
-            fab.setOnClickListener(new View.OnClickListener() {
+            btnAgregar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     startActivity( new Intent( context, AlmacenActivity.class ) );

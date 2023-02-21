@@ -54,6 +54,13 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:src="@drawable/ic_baseline_exit_to_app_64" />
+
+            <ImageView
+                android:id="@+id/fla_fab_addProduct"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:src="@drawable/ic_baseline_add_circle_outline_64" />
         </LinearLayout>
 
         <LinearLayout
@@ -151,15 +158,6 @@
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
         android:layout_marginBottom="32dp" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/fla_fab_addProduct"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
-        android:layout_marginBottom="24dp"
-        android:clickable="true"
-        android:src="@drawable/ic_baseline_add_circle_24" />
 
 
 </LinearLayout>
