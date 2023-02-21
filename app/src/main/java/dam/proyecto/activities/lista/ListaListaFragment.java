@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
+import dam.proyecto.activities.lista.listeners.ListaListener;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
@@ -35,6 +37,8 @@ public class ListaListaFragment extends Fragment {
 
     private static final String TAG = "LL";
     private Context context;
+
+    private ListaListener oyente;
 
     // Componentes
     TextView lblNombreDeLaCompra;
@@ -109,7 +113,7 @@ public class ListaListaFragment extends Fragment {
             // Nombre de la compra
             lblNombreDeLaCompra.setText(nombreCompra.getNombre().toString());
 
-            // fab para añadir productos
+            // Botón para añadir productos
             btnAgregar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -138,7 +142,7 @@ public class ListaListaFragment extends Fragment {
             listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    editarProducto( view );
+                    oyente.onProductoCompradoClick( view );
                 }
             });
 
@@ -149,6 +153,23 @@ public class ListaListaFragment extends Fragment {
         }
 
         return view;
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if( context instanceof ListaListener){
+            oyente = (ListaListener) context;
+        } else {
+            throw new RuntimeException( context.toString()
+                    + " debes implementar el oyente." );
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        oyente = null;
     }
 
     /**
@@ -206,7 +227,7 @@ public class ListaListaFragment extends Fragment {
         return total;
 
     }
-    
+
     private void editarProducto( View view ){
         Toast.makeText(context, "algo que hacer: ", Toast.LENGTH_SHORT).show();
     }

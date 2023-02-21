@@ -13,10 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
+import dam.proyecto.activities.lista.listeners.ListaListener;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.databinding.ActivityListaBinding;
 import dam.proyecto.utilities.Preferencias;
@@ -26,7 +28,7 @@ import dam.proyecto.utilities.Preferencias;
  * @version 2023.02.17
  * @since 17/02/2023
  */
-public class ListaActivity extends AppCompatActivity {
+public class ListaActivity extends AppCompatActivity implements ListaListener {
 
     private final String TAG = "LIST";
 
@@ -114,4 +116,9 @@ public class ListaActivity extends AppCompatActivity {
         startActivity(new Intent( this, ComprasActivity.class));
     }
 
+    // -- LISTENERS --------------------------------------------------------------------------------
+    @Override
+    public void onProductoCompradoClick( View view ) {
+        Toast.makeText(this, "cargar el fragment del producto ", Toast.LENGTH_SHORT).show();
+    }
 }
