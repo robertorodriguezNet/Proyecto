@@ -139,9 +139,13 @@ public class ComprasActivity extends AppCompatActivity {
         dataNombreCompra.remove( compra );
 
         // 2.- Hay que asegurarse de que la compra borrada no esté guardada en preferencias
+        // Si la compra está siendo editada, establecemos la preferencia como null
+        // La preferencia puede ser nula, lo que significa que la compra
+        // que se va a borrar no está abierta
         String compraPreferencias = Preferencias.getListaAbiertaId( this );
-        if( compraPreferencias.equals( compra.getId()) ){
-            Preferencias.removeListaAbiertaId( this );
+        if( (compraPreferencias != null) && (compraPreferencias.equals( compra.getId()) )){
+            Preferencias.setListaAbiertaId( null, this);
+            Toast.makeText(this, "Esta compra se está editando", Toast.LENGTH_SHORT).show();
         }
 
         // 3.- Borrar la compra de la base de datos
