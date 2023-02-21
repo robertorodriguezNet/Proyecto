@@ -135,6 +135,10 @@ public class ListaListaFragment extends Fragment {
                     dataProductos);
             listView.setAdapter( adapterLista );
 
+            // Escribimos el total
+            TextView total = view.findViewById( R.id.fla_tv_total );
+            total.setText( String.format( "%.02f", getTotalCompra()));
+
         }
 
         return view;
@@ -178,6 +182,21 @@ public class ListaListaFragment extends Fragment {
         nombreCompraRepository.update( nombreCompra );
 
         startActivity(new Intent(context, ComprasActivity.class));
+    }
+
+    /**
+     * Devuelve el importe total de la compra.
+     * @return el importe total de la compra
+     */
+    private float getTotalCompra(){
+
+        float total = 0.0f;
+
+        for ( CompraEntity producto : dataProductos ) {
+            total += producto.getPagado();
+        }
+
+        return total;
 
     }
 
