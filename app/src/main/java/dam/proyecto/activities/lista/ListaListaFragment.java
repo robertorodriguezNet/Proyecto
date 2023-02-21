@@ -6,14 +6,17 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -135,6 +138,13 @@ public class ListaListaFragment extends Fragment {
                     dataProductos);
             listView.setAdapter( adapterLista );
 
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    editarProducto( view );
+                }
+            });
+
             // Escribimos el total
             TextView total = view.findViewById( R.id.fla_tv_total );
             total.setText( String.format( "%.02f", getTotalCompra()));
@@ -198,6 +208,10 @@ public class ListaListaFragment extends Fragment {
 
         return total;
 
+    }
+    
+    private void editarProducto( View view ){
+        Toast.makeText(context, "algo que hacer: ", Toast.LENGTH_SHORT).show();
     }
 
 
