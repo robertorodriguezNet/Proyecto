@@ -41,7 +41,22 @@ public class ProductoRepository extends Repositorio {
      * @return
      */
     public ArrayList<ProductoEntity> getAll(){
-        return (ArrayList<ProductoEntity>) getDb().productoDao().getAll();
+        return (ArrayList<ProductoEntity>) db.productoDao().getAll();
+    }
+
+    /**
+     * Devuelve la denominación de un producto a partir del id
+     * @param id el id buscado
+     * @return
+     */
+    public String getDenominacionProducto( String id ){
+        try {
+            ProductoEntity producto = db.productoDao()
+                    .findById(id);
+            return producto.getDenominacion();
+        }catch ( Exception e ){
+            return "";
+        }
     }
 
     @Override

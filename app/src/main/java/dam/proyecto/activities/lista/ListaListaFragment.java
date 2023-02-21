@@ -6,12 +6,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -22,9 +22,12 @@ import java.util.ArrayList;
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
+import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
 import dam.proyecto.database.entity.ComercioEntity;
+import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
+import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.utilities.Preferencias;
 
@@ -45,13 +48,10 @@ public class ListaListaFragment extends Fragment {
     // Repositorios
     ComercioRespository comercioRespository;
     NombreCompraRepository nombreCompraRepository;
-    // Colección de comercios para el spinner
-    ArrayList<ComercioEntity> dataComercio;
+    CompraRepository compraRepository;
 
-    public ListaListaFragment() {
-
-
-    }
+    ArrayList<ComercioEntity> dataComercio;                // Colección de comercios para el spinner
+    ArrayList<CompraEntity> dataProductos;                    // Colección de productos de la compra
 
 
     @Override
@@ -74,6 +74,12 @@ public class ListaListaFragment extends Fragment {
             // Cargar los datos de los comercios
             comercioRespository = new ComercioRespository( context );
             dataComercio = comercioRespository.getAll();
+
+            // Cargar los productos
+            compraRepository = new CompraRepository( context );
+            dataProductos =
+                    (ArrayList<CompraEntity>) compraRepository
+                            .getProductosByFecha( Preferencias.getListaAbiertaId( context ) );
 
             // repositorio para el nombre de la compra
             nombreCompraRepository = new NombreCompraRepository( context );
@@ -118,6 +124,17 @@ public class ListaListaFragment extends Fragment {
                     salir();
                 }
             });
+
+            // Cargar la lista
+            // Obtener el ListView
+            ListView listView = view.findViewById( R.id.fla_lv_listaDeLaCompra );
+
+            // Adaptador
+            ProductoCompraListAdapter adapterLista = new ProductoCompraListAdapter( view.getContext(),
+                    R.layout.producto_compra_item,
+                    dataProductos);
+            listView.setAdapter( adapterLista );
+
         }
 
         return view;
@@ -163,5 +180,6 @@ public class ListaListaFragment extends Fragment {
         startActivity(new Intent(context, ComprasActivity.class));
 
     }
+
 
 }

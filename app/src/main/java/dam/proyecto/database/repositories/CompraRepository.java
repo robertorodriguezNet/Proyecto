@@ -1,7 +1,9 @@
 package dam.proyecto.database.repositories;
 
 import android.content.Context;
+import android.util.Log;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
@@ -31,6 +33,41 @@ public class CompraRepository extends Repositorio {
      */
     public void insertAll( List<CompraEntity> data ){
         db.compraDao().insertAll( data );
+    }
+
+    // Obtener la compra por una compra dada
+    public ArrayList<CompraEntity> getProductosByFecha(String fecha ){
+        return (ArrayList<CompraEntity>) db.compraDao().findByFecha( fecha );
+    }
+
+    public CompraEntity getCompra( String id ){
+        return ( CompraEntity ) db.compraDao().findById( id );
+    }
+
+    /**
+     * Inserta una compra
+     * @param compra
+     */
+    public void insert( CompraEntity compra ){
+
+        try{
+
+            db.compraDao().insert( compra );
+
+            Log.d( "LDLC", "Compra guardada: " + compra.toString() );
+
+        }catch ( Exception e ){
+            Log.d( "LDLC", "Error al guardar la compra: " + compra.toString() );
+        }
+
+    }
+
+    /**
+     * Actualiza una compra
+     * @param compra
+     */
+    public void update( CompraEntity compra ){
+        db.compraDao().update( compra );
     }
 
     @Override
