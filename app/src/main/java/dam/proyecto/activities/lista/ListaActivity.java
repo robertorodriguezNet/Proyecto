@@ -28,7 +28,7 @@ import dam.proyecto.utilities.Preferencias;
  */
 public class ListaActivity extends AppCompatActivity {
 
-    private final String TAG = "ListaActivity";
+    private final String TAG = "LIST";
 
     ActivityListaBinding bindingLista;
 
@@ -39,17 +39,9 @@ public class ListaActivity extends AppCompatActivity {
         // Obtener la vista mediante ViewBinding
         bindingLista = ActivityListaBinding.inflate(getLayoutInflater());
         View view = bindingLista.getRoot();
-        setContentView(view);
 
+        // -- Navegador ----------------------------------------------------------------------------
         bindingLista.navegador.setSelectedItemId(R.id.itLista);
-
-        // Si en la preferencia de lista abierta no hay nada,
-        // cargamos la lista de compras
-        String compraId =  Preferencias.getListaAbiertaId(this);
-        Log.d("PREF", "Preferencia recuperada: " + compraId );
-        if ( compraId  == null ){
-            abrirCompras();
-        }
 
         // Oyente para el navegador
         bindingLista.navegador.setOnItemSelectedListener(item -> {
@@ -73,6 +65,23 @@ public class ListaActivity extends AppCompatActivity {
                     return false;
                 }
         );
+        // -- Fin del navegador --------------------------------------------------------------------
+
+        // Tenemos dos opciones al llegar a la actividad:
+        // .- Existe una preferencia con la lista abierta
+        // .- No existe una preferencia con la lista abierta
+
+        // Obtenemos la preferencia
+        String compraId =  Preferencias.getListaAbiertaId(this);
+        Log.d(TAG, "Preferencia recuperada: " + compraId );
+
+        // La preferencia existe: cargamos la vista
+        if ( compraId  != null ){
+            Log.d(TAG, "No hay preferencia y nos vamos a compras" );
+            setContentView(view);
+        } else {
+            abrirCompras();
+        }
 
     }
 
