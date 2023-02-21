@@ -136,15 +136,16 @@ public class ListaListaFragment extends Fragment {
             // Adaptador
             ProductoCompraListAdapter adapterLista = new ProductoCompraListAdapter( view.getContext(),
                     R.layout.producto_compra_item,
-                    dataProductos);
+                    dataProductos,
+                    oyente);
             listView.setAdapter( adapterLista );
 
-            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                    oyente.onProductoCompradoClick( view );
-                }
-            });
+//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+//                    oyente.onProductoCompradoClick( view );
+//                }
+//            });
 
             // Escribimos el total
             TextView total = view.findViewById( R.id.fla_tv_total );

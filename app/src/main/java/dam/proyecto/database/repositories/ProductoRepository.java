@@ -1,10 +1,13 @@
 package dam.proyecto.database.repositories;
 
 import android.content.Context;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
@@ -57,6 +60,104 @@ public class ProductoRepository extends Repositorio {
         }catch ( Exception e ){
             return "";
         }
+    }
+    /**
+     * Inserta un producto en la base de datos
+     * @param producto
+     */
+    public void insertProducto( ProductoEntity producto ){
+        db.productoDao().insert( producto );
+    }
+
+    /**
+     * Devuelve un id automático válido.
+     * Los id's automáticos comienzan con 0
+     * @return el id generado
+     */
+    public String getIdAutomatico(){
+
+        // Obtenemos todos los productos cuyo id comience por 0
+        ArrayList<ProductoEntity> list = ( ArrayList<ProductoEntity> ) db
+                .productoDao()
+                .getAutomaticId();
+
+        // Pedimos el valor máximo del campo id
+        String idStr = getMaxId( list );
+
+        // Incrementamos el valor
+        String idIncrementado = incrementarValor( idStr );
+
+        //Debemos rellenar con "0" hasta trece caracteres
+        idStr = String.format( "%13s", idIncrementado).replace(' ', '0');
+
+        // Devolvemos el id
+        return idStr;
+    }
+
+    /**
+     * Devuelve el valor más alto del campo id de la colección de productos.
+     * @param list la colección de productos
+     * @return el valor más alto del campo id
+     */
+    private String getMaxId( ArrayList<ProductoEntity> list){
+
+        ArrayList<ProductoEntity> coleccion = list;
+
+        // Queremos ordenar la lista de mayor a menor por el campo "id"
+        // Para ello debemos sobre escribir el método compare de la clase Collections
+        // dentro de collection.sort
+        Collections.sort(coleccion, new Comparator<ProductoEntity>() {
+            @Override
+            public int compare(ProductoEntity pe1, ProductoEntity pe2) {
+                return new Integer( pe2.getId() ).compareTo(new Integer( pe1.getId() ) );
+            }
+        });
+
+        return coleccion.get( 0 ).getId();
+    }
+
+    /**
+     * Recibe un valor numérico en formato String y lo devuelve incrementado en 1
+     * @param idStr El valor que se debe icrementar
+     * @return el valor incrementado
+     */
+    private static String incrementarValor( String idStr ){
+
+        // Debemos obtener un valor numérico válido y lo incrementamos
+        Long idL = Long.valueOf( idStr );
+        idL++;
+
+        return String.valueOf( idL );
+    }
+
+    /**
+     * Comprueba si un prooducto, por su id, exista en la base de datos
+     * @param id el producto buscao
+     * @return true si el producto existe
+     */
+    public boolean existsProducto(String id) {
+        ProductoEntity objeto = null;
+        objeto = db
+                .productoDao()
+                .findById(id);
+        return objeto != null;
+    }
+
+    /**
+     * Elimina el producto de la base de datos a partir de su id
+     * @param id buscado para ser eliminado
+     */
+    public void deleteById( String id ){
+        db.productoDao().deleteById( id );
+    }
+
+    /**
+     * Devuelve un producto a través del id
+     * @param id
+     * @return
+     */
+    public ProductoEntity getById( String id ){
+        return db.productoDao().findById( id );
     }
 
     @Override

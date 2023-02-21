@@ -50,6 +50,13 @@ public class ProductoInfoFragment extends Fragment {
     private ProductoEntity producto;                                            // Producto comprado
     private MedidaEntity medida;                                   // Objeto con la unidad de medida
 
+    // Repositorios
+    private MarcaRepository marcaRepository;
+    private ProductoRepository productoRepository;
+    private MedidaRepository medidaRepository;
+    private CompraRepository compraRepository;
+
+
     private int ofertActiva;                             // Guarda la oferta aplicada, 0 por defecto
 
     private Context context;                                                             // contexto
@@ -94,6 +101,9 @@ public class ProductoInfoFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         idCompra = getArguments().getString("id");
+
+        // Inicializar los repositorios
+        iniciliazarRepositorios();
 
         // Cargamos los datos desde la BD
         cargarDatos();
@@ -177,7 +187,7 @@ public class ProductoInfoFragment extends Fragment {
     private void escribirLosdatos() {
 
         // Título
-        String marca = MarcaRepository.getNameById(producto.getMarca());
+        String marca = marcaRepository.getNameById(producto.getMarca());
         String cantidad = producto.getCantidad() + " " + producto.getMedida() + ".";
         lblTitulo.setText(producto.getDenominacion()
                 + " - " + marca
@@ -204,12 +214,22 @@ public class ProductoInfoFragment extends Fragment {
     }
 
     /**
+     * Inicializar los repositorios
+     */
+    private void iniciliazarRepositorios(){
+        compraRepository = new CompraRepository( context );
+        productoRepository = new ProductoRepository( context );
+        marcaRepository = new MarcaRepository( context );
+        medidaRepository = new MedidaRepository( context );
+    }
+
+    /**
      * Desacargamos los datos de la BD
      */
     private void cargarDatos() {
-        compra = CompraRepository.getCompra(idCompra);
-        producto = ProductoRepository.getById(compra.getProducto());
-        medida = MedidaRepository.getById(producto.getMedida());
+        compra = compraRepository.getCompra(idCompra);
+        producto = productoRepository.getById(compra.getProducto());
+        medida = medidaRepository.getById(producto.getMedida());
     }
 
     /**
@@ -234,7 +254,7 @@ public class ProductoInfoFragment extends Fragment {
         compra.setPrecioMedido( Float.parseFloat( tvPrecioMedida.getText().toString().replace(",",".") ) );
 
         //Ahora que tenemos el objeto compra, lo actualizamos en la BD
-        CompraRepository.update( compra );
+        compraRepository.update( compra );
 
 
     }

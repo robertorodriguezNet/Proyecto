@@ -2,6 +2,7 @@ package dam.proyecto.database.repositories;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
@@ -30,6 +31,18 @@ public class MedidaRepository extends Repositorio{
      */
     public void insertAll( List<MedidaEntity> data ){
         db.medidaDao().insertAll( data );
+    }
+
+    /**
+     * Devuelve la colección completa de medidas.
+     * @return
+     */
+    public ArrayList<MedidaEntity> getAll(){
+        return (ArrayList<MedidaEntity>) db.medidaDao().getAll();
+    }
+
+    public MedidaEntity getById( String id ){
+        return ( MedidaEntity ) db.medidaDao().findById( id );
     }
 
     @Override

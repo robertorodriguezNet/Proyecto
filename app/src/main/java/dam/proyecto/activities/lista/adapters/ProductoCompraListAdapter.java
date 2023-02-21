@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 import dam.proyecto.R;
+import dam.proyecto.activities.lista.listeners.ListaListener;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.repositories.ProductoRepository;
 
@@ -30,6 +31,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
     private int vistaItem;                                    // Layout que dibuja cada ítem
     private List<CompraEntity> data;                       // Colección de productos de NombreCompra
 
+    private ListaListener oyente;
     /**
      * Cosntructor
      *
@@ -39,13 +41,16 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
      */
     public ProductoCompraListAdapter(Context context,
                                      int vistaItem,
-                                     List<CompraEntity> data) {
+                                     List<CompraEntity> data,
+                                     ListaListener oyente) {
 
         super(context, vistaItem, data);
 
         this.data = data;
         this.vistaItem = vistaItem;
         this.context = context;
+
+        this.oyente = oyente;
 
     }
 
@@ -86,9 +91,9 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         precio.setText("0");
         pagado.setText(String.format("%.02f", actual.getPagado()));
 
-//        view.setOnClickListener( v -> {
-//            oyente.editarProductoListaAbierta( actual );
-//        });
+        view.setOnClickListener( v -> {
+            oyente.onProductoCompradoClick( actual );
+        });
 
         return view;
     }

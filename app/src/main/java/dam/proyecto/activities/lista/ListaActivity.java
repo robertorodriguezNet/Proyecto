@@ -2,6 +2,7 @@ package dam.proyecto.activities.lista;
 
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -120,10 +121,25 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
     }
 
     // -- LISTENERS --------------------------------------------------------------------------------
+
+    /**
+     * Cargamos el detalle de una compra (producto en la lista, no NombreCompra)
+     * Hemos de pasarle el id de la compra a vista detalle.
+     * Necesitamos el id de CompraEntity para poder acceder a los datos del
+     * producto en la compra.
+     * @param compra es la compra (producto comprado) sobre la la que se clicado
+     */
     @Override
-    public void onProductoCompradoClick( View view ) {
+    public void onProductoCompradoClick( CompraEntity compra ) {
+
+        Log.d("LDLC", "ListaActivity llamando a Detalle: " + compra.getId() );
+
+        Fragment fragment = new DetalleListaFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.listaContenedor, new DetalleListaFragment() )
-                .commit();    }
+                .replace(R.id.listaContenedor, fragment )
+                .commit();
+
+    }
+
 }
