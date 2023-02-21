@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/fpi_cly_contenedor"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="12dp"
+    tools:context=".activities.producto.ProductoInfoFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+        android:id="@+id/fpi_tv_titulo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="info"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/fpi_tv_precio"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fla_str_tituloPrecio"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/fpi_inp_precio"
+        app:layout_constraintStart_toStartOf="@+id/fpi_inp_precio"
+        app:layout_constraintTop_toTopOf="@+id/fpi_tv_cantidad" />
+
+    <TextView
+        android:id="@+id/fpi_tv_cantidad"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="@string/fpi_str_tv_cantidad"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/fpi_inp_cantidad"
+        app:layout_constraintStart_toStartOf="@+id/fpi_inp_cantidad"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_tv_titulo" />
+
+    <TextView
+        android:id="@+id/fpi_tv_pagado"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/fpi_str_tv_pagado"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="@+id/fpi_inp_pagado"
+        app:layout_constraintStart_toStartOf="@+id/fpi_inp_pagado"
+        app:layout_constraintTop_toTopOf="@+id/fpi_tv_cantidad" />
+
+    <EditText
+        android:id="@+id/fpi_inp_pagado"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:enabled="false"
+        android:gravity="end"
+        android:hint="@string/str_ceroDecimal"
+        android:inputType="numberDecimal"
+        android:text="@string/str_cadenaVacia"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fpi_inp_cantidad"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_tv_pagado" />
+
+    <EditText
+        android:id="@+id/fpi_inp_precio"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:gravity="end"
+        android:hint="@string/str_ceroDecimal"
+        android:inputType="numberDecimal"
+        android:text="@string/str_cadenaVacia"
+        app:layout_constraintEnd_toStartOf="@id/fpi_inp_cantidad"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_tv_precio" />
+
+    <EditText
+        android:id="@+id/fpi_inp_cantidad"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:gravity="end"
+        android:hint="@string/str_ceroDecimal"
+        android:inputType="numberDecimal"
+        android:text="@string/str_cadenaVacia"
+        app:layout_constraintEnd_toStartOf="@id/fpi_inp_pagado"
+        app:layout_constraintStart_toEndOf="@+id/fpi_inp_precio"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_tv_cantidad" />
+
+    <TextView
+        android:id="@+id/fpi_tv_lblPrecioMedida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/fpi_str_lblPrecioMedida"
+        android:textSize="16sp"
+        app:layout_constraintStart_toStartOf="@+id/fpi_inp_precio"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_inp_precio" />
+
+    <TextView
+        android:id="@+id/fpi_tv_unidadMedida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/str_cadenaVacia"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@+id/fpi_tv_lblPrecioMedida"
+        app:layout_constraintStart_toEndOf="@+id/fpi_tv_lblPrecioMedida" />
+
+    <TextView
+        android:id="@+id/fpi_tv_precioMedida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/str_cadenaVacia"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/fpi_tv_unidadMedida"
+        app:layout_constraintStart_toEndOf="@id/fpi_tv_unidadMedida"
+        app:layout_constraintTop_toTopOf="@id/fpi_tv_unidadMedida" />
+
+    <TextView
+        android:id="@+id/fpi_tv_moneda"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="@string/str_moneda"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/fpi_tv_precioMedida"
+        app:layout_constraintStart_toEndOf="@id/fpi_tv_precioMedida"
+        app:layout_constraintTop_toTopOf="@id/fpi_tv_precioMedida" />
+
+    <TextView
+        android:id="@+id/fpi_tv_abbrMedida"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/str_cadenaVacia"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="@id/fpi_tv_moneda"
+        app:layout_constraintStart_toEndOf="@id/fpi_tv_moneda"
+        app:layout_constraintTop_toTopOf="@id/fpi_tv_moneda" />
+
+
+    <Button
+        android:id="@+id/fpi_btn_2x1"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/fondoBotonVerde"
+        android:text="2 x 1 "
+        android:textColor="@color/textoVerdeOscuro"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/fpi_btn_3x2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_tv_lblPrecioMedida" />
+
+    <Button
+        android:id="@+id/fpi_btn_3x2"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/fondoBotonVerde"
+        android:text="@string/fpi_str_3x2"
+        android:textColor="@color/textoVerdeOscuro"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/fpi_btn_2x1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fpi_btn_2x1"
+        app:layout_constraintTop_toTopOf="@+id/fpi_btn_2x1" />
+
+    <Button
+        android:id="@+id/fpi_btn_50"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/fondoBotonVerde"
+        android:text="2ª 50%"
+        android:textColor="@color/textoVerdeOscuro"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/fpi_btn_2x1"
+        app:layout_constraintStart_toStartOf="@+id/fpi_btn_2x1"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_btn_2x1" />
+
+    <Button
+        android:id="@+id/fpi_btn_70"
+        android:layout_width="130dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/fondoBotonVerde"
+        android:text="2ª  70%"
+        android:textColor="@color/textoVerdeOscuro"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/fpi_btn_3x2"
+        app:layout_constraintStart_toStartOf="@+id/fpi_btn_3x2"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_btn_3x2" />
+
+    <Button
+        android:id="@+id/fpi_btn_salir"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:width="120dp"
+        android:text="@string/str_fpi_salirSinGuardar"
+        app:icon="@drawable/ic_baseline_exit_to_app_24"
+        app:iconGravity="top"
+        app:layout_constraintEnd_toEndOf="@+id/fpi_btn_50"
+        app:layout_constraintStart_toStartOf="@+id/fpi_btn_50"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_btn_50" />
+
+    <Button
+        android:id="@+id/fpi_btn_guardar"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:width="120dp"
+        android:text="@string/str_fpi_btn_guardarYSalir"
+        app:icon="@drawable/ic_baseline_save_24"
+        app:iconGravity="top"
+        app:layout_constraintEnd_toEndOf="@+id/fpi_btn_70"
+        app:layout_constraintStart_toStartOf="@+id/fpi_btn_70"
+        app:layout_constraintTop_toBottomOf="@+id/fpi_btn_70" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
