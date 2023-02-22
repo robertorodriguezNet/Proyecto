@@ -1,7 +1,9 @@
 package dam.proyecto.activities.almacen;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -25,9 +29,21 @@ import dam.proyecto.database.repositories.ProductoRepository;
  */
 public class ListaProductosFragment extends Fragment {
 
+    // Colección de productos que se muestran en el RecyclerView
     private ArrayList<ProductoEntity> productoData;
 
-    RecyclerView recyclerView;
+    // RecyclerView que muestra el listado de los productos
+    private RecyclerView recyclerView;
+
+    // Botón para agregar un nuevo producto
+    private FloatingActionButton fabAgregarProducto;
+
+    // Oyente para el almancén
+    AlmacenListener listener;
+
+    /** **************************************************************************************** **/
+    /** FUNCIONES ****************************************************************************** **/
+    /** **************************************************************************************** **/
 
     public ListaProductosFragment() {
     }
@@ -45,6 +61,12 @@ public class ListaProductosFragment extends Fragment {
 
         // Obtener la vista
         View view = inflater.inflate(R.layout.fragment_lista_productos, container, false);
+
+        // Botón para agregar un nuevo producto
+        fabAgregarProducto = view.findViewById( R.id.fa_fab_addProductoAlmacen );
+        fabAgregarProducto.setOnClickListener( v -> {
+            listener.addNuevoProducto();
+        });
 
         // Obtener los datos
         productoData = new ProductoRepository(getContext()).getAll();
@@ -89,5 +111,23 @@ public class ListaProductosFragment extends Fragment {
         }
 
         return view;
+    }
+
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if( context instanceof AlmacenListener){
+            listener = (AlmacenListener) context;
+        } else {
+            throw new RuntimeException( context.toString()
+                    + " debes implementar el oyente." );
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        listener = null;
     }
 }

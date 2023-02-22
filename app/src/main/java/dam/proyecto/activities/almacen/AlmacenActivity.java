@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Toast;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
@@ -17,11 +18,12 @@ import dam.proyecto.databinding.ActivityAlmacenBinding;
  * @version 2023.02.17
  * @since 17/02/2023
  */
-public class AlmacenActivity extends AppCompatActivity {
+public class AlmacenActivity extends AppCompatActivity implements AlmacenListener {
 
     private final String TAG = "AlmacenActivity";
 
     ActivityAlmacenBinding  bindingAlmacen;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,19 @@ public class AlmacenActivity extends AppCompatActivity {
                     return false;
                 }
         );
+
+    }
+
+    /**
+     * Añade un nuevo producto al almacén.
+     * Para ello llama a EditProductoActivity
+     */
+    @Override
+    public void addNuevoProducto() {
+
+        Toast.makeText(this, "Agregando un nuevo producto", Toast.LENGTH_SHORT).show();
+//        Intent intent = new Intent( this, EditProductoActivity.class );
+//        activity.startActivity( intent );
 
     }
 }
