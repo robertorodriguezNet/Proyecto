@@ -25,6 +25,7 @@ import java.util.Map;
 import java.util.Set;
 
 import dam.proyecto.R;
+import dam.proyecto.activities.lista.ListaListaFragment;
 import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.MedidaEntity;
@@ -176,9 +177,17 @@ public class ProductoInfoFragment extends Fragment {
         btnSalirSinGuardar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().onBackPressed();
+                salir();
             }
         });
+    }
+
+    private void salir(){
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace( R.id.listaContenedor, new ListaListaFragment() )
+                .commit();
     }
 
     /**
@@ -256,6 +265,7 @@ public class ProductoInfoFragment extends Fragment {
         //Ahora que tenemos el objeto compra, lo actualizamos en la BD
         compraRepository.update( compra );
 
+        salir();
 
     }
 
