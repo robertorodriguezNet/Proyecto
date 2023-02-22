@@ -87,9 +87,12 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
 
         // Seteamos los datos
         producto.setText(denominacion);
-        ud.setText(String.format("%.03f", actual.getCantidad()));
-        precio.setText("0");
-        pagado.setText(String.format("%.02f", actual.getPagado()));
+        float cantidadF = actual.getCantidad();
+        float precioF = actual.getPrecio();
+        float total = cantidadF * precioF;
+        ud.setText(String.format("%.03f", cantidadF));
+        precio.setText(String.format("%.02f", precioF));
+        pagado.setText(String.format("%.02f", total));
 
         view.setOnClickListener( v -> {
             oyente.onProductoCompradoClick( actual );
