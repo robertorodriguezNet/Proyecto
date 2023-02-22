@@ -135,6 +135,10 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
         Log.d("LDLC", "ListaActivity llamando a Detalle: " + compra.getId() );
 
         Fragment fragment = new DetalleListaFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString( "id", compra.getId() );
+        fragment.setArguments( bundle );
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.listaContenedor, fragment )
