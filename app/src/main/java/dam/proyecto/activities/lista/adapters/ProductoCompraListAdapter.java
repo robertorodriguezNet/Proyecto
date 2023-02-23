@@ -90,7 +90,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         float cantidadF = actual.getCantidad();
         float precioF = actual.getPrecio();
         float total = cantidadF * precioF;
-        ud.setText(String.format("%.03f", cantidadF));
+        ud.setText(String.format("%.02f", cantidadF));
         precio.setText(String.format("%.02f", precioF));
         pagado.setText(String.format("%.02f", total));
 

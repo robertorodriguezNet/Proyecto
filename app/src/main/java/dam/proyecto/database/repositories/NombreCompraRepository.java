@@ -88,6 +88,14 @@ public class NombreCompraRepository extends Repositorio {
         db.nombreCompraDao().update( nombreCompra );
     }
 
+    public boolean existsNombreDeLaCompra(String id) {
+        NombreCompraEntity objeto = null;
+        objeto = db
+                .nombreCompraDao()
+                .findById(id);
+        return objeto != null;
+    }
+
     @Override
     public String toString() {
         return super.toString();

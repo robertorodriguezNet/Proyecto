@@ -1,6 +1,5 @@
 package dam.proyecto.activities.almacen.adapters;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,42 +9,40 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.zip.Inflater;
 
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
 import dam.proyecto.R;
-import dam.proyecto.database.entity.MarcaEntity;
+import dam.proyecto.activities.almacen.AlmacenListener;
 import dam.proyecto.database.entity.ProductoEntity;
-import dam.proyecto.database.repositories.MarcaRepository;
 
 /**
  * @author Roberto Rodríguez Jiménez
  * @version 2023.02.19
  * @since 19/02/2023
  */
-public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.ViewHolder>
-                implements View.OnClickListener, View.OnLongClickListener {
+public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.ViewHolder> {
 
     private ArrayList<ProductoEntity> dataProductos;                           // Colección de datos
 
     private Context context;
 
     // Oyentes
-    private View.OnClickListener clickListener;
-    private View.OnLongClickListener onLongClickListener;
+    private AlmacenListener listener;
 
     /**
      * El adaptador debe recibir la lista de los productos.
      * La marca se obtiene desde el adptador.
      */
-    public AdaptadorProductos(ArrayList<ProductoEntity> dataProductos, Context context ) {
+    public AdaptadorProductos(
+            ArrayList<ProductoEntity> dataProductos,
+            Context context,
+            AlmacenListener listener) {
 
         this.dataProductos = dataProductos;                               // Datos con los productos
         this.context = context;
+        this.listener = listener;
 
     }
 
@@ -65,10 +62,6 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
                 .from(parent.getContext())
                 .inflate(R.layout.cardview_producto, null);
 
-        // Establecer los oyentes
-        view.setOnClickListener( this );
-        view.setOnLongClickListener( this );
-
         // Devolvemos el componente ViewHolder al cual pasamos la vista (CardView)
         return new ViewHolder(view);
     }
@@ -84,9 +77,24 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         // Llamada al método binData y se le pasa el objeto de la lista
-        // correspondiente a la posición recibida como argumento
-        holder.binData(dataProductos.get(position));
+        ProductoEntity actual = dataProductos.get( position );
 
+        // correspondiente a la posición recibida como argumento
+        holder.binData( actual );
+
+        // Asociamos el oyente a los diferentes eventos
+        holder.itemView.setOnLongClickListener( view -> {
+            if ( null != listener ){
+                listener.editarProducto( actual );
+            }
+            return true;
+        });
+
+        holder.itemView.setOnClickListener( view -> {
+            if ( null != listener ){
+                listener.addProductoALaLista( actual );
+            }
+        });
     }
 
     /**
@@ -152,34 +160,6 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
         }
 
     }
-    /**********************************************************************************************/
-    /******* OYENTES  *****************************************************************************/
-    /**********************************************************************************************/
 
-    /**
-     * Inicializar los oyentes
-     */
-    public void setOnClickListener( View.OnClickListener listener ){
-        this.clickListener = listener;
-    }
-
-    public void setOnlongClickListener( View.OnLongClickListener listener ){
-        this.onLongClickListener = listener;
-    }
-
-    @Override
-    public void onClick(View view) {
-        if( clickListener != null ){
-            clickListener.onClick(view);
-        }
-    }
-
-    @Override
-    public boolean onLongClick(View view) {
-        if ( onLongClickListener != null ){
-            onLongClickListener.onLongClick(view);
-        }
-        return false;
-    }
 }
 

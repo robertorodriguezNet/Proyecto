@@ -204,14 +204,14 @@ public class ProductoInfoFragment extends Fragment {
 
         try {
 
-            inpPrecio.setText(String.format("%.03f", compra.getPrecio()));
-            inpCantidad.setText(String.format("%.03f", compra.getCantidad()));
-            inpTotal.setText(String.format("%.03f", compra.getPagado()));
+            inpPrecio.setText(String.format("%.02f", compra.getPrecio()));
+            inpCantidad.setText(String.format("%.02f", compra.getCantidad()));
+            inpTotal.setText(String.format("%.02f", compra.getPagado()));
 
             float precioMedida = compra.getPrecio() / producto.getCantidad();
 
             tvUnidadMedida.setText(medida.getDescription());
-            tvPrecioMedida.setText(String.format("%.03f", precioMedida));
+            tvPrecioMedida.setText(String.format("%.02f", precioMedida));
             tvAbbMedida.setText(medida.getId());
 
 
