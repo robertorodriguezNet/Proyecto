@@ -27,7 +27,7 @@ public interface ProductoDao {
     @Query( "SELECT * FROM productos WHERE id = :id")
     ProductoEntity findById( String id );
 
-    @Query( "SELECT * FROM productos WHERE id LIKE '0%'" )
+    @Query( "SELECT * FROM productos WHERE id LIKE '1%'" )
     List<ProductoEntity> getAutomaticId();
 
 

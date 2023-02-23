@@ -1,0 +1,35 @@
+package dam.proyecto;
+
+
+/**
+ * Clase para definir algunos datos globales de la aplicación.
+ *
+ * @author Roberto Rodríguez
+ * @version 1.2023.02.06
+ * @since 2023/02/06
+ */
+public class Config {
+
+    // Longitud mínima de la denominación del producto
+    public static final int PRODUCTO_DENOMINACION_MIN_LENGTH = 5;
+
+    // Longitud del código de barras
+    public static final int CODIGO_DE_BARRAS_LENGTH = 13;
+
+    // Errores al crear un producto
+    public static final String[] ERROR_VALIDAR_PRODUCTO = {
+            "El Código de barras ya existe",
+            "La longitud del código de barras debe ser de " +
+                    CODIGO_DE_BARRAS_LENGTH +
+                    " carcteres",
+            "El código de barras no puede comenzar con 0",
+            "La descripción no puede estar en blanco",
+            "La longitud de la descripción debe contener, al menos, "
+                    + PRODUCTO_DENOMINACION_MIN_LENGTH
+                    + " caracteres",
+    };
+
+
+    // Botonera de Editar producto (0 a 1)
+    public static final float BOTON_DESACTIVADO_ALPHA = 0.3f;
+}

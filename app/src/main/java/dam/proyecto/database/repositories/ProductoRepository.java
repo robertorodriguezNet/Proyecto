@@ -71,12 +71,18 @@ public class ProductoRepository extends Repositorio {
 
     /**
      * Devuelve un id automático válido.
-     * Los id's automáticos comienzan con 0
+     * Los id's automáticos comienzan con
+     * PROBLEMA:
+     *      los códigos de barra tienen 13 dígitos, demasiados para un Long.
+     *      Como el id automático comienza por 1, no podemos convertir el String en número.
+     * SOLUCIÓN:
+     *      Antes de validar el String como Long, hay que dividirlo.
+     *
      * @return el id generado
      */
     public String getIdAutomatico(){
 
-        // Obtenemos todos los productos cuyo id comience por 0
+        // Obtenemos todos los productos cuyo id comience por 1
         ArrayList<ProductoEntity> list = ( ArrayList<ProductoEntity> ) db
                 .productoDao()
                 .getAutomaticId();
@@ -88,15 +94,15 @@ public class ProductoRepository extends Repositorio {
         String idIncrementado = incrementarValor( idStr );
 
         //Debemos rellenar con "0" hasta trece caracteres
-        idStr = String.format( "%13s", idIncrementado).replace(' ', '0');
+//        idStr = String.format( "%13s", idIncrementado).replace(' ', '0');
 
         // Devolvemos el id
-        return idStr;
+        return idIncrementado;
     }
 
     /**
      * Devuelve el valor más alto del campo id de la colección de productos.
-     * @param list la colección de productos
+     * @param list la colección de productos n la que buscar
      * @return el valor más alto del campo id
      */
     private String getMaxId( ArrayList<ProductoEntity> list){
@@ -109,7 +115,7 @@ public class ProductoRepository extends Repositorio {
         Collections.sort(coleccion, new Comparator<ProductoEntity>() {
             @Override
             public int compare(ProductoEntity pe1, ProductoEntity pe2) {
-                return new Integer( pe2.getId() ).compareTo(new Integer( pe1.getId() ) );
+                return new Long( pe2.getId() ).compareTo(new Long( pe1.getId() ) );
             }
         });
 

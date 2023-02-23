@@ -1,15 +1,18 @@
 package dam.proyecto.activities.almacen;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
+import dam.proyecto.activities.lista.DetalleListaFragment;
 import dam.proyecto.activities.lista.ListaActivity;
 import dam.proyecto.databinding.ActivityAlmacenBinding;
 
@@ -34,6 +37,7 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
         View view = bindingAlmacen.getRoot();
         setContentView(view);
 
+        bindingAlmacen.navegador.setVisibility( View.VISIBLE );
         bindingAlmacen.navegador.setSelectedItemId(R.id.itAlamacen);
 
         // Oyente para el navegador
@@ -63,14 +67,21 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
 
     /**
      * Añade un nuevo producto al almacén.
-     * Para ello llama a EditProductoActivity
+     * Para ello cargamos el detalle de un producto, que estará en blanco
      */
     @Override
     public void addNuevoProducto() {
 
-        Toast.makeText(this, "Agregando un nuevo producto", Toast.LENGTH_SHORT).show();
-//        Intent intent = new Intent( this, EditProductoActivity.class );
-//        activity.startActivity( intent );
+        Log.d("LDLC", "AlmacenActivity llamando a Detalle" );
+
+        Fragment fragment = new DetalleProductoFragment();
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.almacenContenedor, fragment )
+                .commit();
+
 
     }
+
+
 }
