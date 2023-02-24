@@ -16,3 +16,5 @@ La aplicación debe mostrar la evolución de los precios, tanto en el comercio s
 globalmente.
 
 ![alt text](https://github.com/robertorodriguezNet/Proyecto/blob/master/capturas/inicio.png?raw=true)
+
+![alt text](https://github.com/robertorodriguezNet/Proyecto/blob/master/capturas/listaAbierta.png?raw=true)
