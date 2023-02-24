@@ -150,7 +150,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                 medidaList
         );
         spn_medida.setAdapter(adapterMedidas);
-
+        spn_medida.setSelection(0);
 
         // Establecemos el adaptador para el AutoCompleteTextView
         ArrayAdapter<String> adapterMarcas = new ArrayAdapter<>(
@@ -457,7 +457,9 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
             tv_unidades.setText(String.valueOf(producto.getUnidades()));
             tv_cantidad.setText(String.valueOf(producto.getCantidad()));
-            spn_medida.setSelection(producto.getUnidades());
+
+            // El spinner debe recibir un entero indicando la posición en la colección
+            spn_medida.setSelection( getPosicionMedida() );
 
             habilitarBtnEliminar(true);
             habilitarBtnGuardar(true);
@@ -467,5 +469,24 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
         }
 
+    }
+
+    /**
+     * Devuelve la posción que ocupa la medida en la colección.
+     * @return
+     */
+    private int getPosicionMedida(){
+        int index = 0;
+        String m = productoEditando.getMedida();
+
+        // medidaList contiene la colección de medidas que se ha cargado en el spinner
+        while( index < medidaList.size() ){
+            if( medidaList.get( index ).getId().equals( m ) ){
+                return index;
+            }
+            index++;
+        }
+
+        return index;
     }
 }
