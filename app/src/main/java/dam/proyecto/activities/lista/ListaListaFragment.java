@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -17,6 +18,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 
@@ -59,6 +62,17 @@ public class ListaListaFragment extends Fragment {
 
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // Deshabilitamos el bottom menu
+        BottomNavigationView navegador = getActivity().findViewById(R.id.navegador);
+        if (navegador != null) {
+            navegador.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -71,33 +85,32 @@ public class ListaListaFragment extends Fragment {
         String idCompra = Preferencias.getListaAbiertaId(this.getActivity());
 
 
-
         // Solo si la compra no es nula
         if (idCompra != null) {
 
             // Cargar los datos de los comercios
-            comercioRespository = new ComercioRespository( context );
+            comercioRespository = new ComercioRespository(context);
             dataComercio = comercioRespository.getAll();
 
             // Cargar los productos
-            compraRepository = new CompraRepository( context );
+            compraRepository = new CompraRepository(context);
             dataProductos =
                     (ArrayList<CompraEntity>) compraRepository
-                            .getProductosByFecha( Preferencias.getListaAbiertaId( context ) );
+                            .getProductosByFecha(Preferencias.getListaAbiertaId(context));
 
             // repositorio para el nombre de la compra
-            nombreCompraRepository = new NombreCompraRepository( context );
+            nombreCompraRepository = new NombreCompraRepository(context);
 
             // Obtener el objeto Nombre de la compra.
             // En NombreCompraEntity se establece el comercio
             // Inicilizar el NombreDeLaCompra
-            nombreCompra = nombreCompraRepository.getById( idCompra );
+            nombreCompra = nombreCompraRepository.getById(idCompra);
 
             // Inicializar componente
             lblNombreDeLaCompra = (TextView) view.findViewById(R.id.fla_tv_nombreCompra);
             btnSalir = (ImageView) view.findViewById(R.id.fla_img_cerrar);
-            spinner =  (Spinner) view.findViewById(R.id.fla_spn_seleccionarComercio);
-            btnAgregar = ( ImageView ) view.findViewById( R.id.fla_fab_addProduct );
+            spinner = (Spinner) view.findViewById(R.id.fla_spn_seleccionarComercio);
+            btnAgregar = (ImageView) view.findViewById(R.id.fla_fab_addProduct);
 
             // Spinner
             ArrayAdapter<ComercioEntity> adapter = new ArrayAdapter<>(
@@ -108,7 +121,7 @@ public class ListaListaFragment extends Fragment {
                     dataComercio
             );
             spinner.setAdapter(adapter);
-            spinner.setSelection( getSpinnerId() );
+            spinner.setSelection(getSpinnerId());
 
             // Nombre de la compra
             lblNombreDeLaCompra.setText(nombreCompra.getNombre().toString());
@@ -117,7 +130,7 @@ public class ListaListaFragment extends Fragment {
             btnAgregar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity( new Intent( context, AlmacenActivity.class ) );
+                    startActivity(new Intent(context, AlmacenActivity.class));
                 }
             });
 
@@ -131,14 +144,14 @@ public class ListaListaFragment extends Fragment {
 
             // Cargar la lista
             // Obtener el ListView
-            ListView listView = view.findViewById( R.id.fla_lv_listaDeLaCompra );
+            ListView listView = view.findViewById(R.id.fla_lv_listaDeLaCompra);
 
             // Adaptador
-            ProductoCompraListAdapter adapterLista = new ProductoCompraListAdapter( view.getContext(),
+            ProductoCompraListAdapter adapterLista = new ProductoCompraListAdapter(view.getContext(),
                     R.layout.producto_compra_item,
                     dataProductos,
                     oyente);
-            listView.setAdapter( adapterLista );
+            listView.setAdapter(adapterLista);
 
 //            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 //                @Override
@@ -148,8 +161,8 @@ public class ListaListaFragment extends Fragment {
 //            });
 
             // Escribimos el total
-            TextView total = view.findViewById( R.id.fla_tv_total );
-            total.setText( String.format( "%.02f", getTotalCompra()));
+            TextView total = view.findViewById(R.id.fla_tv_total);
+            total.setText(String.format("%.02f", getTotalCompra()));
 
         }
 
@@ -159,11 +172,11 @@ public class ListaListaFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if( context instanceof ListaListener){
+        if (context instanceof ListaListener) {
             oyente = (ListaListener) context;
         } else {
-            throw new RuntimeException( context.toString()
-                    + " debes implementar el oyente." );
+            throw new RuntimeException(context.toString()
+                    + " debes implementar el oyente.");
         }
     }
 
@@ -176,9 +189,10 @@ public class ListaListaFragment extends Fragment {
     /**
      * Devuelve el id del spinner que se corresponde con el id del comercio.
      * Hay que tener en cuenta que el spinner comienza a contar por 1.
+     *
      * @return el id del spinner
      */
-    private int getSpinnerId(){
+    private int getSpinnerId() {
         // Establecer el ítem por defecto
         // Obtener el nombre del comercio
         String nComercio = comercioRespository
@@ -191,12 +205,12 @@ public class ListaListaFragment extends Fragment {
         boolean nombre = false;
         ComercioEntity c = null;
         int count = 0;
-        while( !nombre && (count < dataComercio.size() ) ){
-            c = dataComercio.get( count );
+        while (!nombre && (count < dataComercio.size())) {
+            c = dataComercio.get(count);
             nombre = (c.getName().equals(nComercio));
             count++;
         }
-        return( ( c == null ) ? 1 : --count );
+        return ((c == null) ? 1 : --count);
     }
 
 
@@ -204,31 +218,31 @@ public class ListaListaFragment extends Fragment {
      * Salimos de la lista de la compra hcia Compras.
      * Al salir, debemos actualizar el comercio de NombreDeLaCompra
      */
-    public void salir(){
+    public void salir() {
 
         // Obtnemos el comercio directamente del spinner
-        nombreCompra.setComercio( ((ComercioEntity) spinner.getSelectedItem()).getId() );
-        nombreCompraRepository.update( nombreCompra );
+        nombreCompra.setComercio(((ComercioEntity) spinner.getSelectedItem()).getId());
+        nombreCompraRepository.update(nombreCompra);
 
         startActivity(new Intent(context, ComprasActivity.class));
     }
 
     /**
      * Devuelve el importe total de la compra.
+     *
      * @return el importe total de la compra
      */
-    private float getTotalCompra(){
+    private float getTotalCompra() {
 
         float total = 0.0f;
 
-        for ( CompraEntity producto : dataProductos ) {
+        for (CompraEntity producto : dataProductos) {
             total += producto.getPagado();
         }
 
         return total;
 
     }
-
 
 
 }
