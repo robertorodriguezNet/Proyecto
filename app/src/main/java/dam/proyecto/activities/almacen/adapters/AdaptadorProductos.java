@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import dam.proyecto.R;
-import dam.proyecto.activities.almacen.AlmacenListener;
+import dam.proyecto.activities.almacen.listeners.AlmacenListener;
 import dam.proyecto.database.entity.ProductoEntity;
 
 /**

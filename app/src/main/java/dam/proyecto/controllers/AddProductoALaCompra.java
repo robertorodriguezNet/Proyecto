@@ -1,24 +1,32 @@
 package dam.proyecto.controllers;
 
 import android.content.Context;
+
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.CompraRepository;
-
+import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.utilities.Preferencias;
 
 /**
+ * Añade un producto a una compra.
+ * Necesitamos el id del producto y el id de la compra.
+ *
  * @author Roberto Rodríguez
- * @version 1.2023.01.23
  * @since 2023/02/13
+ * @version 2023.02.23
  */
-public class CompraController {
+public class AddProductoALaCompra {
+
+    private static CompraRepository compraRepository;
 
     /**
-     * Añade un producto a la lista de la compra activa
-     * @param producto
+     *
+     * @param producto producto que se quiere agregar
+     * @param idCompra compra a la que se quiere agregar
+     * @param context contexto
      */
-    public static void addProductoALaCompra( ProductoEntity producto, Context context ){
+    public static void add(ProductoEntity producto, String idCompra, Context context ){
 
         CompraRepository compraRepository = new CompraRepository( context );
 
@@ -41,30 +49,16 @@ public class CompraController {
 
         // Pedir al repositorio que guarde el producto e la compra
         compraRepository.insert( compra );
-
     }
 
-
-
     /**
-     * Actualiza el comercio de la compra abierta
-     * @param comercio
+     * @param idProducto id del producto que se quiere agregar
+     * @param idCompra compra a la que se quiere agregar
+     * @param context contexto
      */
-//    public static void actualizarComercio( ComercioEntity comercio ){
-//
-//        // Tenemos el comercio.
-//        // Obtenemos la compra que está abierta
-//        String idCompra = Preferencias.getListaAbiertaId();
-//        NombreCompraEntity compra = NombreCompraRepository.getNombreDeLaCompra( idCompra );
-//
-//        // Ya tenemos la compra, seteamos el comercio
-//        compra.setComercio( comercio.getId() );
-//
-//        // Actualizamos el objeto NombreCompra en la base de datos
-//        NombreCompraRepository.updateNombreDeLaCompra( compra );
-//
-//        // Setamos el nombre del comercio en las preferencias
-//        Preferencias.setListaAbiertaComercio( comercio.getId() );
-//    }
+    public static void add( String idProducto, String idCompra, Context context ){
+        // Obtenemos el producto asociado al id
+        add( new ProductoRepository( context ).getById( idProducto ), idCompra, context);
+    }
 
 }

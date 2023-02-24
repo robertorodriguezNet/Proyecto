@@ -117,13 +117,15 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         inicializarComponentes(view);
 
         // Editar un producto si se ha recibido como argumento
-        productoEditando = (ProductoEntity) getArguments()
-                .getSerializable("producto");
-        if (productoEditando != null) {
-            cargarProducto(productoEditando);
+        Bundle argumets = this.getArguments();
+        if( argumets != null ) {
+            productoEditando = (ProductoEntity) getArguments()
+                    .getSerializable("producto");
+            if (productoEditando != null) {
+                cargarProducto(productoEditando);
 //            Log.d( "LDLC", "Producto editando: " + productoEditando );
+            }
         }
-
         return view;
     }
 

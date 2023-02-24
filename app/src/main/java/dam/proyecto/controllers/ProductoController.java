@@ -17,6 +17,7 @@ import dam.proyecto.database.repositories.ProductoRepository;
  */
 public class ProductoController {
 
+
     /**
      * Crea un objeto ProductoEntity
      */
@@ -110,6 +111,15 @@ public class ProductoController {
         }
 
         return -1;
+
+    }
+
+    /**
+     * Obtener el último precio de un producto.
+     */
+    public static float getUltimoPrecio( String idProducto ){
+
+        return 0.0f;
 
     }
 

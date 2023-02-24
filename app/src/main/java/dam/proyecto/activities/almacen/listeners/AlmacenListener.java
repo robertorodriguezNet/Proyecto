@@ -1,4 +1,4 @@
-package dam.proyecto.activities.almacen;
+package dam.proyecto.activities.almacen.listeners;
 
 import android.view.View;
 

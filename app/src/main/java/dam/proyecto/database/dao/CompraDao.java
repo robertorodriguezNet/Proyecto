@@ -30,6 +30,9 @@ public interface CompraDao {
     @Query( "SELECT * FROM Compra WHERE fecha LIKE :fecha")
     List<CompraEntity> findByFecha( String fecha );
 
+    @Query( " SELECT MAX( precio ) FROM compra WHERE producto = :producto ")
+    float getMaxPrecio( String producto );
+
     // UPDATE ------------------------------------
     @Update
     void update( CompraEntity object );

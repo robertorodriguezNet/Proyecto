@@ -7,16 +7,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
+import dam.proyecto.activities.almacen.listeners.AlmacenListener;
 import dam.proyecto.activities.compras.ComprasActivity;
-import dam.proyecto.activities.lista.DetalleListaFragment;
 import dam.proyecto.activities.lista.ListaActivity;
-import dam.proyecto.controllers.CompraController;
+import dam.proyecto.controllers.AddProductoALaCompra;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.databinding.ActivityAlmacenBinding;
+import dam.proyecto.utilities.Preferencias;
 
 /**
  * @author Roberto Rodríguez Jiménez
@@ -118,7 +118,7 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
     @Override
     public void addProductoALaLista(ProductoEntity producto) {
         // El controlador de la compra se encarga de hacerlo
-        CompraController.addProductoALaCompra( producto, this );
+        AddProductoALaCompra.add( producto, Preferencias.getListaAbiertaId( this ), this );
     }
 
 }
