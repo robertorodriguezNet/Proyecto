@@ -15,7 +15,9 @@ import android.widget.TextView;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.listeners.AlmacenListener;
+import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.repositories.MarcaRepository;
 
 /**
  * @author Roberto Rodríguez Jiménez
@@ -24,7 +26,9 @@ import dam.proyecto.database.entity.ProductoEntity;
  */
 public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.ViewHolder> {
 
+    // Datos
     private ArrayList<ProductoEntity> dataProductos;                           // Colección de datos
+    private ArrayList<MarcaEntity> dataMarca;                                 // Colección de marcas
 
     private Context context;
 
@@ -40,9 +44,11 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             Context context,
             AlmacenListener listener) {
 
-        this.dataProductos = dataProductos;                               // Datos con los productos
         this.context = context;
         this.listener = listener;
+
+        this.dataProductos = dataProductos;                               // Datos con los productos
+        this.dataMarca = new MarcaRepository( context ).getAll();            // Datos con las marcas
 
     }
 
@@ -154,8 +160,8 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
 
             // Obtener la denominación y la marca
             denominacion.setText(producto.getDenominacion());
-            marca.setText( String.valueOf( producto.getMarca() ) );
-//            marca.setText(marcaData.get(producto.getMarca() - 1).getName());
+//            marca.setText( String.valueOf( producto.getMarca() ) );
+            marca.setText(dataMarca.get(producto.getMarca() - 1).getName());
 
         }
 
