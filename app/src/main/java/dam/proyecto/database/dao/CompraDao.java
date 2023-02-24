@@ -33,7 +33,7 @@ public interface CompraDao {
     @Query( "SELECT * FROM Compra WHERE fecha LIKE :fecha")
     List<CompraEntity> findByFecha( String fecha );
 
-    @Query( " SELECT precio FROM compra WHERE producto = :producto ORDER BY fecha DESC LIMIT 1 ")
+    @Query( " SELECT precio FROM compra WHERE producto = :producto ORDER BY fecha DESC LIMIT 1, 1 ")
     float getUltimoPrecio( String producto );
 
     // UPDATE ------------------------------------

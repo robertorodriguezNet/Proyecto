@@ -1,6 +1,7 @@
 package dam.proyecto.activities.lista.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import java.util.List;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.lista.listeners.ListaListener;
+import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.repositories.ProductoRepository;
 
@@ -32,6 +34,8 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
     private List<CompraEntity> data;                       // Colección de productos de NombreCompra
 
     private ListaListener oyente;
+
+    private String opcionDePrecio;                             // Tipo de precio que se va a mostrar
     /**
      * Cosntructor
      *
@@ -42,7 +46,8 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
     public ProductoCompraListAdapter(Context context,
                                      int vistaItem,
                                      List<CompraEntity> data,
-                                     ListaListener oyente) {
+                                     ListaListener oyente,
+                                     String opcionDePrecio) {
 
         super(context, vistaItem, data);
 
@@ -51,6 +56,8 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         this.context = context;
 
         this.oyente = oyente;
+
+        this.opcionDePrecio = opcionDePrecio;
 
     }
 
@@ -85,11 +92,24 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         TextView pagado = (TextView) view.findViewById(R.id.pci_tv_totalProducto);
 
 
+        Log.d("LDLC", "ProductoCompraListAdapter - opción de precio: " + opcionDePrecio );
+        // Para obtener el precio necesitamos
+        // .- actual: el precio del producto
+        // .- global: el id del producto
+        // .- comercio: el id del producto y el id del comercio
+
         // Seteamos los datos
         producto.setText(denominacion);
         float cantidadF = actual.getCantidad();
         float precioF = actual.getPrecio();
+        if( opcionDePrecio.equals("global")){
+            precioF = ProductoController.getUltimoPrecio( actual.getProducto(), context);
+            Log.d("LDLC", "Obteniendo precio global de " + actual.getProducto()
+            + " precio: " + precioF);
+
+        }
         float total = cantidadF * precioF;
+
         ud.setText(String.format("%.02f", cantidadF));
         precio.setText(String.format("%.02f", precioF));
         pagado.setText(String.format("%.02f", total));

@@ -158,6 +158,14 @@ public class ProductoController {
 
     }
 
+    /**
+     * Devuelve el último precio registrado pero, si devilvemos el último precio, éste será
+     * el que se acabe de guardar al crear la lista.
+     * Se debe devolver el segundo.
+     * @param idProducto
+     * @param context
+     * @return
+     */
     public static float getUltimoPrecio( String idProducto, Context context ){
         return new CompraRepository( context ).getUltimoPrecio( idProducto );
     }

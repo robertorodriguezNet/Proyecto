@@ -13,14 +13,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -86,12 +84,6 @@ public class ListaListaFragment extends Fragment {
 
         // Obtener los argumentos, si es que los hay
         argumentos  = getArguments();
-        if( argumentos != null){
-            Log.d( "LDLC", "ListaListaFragment recibe argumentos OK" +
-                    "\nOpción:" + argumentos.getString("opcion"));
-        } else {
-            Log.d( "LDLC", "ListaListaFragment NO recibe argumentos");
-        }
 
     }
 
@@ -155,7 +147,7 @@ public class ListaListaFragment extends Fragment {
             btnPrecio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    cambiarPrecios();
+                    abrirCambiarPrecios();
                 }
             });
 
@@ -182,7 +174,8 @@ public class ListaListaFragment extends Fragment {
             ProductoCompraListAdapter adapterLista = new ProductoCompraListAdapter(view.getContext(),
                     R.layout.producto_compra_item,
                     dataProductos,
-                    oyente);
+                    oyente,
+                    ( argumentos == null )? "actual" : argumentos.getString( "opcion"));
             listView.setAdapter(adapterLista);
 
 //            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -265,7 +258,7 @@ public class ListaListaFragment extends Fragment {
     /**
      * Cambia el precio de los productos de la lista
      */
-    public void cambiarPrecios(){
+    public void abrirCambiarPrecios(){
 
         // Botones del diálogo
         Button btnActual, btnGlobal, btnComercio;
