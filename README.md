@@ -23,3 +23,4 @@ globalmente.
 
 ![alt text](https://github.com/robertorodriguezNet/Proyecto/blob/master/capturas/almacen.png?raw=true)
 
+Siguiente paso: cambio de precios
