@@ -30,7 +30,6 @@ public interface ProductoDao {
     @Query( "SELECT * FROM productos WHERE id LIKE '1%'" )
     List<ProductoEntity> getAutomaticId();
 
-
     // UPDATE ------------------------------------
     @Update
     void update( ProductoEntity object );

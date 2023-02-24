@@ -166,14 +166,6 @@ public class ProductoRepository extends Repositorio {
         return db.productoDao().findById( id );
     }
 
-    /**
-     * Obtiene el precio más reciente de un producto
-     * @return
-     */
-    public float getUltimoPrecio( String producto ){
-        return db.compraDao().getMaxPrecio( producto );
-    }
-
     @Override
     public String toString() {
         return super.toString();

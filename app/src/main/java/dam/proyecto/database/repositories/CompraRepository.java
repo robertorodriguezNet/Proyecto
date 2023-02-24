@@ -8,6 +8,7 @@ import java.util.List;
 
 import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 
 /**
@@ -68,6 +69,24 @@ public class CompraRepository extends Repositorio {
      */
     public void update( CompraEntity compra ){
         db.compraDao().update( compra );
+    }
+
+    /**
+     * Devuelve todas las compras de un producto dado
+     * @param idProducto
+     * @return
+     */
+    public ArrayList<CompraEntity> getAllByProducto( String idProducto){
+        return (ArrayList<CompraEntity>) db.compraDao().getAllByProducto( idProducto );
+    }
+
+    /**
+     * Obtener el último precio de un producto en un comercio dado
+     * @param idProducto
+     * @return
+     */
+    public float getUltimoPrecio( String idProducto ){
+        return db.compraDao().getUltimoPrecio( idProducto );
     }
 
     @Override

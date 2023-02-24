@@ -24,14 +24,17 @@ public interface CompraDao {
     @Query( "SELECT * FROM Compra")
     List<CompraEntity> getAll();
 
+    @Query( "SELECT * FROM Compra WHERE producto = :idProducto ORDER BY fecha DESC")
+    List<CompraEntity> getAllByProducto( String idProducto );
+
     @Query( "SELECT * FROM Compra WHERE id = :id")
     CompraEntity findById( String id );
 
     @Query( "SELECT * FROM Compra WHERE fecha LIKE :fecha")
     List<CompraEntity> findByFecha( String fecha );
 
-    @Query( " SELECT MAX( precio ) FROM compra WHERE producto = :producto ")
-    float getMaxPrecio( String producto );
+    @Query( " SELECT precio FROM compra WHERE producto = :producto ORDER BY fecha DESC LIMIT 1 ")
+    float getUltimoPrecio( String producto );
 
     // UPDATE ------------------------------------
     @Update

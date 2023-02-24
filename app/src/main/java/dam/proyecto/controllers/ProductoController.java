@@ -6,7 +6,12 @@ import static dam.proyecto.Config.PRODUCTO_DENOMINACION_MIN_LENGTH;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
+import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.repositories.CompraRepository;
+import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
 
 /**
@@ -115,12 +120,46 @@ public class ProductoController {
     }
 
     /**
-     * Obtener el último precio de un producto.
+     * Obtener el último precio de un producto en un comercio dados
+     * @param idProducto
+     * @param idComercio
+     * @param context
+     * @return
      */
-    public static float getUltimoPrecio( String idProducto ){
+    public static float getUltimoPrecio( String idProducto, int idComercio, Context context){
+
+        // Obtnemos todas las compras del producto
+        // ordenadas por fecha descendentes
+        ArrayList<CompraEntity> compras =
+                (ArrayList<CompraEntity>) new CompraRepository( context)
+                        .getAllByProducto( idProducto );
+
+
+        // Obtener todas las compras del comercio,
+        // ordenadas descendentes
+        ArrayList<String> nombreCompras =
+                (ArrayList<String>) new NombreCompraRepository( context )
+                        .getAllByIdComercio( idComercio );
+
+
+        // Recorremos en los productos para buscar si se compró en comercio
+        for( CompraEntity compra : compras ){
+
+            if( nombreCompras.contains( compra.getFecha() )){
+
+                // Este es el último producto comprado en el comercio buscado
+                return compra.getPrecio();
+
+            }
+
+        }
 
         return 0.0f;
 
+    }
+
+    public static float getUltimoPrecio( String idProducto, Context context ){
+        return new CompraRepository( context ).getUltimoPrecio( idProducto );
     }
 
 }

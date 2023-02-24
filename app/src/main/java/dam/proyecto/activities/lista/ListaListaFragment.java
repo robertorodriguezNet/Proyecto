@@ -1,5 +1,6 @@
 package dam.proyecto.activities.lista;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -36,6 +38,13 @@ import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.utilities.Preferencias;
 
+
+/**
+ * Controlador para Producto
+ * @author Roberto Rodríguez
+ * @since 11/02/2023
+ * @version 2023.02.24
+ */
 public class ListaListaFragment extends Fragment {
 
     private static final String TAG = "LL";
@@ -45,8 +54,9 @@ public class ListaListaFragment extends Fragment {
 
     // Componentes
     TextView lblNombreDeLaCompra;
-    ImageView btnSalir;
     Spinner spinner;
+    ImageView btnPrecio;
+    ImageView btnSalir;
     ImageView btnAgregar;
 
     // Datos
@@ -108,8 +118,9 @@ public class ListaListaFragment extends Fragment {
 
             // Inicializar componente
             lblNombreDeLaCompra = (TextView) view.findViewById(R.id.fla_tv_nombreCompra);
-            btnSalir = (ImageView) view.findViewById(R.id.fla_img_cerrar);
             spinner = (Spinner) view.findViewById(R.id.fla_spn_seleccionarComercio);
+            btnPrecio = (ImageView) view.findViewById( R.id.fla_img_precio);
+            btnSalir = (ImageView) view.findViewById(R.id.fla_img_cerrar);
             btnAgregar = (ImageView) view.findViewById(R.id.fla_fab_addProduct);
 
             // Spinner
@@ -126,11 +137,11 @@ public class ListaListaFragment extends Fragment {
             // Nombre de la compra
             lblNombreDeLaCompra.setText(nombreCompra.getNombre().toString());
 
-            // Botón para añadir productos
-            btnAgregar.setOnClickListener(new View.OnClickListener() {
+            // Botón para mostrar diferentes precios
+            btnPrecio.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(context, AlmacenActivity.class));
+                    cambiarPrecios();
                 }
             });
 
@@ -142,6 +153,13 @@ public class ListaListaFragment extends Fragment {
                 }
             });
 
+            // Botón para añadir productos
+            btnAgregar.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(context, AlmacenActivity.class));
+                }
+            });
             // Cargar la lista
             // Obtener el ListView
             ListView listView = view.findViewById(R.id.fla_lv_listaDeLaCompra);
@@ -213,6 +231,9 @@ public class ListaListaFragment extends Fragment {
         return ((c == null) ? 1 : --count);
     }
 
+    /* ****************************************************************************************** */
+    /* ***** ACCIONES DE LOS BOTONES ************************************************************ */
+    /* ****************************************************************************************** */
 
     /**
      * Salimos de la lista de la compra hcia Compras.
@@ -228,8 +249,57 @@ public class ListaListaFragment extends Fragment {
     }
 
     /**
+     * Cambia el precio de los productos de la lista
+     */
+    public void cambiarPrecios(){
+
+        // Botones del diálogo
+        Button btnActual, btnGlobal, btnComercio;
+
+        // Mostramos un diálogo con las opciones
+        LayoutInflater inflater = this.getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder( context );
+        View view = inflater.inflate( R.layout.alert_cambiar_precios, null );
+
+        builder.setNegativeButton( "Cancelar", null);
+        builder.setView( view );
+
+        // Inicializar los botones del diálogo
+        btnActual = view.findViewById( R.id.acp_btn_actual );
+        btnGlobal= view.findViewById( R.id.acp_btn_global );
+        btnComercio = view.findViewById( R.id.acp_btn_comercio );
+
+        // Oyentes para los eventos
+        btnActual.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnCambiarPrecioOnClick( view );
+            }
+        });
+        btnGlobal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnCambiarPrecioOnClick( view );
+            }
+        });
+        btnComercio.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                btnCambiarPrecioOnClick( view );
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
+
+    }
+
+    /* ****************************************************************************************** */
+    /* ***** FUNCIONES AUXILIARES *************************************************************** */
+    /* ****************************************************************************************** */
+
+    /**
      * Devuelve el importe total de la compra.
-     *
      * @return el importe total de la compra
      */
     private float getTotalCompra() {
@@ -245,4 +315,26 @@ public class ListaListaFragment extends Fragment {
     }
 
 
+    /* ****************************************************************************************** */
+    /* ***** EVENTOS PARA LOS BOTONES DEL ALERT PRECIOS ***************************************** */
+    /* ****************************************************************************************** */
+
+    public void btnCambiarPrecioOnClick( View view ){
+
+        String texto = "";
+
+        switch ( view.getId() ){
+            case R.id.acp_btn_actual:
+                texto= "Actual";
+                break;
+            case R.id.acp_btn_global:
+                texto = "Global";
+                break;
+            case R.id.acp_btn_comercio:
+                texto = "Comercio";
+                break;
+            default: texto = "Desconocido";
+        }
+        Toast.makeText(context, "Botón: " + texto, Toast.LENGTH_SHORT).show();
+    }
 }

@@ -96,6 +96,15 @@ public class NombreCompraRepository extends Repositorio {
         return objeto != null;
     }
 
+    /**
+     * Devuelve un listado con las compras hechas en un comercio dado
+     * @param idComercio
+     * @return
+     */
+    public ArrayList<String> getAllByIdComercio( int idComercio ){
+        return (ArrayList<String>) db.nombreCompraDao().getAllByComercio( idComercio );
+    }
+
     @Override
     public String toString() {
         return super.toString();
