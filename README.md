@@ -2,7 +2,7 @@
 Lista de la compra
 
 Apliación que gestiona los precios de los productos que se compran habitualmente.
-La aplicación muestra una lista de la compra (cada lista nueva es almacenada y puede ser reutilizad)
+La aplicación muestra una lista de la compra (cada lista nueva es almacenada y puede ser reutilizada)
 en la cual los precios pueden obtenerse a partir del último precio conocido.
 
 Si se selecciona un comercio concreto, el precio del producto seleccionado se corresponde con el 
