@@ -15,4 +15,4 @@ de producto que se quiera comprar.
 La aplicación debe mostrar la evolución de los precios, tanto en el comercio seleccionado, como 
 globalmente.
 
-![alt text]([https://github.com/[username]/[reponame]/blob/[branch]/image.jpg](https://github.com/robertorodriguezNet/Proyecto/blob/master/capturas/inicio.png)?raw=true)
+![alt text](https://github.com/robertorodriguezNet/Proyecto/blob/master/capturas/inicio.png)?raw=true)
