@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +53,8 @@ public class ListaListaFragment extends Fragment {
 
     private ListaListener oyente;
 
+    private Bundle argumentos;                    // Argumentos que puede recibir el fragment
+
     // Componentes
     TextView lblNombreDeLaCompra;
     Spinner spinner;
@@ -80,11 +83,22 @@ public class ListaListaFragment extends Fragment {
         if (navegador != null) {
             navegador.setVisibility(View.VISIBLE);
         }
+
+        // Obtener los argumentos, si es que los hay
+        argumentos  = getArguments();
+        if( argumentos != null){
+            Log.d( "LDLC", "ListaListaFragment recibe argumentos OK" +
+                    "\nOpción:" + argumentos.getString("opcion"));
+        } else {
+            Log.d( "LDLC", "ListaListaFragment NO recibe argumentos");
+        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
 
 
         View view = inflater.inflate(R.layout.fragment_lista_lista, container, false);
@@ -269,28 +283,28 @@ public class ListaListaFragment extends Fragment {
         btnGlobal= view.findViewById( R.id.acp_btn_global );
         btnComercio = view.findViewById( R.id.acp_btn_comercio );
 
+        AlertDialog dialogPrecio = builder.create();
+        dialogPrecio.show();
+
         // Oyentes para los eventos
         btnActual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnCambiarPrecioOnClick( view );
+                btnCambiarPrecioOnClick( view, dialogPrecio );
             }
         });
         btnGlobal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnCambiarPrecioOnClick( view );
+                btnCambiarPrecioOnClick( view, dialogPrecio );
             }
         });
         btnComercio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                btnCambiarPrecioOnClick( view );
+                btnCambiarPrecioOnClick( view, dialogPrecio );
             }
         });
-
-        AlertDialog dialog = builder.create();
-        dialog.show();
 
     }
 
@@ -319,22 +333,35 @@ public class ListaListaFragment extends Fragment {
     /* ***** EVENTOS PARA LOS BOTONES DEL ALERT PRECIOS ***************************************** */
     /* ****************************************************************************************** */
 
-    public void btnCambiarPrecioOnClick( View view ){
+    public void btnCambiarPrecioOnClick( View view, AlertDialog dialog ){
 
-        String texto = "";
+        dialog.dismiss();
+
+        Fragment fragment = new ListaListaFragment();
+        argumentos = new Bundle();
+        String opcion = "actual";
 
         switch ( view.getId() ){
             case R.id.acp_btn_actual:
-                texto= "Actual";
+                    opcion = "actual";
                 break;
             case R.id.acp_btn_global:
-                texto = "Global";
+                opcion = "global";
                 break;
             case R.id.acp_btn_comercio:
-                texto = "Comercio";
+                opcion = "comercio";
                 break;
-            default: texto = "Desconocido";
+            default: ;
         }
-        Toast.makeText(context, "Botón: " + texto, Toast.LENGTH_SHORT).show();
+
+        argumentos.putString( "opcion", opcion);
+        fragment.setArguments( argumentos );
+
+        getActivity().getSupportFragmentManager()
+                .beginTransaction()
+                .replace( R.id.listaContenedor, fragment)
+                .commit();
+
+
     }
 }
