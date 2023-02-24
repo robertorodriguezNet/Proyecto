@@ -18,3 +18,6 @@ globalmente.
 ![alt text](https://github.com/robertorodriguezNet/Proyecto/blob/master/capturas/inicio.png?raw=true)
 
 ![alt text](https://github.com/robertorodriguezNet/Proyecto/blob/master/capturas/listaAbierta.png?raw=true)
+
+![alt text](https://github.com/robertorodriguezNet/Proyecto/blob/master/capturas/listas.png?raw=true)
+
