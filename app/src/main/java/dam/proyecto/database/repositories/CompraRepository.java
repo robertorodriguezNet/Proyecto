@@ -81,12 +81,14 @@ public class CompraRepository extends Repositorio {
     }
 
     /**
-     * Obtener el último precio de un producto en un comercio dado
-     * @param idProducto
+     * Obtener el último precio de un producto en un comercio dado, descartando
+     * la fecha en la que se está editando dicho producto
+     * @param idProducto producto buscado
+     * @param fecha fecha de edición actual del producto, para ser descartada
      * @return
      */
-    public float getUltimoPrecio( String idProducto ){
-        return db.compraDao().getUltimoPrecio( idProducto );
+    public float getUltimoPrecio( String idProducto, String fecha ){
+        return db.compraDao().getUltimoPrecio( idProducto, fecha );
     }
 
     @Override

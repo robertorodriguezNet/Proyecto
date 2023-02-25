@@ -103,7 +103,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         float cantidadF = actual.getCantidad();
         float precioF = actual.getPrecio();
         if( opcionDePrecio.equals("global")){
-            precioF = ProductoController.getUltimoPrecio( actual.getProducto(), context);
+            precioF = ProductoController.getUltimoPrecio( actual.getProducto(), actual.getFecha(), context);
             Log.d("LDLC", "Obteniendo precio global de " + actual.getProducto()
             + " precio: " + precioF);
 

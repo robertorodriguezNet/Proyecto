@@ -21,7 +21,7 @@ public interface ProductoDao {
     void insertAll( List<ProductoEntity> objects );
 
     // READ ---------------------------------------
-    @Query( "SELECT * FROM Productos")
+    @Query( "SELECT * FROM Productos ORDER BY denominacion ASC")
     List<ProductoEntity> getAll();
 
     @Query( "SELECT * FROM productos WHERE id = :id")
