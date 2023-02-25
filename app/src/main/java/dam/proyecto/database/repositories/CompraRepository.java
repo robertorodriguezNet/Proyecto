@@ -14,12 +14,16 @@ import dam.proyecto.database.entity.ProductoEntity;
 /**
  * @since 2023/01/23
  * @author Roberto Rodríguez
- * @version 2023.02.18
+ * @version 2023.02.25
  */
 public class CompraRepository extends Repositorio {
 
     public CompraRepository(Context context) {
         super(context);
+    }
+
+    public ArrayList<CompraEntity> getAll(){
+        return (ArrayList<CompraEntity>) db.compraDao().getAll();
     }
 
     /**

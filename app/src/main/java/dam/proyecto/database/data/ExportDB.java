@@ -7,9 +7,15 @@ import android.util.Log;
 import java.util.ArrayList;
 
 import dam.proyecto.activities.MainActivity;
+import dam.proyecto.database.entity.ComercioEntity;
+import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.entity.MarcaEntity;
+import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
+import dam.proyecto.database.entity.OfertaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.entity.TagEntity;
+import dam.proyecto.database.entity.TagsProductoEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.MarcaRepository;
@@ -35,105 +41,194 @@ public class ExportDB {
         context = c;
 
         // Debemos obtner todos los registros de todas las tablas
-        String producto_data = leerProductos( "ProductoEntity" );
-        String nombre_Compra_data = leerNombreCompra( "NombreCompraEntity");
-        String tag_data = leerTag( "TagEntity" );
-//        leerComercio();
-//        leerMedidas();
-//        leerCompraEntitys();
-//        leerMarcas();
-//        leerTagsProductoEntity();
-//        leerOfertaEntity();
+        String producto_data = leerProductos();
+        String nombre_Compra_data = leerNombreCompra();
+        String tag_data = leerTag();
+        String comercio_data = leerComercio();
+        String medidas_data =leerMedidas();
+        String compra_data =leerCompraEntitys();
+        String marca_data =leerMarcas();
+        String tagsProducto_data =leerTagsProductoEntity();
+        String oferta_data =leerOfertaEntity();
 
         Log.d("LDLC","ExportDB: exportar la base de datos: \n"
-        + tag_data );
+        + producto_data );
 
     }
 
-    private static String leerProductos( String tipo) {
+    private static String leerProductos() {
         ProductoRepository repository = new ProductoRepository(context);
         ArrayList<ProductoEntity> data = repository.getAll();
 
-        String code = "\nprivate static final " + tipo + "[] PRODUCTO_DATA = {";
+        boolean salto = false;
+        String code = "";
         for( ProductoEntity objeto : data){
-            code += "\n    new " + tipo + "("
-                    + "\"" + objeto.getId() + "\","
-                    + "\"" + objeto.getDenominacion() + "\","
+            code += objeto.getId() + ","
+                    + objeto.getDenominacion() + ","
                     + objeto.getMarca() + ","
                     + objeto.getUnidades() + ","
-                    + "\"" +  objeto.getMedida() + "\","
-                    + "(float)" + objeto.getCantidad() + "),";
+                    + objeto.getMedida() + ","
+                    + objeto.getCantidad();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
         }
-        code += "\n};";
-
         return code;
     }
 
-    private static String leerNombreCompra( String tipo) {
+    private static String leerNombreCompra() {
         NombreCompraRepository repository = new NombreCompraRepository(context);
         ArrayList<NombreCompraEntity> data = repository.getAll();
 
-        String code = "\nprivate static final " + tipo + "[] PRODUCTO_DATA = {";
+        boolean salto = false;
+        String code = "";
         for( NombreCompraEntity objeto : data){
-            code += "\n    new " + tipo + "("
-                    + "\"" + objeto.getId() + "\","
-                    + "\"" + objeto.getNombre() + "\","
-                    + objeto.getComercio() + "),";
+            code += objeto.getId() + ","
+                    + objeto.getNombre() + ","
+                    + objeto.getComercio();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
         }
-        code += "\n};";
 
         return code;
     }
 
-    private static String leerTag( String tipo) {
+    private static String leerTag() {
         TagRepository repository = new TagRepository(context);
         ArrayList<TagEntity> data = repository.getAll();
 
-        String code = "\nprivate static final " + tipo + "[] PRODUCTO_DATA = {";
+        boolean salto = false;
+        String code = "";
         for( TagEntity objeto : data){
-            code += "\n    new " + tipo + "("
-                    + "\"" + objeto.getName() + "\"),";
+            code += objeto.getId() + ","
+                    + objeto.getName();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
         }
-        code += "\n};";
 
         return code;
     }
 
-    private static void leerComercio() {
+    private static String leerComercio() {
         ComercioRespository repository = new ComercioRespository(context);
-        repository.clear();
-        repository.insertAll(ComercioData.getData());
+        ArrayList<ComercioEntity> data = repository.getAll();
+
+        boolean salto = false;
+        String code = "";
+        for( ComercioEntity objeto : data){
+            code += objeto.getId() + ","
+                    + objeto.getName();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
+        }
+
+        return code;
     }
 
-    private static void leerMedidas() {
+    private static String leerMedidas() {
         MedidaRepository repository = new MedidaRepository(context);
-        repository.clear();
-        repository.insertAll(MedidaData.getData());
+        ArrayList<MedidaEntity> data = repository.getAll();
+
+        boolean salto = false;
+        String code = "";
+        for( MedidaEntity objeto : data){
+            code += objeto.getId() + ","
+                    + objeto.getDescription();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
+        }
+
+        return code;
     }
 
-    private static void leerCompraEntitys() {
+    private static String leerCompraEntitys() {
         CompraRepository repository = new CompraRepository(context);
-        repository.clear();
-        repository.insertAll(CompraEntityData.getData());
+        ArrayList<CompraEntity> data = repository.getAll();
+
+        boolean salto = false;
+        String code = "";
+        for( CompraEntity objeto : data){
+            code += objeto.getId() + ","
+                    + objeto.getProducto()
+                    + objeto.getFecha()
+                    + objeto.getPrecio()
+                    + objeto.getCantidad()
+                    + objeto.getPagado()
+                    + objeto.getPrecioMedido()
+                    + objeto.getOferta();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
+        }
+
+        return code;
     }
 
-    private static void leerMarcas() {
+    private static String leerMarcas() {
         MarcaRepository repository = new MarcaRepository(context);
-        repository.clear();
-        repository.insertAll(MarcaData.getData());
+        ArrayList<MarcaEntity> data = repository.getAll();
+
+        boolean salto = false;
+        String code = "";
+        for( MarcaEntity objeto : data){
+            code += objeto.getId() + ","
+                    + objeto.getName();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
+        }
+
+        return code;
     }
 
 
-    private static void leerTagsProductoEntity() {
+    private static String leerTagsProductoEntity() {
         TagProductoRepository repository = new TagProductoRepository(context);
-        repository.clear();
-        repository.insertAll(TagProductoData.getData());
+        ArrayList<TagsProductoEntity> data = repository.getAll();
+
+        boolean salto = false;
+        String code = "";
+        for( TagsProductoEntity objeto : data){
+            code += objeto.getId() + ","
+                    + objeto.getProducto()
+                    + objeto.getTag();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
+        }
+
+        return code;
     }
 
-    private static void leerOfertaEntity() {
+    private static String leerOfertaEntity() {
         OfertaRespository repository = new OfertaRespository(context);
-        repository.clear();
-        repository.insertAll(OfertaData.getData());
+        ArrayList<OfertaEntity> data = repository.getAll();
+
+        boolean salto = false;
+        String code = "";
+        for( OfertaEntity objeto : data){
+            code += objeto.getId() + ","
+                    + objeto.getAbbr()
+                    + objeto.getTexto();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
+        }
+
+        return code;
     }
 
 

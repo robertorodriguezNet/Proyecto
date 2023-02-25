@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
+import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.OfertaEntity;
 import dam.proyecto.database.entity.TagsProductoEntity;
 
@@ -13,11 +14,16 @@ import dam.proyecto.database.entity.TagsProductoEntity;
  * Repositorio para OfertaEntity
  * @since 2023/02/16
  * @author Roberto Rodríguez
- * @version 2023.02.18
+ * @version 2023.02.25
  */
 public class OfertaRespository extends Repositorio {
     public OfertaRespository(Context context) {
         super(context);
+    }
+
+
+    public ArrayList<OfertaEntity> getAll(){
+        return (ArrayList<OfertaEntity>) db.ofertaDao().getAll();
     }
 
     /**

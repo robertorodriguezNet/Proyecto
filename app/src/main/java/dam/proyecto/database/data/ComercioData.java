@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class ComercioData {
 
-    private static final ComercioEntity[] TAG_DATA = {
+    private static final ComercioEntity[] COMERCIO_DATA = {
             new ComercioEntity(""),
             new ComercioEntity("carrefour"),
             new ComercioEntity("gadis"),
@@ -26,6 +26,6 @@ public class ComercioData {
     };
 
     public static List<ComercioEntity> getData(){
-        return Arrays.asList( TAG_DATA );
+        return Arrays.asList( COMERCIO_DATA );
     }
 }
