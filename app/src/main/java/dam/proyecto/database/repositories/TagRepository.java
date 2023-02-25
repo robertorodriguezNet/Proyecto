@@ -2,6 +2,7 @@ package dam.proyecto.database.repositories;
 
 import android.content.Context;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
@@ -23,6 +24,10 @@ public class TagRepository extends Repositorio {
      */
     public void clear(){
         db.tagDao().clear();
+    }
+
+    public ArrayList<TagEntity> getAll(){
+        return (ArrayList<TagEntity>) db.tagDao().getAll();
     }
 
     /**

@@ -12,7 +12,7 @@ import dam.proyecto.database.entity.NombreCompraEntity;
  */
 public class NombreCompraData {
 
-    private static final NombreCompraEntity[] TAG_DATA = {
+    private static final NombreCompraEntity[] NOMBRE_COMPRA_DATA = {
             new NombreCompraEntity("2102092032","semanal",3),
             new NombreCompraEntity("2207150000","mediados de mes",5),
             new NombreCompraEntity("2207202028","urgente",5),
@@ -30,6 +30,6 @@ public class NombreCompraData {
     };
 
     public static List<NombreCompraEntity> getData(){
-        return Arrays.asList( TAG_DATA );
+        return Arrays.asList( NOMBRE_COMPRA_DATA );
     }
 }
