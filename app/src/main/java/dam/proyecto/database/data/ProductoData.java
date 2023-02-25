@@ -65,6 +65,15 @@ public class ProductoData {
             new ProductoEntity("5410076230068","Champú HS classic",22,1,"l",(float)0.5),
             new ProductoEntity("3574661648026","Colutorio",23,1,"l",(float)1),
 
+            new ProductoEntity("8480000332493","Aceituna negra sin hueso",9,1,"k",(float)0.15),
+            new ProductoEntity("1000534544661","Cebolla",8,0,"k",(float)0),
+            new ProductoEntity("1000534544663","bacalao desalado",8,0,"k",(float)0),
+            new ProductoEntity("1000534544664","Naranja",8,0,"k",(float)0),
+            new ProductoEntity("1000534544665","Zanahoria",8,0,"k",(float)0),
+            new ProductoEntity("1000534544662","Lomo adobado",8,0,"k",(float)0),
+            new ProductoEntity("1000534544660","Tomate ensalada",8,0,"k",(float)0),
+            new ProductoEntity("8480000161246","Pimiento asado tiras",9,3,"k",(float)0.180),
+
 
 
     };

@@ -79,8 +79,25 @@ public class CompraEntityData {
             new CompraEntity("5410076230068","2211221644", (float)1,(float)4.45,(float)4.45, (float)8.9),
             new CompraEntity("3574661648026","2211221644", (float)1,(float)6.95,(float)6.95, (float)6.95),
 
+            new CompraEntity("8437004621061","2302251145", (float)3,(float)2.95,(float)0.70, (float)2.88),
+            new CompraEntity("8480000049544","2302251145", (float)1,(float)1.30,(float)1.30, (float)5.20),
+            new CompraEntity("8480000332493","2302251145", (float)1,(float)1.30,(float)1.05, (float)7.00),
+            new CompraEntity("8480000053329","2302251145", (float)1,(float)0.90,(float)0.90, (float)4.286),
+            new CompraEntity("8480000260390","2302251145", (float)1,(float)0.87,(float)0.87, (float)2.175),
+            new CompraEntity("1000534544660","2302251145", (float)1.96,(float)4.50,(float)2.30, (float)2.30),
+            new CompraEntity("1000000002347","2302251145", (float)0.394,(float)0.90,(float)2.29, (float)2.29),
+            new CompraEntity("1000000002345","2302251145", (float)0.376,(float)0.90,(float)2.39, (float)2.39),
+            new CompraEntity("8480000505460","2302251145", (float)1,(float)2.98,(float)2.98, (float)9.93),
+            new CompraEntity("8437003894275","2302251145", (float)1,(float)3.87,(float)3.87, (float)16.126),
+            new CompraEntity("1000534544661","2302251145", (float)0.84,(float)2.48,(float)2.95, (float)2.95),
+            new CompraEntity("8480000823021","2302251145", (float)1,(float)1.55,(float)1.55, (float)2.15),
+            new CompraEntity("1000534544663","2302251145", (float)0.526,(float)7.86,(float)14.95, (float)14.95),
+            new CompraEntity("1000534544662","2302251145", (float)0.5,(float)3.40,(float)6.80, (float)6.80),
+            new CompraEntity("1000534544664","2302251145", (float)5,(float)4.95,(float)0.99, (float)0.99),
+            new CompraEntity("8480000837837","2302251145", (float)1,(float)1.11,(float)1.11, (float)2.24),
+            new CompraEntity("1000534544665","2302251145", (float)1,(float)0.95,(float)0.95, (float)0.95),
 
-            
+
     };
 
     public static List<CompraEntity> getData() {
