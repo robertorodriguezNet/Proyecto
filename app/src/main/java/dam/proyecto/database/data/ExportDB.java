@@ -3,7 +3,10 @@ package dam.proyecto.database.data;
 
 import android.content.Context;
 import android.util.Log;
+import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import dam.proyecto.activities.MainActivity;
@@ -28,6 +31,7 @@ import dam.proyecto.database.repositories.TagRepository;
 
 /**
  *
+ * @see "https://youtu.be/KvM65JoaeFE"
  * @author  Roberto Rodríguez Jiménez
  * @since 17/02/2023
  * @version 2023.02.17
@@ -41,22 +45,34 @@ public class ExportDB {
         context = c;
 
         // Debemos obtner todos los registros de todas las tablas
-        String producto_data = leerProductos();
-        String nombre_Compra_data = leerNombreCompra();
-        String tag_data = leerTag();
-        String comercio_data = leerComercio();
-        String medidas_data =leerMedidas();
-        String compra_data =leerCompraEntitys();
-        String marca_data =leerMarcas();
-        String tagsProducto_data =leerTagsProductoEntity();
-        String oferta_data =leerOfertaEntity();
-
-        Log.d("LDLC","ExportDB: exportar la base de datos: \n"
-        + producto_data );
+        leerProductos();
+        leerNombreCompra();
+        leerTag();
+        leerComercio();
+        leerMedidas();
+        leerCompraEntitys();
+        leerMarcas();
+        leerTagsProductoEntity();
+        leerOfertaEntity();
 
     }
 
-    private static String leerProductos() {
+    private static void grabar( String file, String data ){
+        try{
+            OutputStreamWriter osr =
+                    new OutputStreamWriter(
+                            context.openFileOutput( file , Context.MODE_PRIVATE )
+                    );
+
+            osr.write( data );
+            osr.flush();
+            osr.close();
+        } catch ( IOException e ){
+            Toast.makeText(context, "No se pudo crear el archivo " + file, Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private static void leerProductos() {
         ProductoRepository repository = new ProductoRepository(context);
         ArrayList<ProductoEntity> data = repository.getAll();
 
@@ -74,10 +90,10 @@ public class ExportDB {
                 code += "\n";
             }
         }
-        return code;
+        grabar( "ProductoEntity.csv", code );
     }
 
-    private static String leerNombreCompra() {
+    private static void leerNombreCompra() {
         NombreCompraRepository repository = new NombreCompraRepository(context);
         ArrayList<NombreCompraEntity> data = repository.getAll();
 
@@ -92,29 +108,26 @@ public class ExportDB {
                 code += "\n";
             }
         }
-
-        return code;
+        grabar( "NombreCompraEntity.csv", code );
     }
 
-    private static String leerTag() {
+    private static void leerTag() {
         TagRepository repository = new TagRepository(context);
         ArrayList<TagEntity> data = repository.getAll();
 
         boolean salto = false;
         String code = "";
         for( TagEntity objeto : data){
-            code += objeto.getId() + ","
-                    + objeto.getName();
+            code += objeto.getName();
             salto = true;
             if( salto ){
                 code += "\n";
             }
         }
-
-        return code;
+        grabar( "TagEntity.csv", code );
     }
 
-    private static String leerComercio() {
+    private static void leerComercio() {
         ComercioRespository repository = new ComercioRespository(context);
         ArrayList<ComercioEntity> data = repository.getAll();
 
@@ -128,11 +141,10 @@ public class ExportDB {
                 code += "\n";
             }
         }
-
-        return code;
+        grabar( "ComercioEntity.csv", code );
     }
 
-    private static String leerMedidas() {
+    private static void leerMedidas() {
         MedidaRepository repository = new MedidaRepository(context);
         ArrayList<MedidaEntity> data = repository.getAll();
 
@@ -146,11 +158,10 @@ public class ExportDB {
                 code += "\n";
             }
         }
-
-        return code;
+        grabar( "MedidaEntity.csv", code );
     }
 
-    private static String leerCompraEntitys() {
+    private static void leerCompraEntitys() {
         CompraRepository repository = new CompraRepository(context);
         ArrayList<CompraEntity> data = repository.getAll();
 
@@ -170,11 +181,10 @@ public class ExportDB {
                 code += "\n";
             }
         }
-
-        return code;
+        grabar( "CompraEntity.csv", code );
     }
 
-    private static String leerMarcas() {
+    private static void leerMarcas() {
         MarcaRepository repository = new MarcaRepository(context);
         ArrayList<MarcaEntity> data = repository.getAll();
 
@@ -188,12 +198,11 @@ public class ExportDB {
                 code += "\n";
             }
         }
-
-        return code;
+        grabar( "MarcaEntity.csv", code );
     }
 
 
-    private static String leerTagsProductoEntity() {
+    private static void leerTagsProductoEntity() {
         TagProductoRepository repository = new TagProductoRepository(context);
         ArrayList<TagsProductoEntity> data = repository.getAll();
 
@@ -208,11 +217,10 @@ public class ExportDB {
                 code += "\n";
             }
         }
-
-        return code;
+        grabar( "TagsProductoEntity.csv", code );
     }
 
-    private static String leerOfertaEntity() {
+    private static void leerOfertaEntity() {
         OfertaRespository repository = new OfertaRespository(context);
         ArrayList<OfertaEntity> data = repository.getAll();
 
@@ -227,9 +235,7 @@ public class ExportDB {
                 code += "\n";
             }
         }
-
-        return code;
+        grabar( "OfertaEntity.csv", code );
     }
-
 
 }
