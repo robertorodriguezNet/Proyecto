@@ -1,10 +1,14 @@
 package dam.proyecto.activities;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -66,6 +70,51 @@ public class MainActivity extends AppCompatActivity {
                 }
         );
 
+    }
+
+    /**
+     * Método para crear el menú en el ToolBar
+     *
+     * @param menu el menú que será cargado
+     * @return
+     */
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate( R.menu.menu_principal, menu);
+        return true;
+    }
+
+    /**
+     * Método que realiza la acción como respuesta
+     * al evento sobre un ítem del menú
+     * @param item ítem que recibe la acción
+     * @return
+     */
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch ( item.getItemId() ){
+            case R.id.mp_it_acercade:
+                Toast.makeText(this, "acerca de...", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mp_it_ayuda:
+                Toast.makeText(this, "ayuda", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mp_it_comercio:
+                Toast.makeText(this, "añadir comercio", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mp_it_etiqueta:
+                Toast.makeText(this, "añadir etiqueta", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mp_it_marca:
+                Toast.makeText(this, "añadir marca", Toast.LENGTH_SHORT).show();
+                break;
+            case R.id.mp_it_exportarBD:
+                Toast.makeText(this, "ExportarDB", Toast.LENGTH_SHORT).show();
+                break;
+
+        }
+        return true;
     }
 
     public Activity getActivity(){

@@ -94,6 +94,7 @@
     <string name="acp_str_btn_actual">Precio actual</string>
     <string name="acp_str_btn_global">Global más reciente</string>
     <string name="acp_str_btn_comercio">Comercio más reciente</string>
+    <string name="mp_str_it_exportarBD">Exportar BD</string>
 
 
 </resources>
