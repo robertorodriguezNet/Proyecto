@@ -8,7 +8,6 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.CompraRepository;
@@ -171,6 +170,8 @@ public class ProductoController {
     public static float getUltimoPrecio( String idProducto, Context context ){
         String idCompraActual = Preferencias.getListaAbiertaId( context );
         return new CompraRepository( context ).getUltimoPrecio( idProducto, idCompraActual );
+
+
     }
 
 }

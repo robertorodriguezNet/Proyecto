@@ -22,7 +22,7 @@ public class ComercioData {
             new ComercioEntity("dia"),
             new ComercioEntity("el corte inglés"),
             new ComercioEntity("primaprix"),
-            new ComercioEntity("carrefour express"),
+            new ComercioEntity("carrefour exp."),
     };
 
     public static List<ComercioEntity> getData(){

@@ -9,23 +9,16 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Toast;
-
-import java.util.ArrayList;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.listeners.AlmacenListener;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
-import dam.proyecto.controllers.AddProductoALaCompra;
 import dam.proyecto.controllers.ListaController;
 import dam.proyecto.controllers.ProductoController;
-import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
-import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.databinding.ActivityAlmacenBinding;
-import dam.proyecto.utilities.Preferencias;
 
 /**
  * @author Roberto Rodríguez Jiménez

@@ -92,7 +92,9 @@ public class CompraRepository extends Repositorio {
      * @return
      */
     public float getUltimoPrecio( String idProducto, String fecha ){
-        return db.compraDao().getUltimoPrecio( idProducto, fecha );
+        float p = db.compraDao().getUltimoPrecio( idProducto, fecha );
+        Log.d("LDLC", "CompraRepository -- fecha actual " + fecha + " - " + p);
+        return p;
     }
 
     @Override

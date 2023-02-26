@@ -3,8 +3,10 @@ package dam.proyecto.controllers;
 import android.content.Context;
 import android.widget.Toast;
 
+import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
+import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.utilities.Preferencias;
 
@@ -79,7 +81,16 @@ public class ListaController {
      */
     public void addProducto(ProductoEntity producto, float precio ){
 
-        // Hay que crear u
+        CompraController compraController = new CompraController( context );
+        CompraRepository compraRepository = new CompraRepository( context );
+
+        // Hay que crear un nuevo registro CompraEntity en la tabla Compra
+        // Campos: idDelProducto, idDeLaCompra, precio
+        // En lugar de crear el objeto CompraEntity pidiéndoselo a CompraEntity,
+        // se lo pedimos al controlador de la compra, que puede sobrecargar el constructor
+        CompraEntity compra = compraController.newCompra( producto, idLista, precio);
+
+        compraRepository.insert( compra );
 
     }
 
