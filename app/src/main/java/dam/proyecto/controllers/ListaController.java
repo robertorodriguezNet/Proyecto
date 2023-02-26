@@ -1,7 +1,9 @@
 package dam.proyecto.controllers;
 
 import android.content.Context;
+import android.widget.Toast;
 
+import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.utilities.Preferencias;
@@ -68,6 +70,17 @@ public class ListaController {
      */
     public int getIdComercio(){
         return this.idComercio;
+    }
+
+    /**
+     * Agrega un producto a la lista que está siendo editada
+     * @param producto que se quiere agregar
+     * @param precio el precio que se ha seleccionado
+     */
+    public void addProducto(ProductoEntity producto, float precio ){
+
+        // Hay que crear u
+
     }
 
 }

@@ -146,19 +146,25 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
             // Los precios los pedimos al controlador del producto
             // El precio global obtiene el último precio conocido, pero
             // ni indica el comercio en que se compró
-            float ultimoGlobal = ProductoController.getUltimoPrecio( producto.getId(),this );
-            float ultimoComercio = ProductoController
-                                    .getUltimoPrecio( producto.getId(),
-                                                    listaController.getIdComercio(),
-                                            this);
+            // [0] -> actual
+            // [1] -> global
+            // [2] -> comercio
+            float [] precios = {
+                    0.0f,
+                    ProductoController.getUltimoPrecio( producto.getId(),this ),
+                    ProductoController
+                    .getUltimoPrecio( producto.getId(),
+                            listaController.getIdComercio(),
+                            this)
+            };
 
             // Mostrar un listado con las tres opciones
             AlertDialog.Builder builder = new AlertDialog.Builder( this );
             String [] opciones = {
                     "Sin precio (0.00 €)",
-                    "Último conocido (" + ultimoGlobal + " €)",
+                    "Último conocido (" + precios[1] + " €)",
                     "Último de " + listaController.getComercio().toUpperCase()
-                            + "(" + ultimoComercio + " €)",
+                            + "(" + precios[2] + " €)",
             };
 
             builder.setTitle( "Selecciona una opción")
@@ -171,7 +177,7 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
                     .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
-                            aceptarTipoPrecio();
+                            listaController.addProducto( producto, precios[posicion] );
                         }
                     })
                     .setNegativeButton("Cancelar", null);
@@ -191,8 +197,5 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
 
     }
 
-    private void aceptarTipoPrecio(){
-        Toast.makeText(this, "Aceptado " + posicion, Toast.LENGTH_SHORT).show();
-    }
 
 }
