@@ -13,12 +13,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -139,6 +141,17 @@ public class ListaListaFragment extends Fragment {
             );
             spinner.setAdapter(adapter);
             spinner.setSelection(getSpinnerId());
+            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    actualizarCompra();
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                }
+            });
+
 
             // Nombre de la compra
             lblNombreDeLaCompra.setText(nombreCompra.getNombre().toString());
@@ -243,14 +256,11 @@ public class ListaListaFragment extends Fragment {
     /* ****************************************************************************************** */
 
     /**
-     * Salimos de la lista de la compra hcia Compras.
-     * Al salir, debemos actualizar el comercio de NombreDeLaCompra
+     * Salimos de la lista de la compra hacia Compras.
      */
     public void salir() {
 
-        // Obtnemos el comercio directamente del spinner
-        nombreCompra.setComercio(((ComercioEntity) spinner.getSelectedItem()).getId());
-        nombreCompraRepository.update(nombreCompra);
+        actualizarCompra();
 
         startActivity(new Intent(context, ComprasActivity.class));
     }
@@ -319,6 +329,16 @@ public class ListaListaFragment extends Fragment {
 
         return total;
 
+    }
+
+    /**
+     * Actualiza la compra.
+     * Esta función es llamada desde salir() o al cambiar el spinner del comercio
+     */
+    private void actualizarCompra(){
+        // Obtnemos el comercio directamente del spinner
+        nombreCompra.setComercio(((ComercioEntity) spinner.getSelectedItem()).getId());
+        nombreCompraRepository.update(nombreCompra);
     }
 
 
