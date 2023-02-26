@@ -13,6 +13,11 @@ import java.util.List;
 
 import dam.proyecto.database.entity.NombreCompraEntity;
 
+/**
+ * @author Roberto Rodríguez Jiménez
+ * @since 26/02/2023
+ * @version 2023.02.26
+ */
 @Dao
 public interface NombreCompraDao {
 
@@ -36,6 +41,9 @@ public interface NombreCompraDao {
 
     @Query( "SELECT * FROM Nombrecompra WHERE nombre = :nombre")
     NombreCompraEntity findByName( String nombre );
+
+    @Query( "SELECT comercio FROM Nombrecompra WHERE id = :idCompra ")
+    int getIdComercio( String idCompra );
 
     // UPDATE ------------------------------------
     @Update

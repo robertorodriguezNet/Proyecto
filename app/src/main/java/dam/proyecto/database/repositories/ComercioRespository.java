@@ -44,11 +44,15 @@ public class ComercioRespository extends Repositorio {
         return (ArrayList<ComercioEntity>) getDb().comercioDao().getAll();
     }
 
+    /**
+     * Devuelve el nombre del comercio con el id recibido
+     * @param id del comercio buscado
+     * @return String el nombre del comercio
+     */
     public String getNombreComercio( int id ){
-        ComercioEntity comercio = getDb()
+        return db
                 .comercioDao()
-                .findById( id );
-        return comercio.getName();
+                .findById( id ).getName();
     }
 
     @Override

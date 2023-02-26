@@ -96,5 +96,11 @@
     <string name="acp_str_btn_comercio">Comercio más reciente</string>
     <string name="mp_str_it_exportarBD">Exportar BD</string>
 
+    <string-array name="opciones_precio">
+        <item>Actual</item>
+        <item>Último conocido</item>
+        <item>Último de</item>
+    </string-array>
+
 
 </resources>

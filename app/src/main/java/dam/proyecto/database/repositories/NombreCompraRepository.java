@@ -12,9 +12,9 @@ import dam.proyecto.database.entity.ProductoEntity;
 
 /**
  *
- * @since 2023/01/23
  * @author Roberto Rodríguez
- * @version 2023.02.20
+ * @since 23/01/2023
+ * @version 2023.02.26
  */
 public class NombreCompraRepository extends Repositorio {
 
@@ -103,6 +103,15 @@ public class NombreCompraRepository extends Repositorio {
      */
     public ArrayList<String> getAllByIdComercio( int idComercio ){
         return (ArrayList<String>) db.nombreCompraDao().getAllByComercio( idComercio );
+    }
+
+    /**
+     * Devuleve el id del comercio asociado a la compra dada
+     * @param idCompra compra de la que se quiere obtener el comercio
+     * @return int el id de la compra
+     */
+    public int getIdComercio( String idCompra ){
+        return db.nombreCompraDao().getIdComercio( idCompra );
     }
 
     @Override

@@ -1,12 +1,17 @@
 package dam.proyecto.activities.almacen;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
+
+import java.util.ArrayList;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
@@ -14,7 +19,11 @@ import dam.proyecto.activities.almacen.listeners.AlmacenListener;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
 import dam.proyecto.controllers.AddProductoALaCompra;
+import dam.proyecto.controllers.ListaController;
+import dam.proyecto.controllers.ProductoController;
+import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.databinding.ActivityAlmacenBinding;
 import dam.proyecto.utilities.Preferencias;
 
@@ -28,6 +37,13 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
     private final String TAG = "AlmacenActivity";
 
     ActivityAlmacenBinding  bindingAlmacen;
+
+    // Usado en addProductoALaLista()
+    // Índice de las opciones de selección del precio
+    // Es necesario para poder comunicar el tipo de precio entre los listeners de diálogo
+    // que se abre al intentar agregar un producto a la lista abierta
+    private int posicion = 0;
+
 
 
     @Override
@@ -113,12 +129,70 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
 
     /**
      * Añadimos el producto a la lista de la compra que esté activa.
+     * Antes de agregar el producto, debemos saber qué precio va a mostrar:
+     * [actual(0)|global|comercio]
+     *
      * @param producto producto que queremos añadir
      */
     @Override
     public void addProductoALaLista(ProductoEntity producto) {
-        // El controlador de la compra se encarga de hacerlo
-        AddProductoALaCompra.add( producto, Preferencias.getListaAbiertaId( this ), this );
+
+        // Controlador de la lista
+        ListaController listaController = new ListaController( this);
+
+        // Comprobamos que haya una lista abierta
+        if( listaController.isListaAbierta() ){
+
+            // Los precios los pedimos al controlador del producto
+            // El precio global obtiene el último precio conocido, pero
+            // ni indica el comercio en que se compró
+            float ultimoGlobal = ProductoController.getUltimoPrecio( producto.getId(),this );
+            float ultimoComercio = ProductoController
+                                    .getUltimoPrecio( producto.getId(),
+                                                    listaController.getIdComercio(),
+                                            this);
+
+            // Mostrar un listado con las tres opciones
+            AlertDialog.Builder builder = new AlertDialog.Builder( this );
+            String [] opciones = {
+                    "Sin precio (0.00 €)",
+                    "Último conocido (" + ultimoGlobal + " €)",
+                    "Último de " + listaController.getComercio().toUpperCase()
+                            + "(" + ultimoComercio + " €)",
+            };
+
+            builder.setTitle( "Selecciona una opción")
+                    .setSingleChoiceItems(opciones, posicion, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            posicion = i;
+                        }
+                    })
+                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            aceptarTipoPrecio();
+                        }
+                    })
+                    .setNegativeButton("Cancelar", null);
+
+            builder.create();
+            builder.show();
+
+        } else {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle( "No hay una lista abierta")
+                    .setNegativeButton( "Cerrar", null)
+                    .setMessage( "No se puede añadir el producto a una lista porque no " +
+                            "hay ninguna lista abierta" );
+            builder.create();
+            builder.show();
+        }
+
+    }
+
+    private void aceptarTipoPrecio(){
+        Toast.makeText(this, "Aceptado " + posicion, Toast.LENGTH_SHORT).show();
     }
 
 }

@@ -8,11 +8,13 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
+import dam.proyecto.utilities.Preferencias;
 
 /**
  * Controlador para Producto
@@ -163,12 +165,12 @@ public class ProductoController {
      * el que se acabe de guardar al crear la lista.
      * Se debe devolver el último, descartando el actual.
      * @param idProducto el producto buscado
-     * @param fechaActual fecha de la compra actual, para ser descartada
      * @param context
      * @return
      */
-    public static float getUltimoPrecio( String idProducto, String fechaActual, Context context ){
-        return new CompraRepository( context ).getUltimoPrecio( idProducto, fechaActual );
+    public static float getUltimoPrecio( String idProducto, Context context ){
+        String idCompraActual = Preferencias.getListaAbiertaId( context );
+        return new CompraRepository( context ).getUltimoPrecio( idProducto, idCompraActual );
     }
 
 }
