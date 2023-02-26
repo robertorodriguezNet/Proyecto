@@ -161,7 +161,7 @@ public class ComprasActivity extends AppCompatActivity {
 
 
 
-        Log.d( TAG, "Borrar la poscion: " + posicion
+        Log.d( TAG, "ComprasActivity.borrarCompra() - Borrar la poscion: " + posicion
             + "\nque se corresponde con : " + compra.toString()
             + "\nLa posición es ocupada por: " + dataNombreCompra.get( posicion ));
     }
@@ -173,9 +173,9 @@ public class ComprasActivity extends AppCompatActivity {
     public void editarCompra(NombreCompraEntity compra) {
 
         // Abrimos la lista
-        Log.d("PREF", "editar listaAbiertaId: " + compra.getId() );
+        Log.d("PREF", "ComprasActivity.borrarCompra() - editar listaAbiertaId: " + compra.getId() );
         Preferencias.setListaAbiertaId( compra.getId(), this);
-        Log.d("PREF", "proferencia guardada: " + Preferencias.getListaAbiertaId( this ) );
+        Log.d("PREF", "ComprasActivity.borrarCompra() - preferencia guardada: " + Preferencias.getListaAbiertaId( this ) );
         startActivity( new Intent( this, ListaActivity.class ) );
     }
 

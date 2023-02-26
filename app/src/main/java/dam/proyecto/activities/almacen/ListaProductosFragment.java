@@ -85,30 +85,6 @@ public class ListaProductosFragment extends Fragment {
                     new AdaptadorProductos(productoData, getContext(), listener);
             recyclerView.setAdapter(adaptadorProductos);
 
-//            // Implementamos los eventos del adaptados
-//            adaptadorProductos.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View view) {
-//                    Toast.makeText(
-//                            getContext(),
-//                            "Agregar a la lista: " +
-//                                    productoData.get(recyclerView.getChildAdapterPosition(view)).getDenominacion(),
-//                            Toast.LENGTH_SHORT).show();
-//                }
-//            });
-//
-//            adaptadorProductos.setOnlongClickListener(new View.OnLongClickListener() {
-//                @Override
-//                public boolean onLongClick(View view) {
-//                    Toast.makeText(
-//                            getContext(),
-//                            "Editar: " +
-//                                    productoData.get(recyclerView.getChildAdapterPosition(view)).getDenominacion(),
-//                            Toast.LENGTH_SHORT).show();
-//                    return false;
-//                }
-//            });
-
         }
 
         return view;

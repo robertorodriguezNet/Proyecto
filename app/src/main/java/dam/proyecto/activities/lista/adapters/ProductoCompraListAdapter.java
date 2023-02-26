@@ -92,7 +92,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         TextView pagado = (TextView) view.findViewById(R.id.pci_tv_totalProducto);
 
 
-        Log.d("LDLC", "ProductoCompraListAdapter - opción de precio: " + opcionDePrecio );
+//        Log.d("LDLC", "ProductoCompraListAdapter.getView() - opción de precio: " + opcionDePrecio );
         // Para obtener el precio necesitamos
         // .- actual: el precio del producto
         // .- global: el id del producto

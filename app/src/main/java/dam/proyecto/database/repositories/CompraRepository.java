@@ -59,10 +59,10 @@ public class CompraRepository extends Repositorio {
 
             db.compraDao().insert( compra );
 
-            Log.d( "LDLC", "Compra guardada: " + compra.toString() );
+            Log.d( "LDLC", "CompraRepository.insert() - Compra guardada: " + compra.toString() );
 
         }catch ( Exception e ){
-            Log.d( "LDLC", "Error al guardar la compra: " + compra.toString() );
+            Log.d( "LDLC", "CompraRepository.insert() - Error al guardar la compra: " + compra.toString() );
         }
 
     }
@@ -93,7 +93,7 @@ public class CompraRepository extends Repositorio {
      */
     public float getUltimoPrecio( String idProducto, String fecha ){
         float p = db.compraDao().getUltimoPrecio( idProducto, fecha );
-        Log.d("LDLC", "CompraRepository -- fecha actual " + fecha + " - " + p);
+        Log.d("LDLC", "CompraRepository.getUltimoPecio() -- fecha actual " + fecha + " - " + p);
         return p;
     }
 

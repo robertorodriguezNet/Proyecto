@@ -3,6 +3,8 @@ package dam.proyecto.controllers;
 import android.content.Context;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
@@ -92,6 +94,14 @@ public class ListaController {
 
         compraRepository.insert( compra );
 
+    }
+
+    /**
+     * Devuelve los productos asociados a la fecha de la lista abierta
+     * @return
+     */
+    public ArrayList<CompraEntity> getListaProductos(){
+        return new CompraRepository( context ).getProductosByFecha( idLista );
     }
 
 }

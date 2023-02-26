@@ -31,6 +31,7 @@ import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
 import dam.proyecto.activities.lista.listeners.ListaListener;
+import dam.proyecto.controllers.ListaController;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
@@ -52,8 +53,9 @@ public class ListaListaFragment extends Fragment {
     private Context context;
 
     private ListaListener oyente;
+    private ListaController listaController;                    // Controlador para la lista abierta
 
-    private Bundle argumentos;                    // Argumentos que puede recibir el fragment
+    private Bundle argumentos;                           // Argumentos que puede recibir el fragment
 
     // Componentes
     TextView lblNombreDeLaCompra;
@@ -64,11 +66,10 @@ public class ListaListaFragment extends Fragment {
 
     // Datos
     // NombreCompraEntity
-    NombreCompraEntity nombreCompra;                      // Es la compra que se está editando
+    NombreCompraEntity nombreCompra;                            // Es la compra que se está editando
     // Repositorios
     ComercioRespository comercioRespository;
     NombreCompraRepository nombreCompraRepository;
-    CompraRepository compraRepository;
 
     ArrayList<ComercioEntity> dataComercio;                // Colección de comercios para el spinner
     ArrayList<CompraEntity> dataProductos;                    // Colección de productos de la compra
@@ -106,15 +107,15 @@ public class ListaListaFragment extends Fragment {
         // Solo si la compra no es nula
         if (idCompra != null) {
 
+            // Obtenemos un controlador para la lista
+            listaController = new ListaController( context );
+
             // Cargar los datos de los comercios
             comercioRespository = new ComercioRespository(context);
             dataComercio = comercioRespository.getAll();
 
             // Cargar los productos
-            compraRepository = new CompraRepository(context);
-            dataProductos =
-                    (ArrayList<CompraEntity>) compraRepository
-                            .getProductosByFecha(Preferencias.getListaAbiertaId(context));
+            dataProductos = listaController.getListaProductos();
 
             // repositorio para el nombre de la compra
             nombreCompraRepository = new NombreCompraRepository(context);
@@ -126,31 +127,10 @@ public class ListaListaFragment extends Fragment {
 
             // Inicializar componente
             lblNombreDeLaCompra = (TextView) view.findViewById(R.id.fla_tv_nombreCompra);
-            spinner = (Spinner) view.findViewById(R.id.fla_spn_seleccionarComercio);
             btnPrecio = (ImageView) view.findViewById( R.id.fla_img_precio);
             btnSalir = (ImageView) view.findViewById(R.id.fla_img_cerrar);
             btnAgregar = (ImageView) view.findViewById(R.id.fla_fab_addProduct);
-
-            // Spinner
-            ArrayAdapter<ComercioEntity> adapter = new ArrayAdapter<>(
-                    context,
-                    androidx
-                            .appcompat
-                            .R.layout.support_simple_spinner_dropdown_item,
-                    dataComercio
-            );
-            spinner.setAdapter(adapter);
-            spinner.setSelection(getSpinnerId());
-            spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                @Override
-                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                    actualizarCompra();
-                }
-
-                @Override
-                public void onNothingSelected(AdapterView<?> adapterView) {
-                }
-            });
+            inicializarSpinner( view );
 
 
             // Nombre de la compra
@@ -179,6 +159,7 @@ public class ListaListaFragment extends Fragment {
                     startActivity(new Intent(context, AlmacenActivity.class));
                 }
             });
+
             // Cargar la lista
             // Obtener el ListView
             ListView listView = view.findViewById(R.id.fla_lv_listaDeLaCompra);
@@ -190,13 +171,6 @@ public class ListaListaFragment extends Fragment {
                     oyente,
                     ( argumentos == null )? "actual" : argumentos.getString( "opcion"));
             listView.setAdapter(adapterLista);
-
-//            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//                @Override
-//                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-//                    oyente.onProductoCompradoClick( view );
-//                }
-//            });
 
             // Escribimos el total
             TextView total = view.findViewById(R.id.fla_tv_total);
@@ -321,10 +295,11 @@ public class ListaListaFragment extends Fragment {
      */
     private float getTotalCompra() {
 
+
         float total = 0.0f;
 
         for (CompraEntity producto : dataProductos) {
-            total += producto.getPagado();
+            total += producto.getPrecio() * producto.getCantidad();
         }
 
         return total;
@@ -376,5 +351,37 @@ public class ListaListaFragment extends Fragment {
                 .commit();
 
 
+    }
+
+    /* ****************************************************************************************** */
+    /* ***** COMPONENTES ************************************************************************ */
+    /* ****************************************************************************************** */
+
+    /**
+     * Spinner para seleccionar el comercio
+     * @param view
+     */
+    private void inicializarSpinner( View view ){
+
+        spinner = (Spinner) view.findViewById(R.id.fla_spn_seleccionarComercio);
+        ArrayAdapter<ComercioEntity> adapter = new ArrayAdapter<>(
+                context,
+                androidx
+                        .appcompat
+                        .R.layout.support_simple_spinner_dropdown_item,
+                dataComercio
+        );
+        spinner.setAdapter(adapter);
+        spinner.setSelection(getSpinnerId());
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                actualizarCompra();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
     }
 }
