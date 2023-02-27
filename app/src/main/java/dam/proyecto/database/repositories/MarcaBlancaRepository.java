@@ -7,7 +7,6 @@ import java.util.List;
 
 import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.entity.MarcaBlancaEntity;
-import dam.proyecto.database.entity.MarcaBlancaEntity;
 
 public class MarcaBlancaRepository extends Repositorio {
     public MarcaBlancaRepository(Context context) {

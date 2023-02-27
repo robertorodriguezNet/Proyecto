@@ -7,6 +7,7 @@ import dam.proyecto.database.entity.MarcaBlancaEntity;
 
 
 /**
+ * Marca blanca
  * @author Roberto Rodríguez
  * @since 27/02/2023
  * @version 2023.02.27

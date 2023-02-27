@@ -5,6 +5,7 @@ import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /**
+ *
  * @author Roberto Rodríguez
  * @since 27/02/2023
  * @version 2023.02.27

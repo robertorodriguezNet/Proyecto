@@ -17,7 +17,6 @@ import dam.proyecto.database.entity.OfertaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.entity.TagEntity;
 import dam.proyecto.database.entity.TagsProductoEntity;
-import dam.proyecto.database.entity.*;
 
 @Database(
         entities = {
