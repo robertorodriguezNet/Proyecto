@@ -2,18 +2,21 @@ package dam.proyecto.database;
 
 import android.content.Context;
 
-import androidx.annotation.NonNull;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.sqlite.db.SupportSQLiteDatabase;
-
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import dam.proyecto.database.dao.*;
-import dam.proyecto.database.data.Ejemplos;
-import dam.proyecto.database.data.MedidaData;
+import dam.proyecto.database.entity.ComercioEntity;
+import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.entity.MarcaBlancaEntity;
+import dam.proyecto.database.entity.MarcaEntity;
+import dam.proyecto.database.entity.MedidaEntity;
+import dam.proyecto.database.entity.NombreCompraEntity;
+import dam.proyecto.database.entity.OfertaEntity;
+import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.entity.TagEntity;
+import dam.proyecto.database.entity.TagsProductoEntity;
 import dam.proyecto.database.entity.*;
 
 @Database(
@@ -26,7 +29,8 @@ import dam.proyecto.database.entity.*;
                 TagEntity.class,
                 TagsProductoEntity.class,
                 NombreCompraEntity.class,
-                OfertaEntity.class
+                OfertaEntity.class,
+                MarcaBlancaEntity.class
         },
         version = 1,
         exportSchema = false
@@ -46,6 +50,7 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract TagsProductoDao tagsProductoDao();
     public abstract NombreCompraDao nombreCompraDao();
     public abstract OfertaDao ofertaDao();
+    public abstract MarcaBlancaDao marcaBlancaDao();
 
     // NOmbre de la base de datos
     private static final String DB_NAME = "listadelacompra.db";
