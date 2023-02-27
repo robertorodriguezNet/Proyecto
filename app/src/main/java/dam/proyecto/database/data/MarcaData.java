@@ -37,6 +37,7 @@ public class MarcaData {
             new MarcaEntity("H&S"),
             new MarcaEntity("Listerine"),
             new MarcaEntity("Xoia"),
+            new MarcaEntity("Selex"),
 
     };
 
