@@ -229,6 +229,10 @@ public class ListaListaFragment extends Fragment {
     /* ***** ACCIONES DE LOS BOTONES ************************************************************ */
     /* ****************************************************************************************** */
 
+    public void borrar(){
+
+    }
+
     /**
      * Salimos de la lista de la compra hacia Compras.
      */

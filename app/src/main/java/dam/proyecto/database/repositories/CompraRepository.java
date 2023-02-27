@@ -34,6 +34,13 @@ public class CompraRepository extends Repositorio {
     }
 
     /**
+     * Borrar un registro de la compra
+     */
+    public void delete( CompraEntity compra ){
+        db.compraDao().delete( compra );
+    }
+
+    /**
      * Inserta una colección de objetos
      */
     public void insertAll( List<CompraEntity> data ){

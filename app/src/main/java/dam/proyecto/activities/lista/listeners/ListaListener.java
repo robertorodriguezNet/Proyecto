@@ -6,4 +6,5 @@ import dam.proyecto.database.entity.CompraEntity;
 
 public interface ListaListener {
     void onProductoCompradoClick(CompraEntity compra);
+    void onProductoCompradoLongClock( CompraEntity compra);
 }

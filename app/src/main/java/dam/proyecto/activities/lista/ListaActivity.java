@@ -20,7 +20,10 @@ import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.listeners.ListaListener;
+import dam.proyecto.controllers.ListaController;
 import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.databinding.ActivityListaBinding;
 import dam.proyecto.utilities.Preferencias;
 
@@ -34,6 +37,7 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
     private final String TAG = "LIST";
 
     ActivityListaBinding bindingLista;
+    ListaController listaController;                                      // Controlador de la lista
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,8 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
         // Obtener la vista mediante ViewBinding
         bindingLista = ActivityListaBinding.inflate(getLayoutInflater());
         View view = bindingLista.getRoot();
+
+        listaController = new ListaController( this );
 
         // -- Navegador ----------------------------------------------------------------------------
         bindingLista.navegador.setSelectedItemId(R.id.itLista);
@@ -146,4 +152,37 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
 
     }
 
+    /**
+     * Un producto comprado recibe un LongClick para ser borrado.
+     * @param compra
+     */
+    @Override
+    public void onProductoCompradoLongClock(CompraEntity compra) {
+
+        ProductoEntity producto = new ProductoRepository( this )
+                    .getById(compra.getProducto()
+                );
+
+        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        builder.setTitle( "Borrar producto");
+        builder.setMessage( "¿Borrar " + producto.getDenominacion() + "?" );
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                elimiarProductoDeLaCompra( compra );
+            }
+        });
+        builder.setNegativeButton( "Cancelar", null );
+        builder.create();
+        builder.show();
+
+    }
+
+    /**
+     * Elimina un producto de la lista de la compra que se está editanco
+     * @param compra
+     */
+    private void elimiarProductoDeLaCompra( CompraEntity compra){
+
+    }
 }

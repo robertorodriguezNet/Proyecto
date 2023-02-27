@@ -28,6 +28,9 @@ public class ListaController {
     private String idLista;                                                // id de la lista abierta
     private int idComercio;                                                    // id del comercio
 
+    private CompraRepository compraRepository;
+    private ComercioRespository comercioRespository;
+
     /**
      * Constructor
      * @param context
@@ -36,11 +39,13 @@ public class ListaController {
         this.context = context;
 
         // Pedir a Preferencias el nombre de la lista que está abierta (o null)
-        idLista = Preferencias.getListaAbiertaId( context );
+        this.idLista = Preferencias.getListaAbiertaId( context );
 
         // Obtener el id del comercio
-        idComercio = new NombreCompraRepository( context ).getIdComercio( idLista );
+        this.idComercio = new NombreCompraRepository( context ).getIdComercio( idLista );
 
+        this.compraRepository = new CompraRepository( context );
+        this.comercioRespository = new ComercioRespository( context );
     }
 
     /**
@@ -65,7 +70,7 @@ public class ListaController {
      * @return
      */
     public String getComercio(){
-        return new ComercioRespository(context).getNombreComercio( idComercio );
+        return comercioRespository.getNombreComercio( idComercio );
     }
 
     /**
@@ -84,7 +89,6 @@ public class ListaController {
     public void addProducto(ProductoEntity producto, float precio ){
 
         CompraController compraController = new CompraController( context );
-        CompraRepository compraRepository = new CompraRepository( context );
 
         // Hay que crear un nuevo registro CompraEntity en la tabla Compra
         // Campos: idDelProducto, idDeLaCompra, precio
@@ -101,7 +105,11 @@ public class ListaController {
      * @return
      */
     public ArrayList<CompraEntity> getListaProductos(){
-        return new CompraRepository( context ).getProductosByFecha( idLista );
+        return compraRepository.getProductosByFecha( idLista );
+    }
+
+    public void delete( CompraEntity compra ){
+        compraRepository.delete( compra );
     }
 
 }

@@ -118,6 +118,11 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
             oyente.onProductoCompradoClick( actual );
         });
 
+        view.setOnLongClickListener( v -> {
+            oyente.onProductoCompradoLongClock( actual );
+            return true;
+        });
+
         return view;
     }
 
