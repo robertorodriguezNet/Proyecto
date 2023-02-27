@@ -19,6 +19,7 @@ import android.widget.Toast;
 import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
+import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
 import dam.proyecto.activities.lista.listeners.ListaListener;
 import dam.proyecto.controllers.ListaController;
 import dam.proyecto.database.entity.CompraEntity;
@@ -157,7 +158,7 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
      * @param compra
      */
     @Override
-    public void onProductoCompradoLongClock(CompraEntity compra) {
+    public void onProductoCompradoLongClick(CompraEntity compra) {
 
         ProductoEntity producto = new ProductoRepository( this )
                     .getById(compra.getProducto()
@@ -183,6 +184,15 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
      * @param compra
      */
     private void elimiarProductoDeLaCompra( CompraEntity compra){
+
+        // Pedimos al controlador de la lista que elimine la compra del producto
+        listaController.delete( compra );
+
+        // Recargamos el fragment
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace( R.id.listaContenedor, new ListaListaFragment() )
+                .commit();
 
     }
 }

@@ -119,7 +119,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         });
 
         view.setOnLongClickListener( v -> {
-            oyente.onProductoCompradoLongClock( actual );
+            oyente.onProductoCompradoLongClick( actual );
             return true;
         });
 
