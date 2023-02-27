@@ -17,7 +17,7 @@ public class NombreCompraData {
             new NombreCompraEntity("2207150000","mediados de mes",5),
             new NombreCompraEntity("2207202028","urgente",5),
             new NombreCompraEntity("2208180819","2208180819",5),
-            new NombreCompraEntity("2208221944","tarde",5),
+            new NombreCompraEntity("2208251944","tarde",5),
             new NombreCompraEntity("2211050000","para el desayuno",4),
             new NombreCompraEntity("2211181500","semanal",2),
             new NombreCompraEntity("2211181501","última hora",2),
