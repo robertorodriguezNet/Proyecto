@@ -1,11 +1,13 @@
 package dam.proyecto.database.repositories;
 
 import android.content.Context;
+import android.nfc.Tag;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
+import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.TagEntity;
 
 /**
@@ -28,6 +30,21 @@ public class TagRepository extends Repositorio {
 
     public ArrayList<TagEntity> getAll(){
         return (ArrayList<TagEntity>) db.tagDao().getAll();
+    }
+
+    /**
+     * Devuelve un listado con tan sólo los nombres
+     * @return
+     */
+    public ArrayList<String> getNombres(){
+        ArrayList<TagEntity> objetos = getAll();
+        ArrayList<String> nombres = new ArrayList<>();
+
+        for ( TagEntity objeto: objetos ) {
+            nombres.add( objeto.getName() );
+        }
+
+        return nombres;
     }
 
     /**

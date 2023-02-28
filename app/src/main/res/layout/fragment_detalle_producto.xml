@@ -32,41 +32,25 @@
             android:textStyle="bold" />
 
 
-        <TextView
-            android:id="@+id/aep_lbl_codigo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/dnp_str_lbl_codigo"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
         <EditText
             android:id="@+id/aep_inp_codigo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/fondoInputVerde"
+            android:hint="@string/dnp_str_lbl_codigo"
             android:ems="10"
             android:inputType="number"
             android:maxLength="13"
             android:text="@string/str_cadenaVacia"
             tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-        <TextView
-            android:id="@+id/aep_lbl_denominacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp"
-            android:text="@string/dnp_str_lbl_denominacion"
-
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/aep_inp_denominacion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:hint="@string/dnp_str_lbl_denominacion"
             android:background="@color/fondoInputVerde"
             android:ems="10"
             android:inputType="text"
@@ -74,25 +58,54 @@
             android:text="@string/str_cadenaVacia"
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
-        <TextView
-            android:id="@+id/aep_lbl_marca"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
-            android:text="@string/dnp_str_lbl_marca"
-            android:textColor="#000000"
-            android:textSize="16sp"
-            android:textStyle="bold" />
 
-        <AutoCompleteTextView
-            android:id="@+id/aep_inp_marca"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:completionThreshold="1"
-            android:ems="10"
-            android:inputType="text"
-            android:text="@string/str_cadenaVacia"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <AutoCompleteTextView
+                    android:id="@+id/aep_inp_marca"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginRight="12dp"
+                    android:background="@color/fondoInputVerde"
+                    android:completionThreshold="1"
+                    android:ems="10"
+                    android:hint="@string/dnp_str_lbl_marca"
+                    android:inputType="text"
+                    android:text="@string/str_cadenaVacia"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1">
+
+                <AutoCompleteTextView
+                    android:id="@+id/aep_inp_etiqueta"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="12dp"
+                    android:background="@color/fondoInputVerde"
+                    android:completionThreshold="1"
+                    android:ems="10"
+                    android:hint="@string/dnp_str_lbl_etiqueta"
+                    android:inputType="text"
+                    android:text="@string/str_cadenaVacia"
+                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+            </LinearLayout>
+
+        </LinearLayout>
 
 
         <androidx.constraintlayout.widget.ConstraintLayout

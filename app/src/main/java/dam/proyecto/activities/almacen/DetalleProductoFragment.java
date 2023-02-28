@@ -34,6 +34,7 @@ import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
+import dam.proyecto.database.repositories.TagRepository;
 
 
 /**
@@ -52,7 +53,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             tv_denominacion,
             tv_unidades,
             tv_cantidad;
-    private AutoCompleteTextView tv_marca;
+    private AutoCompleteTextView tv_marca,
+            tv_etiqueta;
     private Spinner spn_medida;
 
     // Botones
@@ -64,13 +66,15 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     // Array con los botones que son modificables
     private ArrayList<Button> botonera;
 
-    private static ArrayList<MedidaEntity> medidaList;                       // Colección de medidas
-    private static ArrayList<String> marcaList;                               // Colección de marcas
+    private ArrayList<MedidaEntity> medidaList;                              // Colección de medidas
+    private ArrayList<String> marcaList;                                      // Colección de marcas
+    private ArrayList<String> etiquetaList;
 
     // Repositorios
     MedidaRepository medidaRepository;
     MarcaRepository marcaRepository;
     ProductoRepository productoRepository;
+    TagRepository tagRepository;
 
     private ProductoEntity productoEditando;                         // Producto que está editándose
 
@@ -107,10 +111,12 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         medidaRepository = new MedidaRepository(context);
         marcaRepository = new MarcaRepository(context);
         productoRepository = new ProductoRepository( context );
+        tagRepository = new TagRepository( context );
 
         // Obtener la colección de medidas y de marcas
         medidaList = medidaRepository.getAll();
         marcaList = marcaRepository.getNombres();
+        etiquetaList = tagRepository.getNombres();
 
         // Inicializamos los componente
         // No se cargan datos
@@ -137,6 +143,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         tv_codigoDeBarras = (TextView) view.findViewById(R.id.aep_inp_codigo);
         tv_denominacion = (TextView) view.findViewById(R.id.aep_inp_denominacion);
         tv_marca = (AutoCompleteTextView) view.findViewById(R.id.aep_inp_marca);
+        tv_etiqueta = (AutoCompleteTextView) view.findViewById(R.id.aep_inp_etiqueta);
         tv_unidades = (TextView) view.findViewById(R.id.aep_inp_unidades);
         tv_cantidad = (TextView) view.findViewById(R.id.aep_inp_cantidad);
         spn_medida = (Spinner) view.findViewById(R.id.aep_spn_medida);
@@ -159,6 +166,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                 marcaList
         );
         tv_marca.setAdapter(adapterMarcas);
+
+        // Establecemos el adaptador para el AutoCompleteTextView
+        ArrayAdapter<String> adapterEtiquetas = new ArrayAdapter<>(
+                context,
+                android.R.layout.simple_list_item_1,
+                etiquetaList
+        );
+        tv_etiqueta.setAdapter( adapterEtiquetas );
 
         // Establecemos los oyentes para los input
         tv_codigoDeBarras.addTextChangedListener(this);
