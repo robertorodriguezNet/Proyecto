@@ -2,6 +2,7 @@ package dam.proyecto.database.repositories;
 
 import android.content.Context;
 import android.nfc.Tag;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -96,17 +97,44 @@ public class TagRepository extends Repositorio {
      * @param tag
      * @return
      */
-    public Long insert( String tag ){
+    public int insert( String tag ){
 
+//        String log = "TagRepository.insert() Estamos insertando un nuevo tag" +
+//                "\ntag: " + tag;
+
+        // Crear un objeto tag a partir de la etiqueta recibida
         TagEntity newTag = new TagEntity( tag );
-        db.tagDao().insert( newTag );
 
+        // Insertamos el tagEntity si no existe
+        if( !exists( tag ) ){
+//            log += "\nEl tag no existe y se ha insertado en la BD";
+            db.tagDao().insert( newTag );  // Insertamos el tag
+        }
+
+        // Recuperar el tag recién guardado
         if( exists( tag ) ){
+//            log += "\nHemos recuperado el tag de la BD";
             newTag = db.tagDao().findByName( tag );
         }
 
+//        log += "\nEl id de " + tag + " es " + newTag.getId();
+//        Log.d("LDLC", log);
+
         // Si la etiqueta no existiera, el id = 0
         return newTag.getId();
+    }
+
+    /**
+     * Devuelve el id de una etiqueta por su nombre
+     * @param name el tag buscado
+     * @return
+     */
+    public int getIdByName( String name ){
+
+        int idName = db.tagDao().getIdByName( name );
+//        Log.d("LDLC", "TagRepository.getIdByName() \n" +
+//            "Pedido el id de " + name + ": " + idName );
+        return idName;
     }
 
 }

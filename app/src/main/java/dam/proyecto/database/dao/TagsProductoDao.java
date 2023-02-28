@@ -30,6 +30,9 @@ public interface TagsProductoDao {
     @Query( "SELECT * FROM TagsProducto WHERE id = :id")
     TagsProductoEntity findById( String id );
 
+    @Query( "SELECT * FROM tagsproducto WHERE producto = :idProducto AND tag = :idTag")
+    TagsProductoEntity getAsociacion( String idProducto, int idTag);
+
     // UPDATE ------------------------------------
     @Update
     void update( TagsProductoEntity object );

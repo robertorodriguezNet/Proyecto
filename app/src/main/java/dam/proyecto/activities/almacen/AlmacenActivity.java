@@ -105,7 +105,8 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
     public void editarProducto(ProductoEntity producto){
 
 
-        Log.d("LDLC", "AlmacenActivity editando un producto" );
+//        Log.d("LDLC", "AlmacenActivity.editarProducto " +
+//                producto.getDenominacion() );
 
         Fragment fragment = new DetalleProductoFragment();
 

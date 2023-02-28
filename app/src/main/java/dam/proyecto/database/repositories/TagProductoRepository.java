@@ -73,4 +73,35 @@ public class TagProductoRepository extends Repositorio {
         return super.toString();
     }
 
+    /**
+     * Devuelve true si ya hay un producto asociado a la etiqueta
+     * @param producto
+     * @param tag
+     * @return
+     */
+    public boolean existsAsociacion( String producto, int tag){
+        TagsProductoEntity asociacion = null;
+        asociacion = db.tagsProductoDao().getAsociacion( producto, tag );
+        return ( asociacion != null );
+    }
+
+    /**
+     * Asocia un producto con una etiqueta
+     * @param producto
+     * @param tag
+     */
+    public void insert( String producto, int tag){
+
+        if( !existsAsociacion( producto, tag ) ) {
+
+            Log.d("LDLC", "TagProductoRepository.insert() \n" +
+                    "No existe la asocición " + producto + " - " + tag);
+            db.tagsProductoDao().insert(new TagsProductoEntity(producto, tag));
+
+        } else {
+            Log.d("LDLC", "TagProductoRepository.insert() \n" +
+                    "Sí existe la asocición " + producto + " - " + tag);
+        }
+    }
+
 }

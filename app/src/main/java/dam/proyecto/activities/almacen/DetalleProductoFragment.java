@@ -115,9 +115,9 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         // Inicializar los repositorios
         medidaRepository = new MedidaRepository(context);
         marcaRepository = new MarcaRepository(context);
-        productoRepository = new ProductoRepository( context );
-        tagRepository = new TagRepository( context );
-        tagProductoRepository = new TagProductoRepository( context );
+        productoRepository = new ProductoRepository(context);
+        tagRepository = new TagRepository(context);
+        tagProductoRepository = new TagProductoRepository(context);
 
         // Obtener la colección de medidas, marcas y etiquetas
         // Las etiquetas del producto solo se obtienen si se está editando
@@ -131,7 +131,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
         // Editar un producto si se ha recibido como argumento
         Bundle argumets = this.getArguments();
-        if( argumets != null ) {
+        if (argumets != null) {
             productoEditando = (ProductoEntity) getArguments()
                     .getSerializable("producto");
             if (productoEditando != null) {
@@ -154,10 +154,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         tv_unidades = (TextView) view.findViewById(R.id.aep_inp_unidades);
         tv_cantidad = (TextView) view.findViewById(R.id.aep_inp_cantidad);
         spn_medida = (Spinner) view.findViewById(R.id.aep_spn_medida);
-        text_tags = (TextView) view.findViewById( R.id.fdp_text_etiquetas );
+        text_tags = (TextView) view.findViewById(R.id.fdp_text_etiquetas);
 
-        btn_addTag = (Button) view.findViewById( R.id.fdp_btn_tagOK );
-        btn_addTag.setOnClickListener( v -> {
+        btn_addTag = (Button) view.findViewById(R.id.fdp_btn_tagOK);
+        btn_addTag.setOnClickListener(v -> {
             addTag();
         });
 
@@ -186,7 +186,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                 android.R.layout.simple_list_item_1,
                 etiquetaList
         );
-        tv_etiqueta.setAdapter( adapterEtiquetas );
+        tv_etiqueta.setAdapter(adapterEtiquetas);
 
         // Rellenamos el campo de etiquetas
 
@@ -197,6 +197,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         tv_unidades.addTextChangedListener(this);
         tv_cantidad.addTextChangedListener(this);
         tv_etiqueta.addTextChangedListener(this);
+        text_tags.addTextChangedListener(this);
 
 
         // Botonera
@@ -205,16 +206,16 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         btn_eliminar = view.findViewById(R.id.aep_btn_eliminar);
         btn_guardar = view.findViewById(R.id.aep_btn_guardar);
 
-        btn_cancelar.setOnClickListener( v -> {
+        btn_cancelar.setOnClickListener(v -> {
             cancelar();
         });
-        btn_limpiar.setOnClickListener( v -> {
+        btn_limpiar.setOnClickListener(v -> {
             limpiar();
         });
-        btn_eliminar.setOnClickListener( v -> {
+        btn_eliminar.setOnClickListener(v -> {
             eliminar();
         });
-        btn_guardar.setOnClickListener( v -> {
+        btn_guardar.setOnClickListener(v -> {
             guardar();
         });
 
@@ -229,11 +230,11 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     /* ****************************************************************************************** */
 
     public void cancelar() {
-        navegador.setVisibility( View.VISIBLE);
+        navegador.setVisibility(View.VISIBLE);
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .replace( R.id.almacenContenedor, new ListaProductosFragment() )
+                .replace(R.id.almacenContenedor, new ListaProductosFragment())
                 .commit();
     }
 
@@ -272,15 +273,12 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      * Acción para guardar un producto.
      */
     public void guardar() {
-        Log.d("LDLC", "DetalleProductoFragment: se va a guardar el producto");
 
         // Si es un producto nuevo, nos quedamos en el formulario
+        guardarProducto();
         if (productoEditando == null) {
-            guardarProducto();
             limpiar();
-        }else{
-            // Si el producto se está editando, al guardar se abandona el formulario
-            actualizarProducto();
+        } else {
             cancelar();
         }
 
@@ -313,21 +311,28 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 //        Log.d("LDlC", "DetalleProductoFragment.afterTextChanged id que cambia: " +
 //                editable.toString() );
 
-        // Comprobar el campo de tag
-        if( tv_etiqueta.getText().toString().length() >= 3 ){
-            btn_addTag.setEnabled( true );
+        // Comprobar el campo de tag, si tiene al menos 3 caracteres, se habilita
+        if (tv_etiqueta.getText().toString().length() >= 3) {
+            btn_addTag.setEnabled(true);
         }
 
         // Si hay datos introducidos
         if (hayDatosIntroducidos()) {
 
+//            Log.d("LDLC", "DetalleProductoFragment.afterTextChanged: " +
+//                    "Sí hay datos introducidos");
+
             habilitarBtnLimpiar(true);                               // Habilitar el botón limipar
 
             // El código de barras y la denominación son válidas
-            int errorCB = validarCodigoDeBarras(tv_codigoDeBarras.getText().toString(), context );
-            int errorD = validarDenominacion(tv_denominacion.getText().toString() );
+            int errorCB = validarCodigoDeBarras(
+                    tv_codigoDeBarras.getText().toString(),
+                    productoEditando != null,
+                    context);
+            int errorD = validarDenominacion(tv_denominacion.getText().toString());
 
-            Log.d("TEST", "errorCB: " + errorCB + ", errorD: " + errorD);
+//            Log.d("LDLC", "DetalleProductoFragment.afterTextChanged\n" +
+//                    "errorCB: " + errorCB + ", errorD: " + errorD);
 
             if ((errorCB < 0) && (errorD < 0)) {
 
@@ -338,6 +343,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             }
 
         } else {
+
+//            Log.d("LDLC", "DetalleProductoFragment.afterTextChanged: " +
+//                    "No hay datos introducidos");
+
             // No hay datos escritos
             habilitarBtnLimpiar(false);
         }
@@ -449,34 +458,32 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             String medida = medidaList.get(medidaInt).getId();
 
 
-            ProductoController.insertProducto(
-                    id,
-                    tv_denominacion.getText().toString(),
-                    marcaInt,
-                    unidades,
-                    medida,
-                    cantidad,
-                    context
-            );
+            // Si estamos editando, se actualiza el producto, si no
+            // se inserta uno nuevo
+            if (productoEditando != null) {
+//                Log.d("LDLC", "DetalleProductoFragment.guardarProducto: actualizado");
 
-            Log.d("LDLC", "Guardado: " +
-                    id + ", " +
-                    tv_denominacion.getText().toString() + ", " +
-                    marcaInt + ", " +
-                    unidades + ", " +
-                    medida + ", " +
-                    cantidad);
+            } else {
+//                Log.d("LDLC", "DetalleProductoFragment.guardarProducto: guardado");
+                ProductoController.insertProducto(
+                        id,
+                        tv_denominacion.getText().toString(),
+                        marcaInt,
+                        unidades,
+                        medida,
+                        cantidad,
+                        context
+                );
+            }
+
+            // Después de guardar el producto, vamos a sociarle las etiquetas
+            asociarTagsAlProducto();
+
 
         } catch (Exception e) {
-            Log.e("LDLC", "Error: " + e.getMessage());
+            Log.e("LDLC", "DetalleProductoFragment.guardarProducto" +
+                    "\nError: " + e.getMessage());
         }
-
-    }
-
-    /**
-     * Actualizar el producto que se está editando
-     */
-    private void actualizarProducto() {
 
     }
 
@@ -492,12 +499,12 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // Obtener las etiquetas que le corresponden
             // La lista se inicializa aquí porque tan solo se carga si se
             // está editando un producto
-            tagProductoList = tagProductoRepository.getNombres( producto.getId() );
+            tagProductoList = tagProductoRepository.getNombres(producto.getId());
             String tagString = "";
             for (String tag : tagProductoList) {
                 tagString += tag + ", ";
             }
-            text_tags.setText( tagString );
+            text_tags.setText(tagString);
 
             tv_codigoDeBarras.setText(producto.getId());
             tv_denominacion.setText(producto.getDenominacion());
@@ -509,7 +516,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             tv_cantidad.setText(String.valueOf(producto.getCantidad()));
 
             // El spinner debe recibir un entero indicando la posición en la colección
-            spn_medida.setSelection( getPosicionMedida() );
+            spn_medida.setSelection(getPosicionMedida());
 
             habilitarBtnEliminar(true);
             habilitarBtnGuardar(true);
@@ -524,15 +531,16 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     /**
      * Devuelve la posción que ocupa la medida en la colección.
+     *
      * @return
      */
-    private int getPosicionMedida(){
+    private int getPosicionMedida() {
         int index = 0;
         String m = productoEditando.getMedida();
 
         // medidaList contiene la colección de medidas que se ha cargado en el spinner
-        while( index < medidaList.size() ){
-            if( medidaList.get( index ).getId().equals( m ) ){
+        while (index < medidaList.size()) {
+            if (medidaList.get(index).getId().equals(m)) {
                 return index;
             }
             index++;
@@ -544,28 +552,51 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     /**
      * Método que guarda una etiqueta en la base de datos
      */
-    private void addTag(){
+    private void addTag() {
 
         String texto = text_tags.getText().toString();
-        String tag = tv_etiqueta.getText().toString();
+        String tag = tv_etiqueta.getText().toString().trim();
 
-        btn_addTag.setEnabled( false );
+        btn_addTag.setEnabled(false);
         tv_etiqueta.setText("");
-        tv_etiqueta.setHint( "nuevo tag");
+        tv_etiqueta.setHint("nuevo tag");
 
         texto += tag + ",";
 
-        text_tags.setText( texto );
+        text_tags.setText(texto);
 
         // Guardar el tag, recibimos un id
-        Long idTag = tagRepository.insert( tag );
+        int idTag = tagRepository.insert(tag.trim());
 
-        // Asociar el tag al producto
-
+        // Insertar el tag en la lista
+        etiquetaList.add(tag.trim());
 
         Toast.makeText(context,
                 "Guardado: " + tag + "(" + idTag + ")",
                 Toast.LENGTH_SHORT).show();
 
     }
+
+    /**
+     * Asocia las etiquetas al producto.
+     * Las etiquetas están registradas en text_tags
+     */
+    private void asociarTagsAlProducto() {
+
+        // Obtener un array con las etiquetas
+        String[] tags = text_tags.getText().toString().split(",");
+
+        // Recorrer las etiquetas y asociarlas al producto
+        for (String tag : tags) {
+            int idTag = tagRepository.getIdByName(tag.trim());
+            Log.d("LDLC", "DetalleProductoFragment.asociarTagsAlProducto\n" +
+                    "tag: " + tag + " id: " + tags.length);
+            tagProductoRepository.insert(
+                    productoEditando.getId(),
+                    idTag
+            );
+        }
+
+    }
+
 }

@@ -5,6 +5,7 @@ import static dam.proyecto.Config.CODIGO_DE_BARRAS_LENGTH;
 import static dam.proyecto.Config.PRODUCTO_DENOMINACION_MIN_LENGTH;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -69,12 +70,16 @@ public class ProductoController {
     /**
      * Evalúa el código de barras recibido como argumento.
      * El código de barras puede estar en blanco.
+     * El producto puede estar editándose y querer cambiar el código de barras.
      * @param cb el código de barras
      * @return int valor según error, 0 si no hay error
      */
-    public static int validarCodigoDeBarras( String cb, Context context ){
+    public static int validarCodigoDeBarras( String cb, boolean editando, Context context ){
 
         // Si se ha escrito el código de barras, hay que validarlo
+
+//        Log.d("LDLC", "ProductoController.validarCodigoDeBarras: " + cb );
+
 
         ProductoRepository productoRepository = new ProductoRepository( context );
 
@@ -88,8 +93,9 @@ public class ProductoController {
                 return 1;
             }
 
-            // Si el código de barras tiene la longitud correcta
-            if( productoRepository.existsProducto( cb ) ){
+            // Si el código de barras tiene la longitud correcta, se comprueba
+            // que no exista, en caso de que editando = false
+            if( !editando && productoRepository.existsProducto( cb ) ){
                 return 0;
             }
 
@@ -105,6 +111,8 @@ public class ProductoController {
      * @return
      */
     public static int validarDenominacion( String denominacion ){
+
+//        Log.d("LDLC", "ProductoController.validarDenominacion: " + denominacion );
 
         // Condiciones
         // El texto no puede estar en blanco
