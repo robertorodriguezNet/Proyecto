@@ -60,7 +60,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     private Spinner spn_medida;
 
     // Botones
-    private Button btn_cancelar,
+    private Button btn_addTag,
+            btn_cancelar,
             btn_limpiar,
             btn_eliminar,
             btn_guardar;
@@ -155,6 +156,11 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         spn_medida = (Spinner) view.findViewById(R.id.aep_spn_medida);
         text_tags = (TextView) view.findViewById( R.id.fdp_text_etiquetas );
 
+        btn_addTag = (Button) view.findViewById( R.id.fdp_btn_tagOK );
+        btn_addTag.setOnClickListener( v -> {
+            addTag();
+        });
+
         // Cargar el spinner
         ArrayAdapter<MedidaEntity> adapterMedidas = new ArrayAdapter<>(
                 context,
@@ -190,6 +196,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         tv_marca.addTextChangedListener(this);
         tv_unidades.addTextChangedListener(this);
         tv_cantidad.addTextChangedListener(this);
+        tv_etiqueta.addTextChangedListener(this);
+
 
         // Botonera
         btn_cancelar = view.findViewById(R.id.aep_btn_cancelar);
@@ -301,6 +309,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     @Override
     public void afterTextChanged(Editable editable) {
+
+//        Log.d("LDlC", "DetalleProductoFragment.afterTextChanged id que cambia: " +
+//                editable.toString() );
+
+        // Comprobar el campo de tag
+        if( tv_etiqueta.getText().toString().length() >= 3 ){
+            btn_addTag.setEnabled( true );
+        }
 
         // Si hay datos introducidos
         if (hayDatosIntroducidos()) {
@@ -523,5 +539,33 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         }
 
         return index;
+    }
+
+    /**
+     * Método que guarda una etiqueta en la base de datos
+     */
+    private void addTag(){
+
+        String texto = text_tags.getText().toString();
+        String tag = tv_etiqueta.getText().toString();
+
+        btn_addTag.setEnabled( false );
+        tv_etiqueta.setText("");
+        tv_etiqueta.setHint( "nuevo tag");
+
+        texto += tag + ",";
+
+        text_tags.setText( texto );
+
+        // Guardar el tag, recibimos un id
+        Long idTag = tagRepository.insert( tag );
+
+        // Asociar el tag al producto
+
+
+        Toast.makeText(context,
+                "Guardado: " + tag + "(" + idTag + ")",
+                Toast.LENGTH_SHORT).show();
+
     }
 }

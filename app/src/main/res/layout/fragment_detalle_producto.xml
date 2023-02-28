@@ -171,21 +171,21 @@
                 android:inputType="text"
                 android:text="@string/str_cadenaVacia"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/dnp_btn_tagOK"
-                app:layout_constraintBottom_toBottomOf="@id/dnp_btn_tagOK"
-                app:layout_constraintEnd_toStartOf="@id/dnp_btn_tagOK"
+                app:layout_constraintTop_toTopOf="@id/fdp_btn_tagOK"
+                app:layout_constraintBottom_toBottomOf="@id/fdp_btn_tagOK"
+                app:layout_constraintEnd_toStartOf="@id/fdp_btn_tagOK"
                 tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
             <Button
-                android:id="@+id/dnp_btn_tagOK"
+                android:id="@+id/fdp_btn_tagOK"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toEndOf="@id/aep_inp_etiqueta"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:enabled="false"
                 android:text="OK"
-                tools:layout_editor_absoluteY="24dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/aep_inp_etiqueta"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

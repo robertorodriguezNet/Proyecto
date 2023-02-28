@@ -27,8 +27,11 @@ public interface TagDao {
     @Query( "SELECT * FROM Tag")
     List<TagEntity> getAll();
 
-    @Query( "SELECT * FROM Tag WHERE id = :id")
-    TagEntity findById( int id );
+    @Query( "SELECT * FROM Tag WHERE id = :args")
+    TagEntity findById( int args );
+
+    @Query( "SELECT * FROM Tag WHERE name = :args")
+    TagEntity findByName( String args );
 
     @Query( "SELECT name FROM tag WHERE id = :args ")
     String getNameById( int args );

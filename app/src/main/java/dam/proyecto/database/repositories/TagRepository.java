@@ -64,6 +64,22 @@ public class TagRepository extends Repositorio {
     }
 
     /**
+     * Devuelve true si el tag existe
+     * @param tag
+     * @return
+     */
+    public boolean exists( String tag ){
+        TagEntity tagEntity = null;
+        tagEntity = db.tagDao().findByName( tag );
+        return tagEntity != null;
+    }
+    /**
+     * Devuelve el objeto si el tag existe
+     * @param tag
+     * @return
+     */
+
+    /**
      * Inserta una colección de objetos
      */
     public void insertAll( List<TagEntity> data ){
@@ -73,6 +89,24 @@ public class TagRepository extends Repositorio {
     @Override
     public String toString() {
         return super.toString();
+    }
+
+    /**
+     * Inserta un nuevo tag y devuelve el id
+     * @param tag
+     * @return
+     */
+    public Long insert( String tag ){
+
+        TagEntity newTag = new TagEntity( tag );
+        db.tagDao().insert( newTag );
+
+        if( exists( tag ) ){
+            newTag = db.tagDao().findByName( tag );
+        }
+
+        // Si la etiqueta no existiera, el id = 0
+        return newTag.getId();
     }
 
 }
