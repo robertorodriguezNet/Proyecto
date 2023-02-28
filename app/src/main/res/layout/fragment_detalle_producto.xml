@@ -186,8 +186,14 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:text="OK"
                 tools:layout_editor_absoluteY="24dp" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
+        <TextView
+            android:id="@+id/fdp_text_etiquetas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/fdp_str_hintEtiquetas" />
 
     </LinearLayout>
 

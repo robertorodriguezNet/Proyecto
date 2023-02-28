@@ -24,6 +24,9 @@ public interface TagsProductoDao {
     @Query( "SELECT * FROM TagsProducto")
     List<TagsProductoEntity> getAll();
 
+    @Query( "SELECT tag FROM TagsProducto WHERE producto = :args")
+    List<Integer> getTagByProducto( String args);
+
     @Query( "SELECT * FROM TagsProducto WHERE id = :id")
     TagsProductoEntity findById( String id );
 

@@ -48,6 +48,22 @@ public class TagRepository extends Repositorio {
     }
 
     /**
+     * Devuelve un listado con las etiquetas pedidas
+     * @param ids listado de etiquetas pedidas
+     * @return
+     */
+    public ArrayList<String> getNombres( ArrayList<Integer> ids ){
+
+        ArrayList<String> etiquetas = new ArrayList<>();
+
+        for(Integer id : ids) {
+            etiquetas.add( db.tagDao().getNameById( id ));
+        }
+
+        return etiquetas;
+    }
+
+    /**
      * Inserta una colección de objetos
      */
     public void insertAll( List<TagEntity> data ){

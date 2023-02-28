@@ -30,6 +30,9 @@ public interface TagDao {
     @Query( "SELECT * FROM Tag WHERE id = :id")
     TagEntity findById( int id );
 
+    @Query( "SELECT name FROM tag WHERE id = :args ")
+    String getNameById( int args );
+
     // UPDATE ------------------------------------
     @Update
     void update( TagEntity object );

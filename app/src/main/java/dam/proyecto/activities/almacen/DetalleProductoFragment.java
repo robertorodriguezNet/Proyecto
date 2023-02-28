@@ -34,6 +34,7 @@ import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
+import dam.proyecto.database.repositories.TagProductoRepository;
 import dam.proyecto.database.repositories.TagRepository;
 
 
@@ -52,7 +53,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     private TextView tv_codigoDeBarras,
             tv_denominacion,
             tv_unidades,
-            tv_cantidad;
+            tv_cantidad,
+            text_tags;
     private AutoCompleteTextView tv_marca,
             tv_etiqueta;
     private Spinner spn_medida;
@@ -68,13 +70,15 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     private ArrayList<MedidaEntity> medidaList;                              // Colección de medidas
     private ArrayList<String> marcaList;                                      // Colección de marcas
-    private ArrayList<String> etiquetaList;
+    private ArrayList<String> etiquetaList;                                  // Listado de etiquetas
+    private ArrayList<String> tagProductoList;      // Etiquetas que se corresponden con el producto
 
     // Repositorios
     MedidaRepository medidaRepository;
     MarcaRepository marcaRepository;
     ProductoRepository productoRepository;
     TagRepository tagRepository;
+    TagProductoRepository tagProductoRepository;
 
     private ProductoEntity productoEditando;                         // Producto que está editándose
 
@@ -112,8 +116,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         marcaRepository = new MarcaRepository(context);
         productoRepository = new ProductoRepository( context );
         tagRepository = new TagRepository( context );
+        tagProductoRepository = new TagProductoRepository( context );
 
-        // Obtener la colección de medidas y de marcas
+        // Obtener la colección de medidas, marcas y etiquetas
+        // Las etiquetas del producto solo se obtienen si se está editando
         medidaList = medidaRepository.getAll();
         marcaList = marcaRepository.getNombres();
         etiquetaList = tagRepository.getNombres();
@@ -147,6 +153,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         tv_unidades = (TextView) view.findViewById(R.id.aep_inp_unidades);
         tv_cantidad = (TextView) view.findViewById(R.id.aep_inp_cantidad);
         spn_medida = (Spinner) view.findViewById(R.id.aep_spn_medida);
+        text_tags = (TextView) view.findViewById( R.id.fdp_text_etiquetas );
 
         // Cargar el spinner
         ArrayAdapter<MedidaEntity> adapterMedidas = new ArrayAdapter<>(
@@ -159,7 +166,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         spn_medida.setAdapter(adapterMedidas);
         spn_medida.setSelection(0);
 
-        // Establecemos el adaptador para el AutoCompleteTextView
+        // Establecemos el adaptador para las marcas
         ArrayAdapter<String> adapterMarcas = new ArrayAdapter<>(
                 context,
                 android.R.layout.simple_list_item_1,
@@ -167,13 +174,15 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         );
         tv_marca.setAdapter(adapterMarcas);
 
-        // Establecemos el adaptador para el AutoCompleteTextView
+        // Establecemos el adaptador para las etiquetas
         ArrayAdapter<String> adapterEtiquetas = new ArrayAdapter<>(
                 context,
                 android.R.layout.simple_list_item_1,
                 etiquetaList
         );
         tv_etiqueta.setAdapter( adapterEtiquetas );
+
+        // Rellenamos el campo de etiquetas
 
         // Establecemos los oyentes para los input
         tv_codigoDeBarras.addTextChangedListener(this);
@@ -464,6 +473,16 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
         try {
 
+            // Obtener las etiquetas que le corresponden
+            // La lista se inicializa aquí porque tan solo se carga si se
+            // está editando un producto
+            tagProductoList = tagProductoRepository.getNombres( producto.getId() );
+            String tagString = "";
+            for (String tag : tagProductoList) {
+                tagString += tag + ", ";
+            }
+            text_tags.setText( tagString );
+
             tv_codigoDeBarras.setText(producto.getId());
             tv_denominacion.setText(producto.getDenominacion());
 
@@ -480,7 +499,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             habilitarBtnGuardar(true);
 
         } catch (Exception e) {
-            Log.d("LDLC", "Error: " + e.getMessage());
+            Log.e("LDLC", "DetalleProductoFragment.cargarProducto id : " +
+                    producto.getId() + "\n" + e.getMessage());
 
         }
 
