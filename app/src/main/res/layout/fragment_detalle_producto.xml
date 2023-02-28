@@ -59,58 +59,24 @@
             tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 
-        <LinearLayout
+        <AutoCompleteTextView
+            android:id="@+id/aep_inp_marca"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
-                <AutoCompleteTextView
-                    android:id="@+id/aep_inp_marca"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:layout_marginRight="12dp"
-                    android:background="@color/fondoInputVerde"
-                    android:completionThreshold="1"
-                    android:ems="10"
-                    android:hint="@string/dnp_str_lbl_marca"
-                    android:inputType="text"
-                    android:text="@string/str_cadenaVacia"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
-                <AutoCompleteTextView
-                    android:id="@+id/aep_inp_etiqueta"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="12dp"
-                    android:background="@color/fondoInputVerde"
-                    android:completionThreshold="1"
-                    android:ems="10"
-                    android:hint="@string/dnp_str_lbl_etiqueta"
-                    android:inputType="text"
-                    android:text="@string/str_cadenaVacia"
-                    tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-            </LinearLayout>
-
-        </LinearLayout>
-
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:layout_marginRight="12dp"
+            android:background="@color/fondoInputVerde"
+            android:completionThreshold="1"
+            android:ems="10"
+            android:hint="@string/dnp_str_lbl_marca"
+            android:inputType="text"
+            android:text="@string/str_cadenaVacia"
+            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp">
 
             <TextView
                 android:id="@+id/aep_lbl_unidades"
@@ -188,6 +154,38 @@
                 tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
 
 
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <AutoCompleteTextView
+                android:id="@+id/aep_inp_etiqueta"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/fondoInputVerde"
+                android:completionThreshold="1"
+                android:ems="10"
+                android:hint="@string/dnp_str_lbl_etiqueta"
+                android:inputType="text"
+                android:text="@string/str_cadenaVacia"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@id/dnp_btn_tagOK"
+                app:layout_constraintBottom_toBottomOf="@id/dnp_btn_tagOK"
+                app:layout_constraintEnd_toStartOf="@id/dnp_btn_tagOK"
+                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+            <Button
+                android:id="@+id/dnp_btn_tagOK"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toEndOf="@id/aep_inp_etiqueta"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:text="OK"
+                tools:layout_editor_absoluteY="24dp" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 
