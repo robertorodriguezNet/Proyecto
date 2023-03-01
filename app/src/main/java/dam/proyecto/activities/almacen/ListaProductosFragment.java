@@ -8,17 +8,25 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.adapters.AdaptadorProductos;
 import dam.proyecto.activities.almacen.listeners.AlmacenListener;
+import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.ProductoRepository;
 
@@ -32,8 +40,14 @@ public class ListaProductosFragment extends Fragment {
     // Colección de productos que se muestran en el RecyclerView
     private ArrayList<ProductoEntity> productoData;
 
+    // Campos para la búsqueda
+    private TextView inpTexto;
+    private ImageButton btnSearch;
+
     // RecyclerView que muestra el listado de los productos
     private RecyclerView recyclerView;
+    // Adaptador
+    private AdaptadorProductos adaptadorProductos;
 
     // Botón para agregar un nuevo producto
     private FloatingActionButton fabAgregarProducto;
@@ -62,6 +76,13 @@ public class ListaProductosFragment extends Fragment {
         // Obtener la vista
         View view = inflater.inflate(R.layout.fragment_lista_productos, container, false);
 
+        // Campos de búsqueda
+        inpTexto = view.findViewById( R.id.flp_inp_search );
+        btnSearch = view.findViewById( R.id.flp_btn_search );
+        btnSearch.setOnClickListener(v -> {
+            search();
+        });
+
         // Botón para agregar un nuevo producto
         fabAgregarProducto = view.findViewById( R.id.fa_fab_addProductoAlmacen );
         fabAgregarProducto.setOnClickListener( v -> {
@@ -69,7 +90,8 @@ public class ListaProductosFragment extends Fragment {
         });
 
         // Obtener los datos
-        productoData = new ProductoRepository(getContext()).getAll();
+//        productoData = new ProductoRepository(getContext()).getAll();
+        productoData = ProductoController.getAll( getContext() );
 
         // Obtenemos el RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.listRecyclerView);
@@ -81,13 +103,46 @@ public class ListaProductosFragment extends Fragment {
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
             // Adaptador
-            AdaptadorProductos adaptadorProductos =
+            adaptadorProductos =
                     new AdaptadorProductos(productoData, getContext(), listener);
             recyclerView.setAdapter(adaptadorProductos);
 
         }
 
         return view;
+    }
+
+    /**
+     * Busca productos a traves de un texto dado
+     */
+    private void search() {
+
+        // Capturamos el texto que hay que buscar
+        String text = inpTexto
+                        .getText()
+                        .toString()
+                        .trim()
+                        .toLowerCase();
+
+        if( text.length() >= 3) {
+            // Le pedimos al controlador que nos devuelva la lista de productos
+
+            // Boramos la colección de productos
+            productoData.clear();
+
+            ArrayList<ProductoEntity> productosBuscados =
+                                        ProductoController.getAll(text, getContext());
+
+            for ( ProductoEntity producto: productosBuscados ) {
+                productoData.add( producto );
+            }
+
+            // Notificamos el cambio al adaptador
+            adaptadorProductos.notifyDataSetChanged();
+
+        } else {
+            Toast.makeText(getContext(), "Mínimo 3 caracteres", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
@@ -107,4 +162,6 @@ public class ListaProductosFragment extends Fragment {
         super.onDetach();
         listener = null;
     }
+
+
 }

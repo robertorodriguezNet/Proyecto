@@ -8,9 +8,11 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.entity.TagEntity;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
@@ -23,7 +25,6 @@ import dam.proyecto.utilities.Preferencias;
  * @version 2023.02.11
  */
 public class ProductoController {
-
 
     /**
      * Crea un objeto ProductoEntity
@@ -180,6 +181,42 @@ public class ProductoController {
         return new CompraRepository( context ).getUltimoPrecio( idProducto, idCompraActual );
 
 
+    }
+
+    /**
+     * Devuelve la colección completa de productos
+     * @return
+     */
+    public static ArrayList<ProductoEntity> getAll( Context context){
+        return new ProductoRepository( context ).getAll();
+    }
+
+    /**
+     * Devuelve la colección completa de productos que contienen el texto
+     * @return
+     */
+    public static ArrayList<ProductoEntity> getAll( String texto, Context context){
+
+        TagControler tagControler = new TagControler( context );
+
+        // Pedimos al controlador de etiquetas un listado con los productos que
+        // contienen el texto buscado
+        ArrayList<String> idProductos = tagControler.getProductosByTag( texto );
+
+        // Pedimos el listado completo de productos
+        ArrayList<ProductoEntity> listado = ProductoController.getAll( context );
+
+        // Recorremos la colección y eliminamos los productos que no están
+        // en la colección de los tags
+        Iterator it = listado.iterator();
+        while ( it.hasNext() ){
+            ProductoEntity producto = (ProductoEntity) it.next();
+            if( !idProductos.contains( producto.getId() ) ){
+                it.remove();
+            }
+        }
+
+        return listado;
     }
 
 }

@@ -5,33 +5,75 @@ import android.nfc.Tag;
 import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
+import dam.proyecto.database.dao.TagDao;
 import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.TagEntity;
 
 /**
- * @since 2023/01/23
  * @author Roberto Rodríguez
- * @version 2023.02.18
+ * @since 2023/01/23
+ * @version 2023.03.01
  */
 public class TagRepository extends Repositorio {
 
+    private TagDao dao;
+
     public TagRepository(Context context) {
         super(context);
+        this.dao = db.tagDao();
     }
 
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
-        db.tagDao().clear();
+        dao.clear();
     }
 
     public ArrayList<TagEntity> getAll(){
         return (ArrayList<TagEntity>) db.tagDao().getAll();
     }
+
+    /**
+     * Devuelve una colección de tags contienen el texto
+     * @param texto
+     * @return
+     */
+    public ArrayList<TagEntity> getAll( String texto ){
+        return (ArrayList<TagEntity>) dao.getAll( texto );
+    }
+    /**
+     * Devuelve una colección de id de las etiquetas que contienen el texto
+     * @param texto
+     * @return
+     */
+    public ArrayList<Integer> getAllId( String texto ){
+        return (ArrayList<Integer>) dao.getAllId( texto );
+    }
+
+    /**
+     * Devuelve una colección con los id de los productos que contienen el texto
+     * en la etiqueta
+     * @param texto
+     * @return
+     */
+    public ArrayList<String> getProductosByTag( String texto ){
+        ArrayList<String> list = (ArrayList<String>) dao.getProductosByTag( texto );
+        ArrayList<String> idList = new ArrayList<>();
+
+        Iterator it = list.iterator();
+        while ( it.hasNext() ){
+            String producto = (String) it.next();
+            idList.add( producto );
+        }
+
+        return idList;
+    }
+
 
     /**
      * Devuelve un listado con tan sólo los nombres
@@ -58,7 +100,7 @@ public class TagRepository extends Repositorio {
         ArrayList<String> etiquetas = new ArrayList<>();
 
         for(Integer id : ids) {
-            etiquetas.add( db.tagDao().getNameById( id ));
+            etiquetas.add( dao.getNameById( id ));
         }
 
         return etiquetas;
@@ -71,7 +113,7 @@ public class TagRepository extends Repositorio {
      */
     public boolean exists( String tag ){
         TagEntity tagEntity = null;
-        tagEntity = db.tagDao().findByName( tag );
+        tagEntity = dao.findByName( tag );
         return tagEntity != null;
     }
     /**
@@ -108,13 +150,13 @@ public class TagRepository extends Repositorio {
         // Insertamos el tagEntity si no existe
         if( !exists( tag ) ){
 //            log += "\nEl tag no existe y se ha insertado en la BD";
-            db.tagDao().insert( newTag );  // Insertamos el tag
+            dao.insert( newTag );  // Insertamos el tag
         }
 
         // Recuperar el tag recién guardado
         if( exists( tag ) ){
 //            log += "\nHemos recuperado el tag de la BD";
-            newTag = db.tagDao().findByName( tag );
+            newTag = dao.findByName( tag );
         }
 
 //        log += "\nEl id de " + tag + " es " + newTag.getId();
@@ -131,7 +173,7 @@ public class TagRepository extends Repositorio {
      */
     public int getIdByName( String name ){
 
-        int idName = db.tagDao().getIdByName( name );
+        int idName = dao.getIdByName( name );
 //        Log.d("LDLC", "TagRepository.getIdByName() \n" +
 //            "Pedido el id de " + name + ": " + idName );
         return idName;

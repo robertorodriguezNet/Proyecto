@@ -15,33 +15,33 @@ public interface ProductoDao {
 
     // CREATE -------------------------------------
     @Insert
-    void insert( ProductoEntity object);
+    void insert(ProductoEntity object);
 
     @Insert
-    void insertAll( List<ProductoEntity> objects );
+    void insertAll(List<ProductoEntity> objects);
 
     // READ ---------------------------------------
-    @Query( "SELECT * FROM Productos ORDER BY denominacion ASC")
+    @Query("SELECT * FROM Productos ORDER BY denominacion ASC")
     List<ProductoEntity> getAll();
 
-    @Query( "SELECT * FROM productos WHERE id = :id")
-    ProductoEntity findById( String id );
+    @Query("SELECT * FROM productos WHERE id = :id")
+    ProductoEntity findById(String id);
 
-    @Query( "SELECT * FROM productos WHERE id LIKE '1%'" )
+    @Query("SELECT * FROM productos WHERE id LIKE '1%'")
     List<ProductoEntity> getAutomaticId();
 
     // UPDATE ------------------------------------
     @Update
-    void update( ProductoEntity object );
+    void update(ProductoEntity object);
 
     // DELETE ------------------------------------
     @Delete
-    void delete( ProductoEntity object );
+    void delete(ProductoEntity object);
 
-    @Query( "DELETE FROM productos WHERE id = :id")
-    void deleteById( String id );
+    @Query("DELETE FROM productos WHERE id = :id")
+    void deleteById(String id);
 
-    @Query( "DELETE FROM productos" )
+    @Query("DELETE FROM productos")
     void clear();
 
 }

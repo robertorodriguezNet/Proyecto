@@ -18,36 +18,45 @@ public interface TagDao {
 
     // CREATE -------------------------------------
     @Insert
-    void insert( TagEntity object);
+    void insert(TagEntity object);
 
     @Insert
     void insertAll(List<TagEntity> data);
 
     // READ ---------------------------------------
-    @Query( "SELECT * FROM Tag")
+    @Query("SELECT * FROM Tag")
     List<TagEntity> getAll();
 
-    @Query( "SELECT * FROM Tag WHERE id = :args")
-    TagEntity findById( int args );
+    @Query("SELECT * FROM Tag WHERE name LIKE '%' || :args || '%' ")
+    List<TagEntity> getAll( String args);
 
-    @Query( "SELECT * FROM Tag WHERE name = :args")
-    TagEntity findByName( String args );
+    @Query("SELECT id FROM Tag WHERE name LIKE '%' || :args || '%' ")
+    List<Integer> getAllId( String args);
 
-    @Query( "SELECT name FROM tag WHERE id = :args ")
-    String getNameById( int args );
+    @Query( "select producto from TagsProducto where tag in ( select id from tag where name like '%' || :tag || '%');")
+    List<String> getProductosByTag( String tag );
 
-    @Query( "SELECT id FROM tag WHERE name = :args ")
-    int getIdByName( String args );
+    @Query("SELECT * FROM Tag WHERE id = :args")
+    TagEntity findById(int args);
+
+    @Query("SELECT * FROM Tag WHERE name = :args")
+    TagEntity findByName(String args);
+
+    @Query("SELECT name FROM tag WHERE id = :args ")
+    String getNameById(int args);
+
+    @Query("SELECT id FROM tag WHERE name = :args ")
+    int getIdByName(String args);
 
     // UPDATE ------------------------------------
     @Update
-    void update( TagEntity object );
+    void update(TagEntity object);
 
     // DELETE ------------------------------------
     @Delete
-    void delete( TagEntity object );
+    void delete(TagEntity object);
 
-    @Query( "DELETE FROM tag" )
+    @Query("DELETE FROM tag")
     void clear();
 
 }
