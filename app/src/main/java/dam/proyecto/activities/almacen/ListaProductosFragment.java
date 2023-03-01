@@ -35,8 +35,8 @@ import dam.proyecto.database.repositories.TagRepository;
 
 /**
  * @author Roberto Rodríguez Jiménez
- * @version 2023.02.19
  * @since 19/02/2023
+ * @version 2023.03.01
  */
 public class ListaProductosFragment extends Fragment {
 
