@@ -2,9 +2,13 @@ package dam.proyecto.controllers;
 
 import android.content.Context;
 
+import java.util.ArrayList;
+
 import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.CompraRepository;
+import dam.proyecto.database.repositories.NombreCompraRepository;
 
 /**
  * Clase que realiza operaciones sobre la lista de la
@@ -18,6 +22,7 @@ public class CompraController {
 
     private Context context;
     private CompraRepository repository;                              // Repositorio de CompraEntity
+    private NombreCompraRepository repositoryNombreComra;     // Repositorio para NombreCompraEntity
 
     /**
      * Constructor
@@ -25,7 +30,8 @@ public class CompraController {
      */
     public CompraController(Context context) {
         this.context = context;
-        repository = new CompraRepository( context );
+        this.repository = new CompraRepository( context );
+        this.repositoryNombreComra = new NombreCompraRepository( context );
     }
 
     /**
@@ -51,6 +57,24 @@ public class CompraController {
      */
     public CompraEntity getById( String id ){
         return repository.getCompra( id );
+    }
+
+    /**
+     * Devuelve todas las compras que se han hecho de un producto
+     * @param producto buscado
+     * @return
+     */
+    public ArrayList<CompraEntity> getNombreCompraByProducto( String producto ){
+        return repository.getAllByProducto( producto );
+    }
+
+    /**
+     * Devuelve el id del comercio en el que se ha hecho una compra
+     * @param idCompra
+     * @return
+     */
+    public String getNombreComercioByCompra( String idCompra ){
+        return repositoryNombreComra.getNombreComercioByCompra( idCompra );
     }
 
 }

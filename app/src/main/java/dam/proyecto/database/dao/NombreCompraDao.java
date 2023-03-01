@@ -35,7 +35,6 @@ public interface NombreCompraDao {
     @Query( "SELECT id FROM Nombrecompra WHERE comercio = :idComercio ORDER BY id DESC")
     List<String> getAllByComercio( int idComercio );
 
-
     @Query( "SELECT * FROM Nombrecompra WHERE id = :id")
     NombreCompraEntity findById( String id );
 
@@ -44,6 +43,10 @@ public interface NombreCompraDao {
 
     @Query( "SELECT comercio FROM Nombrecompra WHERE id = :idCompra ")
     int getIdComercio( String idCompra );
+
+    @Query( "select c.name from Nombrecompra as n, comercio as c  " +
+            "where n.id = :idCompra and n.comercio = c.id")
+    String getNombreComercio( String idCompra );
 
     // UPDATE ------------------------------------
     @Update

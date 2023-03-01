@@ -5,15 +5,20 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+
 import dam.proyecto.R;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 
 /**
@@ -55,6 +60,8 @@ public class ProductoComparativaFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         getDatos();                                                   // Cargar los datos necesarios
+        getProductoEnComercios();
+
 
         View view = inflater.inflate(R.layout.fragment_producto_comparativa, container, false);
         context = view.getContext();
@@ -77,5 +84,44 @@ public class ProductoComparativaFragment extends Fragment {
         compra = compraController.getById( idCompra );
         producto = ProductoController.getById( compra.getProducto(), context );
 
+    }
+
+    /**
+     * Buscar el mismo producto en diferentes comencios.
+     */
+    private void getProductoEnComercios(){
+        String log = "PoductoComparativaFragment.getProductoEnComercio";
+
+        // Colección de compras del producto
+        // Le pedimos a Compra un listado del las compras del producto
+        ArrayList<CompraEntity> comprasDelProducto =
+                                compraController.getNombreCompraByProducto( producto.getId() );
+
+        // Ya tenemos un listado con las compras
+
+        // Ahora debemos obtener los comercios en los que se han hecho esas compras
+
+        Iterator<CompraEntity> it = comprasDelProducto.iterator();
+        while ( it.hasNext() ){
+            CompraEntity compra = it.next();
+            log += "\n" + compra.getFecha() + " " +
+                    compraController.getNombreComercioByCompra( compra.getFecha() );
+        }
+
+        Log.d("LDLC", log);
+
+
+        /*
+        Consulta
+        Con esta consulta obtenemos los datos de la compra
+
+        select c.producto, m.name
+        from Compra as c, Nombrecompra as n, Comercio as m
+        where producto = '8717163889169' and c.fecha = n.id and m.id = n.comercio
+
+        8717163889169 lupa
+        8717163889169 mercadona
+        8717163889169 lupa
+        */
     }
 }

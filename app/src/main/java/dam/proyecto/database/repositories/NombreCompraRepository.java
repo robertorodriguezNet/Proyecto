@@ -114,6 +114,10 @@ public class NombreCompraRepository extends Repositorio {
         return db.nombreCompraDao().getIdComercio( idCompra );
     }
 
+    public String getNombreComercioByCompra( String idCompra ){
+        return db.nombreCompraDao().getNombreComercio( idCompra );
+    }
+
     @Override
     public String toString() {
         return super.toString();
