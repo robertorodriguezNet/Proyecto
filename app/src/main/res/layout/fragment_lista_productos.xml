@@ -8,14 +8,15 @@
     android:padding="8dp">
 
 
-    <EditText
+    <AutoCompleteTextView
         android:id="@+id/flp_inp_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:ems="10"
-        android:inputType=""
+        android:inputType="text"
         android:text=""
+        android:completionThreshold="1"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

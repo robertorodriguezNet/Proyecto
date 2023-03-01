@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -29,6 +31,7 @@ import dam.proyecto.activities.almacen.listeners.AlmacenListener;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.ProductoRepository;
+import dam.proyecto.database.repositories.TagRepository;
 
 /**
  * @author Roberto Rodríguez Jiménez
@@ -41,8 +44,9 @@ public class ListaProductosFragment extends Fragment {
     private ArrayList<ProductoEntity> productoData;
 
     // Campos para la búsqueda
-    private TextView inpTexto;
+    private AutoCompleteTextView inpTexto;
     private ImageButton btnSearch;
+    private ArrayList<String> etiquetaList;                                  // Listado de etiquetas
 
     // RecyclerView que muestra el listado de los productos
     private RecyclerView recyclerView;
@@ -77,11 +81,20 @@ public class ListaProductosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lista_productos, container, false);
 
         // Campos de búsqueda
-        inpTexto = view.findViewById( R.id.flp_inp_search );
+        inpTexto = (AutoCompleteTextView) view.findViewById( R.id.flp_inp_search );
         btnSearch = view.findViewById( R.id.flp_btn_search );
         btnSearch.setOnClickListener(v -> {
             search();
         });
+        etiquetaList = new TagRepository( getContext() ).getNombres();
+
+        // Establecemos el adaptador para las etiquetas
+        ArrayAdapter<String> adapterEtiquetas = new ArrayAdapter<>(
+                getContext(),
+                android.R.layout.simple_list_item_1,
+                etiquetaList
+        );
+        inpTexto.setAdapter(adapterEtiquetas);
 
         // Botón para agregar un nuevo producto
         fabAgregarProducto = view.findViewById( R.id.fa_fab_addProductoAlmacen );
