@@ -81,7 +81,7 @@ public class ListaProductosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lista_productos, container, false);
 
         // Campos de búsqueda
-        inpTexto = (AutoCompleteTextView) view.findViewById( R.id.flp_inp_search );
+        inpTexto = (AutoCompleteTextView ) view.findViewById( R.id.flp_inp_search );
         btnSearch = view.findViewById( R.id.flp_btn_search );
         btnSearch.setOnClickListener(v -> {
             search();
