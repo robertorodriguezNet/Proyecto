@@ -4,6 +4,7 @@ import android.content.Context;
 
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.repositories.CompraRepository;
 
 /**
  * Clase que realiza operaciones sobre la lista de la
@@ -11,11 +12,12 @@ import dam.proyecto.database.entity.ProductoEntity;
  *
  * @author Roberto Rodríguez Jiménez
  * @since 26/02/2023
- * @version 2023.02.26
+ * @version 2023.03.01
  */
 public class CompraController {
 
     private Context context;
+    private CompraRepository repository;                              // Repositorio de CompraEntity
 
     /**
      * Constructor
@@ -23,6 +25,7 @@ public class CompraController {
      */
     public CompraController(Context context) {
         this.context = context;
+        repository = new CompraRepository( context );
     }
 
     /**
@@ -39,6 +42,15 @@ public class CompraController {
                 0.0f,
                 precio,
                 0.0f);
+    }
+
+    /**
+     * Devuelve una compra a partir del id recibido
+     * @param id
+     * @return
+     */
+    public CompraEntity getById( String id ){
+        return repository.getCompra( id );
     }
 
 }

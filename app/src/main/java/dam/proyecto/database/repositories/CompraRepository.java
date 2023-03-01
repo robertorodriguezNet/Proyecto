@@ -7,53 +7,62 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
+import dam.proyecto.database.dao.CompraDao;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 
 /**
- * @since 2023/01/23
- * @author Roberto Rodríguez
- * @version 2023.02.25
+ * @author Roberto Rodríguez Jiménez
+ * @since 23/01/2023
+ * @version 2023.03.01
  */
 public class CompraRepository extends Repositorio {
 
+    private CompraDao dao;
+
     public CompraRepository(Context context) {
         super(context);
+        this.dao = db.compraDao();
     }
 
     public ArrayList<CompraEntity> getAll(){
-        return (ArrayList<CompraEntity>) db.compraDao().getAll();
+        return (ArrayList<CompraEntity>) dao.getAll();
     }
 
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
-        db.compraDao().clear();
+        dao.clear();
     }
 
     /**
      * Borrar un registro de la compra
      */
     public void delete( CompraEntity compra ){
-        db.compraDao().delete( compra );
+        dao.delete( compra );
     }
 
     /**
      * Inserta una colección de objetos
      */
     public void insertAll( List<CompraEntity> data ){
-        db.compraDao().insertAll( data );
+        dao.insertAll( data );
     }
 
     // Obtener la compra por una compra dada
     public ArrayList<CompraEntity> getProductosByFecha(String fecha ){
-        return (ArrayList<CompraEntity>) db.compraDao().findByFecha( fecha );
+        return (ArrayList<CompraEntity>) dao.findByFecha( fecha );
     }
 
+    /**
+     * Devuelve una compra a partir del id recibido
+     * @param id
+     * @return
+     */
     public CompraEntity getCompra( String id ){
-        return ( CompraEntity ) db.compraDao().findById( id );
+        return ( CompraEntity ) dao.findById( id );
     }
 
     /**
@@ -64,7 +73,7 @@ public class CompraRepository extends Repositorio {
 
         try{
 
-            db.compraDao().insert( compra );
+            dao.insert( compra );
 
             Log.d( "LDLC", "CompraRepository.insert() - Compra guardada: " + compra.toString() );
 
@@ -79,7 +88,7 @@ public class CompraRepository extends Repositorio {
      * @param compra
      */
     public void update( CompraEntity compra ){
-        db.compraDao().update( compra );
+        dao.update( compra );
     }
 
     /**
@@ -88,7 +97,7 @@ public class CompraRepository extends Repositorio {
      * @return
      */
     public ArrayList<CompraEntity> getAllByProducto( String idProducto){
-        return (ArrayList<CompraEntity>) db.compraDao().getAllByProducto( idProducto );
+        return (ArrayList<CompraEntity>) dao.getAllByProducto( idProducto );
     }
 
     /**
@@ -99,7 +108,7 @@ public class CompraRepository extends Repositorio {
      * @return
      */
     public float getUltimoPrecio( String idProducto, String fecha ){
-        float p = db.compraDao().getUltimoPrecio( idProducto, fecha );
+        float p = dao.getUltimoPrecio( idProducto, fecha );
         Log.d("LDLC", "CompraRepository.getUltimoPecio() -- fecha actual " + fecha + " - " + p);
         return p;
     }

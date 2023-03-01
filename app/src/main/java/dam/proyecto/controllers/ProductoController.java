@@ -219,4 +219,14 @@ public class ProductoController {
         return listado;
     }
 
+    /**
+     * Devuelve el ProductoEntity correspondiente con el id
+     * @param id buscado
+     * @param context
+     * @return
+     */
+    public static ProductoEntity getById( String id, Context context ){
+        return new ProductoRepository( context ).getById( id );
+    }
+
 }
