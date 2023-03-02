@@ -50,6 +50,8 @@ public abstract class AppDatabase extends RoomDatabase {
     public abstract NombreCompraDao nombreCompraDao();
     public abstract OfertaDao ofertaDao();
     public abstract MarcaBlancaDao marcaBlancaDao();
+    public abstract VistaCompraDao vistaCompraDao();
+
 
     // NOmbre de la base de datos
     private static final String DB_NAME = "listadelacompra.db";

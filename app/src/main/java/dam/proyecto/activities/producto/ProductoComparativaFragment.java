@@ -20,6 +20,7 @@ import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.relaciones.VistaCompra;
 
 /**
  * Muestra una comparativa del producto entre diferentes comercios
@@ -92,20 +93,16 @@ public class ProductoComparativaFragment extends Fragment {
     private void getProductoEnComercios(){
         String log = "PoductoComparativaFragment.getProductoEnComercio";
 
-        // Colección de compras del producto
-        // Le pedimos a Compra un listado del las compras del producto
-        ArrayList<CompraEntity> comprasDelProducto =
-                                compraController.getNombreCompraByProducto( producto.getId() );
+        // Para realizar la consulta tan solo necesitamos el id del producto
+        // Vamos a buscar el producto en las diferentes compras y, a partir
+        // de esa compra, obtener el comercio
 
-        // Ya tenemos un listado con las compras
-
-        // Ahora debemos obtener los comercios en los que se han hecho esas compras
-
-        Iterator<CompraEntity> it = comprasDelProducto.iterator();
-        while ( it.hasNext() ){
-            CompraEntity compra = it.next();
-            log += "\n" + compra.getFecha() + " " +
-                    compraController.getNombreComercioByCompra( compra.getFecha() );
+        // Le pedimos al controlador de compra que nos devuelva el listado
+        ArrayList<VistaCompra> vistas = compraController.loadVistaCompraByProducto( producto.getId() );
+        Iterator<VistaCompra> it = vistas.iterator();
+        while( it.hasNext() ){
+            VistaCompra vista = it.next();
+            log += "\n" + vista.name + " " + vista.precio + " " + vista.fecha;
         }
 
         Log.d("LDLC", log);
@@ -115,13 +112,19 @@ public class ProductoComparativaFragment extends Fragment {
         Consulta
         Con esta consulta obtenemos los datos de la compra
 
-        select c.producto, m.name
-        from Compra as c, Nombrecompra as n, Comercio as m
-        where producto = '8717163889169' and c.fecha = n.id and m.id = n.comercio
+        SELECT m.name, c.precio, c.fecha
+        FROM Compra as c, Nombrecompra as n, Comercio as m, Productos as p
+        WHERE c.producto = '8717163889169'
+			AND c.fecha = n.id
+			AND m.id = n.comercio
+			AND p.id = c.producto
+		ORDER BY c.fecha DESC
 
-        8717163889169 lupa
-        8717163889169 mercadona
-        8717163889169 lupa
+        name    	precio          	fecha
+        mercadona	1.52999997138977	2302101928
+        lupa     	2.28999996185303	2301171451
+        lupa    	1.52999997138977	2211050000
+
         */
     }
 }

@@ -4,9 +4,11 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
+import dam.proyecto.database.dao.VistaCompraDao;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 
@@ -77,4 +79,14 @@ public class CompraController {
         return repositoryNombreComra.getNombreComercioByCompra( idCompra );
     }
 
+    /**
+     * Método que devuelve un listado con comercio, precio y fecha de
+     * cada compra de un producto
+     * @param idProducto es el producto buscado
+     * @return
+     */
+    public ArrayList<VistaCompra> loadVistaCompraByProducto(String idProducto ){
+        VistaCompraDao vistaCompraDao = repository.getDb().vistaCompraDao();
+        return (ArrayList<VistaCompra>) vistaCompraDao.loadVistaCompraByProducto( idProducto );
+    }
 }
