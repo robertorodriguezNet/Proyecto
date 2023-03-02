@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ivc_cly_listaVistaCompra"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/ivc_tv_comercio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:hint="comercio"
+        android:padding="4dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="@+id/ivc_tv_precio"
+        app:layout_constraintEnd_toStartOf="@id/ivc_tv_precio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ivc_tv_precio"
+        android:layout_width="70dp"
+        android:layout_height="wrap_content"
+        android:padding="4dp"
+        android:text="0.00"
+        android:textAlignment="textEnd"
+        app:layout_constraintBottom_toBottomOf="@+id/ivc_tv_fecha"
+        app:layout_constraintEnd_toStartOf="@id/ivc_tv_fecha"
+        app:layout_constraintStart_toEndOf="@id/ivc_tv_comercio"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ivc_tv_fecha"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:hint="00-00-0000"
+        android:padding="4dp"
+        android:text=""
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ivc_tv_precio"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

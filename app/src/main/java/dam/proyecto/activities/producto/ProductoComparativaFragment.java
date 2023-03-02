@@ -9,12 +9,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import dam.proyecto.R;
+import dam.proyecto.activities.producto.adapters.VistaCompraAdapter;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
@@ -40,9 +43,11 @@ public class ProductoComparativaFragment extends Fragment {
     private String idCompra;         // id de la compra que se está editando (el producto comprrado)
     private CompraEntity compra;                       // Compra realizada y la que se está editando
     private ProductoEntity producto;                                            // Producto comprado
+    private ArrayList<VistaCompra> relacionDeCompras;   // Listado de todas las compras del producto
 
     // Componentes de la UI
     private TextView tvCompra;
+    private ListView listaComparativa;              // Contenedor para el listdado de la comparativa
 
     // -- FUNCIONES --------------------------------------------------------------------------------
 
@@ -61,14 +66,19 @@ public class ProductoComparativaFragment extends Fragment {
                              Bundle savedInstanceState) {
 
         getDatos();                                                   // Cargar los datos necesarios
-        getProductoEnComercios();
-
 
         View view = inflater.inflate(R.layout.fragment_producto_comparativa, container, false);
         context = view.getContext();
 
         tvCompra = (TextView) view.findViewById( R.id.fpc_tv_producto );
         tvCompra.setText( producto.getDenominacion() );
+
+        // Listado de la comparativa
+        listaComparativa = (ListView) view.findViewById( R.id.fpc_lv_comparativa );
+        VistaCompraAdapter adapter = new VistaCompraAdapter( context,
+                R.layout.item_vista_compra,
+                relacionDeCompras);
+        listaComparativa.setAdapter( adapter );
 
         return view;
     }
@@ -85,12 +95,18 @@ public class ProductoComparativaFragment extends Fragment {
         compra = compraController.getById( idCompra );
         producto = ProductoController.getById( compra.getProducto(), context );
 
+        // Listado de todas las compras de un producto
+        // Este listado es el que se muestra en el ListView
+        relacionDeCompras = getProductoEnComercios( producto.getId() );
+
     }
 
     /**
      * Buscar el mismo producto en diferentes comencios.
+     * @param idProducto el producto buscado
+     * @return la relación de compras del producto
      */
-    private void getProductoEnComercios(){
+    private ArrayList<VistaCompra> getProductoEnComercios( String idProducto ){
         String log = "PoductoComparativaFragment.getProductoEnComercio";
 
         // Para realizar la consulta tan solo necesitamos el id del producto
@@ -98,7 +114,7 @@ public class ProductoComparativaFragment extends Fragment {
         // de esa compra, obtener el comercio
 
         // Le pedimos al controlador de compra que nos devuelva el listado
-        ArrayList<VistaCompra> vistas = compraController.loadVistaCompraByProducto( producto.getId() );
+        ArrayList<VistaCompra> vistas = compraController.loadVistaCompraByProducto( idProducto );
         Iterator<VistaCompra> it = vistas.iterator();
         while( it.hasNext() ){
             VistaCompra vista = it.next();
@@ -126,5 +142,7 @@ public class ProductoComparativaFragment extends Fragment {
         lupa    	1.52999997138977	2211050000
 
         */
+
+        return vistas;
     }
 }

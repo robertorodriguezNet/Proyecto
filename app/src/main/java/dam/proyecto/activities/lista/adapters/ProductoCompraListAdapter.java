@@ -108,6 +108,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
             + " precio: " + precioF);
 
         }
+
         float total = cantidadF * precioF;
 
         ud.setText(String.format("%.02f", cantidadF));

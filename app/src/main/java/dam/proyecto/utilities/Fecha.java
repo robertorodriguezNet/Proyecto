@@ -11,9 +11,9 @@ import java.util.Date;
 public class Fecha {
 
     /**
-     *
+     * Devuelve la fecha normalizada
      * @param f está en formato yyMMddhhmm
-     * @return
+     * @return dd-mm-aaaaaa hh:mm
      */
     public static String getFecha( String f ) throws ParseException {
 
