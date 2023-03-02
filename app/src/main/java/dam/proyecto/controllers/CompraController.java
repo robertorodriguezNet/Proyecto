@@ -3,6 +3,7 @@ package dam.proyecto.controllers;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import dam.proyecto.database.dao.VistaCompraDao;
 import dam.proyecto.database.entity.CompraEntity;
@@ -86,7 +87,34 @@ public class CompraController {
      * @return
      */
     public ArrayList<VistaCompra> loadVistaCompraByProducto(String idProducto ){
+        // Dao
         VistaCompraDao vistaCompraDao = repository.getDb().vistaCompraDao();
-        return (ArrayList<VistaCompra>) vistaCompraDao.loadVistaCompraByProducto( idProducto );
+
+        // Colección completa
+        ArrayList<VistaCompra> completa = (ArrayList<VistaCompra>) vistaCompraDao
+                            .loadVistaCompraByProducto( idProducto );
+
+        // Colección completa
+        ArrayList<VistaCompra> data = new ArrayList<>();
+
+        // Lista temporal de comercios
+        ArrayList<String> comercios = new ArrayList<>();
+
+        // Colección limpia
+        // Debemos eliminar los comercios repetidos
+        // La lista completa está ordenada por fecha descedente, por lo que solo
+        // la primera aparición es válida
+        Iterator<VistaCompra> it = completa.iterator();
+        while( it.hasNext() ){
+            VistaCompra compra = it.next();
+
+            // Buscamos el comercio en la lista dats
+            if( !comercios.contains( compra.name )){
+                data.add( compra );
+                comercios.add( compra.name );
+            }
+        }
+
+        return (ArrayList<VistaCompra>) data;
     }
 }
