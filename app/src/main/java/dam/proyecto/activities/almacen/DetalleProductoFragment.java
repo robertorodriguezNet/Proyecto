@@ -430,8 +430,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     /**
      * Este método guarda el producto que se está editando.
-     * Los datos para crear el producto se obtienen directamente
-     * del formualario.
+     * Los datos para crear el producto se obtienen directamente del formualario.
      */
     private void guardarProducto() {
 
@@ -461,10 +460,12 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // Si estamos editando, se actualiza el producto, si no
             // se inserta uno nuevo
             if (productoEditando != null) {
-//                Log.d("LDLC", "DetalleProductoFragment.guardarProducto: actualizado");
+                Log.d("LDLC", "DetalleProductoFragment.guardarProducto: actualizado");
 
             } else {
-//                Log.d("LDLC", "DetalleProductoFragment.guardarProducto: guardado");
+                // Es un producto nuevo
+                Log.d("LDLC", "DetalleProductoFragment.guardarProducto: guardado" +
+                        "\nid: " + id );
                 ProductoController.insertProducto(
                         id,
                         tv_denominacion.getText().toString(),
@@ -477,7 +478,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             }
 
             // Después de guardar el producto, vamos a sociarle las etiquetas
-            asociarTagsAlProducto();
+            asociarTagsAlProducto( id );
 
 
         } catch (Exception e) {
@@ -581,7 +582,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      * Asocia las etiquetas al producto.
      * Las etiquetas están registradas en text_tags
      */
-    private void asociarTagsAlProducto() {
+    private void asociarTagsAlProducto( String idProducto) {
 
         // Obtener un array con las etiquetas
         String[] tags = text_tags.getText().toString().split(",");
@@ -592,7 +593,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             Log.d("LDLC", "DetalleProductoFragment.asociarTagsAlProducto\n" +
                     "tag: " + tag + " id: " + tags.length);
             tagProductoRepository.insert(
-                    productoEditando.getId(),
+                    idProducto,
                     idTag
             );
         }
