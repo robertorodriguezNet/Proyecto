@@ -101,6 +101,15 @@ public class CompraRepository extends Repositorio {
     }
 
     /**
+     * Devuelve la última compra de un producto
+     * @param idProducto id del producto
+     * @return CompraEntity el objeto compra
+     */
+    public CompraEntity getUltimaCompraByProducto( String idProducto ){
+        return ( CompraEntity ) dao.getUltimaCompraByProducto( idProducto );
+    }
+
+    /**
      * Obtener el último precio de un producto en un comercio dado, descartando
      * la fecha en la que se está editando dicho producto
      * @param idProducto producto buscado

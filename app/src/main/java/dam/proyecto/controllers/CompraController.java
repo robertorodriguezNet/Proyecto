@@ -1,17 +1,22 @@
 package dam.proyecto.controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import dam.proyecto.database.dao.VistaCompraDao;
+import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
+import dam.proyecto.utilities.Fecha;
 
 /**
  * Clase que realiza operaciones sobre la lista de la
@@ -19,7 +24,7 @@ import dam.proyecto.database.repositories.NombreCompraRepository;
  *
  * @author Roberto Rodríguez Jiménez
  * @since 26/02/2023
- * @version 2023.03.01
+ * @version 2023.03.04
  */
 public class CompraController {
 
@@ -73,7 +78,7 @@ public class CompraController {
 
     /**
      * Devuelve el id del comercio en el que se ha hecho una compra
-     * @param idCompra
+     * @param idCompra es la fecha de la compra
      * @return
      */
     public String getNombreComercioByCompra( String idCompra ){
@@ -117,4 +122,34 @@ public class CompraController {
 
         return (ArrayList<VistaCompra>) data;
     }
+
+    /**
+     * Devuelve la última compra de un producto concreto
+     * @param id el producto buscado
+     */
+    public Map<String, String> getUltimaCompraDe(String id ){
+
+        // Obtener el producto para poder conocer las unidades de medida
+        ProductoEntity producto = ProductoController.getById( id, context );
+
+        // Obtener la última compra del producto
+        CompraEntity compra = repository.getUltimaCompraByProducto( id );
+
+        // Obtener el comercio en el que se realizó la compra
+        String comercio = getNombreComercioByCompra( compra.getFecha() );
+
+        // Ya tenemos todos los datos
+
+        Log.d("LDLC", "Producto: " + producto.getId()
+        + "\nFecha de la compra: " + compra.getFecha()
+        + "\nComercio: " + comercio );
+
+        HashMap<String, String> mapa = new HashMap<>();
+        mapa.put("precio",String.format("%.02f", compra.getPrecio()));
+        mapa.put("fecha", Fecha.getFechaFormateada( compra.getFecha() ) );
+        mapa.put("comercio", comercio);
+
+        return mapa;
+    }
+
 }

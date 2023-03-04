@@ -65,4 +65,27 @@ public class Fecha {
 
     }
 
+    /**
+     * Obtener el formato correctode la fecha.
+     * @param f
+     * @return dd - mes(3 carac.) - aaaa
+     */
+    public static String getFechaFormateada( String f ){
+
+        try{
+            String fecha = Fecha.getFecha( f );
+
+            // Eliminamos el día
+            String[] data = fecha.split(",");
+            fecha = data[1];
+
+            // Eliminamos la hora
+            data = fecha.split(" ");
+            fecha = data[0] + " " + data[1] + " " + data[2];
+
+            return fecha;
+        }catch ( Exception e){
+            return f;
+        }
+    }
 }

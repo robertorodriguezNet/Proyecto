@@ -179,8 +179,6 @@ public class ProductoController {
     public static float getUltimoPrecio( String idProducto, Context context ){
         String idCompraActual = Preferencias.getListaAbiertaId( context );
         return new CompraRepository( context ).getUltimoPrecio( idProducto, idCompraActual );
-
-
     }
 
     /**

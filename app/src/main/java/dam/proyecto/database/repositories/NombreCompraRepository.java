@@ -30,39 +30,6 @@ public class NombreCompraRepository extends Repositorio {
     }
 
     /**
-     * Inserta un objeto en la base de datos
-     * @param objeto que se debe insertar
-     */
-    public void insert( NombreCompraEntity objeto ){
-        db.nombreCompraDao().insert( objeto );
-    }
-
-    /**
-     * Inserta una colección de objetos
-     * @param data colección de objetos
-     */
-    public void insertAll( List<NombreCompraEntity> data ){
-        db.nombreCompraDao().insertAll( data );
-    }
-
-    /**
-     * Devuelve un listado completo de los registros.
-     * @return
-     */
-    public ArrayList<NombreCompraEntity> getAll(){
-        return (ArrayList<NombreCompraEntity>) db.nombreCompraDao().getAll();
-    }
-
-    /**
-     * Obtener un nombre de la compra a partir del id
-     * @param id el id de la compra, con formato aammddhhmm
-     * @return
-     */
-    public NombreCompraEntity getById( String id ){
-        return (NombreCompraEntity) db.nombreCompraDao().findById( id );
-    }
-
-    /**
      * Elimina la compra de la base de datos
      * @param compra que se debe eliminar
      */
@@ -84,10 +51,6 @@ public class NombreCompraRepository extends Repositorio {
         return objeto != null;
     }
 
-    public void update(NombreCompraEntity nombreCompra) {
-        db.nombreCompraDao().update( nombreCompra );
-    }
-
     public boolean existsNombreDeLaCompra(String id) {
         NombreCompraEntity objeto = null;
         objeto = db
@@ -97,12 +60,29 @@ public class NombreCompraRepository extends Repositorio {
     }
 
     /**
+     * Devuelve un listado completo de los registros.
+     * @return
+     */
+    public ArrayList<NombreCompraEntity> getAll(){
+        return (ArrayList<NombreCompraEntity>) db.nombreCompraDao().getAll();
+    }
+
+    /**
      * Devuelve un listado con las compras hechas en un comercio dado
      * @param idComercio
      * @return
      */
     public ArrayList<String> getAllByIdComercio( int idComercio ){
         return (ArrayList<String>) db.nombreCompraDao().getAllByComercio( idComercio );
+    }
+
+    /**
+     * Obtener un nombre de la compra a partir del id
+     * @param id el id de la compra, con formato aammddhhmm
+     * @return
+     */
+    public NombreCompraEntity getById( String id ){
+        return (NombreCompraEntity) db.nombreCompraDao().findById( id );
     }
 
     /**
@@ -117,6 +97,29 @@ public class NombreCompraRepository extends Repositorio {
     public String getNombreComercioByCompra( String idCompra ){
         return db.nombreCompraDao().getNombreComercio( idCompra );
     }
+
+    /**
+     * Inserta un objeto en la base de datos
+     * @param objeto que se debe insertar
+     */
+    public void insert( NombreCompraEntity objeto ){
+        db.nombreCompraDao().insert( objeto );
+    }
+
+    /**
+     * Inserta una colección de objetos
+     * @param data colección de objetos
+     */
+    public void insertAll( List<NombreCompraEntity> data ){
+        db.nombreCompraDao().insertAll( data );
+    }
+
+    public void update(NombreCompraEntity nombreCompra) {
+        db.nombreCompraDao().update( nombreCompra );
+    }
+
+
+
 
     @Override
     public String toString() {

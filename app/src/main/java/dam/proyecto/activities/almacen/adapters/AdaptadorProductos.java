@@ -9,20 +9,22 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.listeners.AlmacenListener;
+import dam.proyecto.controllers.CompraController;
 import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.MarcaRepository;
 
 /**
  * @author Roberto Rodríguez Jiménez
- * @version 2023.02.19
  * @since 19/02/2023
+ * @version 2023.03.04
  */
 public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.ViewHolder> {
 
@@ -128,6 +130,9 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
         ImageView imagen;                                          // Muestra la imagen del producto
         TextView denominacion, marca;                          // Muestra la denominación y la marca
 
+        // TextView de los últimos precios
+        TextView ultimoPrecio, ultimaFecha, ultimoComercio;
+
         /**
          * Constructor
          *
@@ -141,6 +146,11 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             imagen = itemView.findViewById(R.id.ala_img_miniatura);
             denominacion = itemView.findViewById(R.id.ala_tv_donominacion);
             marca = itemView.findViewById(R.id.ala_tv_marca);
+
+            ultimaFecha = itemView.findViewById(R.id.ala_tv_fecha);
+            ultimoComercio = itemView.findViewById(R.id.ala_tv_comercio);
+            ultimoPrecio = itemView.findViewById(R.id.ala_tv_precio);
+
         }
 
         /**
@@ -162,6 +172,15 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             denominacion.setText(producto.getDenominacion());
 //            marca.setText( String.valueOf( producto.getMarca() ) );
             marca.setText(dataMarca.get(producto.getMarca() - 1).getName());
+
+            // Debemos obtener la última compra del producto
+            CompraController controller = new CompraController( context );
+            HashMap<String,String> mapa =
+                    (HashMap<String, String>) controller.getUltimaCompraDe( producto.getId() );
+
+            ultimaFecha.setText( mapa.get("fecha"));
+            ultimoComercio.setText( mapa.get("comercio"));
+            ultimoPrecio.setText( mapa.get("precio"));
 
         }
 

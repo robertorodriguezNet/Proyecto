@@ -13,10 +13,13 @@ import dam.proyecto.database.entity.TagEntity;
 
 /**
  * @author Roberto Rodríguez
- * @version 2023.02.19
- * @since 2023/01/23
+ * @since 23/01/2023
+ * @version 2023.03.04
  */
 public class ComercioRespository extends Repositorio {
+
+    ComercioDao dao = db.comercioDao();
+
     public ComercioRespository(Context context) {
         super(context);
     }
@@ -25,7 +28,7 @@ public class ComercioRespository extends Repositorio {
      * Borra los datos de la tabla
      */
     public void clear() {
-        db.comercioDao().clear();
+        dao.clear();
     }
 
     /**
@@ -36,12 +39,22 @@ public class ComercioRespository extends Repositorio {
     }
 
     /**
+     * Devuelve el objeto comercio a partir de su id
+     * @param id id del comercio
+     * @return ComercioEntity relacionado con el id
+     */
+    public ComercioEntity findById( int id ){
+        return  dao.findById( id );
+    }
+
+
+    /**
      * Devuelve un listado completo de los registros.
      *
      * @return
      */
     public ArrayList<ComercioEntity> getAll() {
-        return (ArrayList<ComercioEntity>) getDb().comercioDao().getAll();
+        return (ArrayList<ComercioEntity>) dao.getAll();
     }
 
     /**
@@ -50,9 +63,7 @@ public class ComercioRespository extends Repositorio {
      * @return String el nombre del comercio
      */
     public String getNombreComercio( int id ){
-        return db
-                .comercioDao()
-                .findById( id ).getName();
+        return dao.findById( id ).getName();
     }
 
     @Override
