@@ -9,9 +9,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import dam.proyecto.database.dao.VistaCompraDao;
-import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
-import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.database.repositories.CompraRepository;
@@ -144,8 +142,12 @@ public class CompraController {
         + "\nFecha de la compra: " + compra.getFecha()
         + "\nComercio: " + comercio );
 
+        // El precio se da por unidad de medida
+
         HashMap<String, String> mapa = new HashMap<>();
         mapa.put("precio",String.format("%.02f", compra.getPrecio()));
+        mapa.put("precioM", String.format("%.02f", compra.getPrecioMedido()) +
+                "€/" + producto.getMedida() );
         mapa.put("fecha", Fecha.getFechaFormateada( compra.getFecha() ) );
         mapa.put("comercio", comercio);
 

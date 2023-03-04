@@ -131,7 +131,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
         TextView denominacion, marca;                          // Muestra la denominación y la marca
 
         // TextView de los últimos precios
-        TextView ultimoPrecio, ultimaFecha, ultimoComercio;
+        TextView ultimoPrecio, ultimaFecha, ultimoComercio, ultimoPrecioM;
 
         /**
          * Constructor
@@ -150,6 +150,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             ultimaFecha = itemView.findViewById(R.id.ala_tv_fecha);
             ultimoComercio = itemView.findViewById(R.id.ala_tv_comercio);
             ultimoPrecio = itemView.findViewById(R.id.ala_tv_precio);
+            ultimoPrecioM = itemView.findViewById(R.id.ala_tv_precioM);
 
         }
 
@@ -181,6 +182,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             ultimaFecha.setText( mapa.get("fecha"));
             ultimoComercio.setText( mapa.get("comercio"));
             ultimoPrecio.setText( mapa.get("precio"));
+            ultimoPrecioM.setText( mapa.get("precioM"));
 
         }
 

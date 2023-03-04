@@ -69,8 +69,21 @@
             android:text="000.00"
             android:textAlignment="textEnd"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/ala_tv_fecha"
+            app:layout_constraintEnd_toStartOf="@id/ala_tv_precioM"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/ala_guiaH" />
+
+        <TextView
+            android:id="@+id/ala_tv_precioM"
+            android:layout_width="70dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:padding="4dp"
+            android:text="000.00"
+            android:textAlignment="textEnd"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ala_tv_fecha"
+            app:layout_constraintStart_toStartOf="@id/ala_tv_precio"
             app:layout_constraintTop_toTopOf="@id/ala_guiaH" />
 
         <TextView
@@ -82,7 +95,7 @@
             android:text="00-Mes-0000"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/ala_tv_precio"
+            app:layout_constraintStart_toEndOf="@id/ala_tv_precioM"
             app:layout_constraintTop_toTopOf="@id/ala_guiaH" />
 
         <TextView
