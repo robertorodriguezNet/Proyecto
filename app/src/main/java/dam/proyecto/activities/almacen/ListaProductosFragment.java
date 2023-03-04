@@ -34,9 +34,11 @@ import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.database.repositories.TagRepository;
 
 /**
+ * Carga la lista de productos almacenados en la base de datos.
+ *
  * @author Roberto Rodríguez Jiménez
  * @since 19/02/2023
- * @version 2023.03.01
+ * @version 2023.03.04
  */
 public class ListaProductosFragment extends Fragment {
 
@@ -103,8 +105,11 @@ public class ListaProductosFragment extends Fragment {
         });
 
         // Obtener los datos
-//        productoData = new ProductoRepository(getContext()).getAll();
-        productoData = ProductoController.getAll( getContext() );
+        // Pedir al controlador de Producto el listado completo de productos
+        // De inicio, la lista va a estar vacía, no se mostrará ningún producto hasta
+        // que no se haya indicado en el campo de búsqueda.
+//        productoData = ProductoController.getAll( getContext() );
+        productoData = new ArrayList<>();
 
         // Obtenemos el RecyclerView
         recyclerView = (RecyclerView) view.findViewById(R.id.listRecyclerView);
