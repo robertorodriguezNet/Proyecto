@@ -47,7 +47,7 @@ public class ListaProductosFragment extends Fragment {
 
     // Campos para la búsqueda
     private AutoCompleteTextView inpTexto;
-    private ImageButton btnSearch;
+    private ImageButton btnSearch, btnClear;
     private ArrayList<String> etiquetaList;                                  // Listado de etiquetas
 
     // RecyclerView que muestra el listado de los productos
@@ -84,6 +84,10 @@ public class ListaProductosFragment extends Fragment {
 
         // Campos de búsqueda
         inpTexto = (AutoCompleteTextView ) view.findViewById( R.id.flp_inp_search );
+        btnClear = view.findViewById( R.id.flp_btn_clear );
+        btnClear.setOnClickListener(v -> {
+            clear();
+        });
         btnSearch = view.findViewById( R.id.flp_btn_search );
         btnSearch.setOnClickListener(v -> {
             search();
@@ -128,6 +132,13 @@ public class ListaProductosFragment extends Fragment {
         }
 
         return view;
+    }
+
+    /**
+     * Limpia el campo de búsqueda.
+     */
+    private void clear(){
+        inpTexto.setText("");
     }
 
     /**

@@ -10,7 +10,7 @@
 
     <AutoCompleteTextView
         android:id="@+id/flp_inp_search"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:completionThreshold="1"
@@ -19,16 +19,29 @@
         android:inputType="text"
         android:text=""
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/flp_btn_clear"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/flp_btn_clear"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@color/green_700"
+        app:layout_constraintEnd_toStartOf="@id/flp_btn_search"
+        app:layout_constraintStart_toEndOf="@id/flp_inp_search"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_cleaning_services_32" />
 
     <ImageButton
         android:id="@+id/flp_btn_search"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
+        android:background="@color/green_700"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/flp_btn_clear"
         app:layout_constraintTop_toTopOf="parent"
-        android:background="@color/fondoBotonVerdeAvtivo"
         app:srcCompat="@drawable/ic_baseline_search_32" />
 
     <androidx.recyclerview.widget.RecyclerView
