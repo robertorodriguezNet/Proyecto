@@ -66,7 +66,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
         // Obtenemos la vista del CardView con el diseño del producto
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.cardview_producto, null);
+                .inflate(R.layout.cardview_producto, parent,false);
 
         // Devolvemos el componente ViewHolder al cual pasamos la vista (CardView)
         return new ViewHolder(view);
