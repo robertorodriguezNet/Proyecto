@@ -57,6 +57,16 @@ public class TagController {
     }
 
     /**
+     * Devuelve el primer índice válido
+     * @return
+     */
+    public int getIndex(){
+        int id = repository.getMaxId();
+        id++;
+        return id;
+    }
+
+    /**
      * Devuelve una colección con los id's de los productos que en sus etiquetas
      * contienen el texto
      * @param texto
@@ -77,10 +87,22 @@ public class TagController {
 
     /**
      * Inserta un tag desde el nombre
+     * El id se pide al repositorio
      * @param tag la etiqueta
      */
     public void insert( String tag ){
-        insert( new TagEntity( tag ) );
+        insert( new TagEntity( getIndex(), tag ) );
     }
+
+    /**
+     * Inserta un tag desde el nombre
+     * El id se recibe como parámetro
+     * @param id de la etiqueta
+     * @param tag la etiqueta
+     */
+    public void insert( int id, String tag ){
+        insert( new TagEntity( id, tag ) );
+    }
+
 
 }

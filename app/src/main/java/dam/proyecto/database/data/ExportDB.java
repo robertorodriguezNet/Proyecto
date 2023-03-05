@@ -35,7 +35,7 @@ import dam.proyecto.database.repositories.TagRepository;
  * @see "https://youtu.be/KvM65JoaeFE"
  * @author  Roberto Rodríguez Jiménez
  * @since 17/02/2023
- * @version 2023.02.17
+ * @version 2023.03.25
  */
 public class ExportDB {
 
@@ -149,8 +149,7 @@ public class ExportDB {
 
     /**
      * Exportar los tags.
-     * Hay que tener cuidado, porque los id son generados automáticamente,
-     * debemos asegurarnos de que no se han cambiado.
+     * Los id no son autoincrement, hay que exportarlos.
      */
     private static void exportarTagEnity() {
         TagController controller = new TagController(context);
@@ -159,7 +158,8 @@ public class ExportDB {
         boolean salto = false;
         String code = "";
         for( TagEntity objeto : data){
-            code += objeto.getName();
+            code += objeto.getId() + ","
+                + objeto.getName();
             salto = true;
             if( salto ){
                 code += "\n";

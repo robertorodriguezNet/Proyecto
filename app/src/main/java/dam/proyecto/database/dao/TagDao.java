@@ -13,6 +13,12 @@ import dam.proyecto.database.entity.*;
 
 import java.util.List;
 
+
+/**
+ * @author Roberto Rodríguez Jiménez
+ * @since 17/02/2023
+ * @version 2023.03.05
+ */
 @Dao
 public interface TagDao {
 
@@ -32,6 +38,9 @@ public interface TagDao {
 
     @Query("SELECT id FROM Tag WHERE name LIKE '%' || :args || '%' ")
     List<Integer> getAllId( String args);
+
+    @Query( "SELECT MAX( id ) FROM tag ")
+    Integer getMaxId();
 
     @Query( "select producto from TagsProducto where tag in ( select id from tag where name like '%' || :tag || '%');")
     List<String> getProductosByTag( String tag );

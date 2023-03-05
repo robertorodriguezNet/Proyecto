@@ -56,6 +56,27 @@ public class TagRepository extends Repositorio {
     }
 
     /**
+     * Devuelve el id de una etiqueta por su nombre
+     * @param name el tag buscado
+     * @return
+     */
+    public int getIdByName( String name ){
+
+        int idName = dao.getIdByName( name );
+//        Log.d("LDLC", "TagRepository.getIdByName() \n" +
+//            "Pedido el id de " + name + ": " + idName );
+        return idName;
+    }
+
+    /**
+     * Devuelve el valor máximo del id
+     * @return
+     */
+    public int getMaxId(){
+        return dao.getMaxId();
+    }
+
+    /**
      * Devuelve una colección con los id de los productos que contienen el texto
      * en la etiqueta
      * @param texto
@@ -129,10 +150,6 @@ public class TagRepository extends Repositorio {
         db.tagDao().insertAll( data );
     }
 
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 
     /**
      * Inserta un nuevo tag y devuelve el id
@@ -145,7 +162,9 @@ public class TagRepository extends Repositorio {
 //                "\ntag: " + tag;
 
         // Crear un objeto tag a partir de la etiqueta recibida
-        TagEntity newTag = new TagEntity( tag );
+        int newId = dao.getMaxId();
+        newId++;
+        TagEntity newTag = new TagEntity( newId, tag );
 
         // Insertamos el tagEntity si no existe
         if( !exists( tag ) ){
@@ -174,17 +193,10 @@ public class TagRepository extends Repositorio {
         dao.insert( tag );
     }
 
-    /**
-     * Devuelve el id de una etiqueta por su nombre
-     * @param name el tag buscado
-     * @return
-     */
-    public int getIdByName( String name ){
 
-        int idName = dao.getIdByName( name );
-//        Log.d("LDLC", "TagRepository.getIdByName() \n" +
-//            "Pedido el id de " + name + ": " + idName );
-        return idName;
+
+    @Override
+    public String toString() {
+        return super.toString();
     }
-
 }

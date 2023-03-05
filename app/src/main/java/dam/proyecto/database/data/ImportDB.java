@@ -186,6 +186,7 @@ public class ImportDB {
 
     /**
      * Importa la entidad TagEntity.
+     * El id no es auto-increment
      */
     private static void importarTagEntity(){
 
@@ -203,7 +204,8 @@ public class ImportDB {
                 String[] data = registro.split(",");
                 // Pedimos al controlador de productos que lo guarde *
                 controller.insert(
-                        data[0]
+                        Integer.valueOf(data[0]),
+                        data[1]
                 );
             }
         } catch (Exception e) {
