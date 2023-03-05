@@ -2,16 +2,15 @@ package dam.proyecto.database.data;
 
 
 import android.content.Context;
-import android.util.Log;
 import android.widget.Toast;
 
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
-import dam.proyecto.activities.MainActivity;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.entity.MarcaBlancaEntity;
 import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
@@ -21,6 +20,7 @@ import dam.proyecto.database.entity.TagEntity;
 import dam.proyecto.database.entity.TagsProductoEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.database.repositories.CompraRepository;
+import dam.proyecto.database.repositories.MarcaBlancaRepository;
 import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
@@ -40,39 +40,74 @@ public class ExportDB {
 
     private static Context context;
 
-    public static void export( Context c ){
+    public static void exportDB( Context c ){
 
         context = c;
 
         // Debemos obtner todos los registros de todas las tablas
-        leerProductos();
-        leerNombreCompra();
-        leerTag();
-        leerComercio();
-        leerMedidas();
-        leerCompraEntitys();
-        leerMarcas();
-        leerTagsProductoEntity();
-        leerOfertaEntity();
+//        leerComercio();
+//        leerCompraEntitys();
+//        leerMarcaBlanca();
+//        leerMarcas();
+//        leerMedidas();
+//        leerNombreCompra();
+//        leerOfertaEntity();
+        exportProductos();
+//        leerTag();
+//        leerTagsProductoEntity();
 
     }
 
+    /**
+     * Grabar el contenido de data en el archivo file
+     * @param file
+     * @param data
+     */
     private static void grabar( String file, String data ){
+        OutputStreamWriter osr = null;
         try{
-            OutputStreamWriter osr =
-                    new OutputStreamWriter(
+            osr = new OutputStreamWriter(
                             context.openFileOutput( file , Context.MODE_PRIVATE )
                     );
 
             osr.write( data );
             osr.flush();
-            osr.close();
         } catch ( IOException e ){
             Toast.makeText(context, "No se pudo crear el archivo " + file, Toast.LENGTH_SHORT).show();
+        }finally {
+            if( osr != null ){
+                try{
+                    osr.close();
+                }catch ( Exception e ){
+                    Toast.makeText(context, "Error al cerrar el fulujo de datos", Toast.LENGTH_SHORT).show();
+                }
+            }
         }
     }
 
-    private static void leerProductos() {
+    private static void leerComercio() {
+        ComercioRespository repository = new ComercioRespository(context);
+        ArrayList<ComercioEntity> data = repository.getAll();
+
+        boolean salto = false;
+        String code = "";
+        for( ComercioEntity objeto : data){
+            code += objeto.getId() + ","
+                    + objeto.getName();
+            salto = true;
+            if( salto ){
+                code += "\n";
+            }
+        }
+        grabar( "ComercioEntity.csv", code );
+    }
+
+    /**
+     * Creamos el archivo de productos.
+     * El id de cada registro es relevante, no puede cambiar, su formato
+     * es el código de barras.
+     */
+    private static void exportProductos() {
         ProductoRepository repository = new ProductoRepository(context);
         ArrayList<ProductoEntity> data = repository.getAll();
 
@@ -127,21 +162,21 @@ public class ExportDB {
         grabar( "TagEntity.csv", code );
     }
 
-    private static void leerComercio() {
-        ComercioRespository repository = new ComercioRespository(context);
-        ArrayList<ComercioEntity> data = repository.getAll();
+    private static void leerMarcaBlanca() {
+        MarcaBlancaRepository repository = new MarcaBlancaRepository(context);
+        ArrayList<MarcaBlancaEntity> data = repository.getAll();
 
         boolean salto = false;
         String code = "";
-        for( ComercioEntity objeto : data){
-            code += objeto.getId() + ","
-                    + objeto.getName();
+        for( MarcaBlancaEntity objeto : data){
+            code += objeto.getMarca() + ","
+                 + objeto.getComercio();
             salto = true;
             if( salto ){
                 code += "\n";
             }
         }
-        grabar( "ComercioEntity.csv", code );
+        grabar( "TagEntity.csv", code );
     }
 
     private static void leerMedidas() {

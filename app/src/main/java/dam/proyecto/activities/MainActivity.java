@@ -18,6 +18,7 @@ import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
 import dam.proyecto.database.data.Ejemplos;
 import dam.proyecto.database.data.ExportDB;
+import dam.proyecto.database.data.ImportDB;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.databinding.ActivityMainBinding;
 
@@ -111,7 +112,10 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "añadir marca", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mp_it_exportarBD:
-                    ExportDB.export( this );
+                    ExportDB.exportDB( this );
+                break;
+            case R.id.mp_it_impoprtarBD:BD:
+                    ImportDB.importDB( this );
                 break;
 
         }

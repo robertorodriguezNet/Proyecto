@@ -27,6 +27,13 @@ import dam.proyecto.utilities.Preferencias;
 public class ProductoController {
 
     /**
+     * Borra los datos de la tabla
+     */
+    public static void clearData( Context context ){
+        new ProductoRepository( context ).clear();
+    }
+
+    /**
      * Crea un objeto ProductoEntity
      */
     public static ProductoEntity crearProducto (String id,
@@ -62,7 +69,7 @@ public class ProductoController {
 
     /**
      * Inserta un producto
-     * @param producto
+     * @param producto ProductoEntity que se quiere guardar
      */
     public static void insertProducto(ProductoEntity producto, Context context ){
         new ProductoRepository( context ).insertProducto( producto );

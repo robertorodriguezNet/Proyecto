@@ -99,6 +99,7 @@
     <string name="fdp_str_hintEtiquetas">Etiquetas</string>
     <string name="fpc_str_comparativaTitulo">COMPRATIVA</string>
     <string name="flp_str_act_buscar">Buscar...</string>
+    <string name="mp_str_it_importarDB">Importar DB</string>
 
     <string-array name="opciones_precio">
         <item>Actual</item>

@@ -22,6 +22,11 @@
         android:icon="@drawable/ic_baseline_import_export_24"
         android:title="@string/mp_str_it_exportarBD" />
     <item
+        android:id="@+id/mp_it_impoprtarBD"
+        android:icon="@drawable/ic_baseline_import_export_24"
+        android:title="@string/mp_str_it_importarDB" />
+
+    <item
         android:id="@+id/mp_it_ayuda"
         android:icon="@drawable/ic_baseline_help_outline_24"
         android:title="@string/mp_str_it_ayuda" />
