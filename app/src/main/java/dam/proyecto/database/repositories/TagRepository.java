@@ -167,6 +167,14 @@ public class TagRepository extends Repositorio {
     }
 
     /**
+     * Insrta un tag a partir de un objeto
+     * @param tag
+     */
+    public void insert( TagEntity tag ){
+        dao.insert( tag );
+    }
+
+    /**
      * Devuelve el id de una etiqueta por su nombre
      * @param name el tag buscado
      * @return

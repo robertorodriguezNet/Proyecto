@@ -6,8 +6,12 @@ import android.widget.Toast;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
+import dam.proyecto.controllers.CompraController;
+import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.ProductoController;
+import dam.proyecto.controllers.TagController;
 import dam.proyecto.database.entity.ProductoEntity;
 
 /**
@@ -31,7 +35,11 @@ public class ImportDB {
 
     public static void importDB(Context c) {
         context = c;
-        importarProductos();
+
+        importarCompraEntity();
+        importarProductoEntity();
+        importarNombreCompraEntity();
+        importarTagEntity();
     }
 
     /**
@@ -40,14 +48,22 @@ public class ImportDB {
      * @param file
      * @return StringBuilde el texto con los registros
      */
-    private static BufferedReader getRegistros(String file) {
+    private static ArrayList<String> getRegistros(String file) {
 
         InputStreamReader isr = null;
         BufferedReader bufferedReader = null;
+
+        ArrayList<String> data = new ArrayList<>();
+
         try {
 
             isr = new InputStreamReader(context.openFileInput(file));
             bufferedReader = new BufferedReader(isr);
+
+            String linea;
+            while( ( linea = bufferedReader.readLine() ) != null ){
+                data.add( linea );
+            }
 
         } catch (Exception e) {
             Toast.makeText(context, "No se pudo leer el archivo " + file, Toast.LENGTH_SHORT).show();
@@ -59,32 +75,29 @@ public class ImportDB {
                     Toast.makeText(context, "Error al cerrar el fulujo de datos", Toast.LENGTH_SHORT).show();
                 }
             }
-            return bufferedReader;
+            return data;
         }
 
     }
 
     /**
-     * Importa el contenido del fichero con los registros guardados
+     * Importa el contenido del fichero con los registros guardados.
+     *
      */
-    private static void importarProductos() {
+    private static void importarProductoEntity() {
 
         String file = "ProductoEntity.csv";
-        BufferedReader bufferedReader = getRegistros(file);                 // Contenido del archivo
 
-        ProductoEntity entity;                                        // Entidad de la base de datos
-
-        String linea;                             // Guarda cada línea leída desde el BufferedReader
         try {
 
             // Borrar los datos
+            ProductoController.clearData( context );
 
             // Cada línea leída es un ProductoEntity
-            while ((linea = bufferedReader.readLine()) != null) {
+            ArrayList<String> registros = getRegistros( file );
+            for ( String registro : registros ) {
 
-                // Array con los datos del objeto que se va a crear
-                String[] data = linea.split(",");
-
+                String[] data = registro.split(",");
                 // Pedimos al controlador de productos que lo guarde *
                 ProductoController.insertProducto(
                         data[0],
@@ -95,13 +108,109 @@ public class ImportDB {
                         Float.valueOf( data[5] ),
                         context
                 );
-
             }
+
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer ProductoEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC","Error al importar productos:\n"
+            + e.getMessage() );
         }
+    }
 
+    /**
+     * Importa la entidad CompraEntity.
+     * El id de la compra no se importa porque se genera de forma
+     * automática al crearse el objeto.
+     */
+    private static void importarCompraEntity(){
 
+        String file = "CompraEntity.csv";
+        CompraController controller = new CompraController( context );
+
+        try {
+            // Borrar los datos
+            controller.clearData();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros( file );
+            for ( String registro : registros ) {
+
+                String[] data = registro.split(",");
+                // Pedimos al controlador de productos que lo guarde *
+                controller.insert(
+                        data[0],
+                        data[1],
+                        Float.valueOf( data[2] ),
+                        Float.valueOf( data[3] ),
+                        Float.valueOf( data[4] ),
+                        Float.valueOf( data[5] )
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer CompraEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC","Error al importar CompraEntity:\n"
+                    + e.getMessage() );
+        }
+    }
+
+    /**
+     * Importa la entidad NombreCompraEntity.
+     */
+    private static void importarNombreCompraEntity(){
+
+        String file = "NombreCompraEntity.csv";
+        NombreCompraController controller = new NombreCompraController( context );
+
+        try {
+            // Borrar los datos
+            controller.clearData();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros( file );
+            for ( String registro : registros ) {
+
+                String[] data = registro.split(",");
+                // Pedimos al controlador de productos que lo guarde *
+                controller.insert(
+                        data[0],
+                        data[1],
+                        Integer.valueOf( data[2] )
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer NombreCompraEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC","Error al importar NombreCompraEntity:\n"
+                    + e.getMessage() );
+        }
+    }
+
+    /**
+     * Importa la entidad TagEntity.
+     */
+    private static void importarTagEntity(){
+
+        String file = "TagEntity.csv";
+        TagController controller = new TagController( context );
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros( file );
+            for ( String registro : registros ) {
+
+                String[] data = registro.split(",");
+                // Pedimos al controlador de productos que lo guarde *
+                controller.insert(
+                        data[0]
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer TagEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC","Error al importar TagEntity:\n"
+                    + e.getMessage() );
+        }
     }
 
 }

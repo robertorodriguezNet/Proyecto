@@ -26,9 +26,6 @@ public class CompraRepository extends Repositorio {
         this.dao = db.compraDao();
     }
 
-    public ArrayList<CompraEntity> getAll(){
-        return (ArrayList<CompraEntity>) dao.getAll();
-    }
 
     /**
      * Borra los datos de la tabla
@@ -45,16 +42,13 @@ public class CompraRepository extends Repositorio {
     }
 
     /**
-     * Inserta una colección de objetos
+     * Devuelve el listado completo de compras
+     * @return
      */
-    public void insertAll( List<CompraEntity> data ){
-        dao.insertAll( data );
+    public ArrayList<CompraEntity> getAll(){
+        return (ArrayList<CompraEntity>) dao.getAll();
     }
 
-    // Obtener la compra por una compra dada
-    public ArrayList<CompraEntity> getProductosByFecha(String fecha ){
-        return (ArrayList<CompraEntity>) dao.findByFecha( fecha );
-    }
 
     /**
      * Devuelve una compra a partir del id recibido
@@ -66,30 +60,33 @@ public class CompraRepository extends Repositorio {
     }
 
     /**
+     * Obtener la compra por una compra dada
+     * @param fecha el id de la compra buscada
+     */
+    public ArrayList<CompraEntity> getProductosByFecha(String fecha ){
+        return (ArrayList<CompraEntity>) dao.findByFecha( fecha );
+    }
+
+    /**
      * Inserta una compra
      * @param compra
      */
     public void insert( CompraEntity compra ){
-
         try{
-
             dao.insert( compra );
-
-            Log.d( "LDLC", "CompraRepository.insert() - Compra guardada: " + compra.toString() );
-
+//            Log.d( "LDLC", "CompraRepository.insert() - Compra guardada: " + compra.toString() );
         }catch ( Exception e ){
             Log.d( "LDLC", "CompraRepository.insert() - Error al guardar la compra: " + compra.toString() );
         }
-
     }
 
     /**
-     * Actualiza una compra
-     * @param compra
+     * Inserta una colección de objetos
      */
-    public void update( CompraEntity compra ){
-        dao.update( compra );
+    public void insertAll( List<CompraEntity> data ){
+        dao.insertAll( data );
     }
+
 
     /**
      * Devuelve todas las compras de un producto dado
@@ -118,13 +115,22 @@ public class CompraRepository extends Repositorio {
      */
     public float getUltimoPrecio( String idProducto, String fecha ){
         float p = dao.getUltimoPrecio( idProducto, fecha );
-        Log.d("LDLC", "CompraRepository.getUltimoPecio() -- fecha actual " + fecha + " - " + p);
+//        Log.d("LDLC", "CompraRepository.getUltimoPecio() -- fecha actual " + fecha + " - " + p);
         return p;
     }
 
     @Override
     public String toString() {
         return super.toString();
+    }
+
+
+    /**
+     * Actualiza una compra
+     * @param compra
+     */
+    public void update( CompraEntity compra ){
+        dao.update( compra );
     }
 
 }

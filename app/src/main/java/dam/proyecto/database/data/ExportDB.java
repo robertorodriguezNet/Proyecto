@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
+import dam.proyecto.controllers.NombreCompraController;
+import dam.proyecto.controllers.TagController;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.MarcaBlancaEntity;
@@ -23,7 +25,6 @@ import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.MarcaBlancaRepository;
 import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.MedidaRepository;
-import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.database.repositories.OfertaRespository;
 import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.database.repositories.TagProductoRepository;
@@ -46,14 +47,14 @@ public class ExportDB {
 
         // Debemos obtner todos los registros de todas las tablas
 //        leerComercio();
-//        leerCompraEntitys();
+        exportarCompraEntity();
 //        leerMarcaBlanca();
 //        leerMarcas();
 //        leerMedidas();
-//        leerNombreCompra();
+        exportarNombreCompraEntity();
 //        leerOfertaEntity();
-        exportProductos();
-//        leerTag();
+        exportarProductoEntity();
+        exportarTagEnity();
 //        leerTagsProductoEntity();
 
     }
@@ -107,7 +108,7 @@ public class ExportDB {
      * El id de cada registro es relevante, no puede cambiar, su formato
      * es el código de barras.
      */
-    private static void exportProductos() {
+    private static void exportarProductoEntity() {
         ProductoRepository repository = new ProductoRepository(context);
         ArrayList<ProductoEntity> data = repository.getAll();
 
@@ -128,9 +129,9 @@ public class ExportDB {
         grabar( "ProductoEntity.csv", code );
     }
 
-    private static void leerNombreCompra() {
-        NombreCompraRepository repository = new NombreCompraRepository(context);
-        ArrayList<NombreCompraEntity> data = repository.getAll();
+    private static void exportarNombreCompraEntity() {
+        NombreCompraController controller = new NombreCompraController(context);
+        ArrayList<NombreCompraEntity> data = controller.getAll();
 
         boolean salto = false;
         String code = "";
@@ -146,9 +147,14 @@ public class ExportDB {
         grabar( "NombreCompraEntity.csv", code );
     }
 
-    private static void leerTag() {
-        TagRepository repository = new TagRepository(context);
-        ArrayList<TagEntity> data = repository.getAll();
+    /**
+     * Exportar los tags.
+     * Hay que tener cuidado, porque los id son generados automáticamente,
+     * debemos asegurarnos de que no se han cambiado.
+     */
+    private static void exportarTagEnity() {
+        TagController controller = new TagController(context);
+        ArrayList<TagEntity> data = controller.getAll();
 
         boolean salto = false;
         String code = "";
@@ -196,20 +202,23 @@ public class ExportDB {
         grabar( "MedidaEntity.csv", code );
     }
 
-    private static void leerCompraEntitys() {
+    /**
+     * El id de la compra no se exporta ya que se genera de forma
+     * automática al crearse el objeto.
+     */
+    private static void exportarCompraEntity() {
         CompraRepository repository = new CompraRepository(context);
         ArrayList<CompraEntity> data = repository.getAll();
 
         boolean salto = false;
         String code = "";
         for( CompraEntity objeto : data){
-            code += objeto.getId() + ","
-                    + objeto.getProducto()
-                    + objeto.getFecha()
-                    + objeto.getPrecio()
-                    + objeto.getCantidad()
-                    + objeto.getPagado()
-                    + objeto.getPrecioMedido()
+            code += objeto.getProducto() + ","
+                    + objeto.getFecha() + ","
+                    + objeto.getCantidad() + ","
+                    + objeto.getPagado() + ","
+                    + objeto.getPrecio() + ","
+                    + objeto.getPrecioMedido() + ","
                     + objeto.getOferta();
             salto = true;
             if( salto ){

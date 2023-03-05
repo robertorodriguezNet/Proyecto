@@ -6,27 +6,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
-import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.dao.NombreCompraDao;
 import dam.proyecto.database.entity.NombreCompraEntity;
-import dam.proyecto.database.entity.ProductoEntity;
 
 /**
  *
  * @author Roberto Rodríguez
  * @since 23/01/2023
- * @version 2023.02.26
+ * @version 2023.03.05
  */
 public class NombreCompraRepository extends Repositorio {
 
+    private NombreCompraDao dao;
+
     public NombreCompraRepository(Context context) {
         super(context);
+        dao = db.nombreCompraDao();
     }
 
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
-        db.nombreCompraDao().clear();
+        dao.clear();
     }
 
     /**
@@ -34,7 +36,7 @@ public class NombreCompraRepository extends Repositorio {
      * @param compra que se debe eliminar
      */
     public void delete( NombreCompraEntity compra ){
-        db.nombreCompraDao().delete( compra );
+        dao.delete( compra );
     }
 
     /**
@@ -45,16 +47,14 @@ public class NombreCompraRepository extends Repositorio {
      */
     public boolean existsIdDeLaCompra(String id) {
         NombreCompraEntity objeto = null;
-        objeto = db
-                .nombreCompraDao()
+        objeto = dao
                 .findById(id);
         return objeto != null;
     }
 
     public boolean existsNombreDeLaCompra(String id) {
         NombreCompraEntity objeto = null;
-        objeto = db
-                .nombreCompraDao()
+        objeto = dao
                 .findById(id);
         return objeto != null;
     }
@@ -64,7 +64,7 @@ public class NombreCompraRepository extends Repositorio {
      * @return
      */
     public ArrayList<NombreCompraEntity> getAll(){
-        return (ArrayList<NombreCompraEntity>) db.nombreCompraDao().getAll();
+        return (ArrayList<NombreCompraEntity>) dao.getAll();
     }
 
     /**
@@ -73,7 +73,7 @@ public class NombreCompraRepository extends Repositorio {
      * @return
      */
     public ArrayList<String> getAllByIdComercio( int idComercio ){
-        return (ArrayList<String>) db.nombreCompraDao().getAllByComercio( idComercio );
+        return (ArrayList<String>) dao.getAllByComercio( idComercio );
     }
 
     /**
@@ -82,7 +82,7 @@ public class NombreCompraRepository extends Repositorio {
      * @return
      */
     public NombreCompraEntity getById( String id ){
-        return (NombreCompraEntity) db.nombreCompraDao().findById( id );
+        return (NombreCompraEntity) dao.findById( id );
     }
 
     /**
@@ -91,11 +91,11 @@ public class NombreCompraRepository extends Repositorio {
      * @return int el id de la compra
      */
     public int getIdComercio( String idCompra ){
-        return db.nombreCompraDao().getIdComercio( idCompra );
+        return dao.getIdComercio( idCompra );
     }
 
     public String getNombreComercioByCompra( String idCompra ){
-        return db.nombreCompraDao().getNombreComercio( idCompra );
+        return dao.getNombreComercio( idCompra );
     }
 
     /**
@@ -103,7 +103,7 @@ public class NombreCompraRepository extends Repositorio {
      * @param objeto que se debe insertar
      */
     public void insert( NombreCompraEntity objeto ){
-        db.nombreCompraDao().insert( objeto );
+        dao.insert( objeto );
     }
 
     /**
@@ -111,14 +111,12 @@ public class NombreCompraRepository extends Repositorio {
      * @param data colección de objetos
      */
     public void insertAll( List<NombreCompraEntity> data ){
-        db.nombreCompraDao().insertAll( data );
+        dao.insertAll( data );
     }
 
     public void update(NombreCompraEntity nombreCompra) {
-        db.nombreCompraDao().update( nombreCompra );
+        dao.update( nombreCompra );
     }
-
-
 
 
     @Override

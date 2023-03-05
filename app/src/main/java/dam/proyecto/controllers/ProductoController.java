@@ -5,14 +5,12 @@ import static dam.proyecto.Config.CODIGO_DE_BARRAS_LENGTH;
 import static dam.proyecto.Config.PRODUCTO_DENOMINACION_MIN_LENGTH;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
-import dam.proyecto.database.entity.TagEntity;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
@@ -27,7 +25,7 @@ import dam.proyecto.utilities.Preferencias;
 public class ProductoController {
 
     /**
-     * Borra los datos de la tabla
+     * Borra los datos de ProductoEntitty la tabla
      */
     public static void clearData( Context context ){
         new ProductoRepository( context ).clear();
@@ -202,7 +200,7 @@ public class ProductoController {
      */
     public static ArrayList<ProductoEntity> getAll( String texto, Context context){
 
-        TagControler tagControler = new TagControler( context );
+        TagController tagControler = new TagController( context );
 
         // Pedimos al controlador de etiquetas un listado con los productos que
         // contienen el texto buscado
