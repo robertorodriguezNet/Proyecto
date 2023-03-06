@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
+import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.database.entity.ComercioEntity;
@@ -28,7 +29,6 @@ import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.OfertaRespository;
 import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.database.repositories.TagProductoRepository;
-import dam.proyecto.database.repositories.TagRepository;
 
 /**
  *
@@ -46,7 +46,7 @@ public class ExportDB {
         context = c;
 
         // Debemos obtner todos los registros de todas las tablas
-//        leerComercio();
+        exportarComercioEntity();
         exportarCompraEntity();
 //        leerMarcaBlanca();
 //        leerMarcas();
@@ -86,9 +86,9 @@ public class ExportDB {
         }
     }
 
-    private static void leerComercio() {
-        ComercioRespository repository = new ComercioRespository(context);
-        ArrayList<ComercioEntity> data = repository.getAll();
+    private static void exportarComercioEntity() {
+        ComercioController controller = new ComercioController(context);
+        ArrayList<ComercioEntity> data = controller.getAll();
 
         boolean salto = false;
         String code = "";

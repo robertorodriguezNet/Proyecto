@@ -32,13 +32,6 @@ public class ComercioRespository extends Repositorio {
     }
 
     /**
-     * Inserta una colección de objetos
-     */
-    public void insertAll(List<ComercioEntity> data) {
-        db.comercioDao().insertAll(data);
-    }
-
-    /**
      * Devuelve el objeto comercio a partir de su id
      * @param id id del comercio
      * @return ComercioEntity relacionado con el id
@@ -47,6 +40,14 @@ public class ComercioRespository extends Repositorio {
         return  dao.findById( id );
     }
 
+    /**
+     * Devuelve el objeto comercio a partir de su nombre
+     * @param name nombre del comercio
+     * @return ComercioEntity relacionado con el nombre
+     */
+    public ComercioEntity findByName( String name ){
+        return  dao.findByName( name );
+    }
 
     /**
      * Devuelve un listado completo de los registros.
@@ -64,6 +65,29 @@ public class ComercioRespository extends Repositorio {
      */
     public String getNombreComercio( int id ){
         return dao.findById( id ).getName();
+    }
+
+    /**
+     * Devuelve el id más alto de la tabla
+     * @return el id más alto registrado
+     */
+    public int getMaxId(){
+        return dao.getMaxId();
+    }
+
+    /**
+     * Inserta un comercio en la base de datos
+     * @param comercio
+     */
+    public void insert( ComercioEntity comercio){
+        dao.insert( comercio );
+    }
+
+    /**
+     * Inserta una colección de objetos
+     */
+    public void insertAll(List<ComercioEntity> data) {
+        db.comercioDao().insertAll(data);
     }
 
     @Override

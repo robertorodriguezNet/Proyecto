@@ -30,6 +30,12 @@ public interface ComercioDao {
     @Query( "SELECT * FROM Comercio WHERE id = :id")
     ComercioEntity findById( int id );
 
+    @Query( "SELECT * FROM Comercio WHERE name = :param")
+    ComercioEntity findByName( String param );
+
+    @Query( "SELECT MAX(id) FROM comercio")
+    Integer getMaxId();
+
     // UPDATE ------------------------------------
     @Update
     void update( ComercioEntity object );
