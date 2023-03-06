@@ -41,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
         // Cargamos los datos de ejemplo
         // Hay que pasarle el contexto
         Log.d("BD", "MainActivity.class: antes de cargar datos" );
-        Ejemplos.cargarDatos( this, this );
+//        Ejemplos.cargarDatos( this, this );
 
         // Obtener la vista mediante ViewBinding
         bindingMain = ActivityMainBinding.inflate( getLayoutInflater() );

@@ -93,7 +93,8 @@ public class ExportDB {
         boolean salto = false;
         String code = "";
         for( ComercioEntity objeto : data){
-            code += objeto.getName();
+            code += objeto.getId() + ","
+                 + objeto.getName();
             salto = true;
             if( salto ){
                 code += "\n";
@@ -235,7 +236,8 @@ public class ExportDB {
         boolean salto = false;
         String code = "";
         for( MarcaEntity objeto : data){
-            code +=  objeto.getName();
+            code +=  objeto.getId() + ","
+                    + objeto.getName();
             salto = true;
             if( salto ){
                 code += "\n";
