@@ -13,6 +13,7 @@ import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.MedidaController;
 import dam.proyecto.controllers.NombreCompraController;
+import dam.proyecto.controllers.OfertaController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.controllers.TagProductoController;
@@ -48,6 +49,7 @@ public class ImportDB {
         importarProductoTagEntity();
         importarMarcaEntity();
         importarMedidaEntity();
+        importarOfertaEntity();
     }
 
     /**
@@ -347,6 +349,40 @@ public class ImportDB {
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer MedidaEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC","Error al importar MedidaEntity:\n"
+                    + e.getMessage() );
+        }
+    }
+
+    /**
+     * Importa la entidad MedidaEntity.
+     * El id no es auto-increment
+     */
+    private static void importarOfertaEntity(){
+
+        String file = "OfertaEntity.csv";
+        OfertaController controller = new OfertaController( context );
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros( file );
+            for ( String registro : registros ) {
+
+                String[] data = registro.split(",");
+
+                // Pedimos al controlador de productos que lo guarde
+                // Es posible que data tenga tan solo un registro, pues
+                // existe un nombre de comercio en blanco
+                controller.insert(
+                        data[0],
+                        data[1]
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer OfertaEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC","Error al importar OfertaEntity:\n"
                     + e.getMessage() );
         }
     }

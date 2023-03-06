@@ -29,7 +29,7 @@ public interface OfertaDao {
     List<OfertaEntity> getAll();
 
     @Query( "SELECT * FROM Oferta WHERE id = :id")
-    OfertaEntity findById( int id );
+    OfertaEntity findById( String id );
 
     // UPDATE ------------------------------------
     @Update

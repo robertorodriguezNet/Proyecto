@@ -1,5 +1,6 @@
 package dam.proyecto.database.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
@@ -13,29 +14,21 @@ import androidx.room.PrimaryKey;
 @Entity( tableName = "Oferta" )
 public class OfertaEntity {
 
-    @PrimaryKey( autoGenerate = true ) private int id;
-    @ColumnInfo( name = "abbr" ) private String abbr;
+    @PrimaryKey( autoGenerate = false ) @NonNull
+    private String id;
     @ColumnInfo( name = "texto" ) private String texto;
 
-    public OfertaEntity(String abbr, String texto ) {
-        this.abbr = abbr;
+    public OfertaEntity( String id, String texto ) {
         this.texto = texto;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
         this.id = id;
     }
 
-    public String getAbbr() {
-        return abbr;
+    public String getId() {
+        return id;
     }
 
-    public void setAbbr(String abbr) {
-        this.abbr = abbr;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getTexto() {
@@ -48,6 +41,6 @@ public class OfertaEntity {
 
     @Override
     public String toString() {
-        return abbr;
+        return id + ", " + texto;
     }
 }

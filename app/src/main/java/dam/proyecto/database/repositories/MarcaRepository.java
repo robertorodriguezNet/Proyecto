@@ -7,7 +7,6 @@ import java.util.List;
 
 import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.dao.MarcaDao;
-import dam.proyecto.database.dao.MarcaDao_Impl;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.MarcaEntity;
 

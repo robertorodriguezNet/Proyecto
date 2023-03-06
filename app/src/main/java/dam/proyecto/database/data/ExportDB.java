@@ -12,6 +12,7 @@ import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.MedidaController;
 import dam.proyecto.controllers.NombreCompraController;
+import dam.proyecto.controllers.OfertaController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.controllers.TagProductoController;
 import dam.proyecto.database.entity.ComercioEntity;
@@ -26,7 +27,6 @@ import dam.proyecto.database.entity.TagEntity;
 import dam.proyecto.database.entity.TagsProductoEntity;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.MarcaBlancaRepository;
-import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.OfertaRespository;
 import dam.proyecto.database.repositories.ProductoRepository;
 
@@ -52,7 +52,7 @@ public class ExportDB {
         exportarMarcaEntity();
         exportarMedidaEntity();
         exportarNombreCompraEntity();
-//        leerOfertaEntity();
+        exportarOfertaEntity();
         exportarProductoEntity();
         exportarTagEnity();
         exportarTagsProductoEntity();
@@ -261,15 +261,14 @@ public class ExportDB {
         grabar( "TagsProductoEntity.csv", code );
     }
 
-    private static void leerOfertaEntity() {
-        OfertaRespository repository = new OfertaRespository(context);
-        ArrayList<OfertaEntity> data = repository.getAll();
+    private static void exportarOfertaEntity() {
+        OfertaController controller = new OfertaController(context);
+        ArrayList<OfertaEntity> data = controller.getAll();
 
         boolean salto = false;
         String code = "";
         for( OfertaEntity objeto : data){
             code += objeto.getId() + ","
-                    + objeto.getAbbr()
                     + objeto.getTexto();
             salto = true;
             if( salto ){
