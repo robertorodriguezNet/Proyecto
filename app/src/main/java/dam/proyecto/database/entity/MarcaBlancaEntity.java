@@ -15,21 +15,21 @@ import androidx.room.PrimaryKey;
 public class MarcaBlancaEntity {
 
 
-    @PrimaryKey( autoGenerate = true ) private long id;
+    @PrimaryKey( autoGenerate = false ) private int id;
     @ColumnInfo( name = "marca" ) private int marca;
     @ColumnInfo( name = "comercio" ) private int comercio;
 
-    public MarcaBlancaEntity( int marca, int comercio) {
-
+    public MarcaBlancaEntity( int id, int marca, int comercio) {
+        this.id = id;
         this.marca = marca;
         this.comercio = comercio;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

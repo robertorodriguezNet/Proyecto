@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.Log;
 
 import dam.proyecto.activities.MainActivity;
+import dam.proyecto.controllers.MarcaBlancaController;
 import dam.proyecto.database.AppDatabase;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
@@ -47,6 +48,7 @@ public class Ejemplos {
             cargarMedidas();
             cargarCompraEntitys();
             cargarMarcas();
+            cargarMarcaBlanca();
             cargarTagsProductoEntity();
             cargarOfertaEntity();
 
@@ -109,4 +111,9 @@ public class Ejemplos {
         repository.insertAll(OfertaData.getData());
     }
 
+    private static void cargarMarcaBlanca() {
+        MarcaBlancaController controller = new MarcaBlancaController(context);
+        controller.clear();
+        controller.insertAll(MarcaBlancaData.getData());
+    }
 }

@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import dam.proyecto.controllers.ComercioController;
+import dam.proyecto.controllers.MarcaBlancaController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.MedidaController;
 import dam.proyecto.controllers.NombreCompraController;
@@ -27,7 +28,6 @@ import dam.proyecto.database.entity.TagEntity;
 import dam.proyecto.database.entity.TagsProductoEntity;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.MarcaBlancaRepository;
-import dam.proyecto.database.repositories.OfertaRespository;
 import dam.proyecto.database.repositories.ProductoRepository;
 
 /**
@@ -48,7 +48,7 @@ public class ExportDB {
         // Debemos obtner todos los registros de todas las tablas
         exportarComercioEntity();
         exportarCompraEntity();
-//        leerMarcaBlanca();
+        exportarMarcaBlancaEntity();
         exportarMarcaEntity();
         exportarMedidaEntity();
         exportarNombreCompraEntity();
@@ -167,21 +167,22 @@ public class ExportDB {
         grabar( "TagEntity.csv", code );
     }
 
-    private static void leerMarcaBlanca() {
-        MarcaBlancaRepository repository = new MarcaBlancaRepository(context);
-        ArrayList<MarcaBlancaEntity> data = repository.getAll();
+    private static void exportarMarcaBlancaEntity() {
+        MarcaBlancaController controller = new MarcaBlancaController(context);
+        ArrayList<MarcaBlancaEntity> data = controller.getAll();
 
         boolean salto = false;
         String code = "";
         for( MarcaBlancaEntity objeto : data){
-            code += objeto.getMarca() + ","
-                 + objeto.getComercio();
+            code += objeto.getId() + ","
+                    + objeto.getMarca() + ","
+                    + objeto.getComercio();
             salto = true;
             if( salto ){
                 code += "\n";
             }
         }
-        grabar( "TagEntity.csv", code );
+        grabar( "MarcaBlancaEntity.csv", code );
     }
 
     private static void exportarMedidaEntity() {

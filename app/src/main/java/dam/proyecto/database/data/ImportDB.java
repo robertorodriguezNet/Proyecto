@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.CompraController;
+import dam.proyecto.controllers.MarcaBlancaController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.MedidaController;
 import dam.proyecto.controllers.NombreCompraController;
@@ -41,15 +42,16 @@ public class ImportDB {
     public static void importDB(Context c) {
         context = c;
 
-        importarCompraEntity();
-        importarProductoEntity();
-        importarNombreCompraEntity();
-        importarTagEntity();
-        importarComercioEntity();
-        importarProductoTagEntity();
-        importarMarcaEntity();
-        importarMedidaEntity();
-        importarOfertaEntity();
+//        importarCompraEntity();
+//        importarProductoEntity();
+//        importarNombreCompraEntity();
+//        importarTagEntity();
+//        importarComercioEntity();
+//        importarProductoTagEntity();
+//        importarMarcaEntity();
+//        importarMedidaEntity();
+//        importarOfertaEntity();
+//        importarMarcaBlancaEntity();
     }
 
     /**
@@ -378,6 +380,41 @@ public class ImportDB {
                 controller.insert(
                         data[0],
                         data[1]
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer OfertaEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC","Error al importar OfertaEntity:\n"
+                    + e.getMessage() );
+        }
+    }
+
+    /**
+     * Importa la entidad MedidaEntity.
+     * El id no es auto-increment
+     */
+    private static void importarMarcaBlancaEntity(){
+
+        String file = "MarcaBlancaEntity.csv";
+        MarcaBlancaController controller = new MarcaBlancaController( context );
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros( file );
+            for ( String registro : registros ) {
+
+                String[] data = registro.split(",");
+
+                // Pedimos al controlador de productos que lo guarde
+                // Es posible que data tenga tan solo un registro, pues
+                // existe un nombre de comercio en blanco
+                controller.insert(
+                        Integer.valueOf( data[0] ),
+                        Integer.valueOf( data[1] ),
+                        Integer.valueOf( data[2] )
                 );
             }
         } catch (Exception e) {
