@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.MarcaController;
+import dam.proyecto.controllers.MedidaController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.controllers.TagProductoController;
@@ -25,7 +26,6 @@ import dam.proyecto.database.entity.TagEntity;
 import dam.proyecto.database.entity.TagsProductoEntity;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.MarcaBlancaRepository;
-import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.OfertaRespository;
 import dam.proyecto.database.repositories.ProductoRepository;
@@ -50,7 +50,7 @@ public class ExportDB {
         exportarCompraEntity();
 //        leerMarcaBlanca();
         exportarMarcaEntity();
-//        leerMedidas();
+        exportarMedidaEntity();
         exportarNombreCompraEntity();
 //        leerOfertaEntity();
         exportarProductoEntity();
@@ -184,9 +184,9 @@ public class ExportDB {
         grabar( "TagEntity.csv", code );
     }
 
-    private static void leerMedidas() {
-        MedidaRepository repository = new MedidaRepository(context);
-        ArrayList<MedidaEntity> data = repository.getAll();
+    private static void exportarMedidaEntity() {
+        MedidaController controller = new MedidaController(context);
+        ArrayList<MedidaEntity> data = controller.getAll();
 
         boolean salto = false;
         String code = "";
