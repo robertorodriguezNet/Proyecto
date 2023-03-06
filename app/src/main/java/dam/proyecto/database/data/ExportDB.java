@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.TagController;
+import dam.proyecto.controllers.TagProductoController;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.MarcaBlancaEntity;
@@ -21,7 +22,6 @@ import dam.proyecto.database.entity.OfertaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.entity.TagEntity;
 import dam.proyecto.database.entity.TagsProductoEntity;
-import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.MarcaBlancaRepository;
 import dam.proyecto.database.repositories.MarcaRepository;
@@ -55,7 +55,7 @@ public class ExportDB {
 //        leerOfertaEntity();
         exportarProductoEntity();
         exportarTagEnity();
-//        leerTagsProductoEntity();
+        exportarTagsProductoEntity();
 
     }
 
@@ -246,15 +246,14 @@ public class ExportDB {
     }
 
 
-    private static void leerTagsProductoEntity() {
-        TagProductoRepository repository = new TagProductoRepository(context);
-        ArrayList<TagsProductoEntity> data = repository.getAll();
+    private static void exportarTagsProductoEntity() {
+        TagProductoController controller = new TagProductoController(context);
+        ArrayList<TagsProductoEntity> data = controller.getAll();
 
         boolean salto = false;
         String code = "";
         for( TagsProductoEntity objeto : data){
-            code += objeto.getId() + ","
-                    + objeto.getProducto()
+            code += objeto.getProducto() + ","
                     + objeto.getTag();
             salto = true;
             if( salto ){

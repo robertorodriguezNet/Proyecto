@@ -5,25 +5,32 @@ import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
+/**
+ *
+ * @author Roberto Rodríguez
+ * @since 17/01/2023
+ * @version 2023.03.06
+ */
 @Entity( tableName = "TagsProducto" )
 public class TagsProductoEntity {
 
-    @PrimaryKey( autoGenerate = true )
+    @PrimaryKey( autoGenerate = false )
     @NonNull
-    private Long id;
+    private int id;
     @NonNull @ColumnInfo( name = "producto" ) private String producto;
     @ColumnInfo( name = "tag" ) @NonNull private int tag;
 
-    public TagsProductoEntity(String producto, int tag) {
+    public TagsProductoEntity(int id, String producto, int tag) {
+        this.id = id;
         this.producto = producto;
         this.tag = tag;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

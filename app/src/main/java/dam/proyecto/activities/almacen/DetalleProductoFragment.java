@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import dam.proyecto.R;
 import dam.proyecto.controllers.ProductoController;
+import dam.proyecto.controllers.TagProductoController;
 import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.MarcaRepository;
@@ -79,7 +80,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     MarcaRepository marcaRepository;
     ProductoRepository productoRepository;
     TagRepository tagRepository;
-    TagProductoRepository tagProductoRepository;
+    TagProductoController tagProductoController;
 
     private ProductoEntity productoEditando;                         // Producto que está editándose
 
@@ -117,7 +118,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         marcaRepository = new MarcaRepository(context);
         productoRepository = new ProductoRepository(context);
         tagRepository = new TagRepository(context);
-        tagProductoRepository = new TagProductoRepository(context);
+        tagProductoController = new TagProductoController( context );
 
         // Obtener la colección de medidas, marcas y etiquetas
         // Las etiquetas del producto solo se obtienen si se está editando
@@ -500,7 +501,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // Obtener las etiquetas que le corresponden
             // La lista se inicializa aquí porque tan solo se carga si se
             // está editando un producto
-            tagProductoList = tagProductoRepository.getNombres(producto.getId());
+            tagProductoList = tagProductoController.getNombres(producto.getId());
             String tagString = "";
             for (String tag : tagProductoList) {
                 tagString += tag + ", ";
@@ -592,7 +593,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             int idTag = tagRepository.getIdByName(tag.trim());
             Log.d("LDLC", "DetalleProductoFragment.asociarTagsAlProducto\n" +
                     "tag: " + tag + " id: " + tags.length);
-            tagProductoRepository.insert(
+            tagProductoController.insert(
                     idProducto,
                     idTag
             );

@@ -13,6 +13,7 @@ import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
+import dam.proyecto.controllers.TagProductoController;
 import dam.proyecto.database.entity.ProductoEntity;
 
 /**
@@ -42,6 +43,7 @@ public class ImportDB {
         importarNombreCompraEntity();
         importarTagEntity();
         importarComercioEntity();
+        importarProductoTagEntity();
     }
 
     /**
@@ -247,6 +249,38 @@ public class ImportDB {
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer ComercioEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC","Error al importar ComercioEntity:\n"
+                    + e.getMessage() );
+        }
+    }
+
+
+    /**
+     * Importa la entidad TagEntity.
+     * El id no es auto-increment
+     */
+    private static void importarProductoTagEntity(){
+
+        String file = "TagsProductoEntity.csv";
+        TagProductoController controller = new TagProductoController( context );
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros( file );
+            for ( String registro : registros ) {
+
+                String[] data = registro.split(",");
+                // Pedimos al controlador de productos que lo guarde
+                controller.insert(
+                        data[0],
+                        Integer.valueOf(data[1])
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer TagsProductoEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC","Error al importar TagsProductoEntity:\n"
                     + e.getMessage() );
         }
     }

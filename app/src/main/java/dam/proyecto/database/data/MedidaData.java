@@ -1,6 +1,5 @@
 package dam.proyecto.database.data;
 
-import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.MedidaEntity;
 
 import java.util.Arrays;

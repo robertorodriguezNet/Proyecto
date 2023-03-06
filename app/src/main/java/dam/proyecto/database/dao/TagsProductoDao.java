@@ -21,14 +21,17 @@ public interface TagsProductoDao {
     void insertAll (List<TagsProductoEntity> objects );
 
     // READ ---------------------------------------
+    @Query( "SELECT * FROM TagsProducto WHERE id = :id")
+    TagsProductoEntity findById( String id );
+
     @Query( "SELECT * FROM TagsProducto")
     List<TagsProductoEntity> getAll();
 
+    @Query( "SELECT MAX( id ) FROM TagsProducto ")
+    int getMaxId();
+
     @Query( "SELECT tag FROM TagsProducto WHERE producto = :args")
     List<Integer> getTagByProducto( String args);
-
-    @Query( "SELECT * FROM TagsProducto WHERE id = :id")
-    TagsProductoEntity findById( String id );
 
     @Query( "SELECT * FROM tagsproducto WHERE producto = :idProducto AND tag = :idTag")
     TagsProductoEntity getAsociacion( String idProducto, int idTag);
