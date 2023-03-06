@@ -33,6 +33,9 @@ public interface MarcaDao {
     @Query("SELECT * FROM Marca WHERE name = :name")
     MarcaEntity findByName(String name);
 
+    @Query("SELECT MAX(id) FROM marca")
+    int getMaxId();
+
     // UPDATE ------------------------------------
     @Update
     void update(MarcaEntity object);

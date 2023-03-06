@@ -11,18 +11,19 @@ import androidx.room.PrimaryKey;
 @Entity( tableName = "Marca")
 public class MarcaEntity {
 
-    @PrimaryKey( autoGenerate = true ) private long id;
+    @PrimaryKey( autoGenerate = false ) private int id;
     @ColumnInfo( name = "name" ) private String name;
 
-    public MarcaEntity( String name) {
+    public MarcaEntity( int id, String name) {
+        this.id = id;
         this.name = name;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

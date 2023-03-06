@@ -7,31 +7,40 @@ import java.util.List;
 
 import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.dao.MarcaDao;
+import dam.proyecto.database.dao.MarcaDao_Impl;
+import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.MarcaEntity;
 
 /**
  * Repositorio para las marcas
  * @author Roberto Rodríguez
  * @since 06/02/2023
- * @version 2023.02.21
+ * @version 2023.03.06
  */
 public class MarcaRepository extends Repositorio{
+
+    private Context context;
+    private MarcaDao dao;
+
     public MarcaRepository(Context context) {
+
         super(context);
+        this.context = context;
+        dao = getDb().marcaDao();
     }
 
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
-        db.marcaDao().clear();
+        dao.clear();
     }
 
     /**
      * Inserta una colección de objetos
      */
     public void insertAll( List<MarcaEntity> data ){
-        db.marcaDao().insertAll( data );
+        dao.insertAll( data );
     }
 
     /**
@@ -39,34 +48,25 @@ public class MarcaRepository extends Repositorio{
      * @return los datos.
      */
     public ArrayList<MarcaEntity> getAll(){
-        return (ArrayList<MarcaEntity>) getDb().marcaDao().getAll();
+        return (ArrayList<MarcaEntity>) dao.getAll();
     }
 
     /**
-     * Devuelve un listado con tan sólo los nombres
-     * @return
+     * Devuelve el objeto marca a partir de su id
+     * @param id id de la marca
+     * @return MarcaEntity relacionado con el id
      */
-    public ArrayList<String> getNombres(){
-        ArrayList<MarcaEntity> objetos = getAll();
-        ArrayList<String> nombres = new ArrayList<>();
-
-        for ( MarcaEntity objeto: objetos ) {
-            nombres.add( objeto.getName() );
-        }
-
-        return nombres;
+    public MarcaEntity findById( int id ){
+        return  dao.findById( id );
     }
 
     /**
-     * Devuelve el nombre de la marca correspondiente al id recibido
-     * @param  id del cual hay que devolver el nombre
-     * @return
+     * Devuelve el objeto marca a partir de su nombre
+     * @param name nombre de la marca
+     * @return marcaEntity relacionado con el nombre
      */
-    public String getNameById( int id ){
-
-        MarcaEntity marca = db.marcaDao().findById( id );
-        return marca.getName();
-
+    public MarcaEntity findByName(String name ){
+        return  dao.findByName( name );
     }
 
     /**
@@ -77,7 +77,6 @@ public class MarcaRepository extends Repositorio{
      */
     public int getIdByName( String marcaStr, boolean control ){
 
-        MarcaDao dao = db.marcaDao();
         String marca = marcaStr.trim();
 
         // Obtenemos el objeto MarcaEntity
@@ -87,7 +86,7 @@ public class MarcaRepository extends Repositorio{
         // Si marcaEntity es nulo, es que el objeto no existe
         if( marcaEntity == null ){
             // Guardamos la marca
-            dao.insert( new MarcaEntity( marca ));
+            dao.insert( new MarcaEntity( getMaxId(), marca ));
             marcaEntity = dao.findByName( marca );
         }
 
@@ -106,12 +105,56 @@ public class MarcaRepository extends Repositorio{
         // Si marcaEntity es nulo, es que el objeto no existe
         if( marcaEntity == null ){
             // Guardamos la marca
-            dao.insert( new MarcaEntity( marca ));
+            dao.insert( new MarcaEntity( getMaxId(), marca ));
             marcaEntity = dao.findByName( marca );
         }
 
         return ( marcaEntity == null ) ? -1 : (int) marcaEntity.getId();
     }
+
+    /**
+     * Devuelve el nombre de la marca correspondiente al id recibido
+     * @param  id del cual hay que devolver el nombre
+     * @return
+     */
+    public String getNameById( int id ){
+        MarcaEntity marca = dao.findById( id );
+        return marca.getName();
+    }
+
+    /**
+     * Devuelve un listado con tan sólo los nombres
+     * @return
+     */
+    public ArrayList<String> getNombres(){
+        ArrayList<MarcaEntity> objetos = getAll();
+        ArrayList<String> nombres = new ArrayList<>();
+
+        for ( MarcaEntity objeto: objetos ) {
+            nombres.add( objeto.getName() );
+        }
+
+        return nombres;
+    }
+
+
+
+    /**
+     * Develve el valor máximo del id
+     * @return
+     */
+    public int getMaxId(){
+        return dao.getMaxId();
+    }
+
+    /**
+     * Inserta un comercio en la base de datos
+     * @param objeto
+     */
+    public void insert( MarcaEntity objeto){
+        dao.insert( objeto );
+    }
+
 
     @Override
     public String toString() {

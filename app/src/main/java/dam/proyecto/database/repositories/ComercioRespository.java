@@ -77,10 +77,10 @@ public class ComercioRespository extends Repositorio {
 
     /**
      * Inserta un comercio en la base de datos
-     * @param comercio
+     * @param objeto
      */
-    public void insert( ComercioEntity comercio){
-        dao.insert( comercio );
+    public void insert( ComercioEntity objeto){
+        dao.insert( objeto );
     }
 
     /**

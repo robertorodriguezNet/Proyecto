@@ -9,6 +9,7 @@ import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 
 import dam.proyecto.controllers.ComercioController;
+import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.controllers.TagProductoController;
@@ -28,7 +29,6 @@ import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.OfertaRespository;
 import dam.proyecto.database.repositories.ProductoRepository;
-import dam.proyecto.database.repositories.TagProductoRepository;
 
 /**
  *
@@ -49,7 +49,7 @@ public class ExportDB {
         exportarComercioEntity();
         exportarCompraEntity();
 //        leerMarcaBlanca();
-//        leerMarcas();
+        exportarMarcaEntity();
 //        leerMedidas();
         exportarNombreCompraEntity();
 //        leerOfertaEntity();
@@ -93,8 +93,7 @@ public class ExportDB {
         boolean salto = false;
         String code = "";
         for( ComercioEntity objeto : data){
-            code += objeto.getId() + ","
-                    + objeto.getName();
+            code += objeto.getName();
             salto = true;
             if( salto ){
                 code += "\n";
@@ -228,15 +227,14 @@ public class ExportDB {
         grabar( "CompraEntity.csv", code );
     }
 
-    private static void leerMarcas() {
-        MarcaRepository repository = new MarcaRepository(context);
-        ArrayList<MarcaEntity> data = repository.getAll();
+    private static void exportarMarcaEntity() {
+        MarcaController controller = new MarcaController(context);
+        ArrayList<MarcaEntity> data = controller.getAll();
 
         boolean salto = false;
         String code = "";
         for( MarcaEntity objeto : data){
-            code += objeto.getId() + ","
-                    + objeto.getName();
+            code +=  objeto.getName();
             salto = true;
             if( salto ){
                 code += "\n";

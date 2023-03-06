@@ -34,7 +34,7 @@ public interface ComercioDao {
     ComercioEntity findByName( String param );
 
     @Query( "SELECT MAX(id) FROM comercio")
-    Integer getMaxId();
+    int getMaxId();
 
     // UPDATE ------------------------------------
     @Update

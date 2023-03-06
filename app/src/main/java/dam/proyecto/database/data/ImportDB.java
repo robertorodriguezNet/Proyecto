@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.CompraController;
+import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
@@ -44,6 +45,7 @@ public class ImportDB {
         importarTagEntity();
         importarComercioEntity();
         importarProductoTagEntity();
+        importarMarcaEntity();
     }
 
     /**
@@ -220,7 +222,7 @@ public class ImportDB {
     }
 
     /**
-     * Importa la entidad TagEntity.
+     * Importa la entidad ComercioEntity.
      * El id no es auto-increment
      */
     private static void importarComercioEntity(){
@@ -237,13 +239,8 @@ public class ImportDB {
             for ( String registro : registros ) {
 
                 String[] data = registro.split(",");
-
-                // Pedimos al controlador de productos que lo guarde
-                // Es posible que data tenga tan solo un registro, pues
-                // existe un nombre de comercio en blanco
                 controller.insert(
-                        Integer.valueOf(data[0]),
-                        ( data.length == 1 ) ? "" : data[1]
+                        data[0]
                 );
             }
         } catch (Exception e) {
@@ -281,6 +278,39 @@ public class ImportDB {
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer TagsProductoEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC","Error al importar TagsProductoEntity:\n"
+                    + e.getMessage() );
+        }
+    }
+
+    /**
+     * Importa la entidad MarcaEntity.
+     * El id no es auto-increment
+     */
+    private static void importarMarcaEntity(){
+
+        String file = "MarcaEntity.csv";
+        MarcaController controller = new MarcaController( context );
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros( file );
+            for ( String registro : registros ) {
+
+                String[] data = registro.split(",");
+
+                // Pedimos al controlador de productos que lo guarde
+                // Es posible que data tenga tan solo un registro, pues
+                // existe un nombre de comercio en blanco
+                controller.insert(
+                        data[0]
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer MarcaEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC","Error al importar MarcaEntity:\n"
                     + e.getMessage() );
         }
     }
