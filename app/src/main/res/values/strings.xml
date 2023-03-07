@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Lista de la compra</string>
     <string name="app_author">Roberto Rodríguez Jiménez</string>
-    <string name="app_version">v0.2023.02.17</string>
+    <string name="app_version">v0.2023.03.07</string>
 
     <string name="title_activity_almacen">Almacén</string>
     <string name="title_activity_lista">Lista abierta</string>
@@ -100,6 +100,7 @@
     <string name="fpc_str_comparativaTitulo">COMPRATIVA</string>
     <string name="flp_str_act_buscar">Buscar...</string>
     <string name="mp_str_it_importarDB">Importar DB</string>
+    <string name="dc_str_tv_titulo">Nuevo comercio</string>
 
     <string-array name="opciones_precio">
         <item>Actual</item>

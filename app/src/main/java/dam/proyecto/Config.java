@@ -29,6 +29,12 @@ public class Config {
                     + " caracteres",
     };
 
+    // Errores al crear un comercio
+    public static final String[] ERROR_CREAR_COMERCIO = {
+            "La longitud del nombre no es correcta",
+            "El nombre del comercio ya existe"
+    };
+
 
     // Botonera de Editar producto (0 a 1)
     public static final float BOTON_DESACTIVADO_ALPHA = 0.3f;

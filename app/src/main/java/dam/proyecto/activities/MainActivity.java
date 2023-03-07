@@ -3,19 +3,26 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.zip.Inflater;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
+import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.database.data.Ejemplos;
 import dam.proyecto.database.data.ExportDB;
 import dam.proyecto.database.data.ImportDB;
@@ -103,10 +110,7 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(this, "ayuda", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.mp_it_comercio:
-                Toast.makeText(this, "añadir comercio", Toast.LENGTH_SHORT).show();
-                break;
-            case R.id.mp_it_etiqueta:
-                Toast.makeText(this, "añadir etiqueta", Toast.LENGTH_SHORT).show();
+                    abrirComercio();
                 break;
             case R.id.mp_it_marca:
                 Toast.makeText(this, "añadir marca", Toast.LENGTH_SHORT).show();
@@ -122,5 +126,32 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Abre el diálogo para insertar un nuevo comercio
+     */
+    private void abrirComercio(){
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder( this );
+        View view = inflater.inflate( R.layout.dialog_comercio, null );
+
+        TextView input = (TextView) view.findViewById( R.id.dc_inp_comercio );
+
+        builder.setTitle("Nuevo comercio");
+        builder.setMessage("El nombre debe tener entre 3 y 16 caracteres");
+        builder.setView( view );
+        builder.setNegativeButton("Cancelar", null);
+        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ComercioController controller = new ComercioController(getApplicationContext());
+                controller.addComercio( input.getText().toString() );
+            }
+        });
+
+        builder.create();
+        builder.show();
+
+    }
 
 }

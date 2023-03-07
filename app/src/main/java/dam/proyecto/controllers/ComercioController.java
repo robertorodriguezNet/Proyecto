@@ -1,6 +1,10 @@
 package dam.proyecto.controllers;
 
+import static dam.proyecto.Config.ERROR_CREAR_COMERCIO;
+
 import android.content.Context;
+import android.util.Log;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
@@ -12,7 +16,7 @@ import dam.proyecto.database.repositories.ComercioRespository;
  *
  * @author Roberto Rodríguez Jiménez
  * @since 04/03/2023
- * @version 2023.03.04
+ * @version 2023.03.07
  */
 
 public class ComercioController {
@@ -23,6 +27,32 @@ public class ComercioController {
     public ComercioController(Context context ){
         this.context = context;
         this.repository = new ComercioRespository( context );
+    }
+
+    /**
+     * Añade un nuevo comercio a la lista
+     * @param name nombre del comercio que se añade
+     */
+    public void addComercio( String name ){
+
+        // Comprobar el nombre del comercio
+        int error = -1;
+        if( ( name.length() < 3 ) || ( name.length() > 16 ) ){
+            error = 0;
+        }
+        if( ( error == -1) && ( existsComercio( name ) )){
+            error = 1;
+        }
+
+//        Log.d( "LDLC", "Añadir comercio: " + name );
+
+        if( error >= 0 ){
+            Toast.makeText(context,
+                    name + "\n" + ERROR_CREAR_COMERCIO[error],
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            insert( name );
+        }
     }
 
     /**
