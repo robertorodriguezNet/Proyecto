@@ -9,6 +9,7 @@ import dam.proyecto.database.AppDatabase;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.database.repositories.CompraRepository;
+import dam.proyecto.database.repositories.MarcaBlancaRepository;
 import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
@@ -49,6 +50,7 @@ public class Ejemplos {
             cargarMarcas();
             cargarTagsProductoEntity();
             cargarOfertaEntity();
+            cargarMarcaBlanca();
 
             Preferencias.setDatosCargados(true, activity );
         }
@@ -107,6 +109,12 @@ public class Ejemplos {
         OfertaRespository repository = new OfertaRespository(context);
         repository.clear();
         repository.insertAll(OfertaData.getData());
+    }
+
+    private static void cargarMarcaBlanca() {
+        MarcaBlancaRepository repository = new MarcaBlancaRepository(context);
+        repository.clear();
+        repository.insertAll(MarcaBlancaData.getData());
     }
 
 }

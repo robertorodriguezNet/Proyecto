@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                 abrirComercio();
                 break;
             case R.id.mp_it_exportarBD:
-//                ExportDB.exportDB( this );
+                ExportDB.exportDB( this );
                 break;
             case R.id.mp_it_impoprtarBD:BD:
 //            ImportDB.importDB( this );
