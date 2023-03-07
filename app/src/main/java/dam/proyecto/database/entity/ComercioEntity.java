@@ -7,10 +7,10 @@ import androidx.room.PrimaryKey;
 @Entity( tableName = "Comercio" )
 public class ComercioEntity {
 
-    @PrimaryKey( autoGenerate = true ) private int id;
+    @PrimaryKey( autoGenerate = false ) private int id;
     @ColumnInfo( name = "name" ) private String name;
 
-    public ComercioEntity( String name ) {
+    public ComercioEntity( int id, String name ) {
         this.name = name;
     }
 

@@ -231,19 +231,19 @@ public class ImportDB {
         ComercioController controller = new ComercioController(context);
 
         try {
-//            // Borrar los datos
-//            controller.clear();
-//
-//            // Cada línea leída es un ProductoEntity
-//            ArrayList<String> registros = getRegistros(file);
-//            for (String registro : registros) {
-//
-//                String[] data = registro.split(",");
-//                controller.insert(
-//                        Integer.valueOf( data[0]),
-//                        (data.length == 1)? "" : data[1]
-//                );
-//            }
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros(file);
+            for (String registro : registros) {
+
+                String[] data = registro.split(",");
+                controller.insert(
+                        Integer.valueOf( data[0]),
+                        (data.length == 1)? "" : data[1]
+                );
+            }
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer ComercioEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC", "Error al importar ComercioEntity:\n"

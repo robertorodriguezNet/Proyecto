@@ -4,8 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.ArrayList;
+
 import dam.proyecto.activities.MainActivity;
+import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.database.AppDatabase;
+import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.database.repositories.CompraRepository;
@@ -75,9 +79,15 @@ public class Ejemplos {
     }
 
     private static void cargarComercio() {
-        ComercioRespository repository = new ComercioRespository(context);
-        repository.clear();
-        repository.insertAll(ComercioData.getData());
+
+        try {
+            ComercioData.getData().forEach( l -> Log.d("LDLC", l.getId() + " " + l.getName()));
+//            ComercioController controller = new ComercioController(context);
+//            controller.clear();
+//            controller.insertAll(ComercioData.getData());
+        }catch (Exception e){
+            Log.e("LDLC", "Error al cargar los comercios " + e.getMessage() );
+        }
     }
 
     private static void cargarMedidas() {

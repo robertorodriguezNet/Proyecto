@@ -14,16 +14,16 @@ import java.util.List;
 public class ComercioData {
 
     private static final ComercioEntity[] COMERCIO_DATA = {
-            new ComercioEntity(""),
-            new ComercioEntity("carrefour"),
-            new ComercioEntity("gadis"),
-            new ComercioEntity("lupa"),
-            new ComercioEntity("mercadona"),
-            new ComercioEntity("dia"),
-            new ComercioEntity("el corte inglés"),
-            new ComercioEntity("primaprix"),
-            new ComercioEntity("carrefour exp."),
-            new ComercioEntity("aldi"),
+            new ComercioEntity(1,""),
+            new ComercioEntity(2,"carrefour"),
+            new ComercioEntity(3,"gadis"),
+            new ComercioEntity(4,"lupa"),
+            new ComercioEntity(5,"mercadona"),
+            new ComercioEntity(6,"dia"),
+            new ComercioEntity(7,"el corte inglés"),
+            new ComercioEntity(8,"primaprix"),
+            new ComercioEntity(9,"carrefour exp."),
+            new ComercioEntity(10,"aldi"),
     };
 
     public static List<ComercioEntity> getData(){

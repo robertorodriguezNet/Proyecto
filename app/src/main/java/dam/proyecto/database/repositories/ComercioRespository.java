@@ -35,7 +35,7 @@ public class ComercioRespository extends Repositorio {
      * Inserta una colección de objetos
      */
     public void insertAll(List<ComercioEntity> data) {
-        db.comercioDao().insertAll(data);
+        dao.insertAll(data);
     }
 
     /**
@@ -65,6 +65,14 @@ public class ComercioRespository extends Repositorio {
      */
     public ArrayList<ComercioEntity> getAll() {
         return (ArrayList<ComercioEntity>) dao.getAll();
+    }
+
+    /**
+     * Devuelve el id más alto de los registrados
+     * @return
+     */
+    public int getMaxId(){
+        return dao.getMaxId();
     }
 
     /**

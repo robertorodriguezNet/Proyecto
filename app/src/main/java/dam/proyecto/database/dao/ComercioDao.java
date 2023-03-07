@@ -24,14 +24,19 @@ public interface ComercioDao {
     void insertAll( List<ComercioEntity> objects );
 
     // READ ---------------------------------------
-    @Query( "SELECT * FROM Comercio ORDER BY name")
-    List<ComercioEntity> getAll();
+
 
     @Query( "SELECT * FROM Comercio WHERE id = :id")
     ComercioEntity findById( int id );
 
     @Query( "SELECT * FROM Comercio WHERE name = :param")
     ComercioEntity findByName( String param );
+
+    @Query( "SELECT * FROM Comercio ORDER BY name")
+    List<ComercioEntity> getAll();
+
+    @Query( "SELECT MAX(id) FROM comercio")
+    int getMaxId();
 
     // UPDATE ------------------------------------
     @Update

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
@@ -54,6 +55,14 @@ public class ComercioController {
         }
     }
 
+
+    /**
+     * Borra los datos de la tabla
+     */
+    public void clear() {
+        repository.clear();
+    }
+
     /**
      * Devuelve el objeto comercio a partir de su id
      * @param idComercio id del comercio
@@ -83,13 +92,34 @@ public class ComercioController {
     }
 
     /**
+     * Devuelve un nuevo id válido
+     * @return
+     */
+    public int getNewId(){
+        int id = repository.getMaxId();
+        id++;
+        return id;
+    }
+
+    /**
      * Inserta un comercio a partir del nombre
      * @param name nombre del comercio
      */
     public void insert( String name ){
         // Comprobar si el comercio existe
         if( !existsComercio( name ) ){
-            insert( new ComercioEntity( name ) );
+            insert( new ComercioEntity( getNewId(), name ) );
+        }
+    }
+
+    /**
+     * Inserta un comercio a partir del nombre y del id
+     * @param name nombre del comercio
+     */
+    public void insert( int id, String name ){
+        // Comprobar si el comercio existe
+        if( !existsComercio( name ) ){
+            insert( new ComercioEntity( id, name ) );
         }
     }
 
@@ -101,4 +131,11 @@ public class ComercioController {
         repository.insert( comercio );
     }
 
+
+    /**
+     * Inserta una colección de objetos
+     */
+    public void insertAll(List<ComercioEntity> data) {
+        repository.insertAll(data);
+    }
 }
