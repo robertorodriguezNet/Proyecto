@@ -112,9 +112,6 @@ public class MainActivity extends AppCompatActivity {
             case R.id.mp_it_comercio:
                     abrirComercio();
                 break;
-            case R.id.mp_it_marca:
-                Toast.makeText(this, "añadir marca", Toast.LENGTH_SHORT).show();
-                break;
             case R.id.mp_it_exportarBD:
                     ExportDB.exportDB( this );
                 break;
