@@ -11,7 +11,7 @@ package dam.proyecto;
 public class Config {
 
     // Longitud mínima de la denominación del producto
-    public static final int PRODUCTO_DENOMINACION_MIN_LENGTH = 5;
+    public static final int PRODUCTO_DENOMINACION_MIN_LENGTH = 3;
 
     // Longitud del código de barras
     public static final int[] CODIGO_DE_BARRAS_LENGTH = {13,8};
