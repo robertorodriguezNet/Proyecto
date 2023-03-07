@@ -1,7 +1,6 @@
 package dam.proyecto.controllers;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -16,12 +15,12 @@ import dam.proyecto.database.repositories.TagRepository;
  * @version 2023.03.01
  */
 
-public class TagControler {
+public class TagController {
 
     private Context context;
     private TagRepository tagRepository;
 
-    public TagControler(Context context ){
+    public TagController(Context context ){
         this.context = context;
         this.tagRepository = new TagRepository( context );
     }
