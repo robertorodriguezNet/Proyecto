@@ -89,8 +89,14 @@ public class ProductoController {
             return -1;
         } else {
 
-            // No está vacío, pero no tiene 13 caracteres
-            if( cb.length() < CODIGO_DE_BARRAS_LENGTH ){
+            // No está vacío, pero no tiene los caracteres epecificados
+            boolean err = false;
+            for( int ean : CODIGO_DE_BARRAS_LENGTH ){
+                if( err || ( cb.length() == ean ) ){
+                    err = true;
+                }
+            }
+            if(!err){
                 return 1;
             }
 

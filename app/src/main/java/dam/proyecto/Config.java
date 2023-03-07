@@ -14,7 +14,7 @@ public class Config {
     public static final int PRODUCTO_DENOMINACION_MIN_LENGTH = 5;
 
     // Longitud del código de barras
-    public static final int CODIGO_DE_BARRAS_LENGTH = 13;
+    public static final int[] CODIGO_DE_BARRAS_LENGTH = {13,8};
 
     // Errores al crear un producto
     public static final String[] ERROR_VALIDAR_PRODUCTO = {
