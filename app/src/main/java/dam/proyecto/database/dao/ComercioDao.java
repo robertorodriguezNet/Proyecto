@@ -30,6 +30,9 @@ public interface ComercioDao {
     @Query( "SELECT * FROM Comercio WHERE id = :id")
     ComercioEntity findById( int id );
 
+    @Query( "SELECT * FROM Comercio WHERE name = :param")
+    ComercioEntity findByName( String param );
+
     // UPDATE ------------------------------------
     @Update
     void update( ComercioEntity object );

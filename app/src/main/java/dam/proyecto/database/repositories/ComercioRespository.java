@@ -49,6 +49,16 @@ public class ComercioRespository extends Repositorio {
 
 
     /**
+     * Devuelve el objeto comercio a partir de su nombre
+     * @param name nombre del comercio
+     * @return ComercioEntity relacionado con el nombre
+     */
+    public ComercioEntity findByName( String name ){
+        return  dao.findByName( name );
+    }
+
+
+    /**
      * Devuelve un listado completo de los registros.
      *
      * @return
@@ -64,6 +74,14 @@ public class ComercioRespository extends Repositorio {
      */
     public String getNombreComercio( int id ){
         return dao.findById( id ).getName();
+    }
+
+    /**
+     * Inserta un comercio en la base de datos
+     * @param objeto
+     */
+    public void insert( ComercioEntity objeto){
+        dao.insert( objeto );
     }
 
     @Override
