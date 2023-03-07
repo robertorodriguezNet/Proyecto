@@ -1,5 +1,7 @@
 package dam.proyecto.activities.almacen;
 
+import static dam.proyecto.Config.CARACTERES_MINIMOS_PARA_BUSCAR;
+
 import android.content.Context;
 import android.os.Bundle;
 
@@ -153,7 +155,9 @@ public class ListaProductosFragment extends Fragment {
                         .trim()
                         .toLowerCase();
 
-        if( text.length() >= 3) {
+        // Se admite la cadena vacía para mostrar todos los productos,
+        // pues puede darse el caso de que alguno no tenga le etiqueta correcta
+        if( text.isEmpty() || ( text.length() >= CARACTERES_MINIMOS_PARA_BUSCAR ) ) {
             // Le pedimos al controlador que nos devuelva la lista de productos
 
             // Boramos la colección de productos

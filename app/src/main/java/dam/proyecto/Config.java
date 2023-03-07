@@ -38,4 +38,8 @@ public class Config {
 
     // Botonera de Editar producto (0 a 1)
     public static final float BOTON_DESACTIVADO_ALPHA = 0.3f;
+
+    // Buscar productos
+    // Caracteres mínimos para iniciar una búsqueda, a parte de 0
+    public static int CARACTERES_MINIMOS_PARA_BUSCAR = 3;
 }
