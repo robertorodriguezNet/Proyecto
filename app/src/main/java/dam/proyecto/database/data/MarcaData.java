@@ -38,6 +38,8 @@ public class MarcaData {
             new MarcaEntity("Listerine"),
             new MarcaEntity("Xoia"),
             new MarcaEntity("Selex"),
+            new MarcaEntity("Rio d'oro"),
+            new MarcaEntity("El mercado"),
 
     };
 

@@ -78,6 +78,13 @@ public class ProductoData {
             new ProductoEntity("8480024750600","Perejil tarro",3,1,"k",(float)0.4),
             new ProductoEntity("8480024819055","Ensalada 4 estaciones",3,1,"k",(float)0.25),
 
+            new ProductoEntity("24002042","Zumo uva y melocotón",26,6,"l",(float)0.2),
+            new ProductoEntity("24031486","Enslada 4 estaciones",27,1,"k",(float)0.25),
+            new ProductoEntity("1000534544670","Huevo L",1,1,"u",(float)12),
+
+
+
+
 
 
     };

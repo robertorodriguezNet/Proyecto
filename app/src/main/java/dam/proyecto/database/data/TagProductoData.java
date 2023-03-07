@@ -98,6 +98,7 @@ public class TagProductoData {
             new TagsProductoEntity("8437014689501",57),
             new TagsProductoEntity("5410076230068",55),
             new TagsProductoEntity("3574661648026",56),
+            new TagsProductoEntity("1000534544661",56),
 
     };
 

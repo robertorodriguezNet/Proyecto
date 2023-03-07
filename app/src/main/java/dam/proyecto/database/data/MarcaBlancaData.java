@@ -20,6 +20,7 @@ public class MarcaBlancaData {
             new MarcaBlancaEntity(4,2),
             new MarcaBlancaEntity(4,9),
             new MarcaBlancaEntity(9,5),
+            new MarcaBlancaEntity(27,10),
     };
 
     public static List<MarcaBlancaEntity> getData(){

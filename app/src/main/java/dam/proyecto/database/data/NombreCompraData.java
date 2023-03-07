@@ -27,6 +27,8 @@ public class NombreCompraData {
             new NombreCompraEntity("2211221644","2211221644",8),
             new NombreCompraEntity("2302251145","2302251145",5),
             new NombreCompraEntity("2302200921","2302200921",4),
+            new NombreCompraEntity("2303231858","2303231858",10),
+
 
 
     };
