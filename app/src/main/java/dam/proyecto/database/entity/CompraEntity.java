@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Entity(tableName = "Compra")
 public class CompraEntity implements Serializable {
 
-    @PrimaryKey( autoGenerate = false )
+    @PrimaryKey
     @NonNull
     private String id;                                                        // Es producto + fecha
     @ColumnInfo( name = "producto" ) private String producto;           // Código de barras en texto
@@ -26,7 +26,8 @@ public class CompraEntity implements Serializable {
                   float cantidad,
                   float pagado,
                         float precio,
-                        float precioMedido) {
+                        float precioMedido,
+                        int oferta) {
 
         this.id = producto + fecha;
         this.producto = producto;
@@ -35,7 +36,7 @@ public class CompraEntity implements Serializable {
         this.pagado = pagado;
         this.precio = precio;
         this.precioMedido = precioMedido;
-        this.oferta = 0;                                               // No hay ofertas por defecto
+        this.oferta = oferta;                                               // No hay ofertas por defecto
 
     }
 
@@ -47,11 +48,12 @@ public class CompraEntity implements Serializable {
         this.precioMedido = precioMedido;
     }
 
+    @NonNull
     public String getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(@NonNull String id) {
         this.id = id;
     }
 
@@ -103,6 +105,7 @@ public class CompraEntity implements Serializable {
         this.oferta = oferta;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "CompraEntity{" +

@@ -1,5 +1,6 @@
 package dam.proyecto.controllers;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 
@@ -26,72 +27,127 @@ import dam.proyecto.utilities.Fecha;
  */
 public class CompraController {
 
-    private Context context;
-    private CompraRepository repository;                              // Repositorio de CompraEntity
-    private NombreCompraRepository repositoryNombreComra;     // Repositorio para NombreCompraEntity
+    private final Context CONTEXT;
+    private final CompraRepository REPOSITORY;                        // Repositorio de CompraEntity
 
     /**
      * Constructor
-     * @param context
+     * @param context contexto
      */
     public CompraController(Context context) {
-        this.context = context;
-        this.repository = new CompraRepository( context );
-        this.repositoryNombreComra = new NombreCompraRepository( context );
+        this.CONTEXT = context;
+        this.REPOSITORY = new CompraRepository( context );
     }
 
+
     /**
-     * Constructores para las compras
-     * @param producto
-     * @param idCompra
-     * @param precio
-     * @return
+     * Borra los datos de la tabla
      */
-    public CompraEntity newCompra(ProductoEntity producto, String idCompra, float precio ){
-        return new CompraEntity(producto.getId(),
-                idCompra,
-                1f,
-                0.0f,
-                precio,
-                0.0f);
+    public void clear(){
+        REPOSITORY.clear();
     }
+
 
     /**
      * Devuelve una compra a partir del id recibido
-     * @param id
-     * @return
+     * @param id id de la compra
+     * @return objeto relacionado con el id
      */
     public CompraEntity getById( String id ){
-        return repository.getCompra( id );
+        return REPOSITORY.getCompra( id );
     }
 
     /**
      * Devuelve todas las compras que se han hecho de un producto
      * @param producto buscado
-     * @return
+     * @return listado de las compras en las que se ha comprado el producto
      */
     public ArrayList<CompraEntity> getNombreCompraByProducto( String producto ){
-        return repository.getAllByProducto( producto );
+        return REPOSITORY.getAllByProducto( producto );
     }
+
 
     /**
      * Devuelve el id del comercio en el que se ha hecho una compra
      * @param idCompra es la fecha de la compra
-     * @return
+     * @return id del comercio en el que se ha hecho la compra
      */
     public String getNombreComercioByCompra( String idCompra ){
-        return repositoryNombreComra.getNombreComercioByCompra( idCompra );
+        NombreCompraRepository nombreCompraRepository =
+                new NombreCompraRepository(CONTEXT);
+        return nombreCompraRepository.getNombreComercioByCompra( idCompra );
+    }
+
+    /**
+     * Devuelve la última compra de un producto concreto
+     * @param id el producto buscado
+     */
+    @SuppressLint("DefaultLocale")
+    public Map<String, String> getUltimaCompraDe(String id ){
+
+        // Obtener el producto para poder conocer las unidades de medida
+        ProductoEntity producto = ProductoController.getById( id, CONTEXT);
+
+        // Obtener la última compra del producto
+        CompraEntity compra = REPOSITORY.getUltimaCompraByProducto( id );
+
+        // Obtener el comercio en el que se realizó la compra
+        String comercio = getNombreComercioByCompra( compra.getFecha() );
+
+        // Ya tenemos todos los datos
+
+        Log.d("LDLC", "Producto: " + producto.getId()
+                + "\nFecha de la compra: " + compra.getFecha()
+                + "\nComercio: " + comercio );
+
+        // El precio se da por unidad de medida
+
+        HashMap<String, String> mapa = new HashMap<>();
+        mapa.put("precio",String.format("%.02f", compra.getPrecio()));
+        mapa.put("precioM", String.format("%.02f", compra.getPrecioMedido()) +
+                "€/" + producto.getMedida() );
+        mapa.put("fecha", Fecha.getFechaFormateada( compra.getFecha() ) );
+        mapa.put("comercio", comercio);
+
+        return mapa;
+    }
+
+    /**
+     * Inserta un nuevo objeto
+     * @param producto id del producto (código de barras)
+     * @param fecha fecha de la compra
+     * @param cantidad número de artículos comprados
+     * @param pagado pagado por todos los artículos
+     * @param precio de cada artículo
+     * @param precioMedido precio por unidad de medida
+     * @param oferta tipo de oferta (0 si no hay)
+     */
+    public void insert( String producto,
+                        String fecha,
+                        float cantidad,
+                        float pagado,
+                        float precio,
+                        float precioMedido,
+                        int oferta){
+        REPOSITORY.insert( new CompraEntity( producto,
+                fecha,
+                cantidad,
+                pagado,
+                precio,
+                precioMedido,
+                oferta)
+        );
     }
 
     /**
      * Método que devuelve un listado con comercio, precio y fecha de
      * cada compra de un producto
      * @param idProducto es el producto buscado
-     * @return
+     * @return listado del VistaCompra
      */
     public ArrayList<VistaCompra> loadVistaCompraByProducto(String idProducto ){
         // Dao
-        VistaCompraDao vistaCompraDao = repository.getDb().vistaCompraDao();
+        VistaCompraDao vistaCompraDao = REPOSITORY.getDb().vistaCompraDao();
 
         // Colección completa
         ArrayList<VistaCompra> completa = (ArrayList<VistaCompra>) vistaCompraDao
@@ -118,40 +174,27 @@ public class CompraController {
             }
         }
 
-        return (ArrayList<VistaCompra>) data;
+        return data;
     }
 
+
+
+
     /**
-     * Devuelve la última compra de un producto concreto
-     * @param id el producto buscado
+     * Constructores para las compras
+     * @param producto producto comprado
+     * @param idCompra id de la compra
+     * @param precio precio del producto
+     * @return objeto compra
      */
-    public Map<String, String> getUltimaCompraDe(String id ){
-
-        // Obtener el producto para poder conocer las unidades de medida
-        ProductoEntity producto = ProductoController.getById( id, context );
-
-        // Obtener la última compra del producto
-        CompraEntity compra = repository.getUltimaCompraByProducto( id );
-
-        // Obtener el comercio en el que se realizó la compra
-        String comercio = getNombreComercioByCompra( compra.getFecha() );
-
-        // Ya tenemos todos los datos
-
-        Log.d("LDLC", "Producto: " + producto.getId()
-        + "\nFecha de la compra: " + compra.getFecha()
-        + "\nComercio: " + comercio );
-
-        // El precio se da por unidad de medida
-
-        HashMap<String, String> mapa = new HashMap<>();
-        mapa.put("precio",String.format("%.02f", compra.getPrecio()));
-        mapa.put("precioM", String.format("%.02f", compra.getPrecioMedido()) +
-                "€/" + producto.getMedida() );
-        mapa.put("fecha", Fecha.getFechaFormateada( compra.getFecha() ) );
-        mapa.put("comercio", comercio);
-
-        return mapa;
+    public CompraEntity newCompra(ProductoEntity producto, String idCompra, float precio ){
+        return new CompraEntity(producto.getId(),
+                idCompra,
+                1f,
+                0.0f,
+                precio,
+                0.0f,
+                0);
     }
 
 }

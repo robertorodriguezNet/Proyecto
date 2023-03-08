@@ -1,5 +1,6 @@
 package dam.proyecto.database.data;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.widget.Toast;
@@ -33,6 +34,7 @@ import dam.proyecto.controllers.TagController;
  */
 public class ImportDB {
 
+    @SuppressLint("StaticFieldLeak")
     private static Context context;
 
     public static void importDB(Context c) {
@@ -46,7 +48,7 @@ public class ImportDB {
         importarOfertaEntity();
         importarMarcaBlancaEntity();
 
-//        importarCompraEntity();
+        importarCompraEntity();
 //        importarProductoEntity();
 //        importarNombreCompraEntity();
 //        importarProductoTagEntity();
@@ -137,24 +139,25 @@ public class ImportDB {
         CompraController controller = new CompraController(context);
 
         try {
-//            // Borrar los datos
-//            controller.clearData();
-//
-//            // Cada línea leída es un ProductoEntity
-//            ArrayList<String> registros = getRegistros(file);
-//            for (String registro : registros) {
-//
-//                String[] data = registro.split(",");
-//                // Pedimos al controlador de productos que lo guarde *
-//                controller.insert(
-//                        data[0],
-//                        data[1],
-//                        Float.valueOf(data[2]),
-//                        Float.valueOf(data[3]),
-//                        Float.valueOf(data[4]),
-//                        Float.valueOf(data[5])
-//                );
-//            }
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros(file);
+            for (String registro : registros) {
+
+                String[] data = registro.split(",");
+                // Pedimos al controlador de productos que lo guarde *
+                controller.insert(
+                        data[0],
+                        data[1],
+                        Float.parseFloat(data[2]),
+                        Float.parseFloat(data[3]),
+                        Float.parseFloat(data[4]),
+                        Float.parseFloat(data[5]),
+                        Integer.parseInt(data[6])
+                );
+            }
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer CompraEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC", "Error al importar CompraEntity:\n"

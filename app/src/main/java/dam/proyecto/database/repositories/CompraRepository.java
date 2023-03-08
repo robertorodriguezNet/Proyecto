@@ -51,6 +51,20 @@ public class CompraRepository extends Repositorio {
         dao.insertAll( data );
     }
 
+    /**
+     * Inserta una compra
+     * @param compra
+     */
+    public void insert( CompraEntity compra ){
+
+        try{
+            dao.insert( compra );
+            Log.d( "LDLC", "CompraRepository.insert() - Compra guardada: " + compra.toString() );
+        }catch ( Exception e ){
+            Log.d( "LDLC", "CompraRepository.insert() - Error al guardar la compra: " + compra.toString() );
+        }
+
+    }
     // Obtener la compra por una compra dada
     public ArrayList<CompraEntity> getProductosByFecha(String fecha ){
         return (ArrayList<CompraEntity>) dao.findByFecha( fecha );
@@ -65,23 +79,7 @@ public class CompraRepository extends Repositorio {
         return ( CompraEntity ) dao.findById( id );
     }
 
-    /**
-     * Inserta una compra
-     * @param compra
-     */
-    public void insert( CompraEntity compra ){
 
-        try{
-
-            dao.insert( compra );
-
-            Log.d( "LDLC", "CompraRepository.insert() - Compra guardada: " + compra.toString() );
-
-        }catch ( Exception e ){
-            Log.d( "LDLC", "CompraRepository.insert() - Error al guardar la compra: " + compra.toString() );
-        }
-
-    }
 
     /**
      * Actualiza una compra
