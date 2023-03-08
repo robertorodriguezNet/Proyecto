@@ -23,6 +23,7 @@ import dam.proyecto.activities.lista.ListaActivity;
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.database.data.Ejemplos;
 import dam.proyecto.database.data.ExportDB;
+import dam.proyecto.database.data.ImportDB;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.databinding.ActivityMainBinding;
 
@@ -114,7 +115,7 @@ public class MainActivity extends AppCompatActivity {
                 ExportDB.exportDB( this );
                 break;
             case R.id.mp_it_impoprtarBD:BD:
-//            ImportDB.importDB( this );
+            ImportDB.importDB( this );
                 break;
 
         }
