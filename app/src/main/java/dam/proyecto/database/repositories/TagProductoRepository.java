@@ -1,7 +1,6 @@
 package dam.proyecto.database.repositories;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
@@ -19,12 +18,10 @@ import dam.proyecto.database.entity.TagsProductoEntity;
  */
 public class TagProductoRepository extends Repositorio {
     
-    private final Context CONTEXT;
     private final TagsProductoDao DAO;
     
     public TagProductoRepository(Context context) {
         super(context);
-        this.CONTEXT = context;
         DAO = db.tagsProductoDao();
     }
 

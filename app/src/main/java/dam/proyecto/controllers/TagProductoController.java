@@ -7,7 +7,6 @@ import java.util.ArrayList;
 
 import dam.proyecto.database.entity.TagsProductoEntity;
 import dam.proyecto.database.repositories.TagProductoRepository;
-import dam.proyecto.database.repositories.TagRepository;
 
 /**
  * Clase que realiza operaciones con los comercios
@@ -73,13 +72,12 @@ public class TagProductoController {
 
     /**
      * Devuelve true si ya hay un producto asociado a la etiqueta
-     * @param producto
-     * @param tag
-     * @return
+     * @param producto producto buscado
+     * @param tag etiqueta asociada
+     * @return true si hay asociación
      */
     public boolean existsAsociacion( String producto, int tag){
-        TagsProductoEntity asociacion = null;
-        asociacion = REPOSITORY.getAsociacion( producto, tag );
+        TagsProductoEntity asociacion = REPOSITORY.getAsociacion( producto, tag );
         return ( asociacion != null );
     }
 

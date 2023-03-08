@@ -29,13 +29,13 @@ import dam.proyecto.database.repositories.MarcaRepository;
 public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.ViewHolder> {
 
     // Datos
-    private ArrayList<ProductoEntity> dataProductos;                           // Colección de datos
-    private ArrayList<MarcaEntity> dataMarca;                                 // Colección de marcas
+    private final  ArrayList<ProductoEntity> DATA_PRODUCTOS;                           // Colección de datos
+    private final ArrayList<MarcaEntity> DATA_MARCA;                                 // Colección de marcas
 
-    private Context context;
+    private final Context CONTEXT;
 
     // Oyentes
-    private AlmacenListener listener;
+    private final AlmacenListener LISTENER;
 
     /**
      * El adaptador debe recibir la lista de los productos.
@@ -46,11 +46,11 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             Context context,
             AlmacenListener listener) {
 
-        this.context = context;
-        this.listener = listener;
+        this.CONTEXT = context;
+        this.LISTENER = listener;
 
-        this.dataProductos = dataProductos;                               // Datos con los productos
-        this.dataMarca = new MarcaRepository( context ).getAll();            // Datos con las marcas
+        this.DATA_PRODUCTOS = dataProductos;                               // Datos con los productos
+        this.DATA_MARCA = new MarcaRepository( context ).getAll();            // Datos con las marcas
 
     }
 
@@ -58,7 +58,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
      * Método que se ejecuta al crear el ViewHolder
      *
      * @param parent   es el componente que recibe el ViewHolder, en este caso un RecyclerView
-     * @param viewType
+     * @param viewType viewType
      * @return El ViewHolder que se cargará en el RecyclerView
      */
     @NonNull
@@ -85,22 +85,22 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         // Llamada al método binData y se le pasa el objeto de la lista
-        ProductoEntity actual = dataProductos.get( position );
+        ProductoEntity actual = DATA_PRODUCTOS.get( position );
 
         // correspondiente a la posición recibida como argumento
         holder.binData( actual );
 
         // Asociamos el oyente a los diferentes eventos
         holder.itemView.setOnLongClickListener( view -> {
-            if ( null != listener ){
-                listener.editarProducto( actual );
+            if ( null != LISTENER){
+                LISTENER.editarProducto( actual );
             }
             return true;
         });
 
         holder.itemView.setOnClickListener( view -> {
-            if ( null != listener ){
-                listener.addProductoALaLista( actual );
+            if ( null != LISTENER){
+                LISTENER.addProductoALaLista( actual );
             }
         });
     }
@@ -112,7 +112,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
      */
     @Override
     public int getItemCount() {
-        return dataProductos.size();
+        return DATA_PRODUCTOS.size();
     }
 
     /**
@@ -158,7 +158,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
          * Método para enlazar los datos del Producto con los del CardView (que son los mismos
          * que los de este ViewHolder)
          *
-         * @param producto
+         * @param producto el producto actual
          */
         public void binData(ProductoEntity producto) {
 
@@ -172,10 +172,10 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             // Obtener la denominación y la marca
             denominacion.setText(producto.getDenominacion());
 //            marca.setText( String.valueOf( producto.getMarca() ) );
-            marca.setText(dataMarca.get(producto.getMarca() - 1).getName());
+            marca.setText(DATA_MARCA.get(producto.getMarca() - 1).getName());
 
             // Debemos obtener la última compra del producto
-            CompraController controller = new CompraController( context );
+            CompraController controller = new CompraController( CONTEXT );
             HashMap<String,String> mapa =
                     (HashMap<String, String>) controller.getUltimaCompraDe( producto.getId() );
 

@@ -36,7 +36,6 @@ import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
-import dam.proyecto.database.repositories.TagProductoRepository;
 
 /**
  * @author Roberto Rodríguez Jiménez
