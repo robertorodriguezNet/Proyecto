@@ -1,33 +1,26 @@
 package dam.proyecto.database.entity;
 
+import androidx.annotation.NonNull;
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 
 /**
  * Representa una oferta aplicada a una CompraEntity
- * @since 2023/02/16
  * @author Roberto Rodríguez
- * @version 2023.02.16
+ * @since 16/02/2023
+ * @version 2023.03.08
  */
 @Entity( tableName = "Oferta" )
 public class OfertaEntity {
 
-    @PrimaryKey( autoGenerate = true ) private int id;
-    @ColumnInfo( name = "abbr" ) private String abbr;
+    @PrimaryKey @NonNull
+    private String abbr;
     @ColumnInfo( name = "texto" ) private String texto;
 
     public OfertaEntity(String abbr, String texto ) {
         this.abbr = abbr;
         this.texto = texto;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getAbbr() {

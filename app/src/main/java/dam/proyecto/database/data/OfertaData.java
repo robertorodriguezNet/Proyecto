@@ -15,7 +15,6 @@ import dam.proyecto.database.entity.OfertaEntity;
 public class OfertaData {
 
     private static final OfertaEntity[] TAG_DATA = {
-            new OfertaEntity("",""),
             new OfertaEntity("2x1","2 X 1"),
             new OfertaEntity("3x2","3 X 2"),
             new OfertaEntity("2-50","2ª 50%"),

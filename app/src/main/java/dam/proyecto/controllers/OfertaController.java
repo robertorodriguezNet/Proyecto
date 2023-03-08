@@ -4,9 +4,7 @@ import android.content.Context;
 
 import java.util.ArrayList;
 
-import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.OfertaEntity;
-import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.OfertaRespository;
 
 /**
@@ -19,21 +17,34 @@ import dam.proyecto.database.repositories.OfertaRespository;
 
 public class OfertaController {
 
-    private Context context;
-    private OfertaRespository repository;
+    private final OfertaRespository REPOSITORY;
 
     public OfertaController(Context context ){
-        this.context = context;
-        this.repository = new OfertaRespository( context );
+        this.REPOSITORY = new OfertaRespository( context );
+    }
+
+    /**
+     * Borra los datos de la tabla
+     */
+    public void clear(){
+        REPOSITORY.clear();
     }
 
     /**
      * Devuelve un listado completo de los registros.
-     * @return
+     * @return la colección completa de objetos
      */
     public ArrayList<OfertaEntity> getAll(){
-        return (ArrayList<OfertaEntity>) repository.getAll();
+        return REPOSITORY.getAll();
     }
 
+    /**
+     * Inserta un nuevo objeto en la tabla
+     * @param id el id del objeto
+     * @param name el nombre del objeto
+     */
+    public void insert( String id, String name ){
+        REPOSITORY.insert( new OfertaEntity( id, name ));
+    }
 
 }

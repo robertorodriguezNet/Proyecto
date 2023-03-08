@@ -247,7 +247,7 @@ public class ExportDB {
         StringBuilder code = new StringBuilder();
         for (OfertaEntity objeto : data) {
             code.append(
-                    objeto.getId() + ","
+                    objeto.getAbbr() + ","
                     + objeto.getTexto() + "\n"
             );
         }

@@ -28,7 +28,7 @@ public interface OfertaDao {
     @Query( "SELECT * FROM Oferta")
     List<OfertaEntity> getAll();
 
-    @Query( "SELECT * FROM Oferta WHERE id = :id")
+    @Query( "SELECT * FROM Oferta WHERE abbr = :id")
     OfertaEntity findById( int id );
 
     // UPDATE ------------------------------------
