@@ -65,8 +65,8 @@ public class ExportDB {
     /**
      * Grabar el contenido de data en el archivo file
      *
-     * @param file
-     * @param data
+     * @param file archivo en es que se va a escribir
+     * @param data datos que se escribirán en el arcivo
      */
     private static void grabar(String file, String data) {
         OutputStreamWriter osr = null;
@@ -96,9 +96,10 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (ComercioEntity objeto : data) {
-            code.append( objeto.getId() + ","
-                    + objeto.getName() + "\n"
-            );
+            code.append(objeto.getId())
+                    .append(",")
+                    .append(objeto.getName())
+                    .append("\n");
         }
         grabar("ComercioEntity.csv", code.toString());
     }
@@ -110,11 +111,12 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (NombreCompraEntity objeto : data) {
-            code.append(
-                    objeto.getId() + ","
-                    + objeto.getNombre() + ","
-                    + objeto.getComercio() + "\n"
-            );
+            code.append(objeto.getId())
+                    .append(",")
+                    .append(objeto.getNombre())
+                    .append(",")
+                    .append(objeto.getComercio())
+                    .append("\n");
         }
         grabar("NombreCompraEntity.csv", code.toString());
     }
@@ -129,10 +131,10 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (TagEntity objeto : data) {
-            code.append(
-                    objeto.getId() + ","
-                    + objeto.getName() + "\n"
-            );
+            code.append(objeto.getId())
+                    .append(",")
+                    .append(objeto.getName())
+                    .append("\n");
         }
         grabar("TagEntity.csv", code.toString());
     }
@@ -147,13 +149,20 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (CompraEntity objeto : data) {
-            code.append( objeto.getProducto() + "," +
-                            objeto.getFecha() + "," +
-                            objeto.getCantidad() + "," +
-                            objeto.getPagado() + "," +
-                            objeto.getPrecio() + "," +
-                            objeto.getPrecioMedido() + "," +
-                            objeto.getOferta() + "\n");
+            code.append(objeto.getProducto())
+                    .append(",")
+                    .append(objeto.getFecha())
+                    .append(",")
+                    .append(objeto.getCantidad())
+                    .append(",")
+                    .append(objeto.getPagado())
+                    .append(",")
+                    .append(objeto.getPrecio())
+                    .append(",")
+                    .append(objeto.getPrecioMedido())
+                    .append(",")
+                    .append(objeto.getOferta())
+                    .append("\n");
         }
         grabar("CompraEntity.csv", code.toString());
     }
@@ -164,11 +173,12 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (MarcaBlancaEntity objeto : data) {
-            code.append(
-                    objeto.getId() + ","
-                            + objeto.getMarca() + ","
-                            + objeto.getComercio() + "\n"
-            );
+            code.append(objeto.getId())
+                    .append(",")
+                    .append(objeto.getMarca())
+                    .append(",")
+                    .append(objeto.getComercio())
+                    .append("\n");
         }
         grabar("MarcaBlancaEntity.csv", code.toString() );
     }
@@ -179,10 +189,10 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (MarcaEntity objeto : data) {
-            code.append(
-                    objeto.getId() + ","
-                    + objeto.getName() + "\n"
-            );
+            code.append(objeto.getId())
+                    .append(",")
+                    .append(objeto.getName())
+                    .append("\n");
         }
         grabar("MarcaEntity.csv", code.toString() );
     }
@@ -193,10 +203,10 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (MedidaEntity objeto : data) {
-            code.append(
-                        objeto.getId() + ","
-                            + objeto.getDescription() + "\n"
-                    );
+            code.append(objeto.getId())
+                    .append(",")
+                    .append(objeto.getDescription())
+                    .append("\n");
         }
 
         grabar("MedidaEntity.csv", code.toString());
@@ -215,13 +225,18 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (ProductoEntity objeto : data) {
-            code.append( objeto.getId() + ","
-                    + objeto.getDenominacion() + ","
-                    + objeto.getMarca() + ","
-                    + objeto.getUnidades() + ","
-                    + objeto.getMedida() + ","
-                    + objeto.getCantidad() + "\n"
-            );
+            code.append(objeto.getId())
+                    .append(",")
+                    .append(objeto.getDenominacion())
+                    .append(",")
+                    .append(objeto.getMarca())
+                    .append(",")
+                    .append(objeto.getUnidades())
+                    .append(",")
+                    .append(objeto.getMedida())
+                    .append(",")
+                    .append(objeto.getCantidad())
+                    .append("\n");
         }
         grabar("ProductoEntity.csv", code.toString());
     }
@@ -232,10 +247,10 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (TagsProductoEntity objeto : data) {
-            code.append(
-                    objeto.getProducto() + ","
-                    + objeto.getTag() + "\n"
-            );
+            code.append(objeto.getProducto())
+                    .append(",")
+                    .append(objeto.getTag())
+                    .append("\n");
         }
         grabar("TagsProductoEntity.csv", code.toString());
     }
@@ -246,10 +261,10 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (OfertaEntity objeto : data) {
-            code.append(
-                    objeto.getAbbr() + ","
-                    + objeto.getTexto() + "\n"
-            );
+            code.append(objeto.getAbbr())
+                    .append(",")
+                    .append(objeto.getTexto())
+                    .append("\n");
         }
         grabar("OfertaEntity.csv", code.toString());
     }

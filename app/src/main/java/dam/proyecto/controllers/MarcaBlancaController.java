@@ -57,4 +57,14 @@ public class MarcaBlancaController {
         REPOSITORY.insert( new MarcaBlancaEntity( getNewId(), marca, comercio ));
     }
 
+    /**
+     * Inserta un objeto a partir de todos sus datos
+     * @param id identificador
+     * @param marca nueva
+     * @param comercio al que pertenece la marca
+     */
+    public void insert( int id, int marca, int comercio ){
+        REPOSITORY.insert( new MarcaBlancaEntity( id, marca, comercio ));
+    }
+
 }
