@@ -29,9 +29,6 @@ public interface MarcaBlancaDao {
 
 
     // READ ---------------------------------------
-    @Query("SELECT * FROM MarcaBlanca")
-    List<MarcaBlancaEntity> getAll();
-
     @Query("SELECT * FROM MarcaBlanca WHERE id = :args")
     MarcaBlancaEntity findById(int args);
 
@@ -41,6 +38,11 @@ public interface MarcaBlancaDao {
     @Query("SELECT * FROM MarcaBlanca WHERE comercio = :args")
     List<MarcaBlancaEntity> findByComercio(int args);
 
+    @Query("SELECT * FROM MarcaBlanca")
+    List<MarcaBlancaEntity> getAll();
+
+    @Query( "SELECT MAX(id) FROM MarcaBlanca")
+    int getMaxId();
 
     // UPDATE ------------------------------------
     @Update

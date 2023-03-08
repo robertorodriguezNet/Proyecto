@@ -43,8 +43,8 @@ public class ImportDB {
         importarMarcaEntity();
         importarMedidaEntity();
         importarOfertaEntity();
-//        importarMarcaBlancaEntity();
-//
+        importarMarcaBlancaEntity();
+
 //        importarCompraEntity();
 //        importarProductoEntity();
 //        importarNombreCompraEntity();
