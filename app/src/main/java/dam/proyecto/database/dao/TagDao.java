@@ -27,27 +27,29 @@ public interface TagDao {
     @Query("SELECT * FROM Tag")
     List<TagEntity> getAll();
 
-    @Query("SELECT * FROM Tag WHERE name LIKE '%' || :args || '%' ")
-    List<TagEntity> getAll( String args);
-
-    @Query("SELECT id FROM Tag WHERE name LIKE '%' || :args || '%' ")
-    List<Integer> getAllId( String args);
-
-    @Query( "select producto from TagsProducto where tag in ( select id from tag where name like '%' || :tag || '%');")
-    List<String> getProductosByTag( String tag );
-
     @Query("SELECT * FROM Tag WHERE id = :args")
     TagEntity findById(int args);
 
     @Query("SELECT * FROM Tag WHERE name = :args")
     TagEntity findByName(String args);
 
-    @Query("SELECT name FROM tag WHERE id = :args ")
-    String getNameById(int args);
+    @Query("SELECT * FROM Tag WHERE name LIKE '%' || :args || '%' ")
+    List<TagEntity> getAll( String args);
+
+    @Query("SELECT id FROM Tag WHERE name LIKE '%' || :args || '%' ")
+    List<Integer> getAllId( String args);
 
     @Query("SELECT id FROM tag WHERE name = :args ")
     int getIdByName(String args);
 
+    @Query( "SELECT MAX(id) FROM Tag")
+    int getMaxId();
+
+    @Query("SELECT name FROM tag WHERE id = :args ")
+    String getNameById(int args);
+
+    @Query( "select producto from TagsProducto where tag in ( select id from tag where name like '%' || :tag || '%');")
+    List<String> getProductosByTag( String tag );
     // UPDATE ------------------------------------
     @Update
     void update(TagEntity object);
