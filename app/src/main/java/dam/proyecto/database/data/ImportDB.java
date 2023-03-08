@@ -15,6 +15,7 @@ import dam.proyecto.controllers.MarcaBlancaController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.MedidaController;
 import dam.proyecto.controllers.OfertaController;
+import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
 
 /**
@@ -49,7 +50,7 @@ public class ImportDB {
         importarMarcaBlancaEntity();
 
         importarCompraEntity();
-//        importarProductoEntity();
+        importarProductoEntity();
 //        importarNombreCompraEntity();
 //        importarProductoTagEntity();
     }
@@ -101,25 +102,25 @@ public class ImportDB {
 
         try {
 
-//            // Borrar los datos
-//            ProductoController.clearData(context);
-//
-//            // Cada línea leída es un ProductoEntity
-//            ArrayList<String> registros = getRegistros(file);
-//            for (String registro : registros) {
-//
-//                String[] data = registro.split(",");
-//                // Pedimos al controlador de productos que lo guarde *
-//                ProductoController.insertProducto(
-//                        data[0],
-//                        data[1],
-//                        Integer.valueOf(data[2]),
-//                        Integer.valueOf(data[3]),
-//                        data[4],
-//                        Float.valueOf(data[5]),
-//                        context
-//                );
-//            }
+            // Borrar los datos
+            ProductoController.clear(context);
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros(file);
+            for (String registro : registros) {
+
+                String[] data = registro.split(",");
+                // Pedimos al controlador de productos que lo guarde *
+                ProductoController.insertProducto(
+                        data[0],
+                        data[1],
+                        Integer.valueOf(data[2]),
+                        Integer.valueOf(data[3]),
+                        data[4],
+                        Float.valueOf(data[5]),
+                        context
+                );
+            }
 
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer ProductoEntity", Toast.LENGTH_SHORT).show();

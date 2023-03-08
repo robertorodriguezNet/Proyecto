@@ -1,60 +1,61 @@
 package dam.proyecto.database.repositories;
 
 import android.content.Context;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
+import dam.proyecto.database.dao.ProductoDao;
 import dam.proyecto.database.entity.ProductoEntity;
 
 /**
  * Repositorio para los productos
- * @since 2023/01/23
  * @author Roberto Rodríguez
- * @version 2023.02.17
+ * @since 23/01/2023
+ * @version 2023.03.08
  */
 public class ProductoRepository extends Repositorio {
 
+    private final ProductoDao DAO;
+
     public ProductoRepository(Context context) {
         super(context);
+        DAO = db.productoDao();
     }
 
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
-        db.productoDao().clear();
+        DAO.clear();
     }
 
     /**
      * Inserta una colección de productos
      */
     public void insertAll( List<ProductoEntity> data ){
-        db.productoDao().insertAll( data );
+        DAO.insertAll( data );
     }
 
     /**
      * Devuelve un listado completo de los registros.
-     * @return
+     * @return listado compde registros
      */
     public ArrayList<ProductoEntity> getAll(){
-        return (ArrayList<ProductoEntity>) db.productoDao().getAll();
+        return (ArrayList<ProductoEntity>) DAO.getAll();
     }
 
     /**
      * Devuelve la denominación de un producto a partir del id
      * @param id el id buscado
-     * @return
+     * @return denominación
      */
     public String getDenominacionProducto( String id ){
         try {
-            ProductoEntity producto = db.productoDao()
+            ProductoEntity producto = DAO
                     .findById(id);
             return producto.getDenominacion();
         }catch ( Exception e ){
@@ -63,10 +64,10 @@ public class ProductoRepository extends Repositorio {
     }
     /**
      * Inserta un producto en la base de datos
-     * @param producto
+     * @param producto producto que se quiere insertar
      */
     public void insertProducto( ProductoEntity producto ){
-        db.productoDao().insert( producto );
+        DAO.insert( producto );
     }
 
     /**
@@ -87,17 +88,8 @@ public class ProductoRepository extends Repositorio {
                 .productoDao()
                 .getAutomaticId();
 
-        // Pedimos el valor máximo del campo id
-        String idStr = getMaxId( list );
-
-        // Incrementamos el valor
-        String idIncrementado = incrementarValor( idStr );
-
-        //Debemos rellenar con "0" hasta trece caracteres
-//        idStr = String.format( "%13s", idIncrementado).replace(' ', '0');
-
-        // Devolvemos el id
-        return idIncrementado;
+        // Devolvemos el id incrementado
+        return incrementarValor( getMaxId( list ) );
     }
 
     /**
@@ -107,19 +99,12 @@ public class ProductoRepository extends Repositorio {
      */
     private String getMaxId( ArrayList<ProductoEntity> list){
 
-        ArrayList<ProductoEntity> coleccion = list;
-
         // Queremos ordenar la lista de mayor a menor por el campo "id"
         // Para ello debemos sobre escribir el método compare de la clase Collections
         // dentro de collection.sort
-        Collections.sort(coleccion, new Comparator<ProductoEntity>() {
-            @Override
-            public int compare(ProductoEntity pe1, ProductoEntity pe2) {
-                return new Long( pe2.getId() ).compareTo(new Long( pe1.getId() ) );
-            }
-        });
+        list.sort((pe1, pe2) -> Long.valueOf(pe2.getId()).compareTo(Long.valueOf(pe1.getId())));
 
-        return coleccion.get( 0 ).getId();
+        return list.get( 0 ).getId();
     }
 
     /**
@@ -142,8 +127,7 @@ public class ProductoRepository extends Repositorio {
      * @return true si el producto existe
      */
     public boolean existsProducto(String id) {
-        ProductoEntity objeto = null;
-        objeto = db
+        ProductoEntity objeto = db
                 .productoDao()
                 .findById(id);
         return objeto != null;
@@ -154,19 +138,20 @@ public class ProductoRepository extends Repositorio {
      * @param id buscado para ser eliminado
      */
     public void deleteById( String id ){
-        db.productoDao().deleteById( id );
+        DAO.deleteById( id );
     }
 
     /**
      * Devuelve un producto a través del id
-     * @param id
-     * @return
+     * @param id id del producto
+     * @return el producto buscado
      */
     public ProductoEntity getById( String id ){
-        return db.productoDao().findById( id );
+        return DAO.findById( id );
     }
 
     @Override
+    @NonNull
     public String toString() {
         return super.toString();
     }

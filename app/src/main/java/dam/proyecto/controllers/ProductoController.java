@@ -7,8 +7,6 @@ import static dam.proyecto.Config.PRODUCTO_DENOMINACION_MIN_LENGTH;
 import android.content.Context;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.CompraRepository;
@@ -18,11 +16,19 @@ import dam.proyecto.utilities.Preferencias;
 
 /**
  * Controlador para Producto
- * @since 2023/02/11
  * @author Roberto Rodríguez
- * @version 2023.02.11
+ * @since 11/02/2023
+ * @version 2023.03.08
  */
 public class ProductoController {
+
+
+    /**
+     * Borra los datos de la tabla
+     */
+    public static void clear( Context context){
+        new ProductoRepository( context ).clear();
+    }
 
     /**
      * Crea un objeto ProductoEntity
@@ -60,7 +66,7 @@ public class ProductoController {
 
     /**
      * Inserta un producto
-     * @param producto
+     * @param producto que se quiere insertar
      */
     public static void insertProducto(ProductoEntity producto, Context context ){
         new ProductoRepository( context ).insertProducto( producto );
@@ -112,8 +118,8 @@ public class ProductoController {
 
     /**
      * Evalúa la denominación
-     * @param denominacion
-     * @return
+     * @param denominacion que se quiere validar
+     * @return el valor del error que pudiera dar
      */
     public static int validarDenominacion( String denominacion ){
 
@@ -135,24 +141,22 @@ public class ProductoController {
 
     /**
      * Obtener el último precio de un producto en un comercio dados
-     * @param idProducto
-     * @param idComercio
-     * @param context
-     * @return
+     * @param idProducto producto buscado
+     * @param idComercio en que el que se busca
+     * @param context contexto
+     * @return precio del producto buscado
      */
     public static float getUltimoPrecio( String idProducto, int idComercio, Context context){
 
         // Obtnemos todas las compras del producto
         // ordenadas por fecha descendentes
-        ArrayList<CompraEntity> compras =
-                (ArrayList<CompraEntity>) new CompraRepository( context)
+        ArrayList<CompraEntity> compras = new CompraRepository( context)
                         .getAllByProducto( idProducto );
 
 
         // Obtener todas las compras del comercio,
         // ordenadas descendentes
-        ArrayList<String> nombreCompras =
-                (ArrayList<String>) new NombreCompraRepository( context )
+        ArrayList<String> nombreCompras = new NombreCompraRepository( context )
                         .getAllByIdComercio( idComercio );
 
 
@@ -177,8 +181,8 @@ public class ProductoController {
      * el que se acabe de guardar al crear la lista.
      * Se debe devolver el último, descartando el actual.
      * @param idProducto el producto buscado
-     * @param context
-     * @return
+     * @param context contexto
+     * @return último precio
      */
     public static float getUltimoPrecio( String idProducto, Context context ){
         String idCompraActual = Preferencias.getListaAbiertaId( context );
@@ -187,7 +191,7 @@ public class ProductoController {
 
     /**
      * Devuelve la colección completa de productos
-     * @return
+     * @return colección de productos
      */
     public static ArrayList<ProductoEntity> getAll( Context context){
         return new ProductoRepository( context ).getAll();
@@ -195,7 +199,7 @@ public class ProductoController {
 
     /**
      * Devuelve la colección completa de productos que contienen el texto
-     * @return
+     * @return colección de productos
      */
     public static ArrayList<ProductoEntity> getAll( String texto, Context context){
 
@@ -210,13 +214,15 @@ public class ProductoController {
 
         // Recorremos la colección y eliminamos los productos que no están
         // en la colección de los tags
-        Iterator it = listado.iterator();
-        while ( it.hasNext() ){
-            ProductoEntity producto = (ProductoEntity) it.next();
-            if( !idProductos.contains( producto.getId() ) ){
-                it.remove();
-            }
-        }
+//        Iterator<ProductoEntity> it = listado.iterator();
+//        while ( it.hasNext() ){
+//            ProductoEntity producto = it.next();
+//            if( !idProductos.contains( producto.getId() ) ){
+//                it.remove();
+//            }
+//        }
+
+        listado.removeIf(producto -> !idProductos.contains(producto.getId()));
 
         return listado;
     }
@@ -224,8 +230,8 @@ public class ProductoController {
     /**
      * Devuelve el ProductoEntity correspondiente con el id
      * @param id buscado
-     * @param context
-     * @return
+     * @param context contexto
+     * @return el producto buscado
      */
     public static ProductoEntity getById( String id, Context context ){
         return new ProductoRepository( context ).getById( id );
