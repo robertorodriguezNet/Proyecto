@@ -60,7 +60,6 @@ public class CompraRepository extends Repositorio {
 
         try{
             DAO.insert( compra );
-            Log.d( "LDLC", "CompraRepository.insert() - Compra guardada: " + compra.toString() );
         }catch ( Exception e ){
             Log.d( "LDLC", "CompraRepository.insert() - Error al guardar la compra: " + compra.toString() );
         }

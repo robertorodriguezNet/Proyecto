@@ -31,6 +31,7 @@ import dam.proyecto.R;
 import dam.proyecto.activities.almacen.adapters.AdaptadorProductos;
 import dam.proyecto.activities.almacen.listeners.AlmacenListener;
 import dam.proyecto.controllers.ProductoController;
+import dam.proyecto.controllers.TagController;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.database.repositories.TagRepository;
@@ -94,7 +95,7 @@ public class ListaProductosFragment extends Fragment {
         btnSearch.setOnClickListener(v -> {
             search();
         });
-        etiquetaList = new TagRepository( getContext() ).getNombres();
+        etiquetaList = new TagController( getContext() ).getNombres();
 
         // Establecemos el adaptador para las etiquetas
         ArrayAdapter<String> adapterEtiquetas = new ArrayAdapter<>(

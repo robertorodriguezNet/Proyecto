@@ -247,7 +247,9 @@ public class ExportDB {
 
         StringBuilder code = new StringBuilder();
         for (TagsProductoEntity objeto : data) {
-            code.append(objeto.getProducto())
+            code.append( objeto.getId() )
+                    .append(",")
+                    .append(objeto.getProducto())
                     .append(",")
                     .append(objeto.getTag())
                     .append("\n");

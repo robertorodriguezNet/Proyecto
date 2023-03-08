@@ -15,34 +15,37 @@ public interface TagsProductoDao {
 
     // CREATE -------------------------------------
     @Insert
-    void insert( TagsProductoEntity object);
+    void insert(TagsProductoEntity object);
 
     @Insert
-    void insertAll (List<TagsProductoEntity> objects );
+    void insertAll(List<TagsProductoEntity> objects);
 
     // READ ---------------------------------------
-    @Query( "SELECT * FROM TagsProducto")
+    @Query("SELECT * FROM TagsProducto WHERE id = :id")
+    TagsProductoEntity findById(String id);
+
+    @Query("SELECT * FROM TagsProducto")
     List<TagsProductoEntity> getAll();
 
-    @Query( "SELECT tag FROM TagsProducto WHERE producto = :args")
-    List<Integer> getTagByProducto( String args);
+    @Query("SELECT MAX(id) FROM TagsProducto")
+    int getMaxId();
 
-    @Query( "SELECT * FROM TagsProducto WHERE id = :id")
-    TagsProductoEntity findById( String id );
+    @Query("SELECT * FROM tagsproducto WHERE producto = :idProducto AND tag = :idTag")
+    TagsProductoEntity getAsociacion(String idProducto, int idTag);
 
-    @Query( "SELECT * FROM tagsproducto WHERE producto = :idProducto AND tag = :idTag")
-    TagsProductoEntity getAsociacion( String idProducto, int idTag);
+    @Query("SELECT tag FROM TagsProducto WHERE producto = :args")
+    List<Integer> getTagByProducto(String args);
 
     // UPDATE ------------------------------------
     @Update
-    void update( TagsProductoEntity object );
+    void update(TagsProductoEntity object);
 
     // DELETE ------------------------------------
     @Delete
-    void delete( TagsProductoEntity object );
+    void delete(TagsProductoEntity object);
 
 
-    @Query( "DELETE FROM tagsproducto" )
+    @Query("DELETE FROM tagsproducto")
     void clear();
-    
+
 }

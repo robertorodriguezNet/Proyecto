@@ -80,33 +80,14 @@ public class TagRepository extends Repositorio {
     }
 
     /**
-     * Devuelve un listado con tan sólo los nombres
-     * @return listado de etiequetas (solo name)
+     * Devuelve el nombre de una etiqueta por su id
+     * @param id de la etiqueta
+     * @return el nombre
      */
-    public ArrayList<String> getNombres(){
-        ArrayList<TagEntity> objetos = getAll();
-        ArrayList<String> nombres = new ArrayList<>();
-
-        for ( TagEntity objeto: objetos ) {
-            nombres.add( objeto.getName() );
-        }
-
-        return nombres;
+    public String getNameById( int id ){
+        return DAO.getNameById( id );
     }
 
-    /**
-     * Devuelve un listado con las etiquetas pedidas
-     * @param ids listado de etiquetas pedidas
-     * @return listado de los nombres asociados a los id's
-     */
-    public ArrayList<String> getNombres( ArrayList<Integer> ids ){
-
-        ArrayList<String> etiquetas = new ArrayList<>();
-        for(Integer id : ids) {
-            etiquetas.add( DAO.getNameById( id ));
-        }
-        return etiquetas;
-    }
 
     /**
      * Devuelve una colección con los id de los productos que contienen el texto

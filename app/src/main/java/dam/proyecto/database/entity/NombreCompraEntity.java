@@ -55,6 +55,7 @@ public class NombreCompraEntity implements Serializable {
         this.comercio = comercio;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "NombreCompraEntity{" +

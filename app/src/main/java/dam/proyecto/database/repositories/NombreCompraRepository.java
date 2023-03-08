@@ -2,14 +2,14 @@ package dam.proyecto.database.repositories;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.dao.NombreCompraDao;
-import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
-import dam.proyecto.database.entity.ProductoEntity;
 
 /**
  *
@@ -19,20 +19,18 @@ import dam.proyecto.database.entity.ProductoEntity;
  */
 public class NombreCompraRepository extends Repositorio {
 
-    private Context context;
-    private NombreCompraDao dao;
+    private final NombreCompraDao DAO;
 
     public NombreCompraRepository(Context context) {
         super(context);
-        this.context = context;
-        dao = db.nombreCompraDao();
+        DAO = db.nombreCompraDao();
     }
 
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
-        dao.clear();
+        DAO.clear();
     }
 
     /**
@@ -40,7 +38,7 @@ public class NombreCompraRepository extends Repositorio {
      * @param compra que se debe eliminar
      */
     public void delete( NombreCompraEntity compra ){
-        dao.delete( compra );
+        DAO.delete( compra );
     }
 
     /**
@@ -50,16 +48,14 @@ public class NombreCompraRepository extends Repositorio {
      * @return true | false si existe o no el nombre de la compra
      */
     public boolean existsIdDeLaCompra(String id) {
-        NombreCompraEntity objeto = null;
-        objeto = db
+        NombreCompraEntity  objeto = db
                 .nombreCompraDao()
                 .findById(id);
         return objeto != null;
     }
 
     public boolean existsNombreDeLaCompra(String id) {
-        NombreCompraEntity objeto = null;
-        objeto = db
+        NombreCompraEntity objeto = db
                 .nombreCompraDao()
                 .findById(id);
         return objeto != null;
@@ -67,28 +63,28 @@ public class NombreCompraRepository extends Repositorio {
 
     /**
      * Devuelve un listado completo de los registros.
-     * @return
+     * @return listado completo de objetos
      */
     public ArrayList<NombreCompraEntity> getAll(){
-        return (ArrayList<NombreCompraEntity>) dao.getAll();
+        return (ArrayList<NombreCompraEntity>) DAO.getAll();
     }
 
     /**
      * Devuelve un listado con las compras hechas en un comercio dado
-     * @param idComercio
-     * @return
+     * @param idComercio buscado
+     * @return listado de compras en el comercio
      */
     public ArrayList<String> getAllByIdComercio( int idComercio ){
-        return (ArrayList<String>) dao.getAllByComercio( idComercio );
+        return (ArrayList<String>) DAO.getAllByComercio( idComercio );
     }
 
     /**
      * Obtener un nombre de la compra a partir del id
      * @param id el id de la compra, con formato aammddhhmm
-     * @return
+     * @return nombre de la compra
      */
     public NombreCompraEntity getById( String id ){
-        return (NombreCompraEntity) dao.findById( id );
+        return DAO.findById( id );
     }
 
     /**
@@ -97,11 +93,11 @@ public class NombreCompraRepository extends Repositorio {
      * @return int el id de la compra
      */
     public int getIdComercio( String idCompra ){
-        return dao.getIdComercio( idCompra );
+        return DAO.getIdComercio( idCompra );
     }
 
     public String getNombreComercioByCompra( String idCompra ){
-        return dao.getNombreComercio( idCompra );
+        return DAO.getNombreComercio( idCompra );
     }
 
     /**
@@ -109,7 +105,7 @@ public class NombreCompraRepository extends Repositorio {
      * @param objeto que se debe insertar
      */
     public void insert( NombreCompraEntity objeto ){
-        dao.insert( objeto );
+        DAO.insert( objeto );
     }
 
     /**
@@ -117,17 +113,18 @@ public class NombreCompraRepository extends Repositorio {
      * @param data colección de objetos
      */
     public void insertAll( List<NombreCompraEntity> data ){
-        dao.insertAll( data );
+        DAO.insertAll( data );
     }
 
     public void update(NombreCompraEntity nombreCompra) {
-        dao.update( nombreCompra );
+        DAO.update( nombreCompra );
     }
 
 
 
 
     @Override
+    @NonNull
     public String toString() {
         return super.toString();
     }

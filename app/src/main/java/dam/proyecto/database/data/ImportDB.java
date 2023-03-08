@@ -14,9 +14,11 @@ import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.MarcaBlancaController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.MedidaController;
+import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.OfertaController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
+import dam.proyecto.controllers.TagProductoController;
 
 /**
  * Importa los registros desde los archivos previamente generados y guardados.
@@ -51,8 +53,8 @@ public class ImportDB {
 
         importarCompraEntity();
         importarProductoEntity();
-//        importarNombreCompraEntity();
-//        importarProductoTagEntity();
+        importarNombreCompraEntity();
+        importarProductoTagEntity();
     }
 
     /**
@@ -114,10 +116,10 @@ public class ImportDB {
                 ProductoController.insertProducto(
                         data[0],
                         data[1],
-                        Integer.valueOf(data[2]),
-                        Integer.valueOf(data[3]),
+                        Integer.parseInt(data[2]),
+                        Integer.parseInt(data[3]),
                         data[4],
-                        Float.valueOf(data[5]),
+                        Float.parseFloat(data[5]),
                         context
                 );
             }
@@ -171,30 +173,30 @@ public class ImportDB {
      */
     private static void importarNombreCompraEntity() {
 
-//        String file = "NombreCompraEntity.csv";
-//        NombreCompraController controller = new NombreCompraController(context);
-//
-//        try {
-//            // Borrar los datos
-//            controller.clearData();
-//
-//            // Cada línea leída es un ProductoEntity
-//            ArrayList<String> registros = getRegistros(file);
-//            for (String registro : registros) {
-//
-//                String[] data = registro.split(",");
-//                // Pedimos al controlador de productos que lo guarde *
-//                controller.insert(
-//                        data[0],
-//                        data[1],
-//                        Integer.valueOf(data[2])
-//                );
-//            }
-//        } catch (Exception e) {
-//            Toast.makeText(context, "Error al leer NombreCompraEntity", Toast.LENGTH_SHORT).show();
-//            Log.e("LDLC", "Error al importar NombreCompraEntity:\n"
-//                    + e.getMessage());
-//        }
+        String file = "NombreCompraEntity.csv";
+        NombreCompraController controller = new NombreCompraController(context);
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros(file);
+            for (String registro : registros) {
+
+                String[] data = registro.split(",");
+                // Pedimos al controlador de productos que lo guarde *
+                controller.insert(
+                        data[0],
+                        data[1],
+                        Integer.parseInt(data[2])
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer NombreCompraEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC", "Error al importar NombreCompraEntity:\n"
+                    + e.getMessage());
+        }
     }
 
     /**
@@ -268,28 +270,29 @@ public class ImportDB {
     private static void importarProductoTagEntity() {
 
         String file = "TagsProductoEntity.csv";
-//        TagProductoController controller = new TagProductoController(context);
-//
-//        try {
-//            // Borrar los datos
-//            controller.clear();
-//
-//            // Cada línea leída es un ProductoEntity
-//            ArrayList<String> registros = getRegistros(file);
-//            for (String registro : registros) {
-//
-//                String[] data = registro.split(",");
-//                // Pedimos al controlador de productos que lo guarde
-//                controller.insert(
-//                        data[0],
-//                        Integer.valueOf(data[1])
-//                );
-//            }
-//        } catch (Exception e) {
-//            Toast.makeText(context, "Error al leer TagsProductoEntity", Toast.LENGTH_SHORT).show();
-//            Log.e("LDLC", "Error al importar TagsProductoEntity:\n"
-//                    + e.getMessage());
-//        }
+        TagProductoController controller = new TagProductoController(context);
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros(file);
+            for (String registro : registros) {
+
+                String[] data = registro.split(",");
+                // Pedimos al controlador de productos que lo guarde
+                controller.insert(
+                        Integer.parseInt(data[0]),
+                        data[1],
+                        Integer.parseInt(data[2])
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer TagsProductoEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC", "Error al importar TagsProductoEntity:\n"
+                    + e.getMessage());
+        }
     }
 
     /**

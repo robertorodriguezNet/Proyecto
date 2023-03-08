@@ -3,10 +3,13 @@ package dam.proyecto.database.repositories;
 import android.content.Context;
 import android.util.Log;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
+import dam.proyecto.database.dao.TagsProductoDao;
 import dam.proyecto.database.entity.TagsProductoEntity;
 
 /**
@@ -15,93 +18,72 @@ import dam.proyecto.database.entity.TagsProductoEntity;
  * @version 2023.02.28
  */
 public class TagProductoRepository extends Repositorio {
-
-    private Context context;
-
+    
+    private final Context CONTEXT;
+    private final TagsProductoDao DAO;
+    
     public TagProductoRepository(Context context) {
         super(context);
-        this.context = context;
+        this.CONTEXT = context;
+        DAO = db.tagsProductoDao();
     }
 
-    public ArrayList<TagsProductoEntity> getAll(){
-        return (ArrayList<TagsProductoEntity>) db.tagsProductoDao().getAll();
-    }
-
-    /**
-     * Devuelve un listado de los tags de un producto con tan sólo los nombres
-     * @param idProducto el producto buscado
-     * @return
-     */
-    public ArrayList<String> getNombres( String idProducto ){
-
-        try {
-            // Repositorio de tags
-            TagRepository tagRepository = new TagRepository(context);
-
-            // Obtener los id de los tags que corresponden al producto
-            ArrayList<Integer> idTags = (ArrayList<Integer>) db
-                    .tagsProductoDao()
-                    .getTagByProducto(idProducto);
-
-            // Pedimos los nombres y los devolvemos
-            return tagRepository.getNombres(idTags);
-
-        }catch ( Exception e){
-            Log.e("LDLC", "TagProductoRepository.getNombres() id: " + idProducto
-            + "\n" + e.getMessage());
-            return new ArrayList<>();
-        }
-
-    }
 
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
-        db.tagsProductoDao().clear();
+        DAO.clear();
+    }
+
+    /**
+     * Devuelve una lista completa de los objetos
+     * @return la lista de objetos
+     */
+    public ArrayList<TagsProductoEntity> getAll(){
+        return (ArrayList<TagsProductoEntity>) DAO.getAll();
+    }
+
+    /**
+     * Devuelve el valor máximo de los id's de la tabla
+     * @return el id
+     */
+    public int getMaxId(){
+        return DAO.getMaxId();
+    }
+
+    /**
+     * Devuelve los tags de un producto
+     * @param args producto
+     * @return lista de id's asociados al producto
+     */
+    public ArrayList<Integer> getTagByProducto(String args){
+        return (ArrayList<Integer>) DAO.getTagByProducto( args );
+    }
+
+    /**
+     * Inserta un objeto en la table
+     * @param objeto que se inserta
+     */
+    public void insert( TagsProductoEntity objeto ){
+        DAO.insert( objeto );
     }
 
     /**
      * Inserta una colección de objetos
      */
     public void insertAll(List<TagsProductoEntity> data ){
-        db.tagsProductoDao().insertAll( data );
+        DAO.insertAll( data );
+    }
+
+
+    public TagsProductoEntity getAsociacion( String producto, int tag ){
+        return DAO.getAsociacion( producto, tag );
     }
 
     @Override
+    @NonNull
     public String toString() {
         return super.toString();
     }
-
-    /**
-     * Devuelve true si ya hay un producto asociado a la etiqueta
-     * @param producto
-     * @param tag
-     * @return
-     */
-    public boolean existsAsociacion( String producto, int tag){
-        TagsProductoEntity asociacion = null;
-        asociacion = db.tagsProductoDao().getAsociacion( producto, tag );
-        return ( asociacion != null );
-    }
-
-    /**
-     * Asocia un producto con una etiqueta
-     * @param producto
-     * @param tag
-     */
-    public void insert( String producto, int tag){
-
-        if( !existsAsociacion( producto, tag ) ) {
-
-            Log.d("LDLC", "TagProductoRepository.insert() \n" +
-                    "No existe la asocición " + producto + " - " + tag);
-            db.tagsProductoDao().insert(new TagsProductoEntity(producto, tag));
-
-        } else {
-            Log.d("LDLC", "TagProductoRepository.insert() \n" +
-                    "Sí existe la asocición " + producto + " - " + tag);
-        }
-    }
-
 }

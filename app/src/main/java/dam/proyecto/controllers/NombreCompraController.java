@@ -1,15 +1,10 @@
 package dam.proyecto.controllers;
 
-import static dam.proyecto.Config.ERROR_CREAR_COMERCIO;
-
 import android.content.Context;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
-import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 
 /**
@@ -17,26 +12,40 @@ import dam.proyecto.database.repositories.NombreCompraRepository;
  *
  * @author Roberto Rodríguez Jiménez
  * @since 04/03/2023
- * @version 2023.03.07
+ * @version 2023.03.08
  */
 
 public class NombreCompraController {
 
-    private Context context;
-    private NombreCompraRepository repository;
+    private final NombreCompraRepository REPOSITORY;
 
     public NombreCompraController(Context context ){
-        this.context = context;
-        this.repository = new NombreCompraRepository( context );
+        this.REPOSITORY = new NombreCompraRepository( context );
+    }
+
+    /**
+     * Borra los datos de la tabla
+     */
+    public void clear(){
+        REPOSITORY.clear();
     }
 
     /**
      * Devuelve un listado completo de los registros.
-     * @return
+     * @return listado de objetos
      */
     public ArrayList<NombreCompraEntity> getAll(){
-        return (ArrayList<NombreCompraEntity>) repository.getAll();
+        return (ArrayList<NombreCompraEntity>) REPOSITORY.getAll();
     }
 
+    /**
+     * Inserta un nuevo registro
+     * @param id de la compra
+     * @param nombre que se le da a la compra
+     * @param comercio en el que se compra (int id)
+     */
+    public void insert(String id, String nombre, int comercio){
+        REPOSITORY.insert( new NombreCompraEntity( id, nombre, comercio));
+    }
 
 }

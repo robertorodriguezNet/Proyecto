@@ -115,6 +115,21 @@ public class TagController {
         return nombres;
     }
 
+
+    /**
+     * Devuelve un listado con las etiquetas pedidas
+     * @param ids listado de etiquetas pedidas
+     * @return listado de los nombres asociados a los id's
+     */
+    public ArrayList<String> getNombres( ArrayList<Integer> ids ){
+
+        ArrayList<String> etiquetas = new ArrayList<>();
+        for(Integer id : ids) {
+            etiquetas.add( REPOSITORY.getNameById( id ));
+        }
+        return etiquetas;
+    }
+
     /* ******************************************************************************* */
     /* ***** INSERT ****************************************************************** */
     /* ******************************************************************************* */
