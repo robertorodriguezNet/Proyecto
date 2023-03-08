@@ -10,10 +10,11 @@ import androidx.room.PrimaryKey;
 @Entity( tableName = "Tag" )
 public class TagEntity {
 
-    @PrimaryKey( autoGenerate = true ) private int id;
+    @PrimaryKey( autoGenerate = false ) private int id;
     @ColumnInfo( name = "name" ) private String name;
 
-    public TagEntity( String name ) {
+    public TagEntity( int id, String name ) {
+        this.id = id;
         this.name = name;
     }
 

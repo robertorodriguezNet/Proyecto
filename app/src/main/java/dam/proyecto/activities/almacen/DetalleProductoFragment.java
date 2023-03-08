@@ -29,6 +29,7 @@ import java.util.ArrayList;
 
 import dam.proyecto.R;
 import dam.proyecto.controllers.ProductoController;
+import dam.proyecto.controllers.TagController;
 import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.MarcaRepository;
@@ -78,7 +79,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     MedidaRepository medidaRepository;
     MarcaRepository marcaRepository;
     ProductoRepository productoRepository;
-    TagRepository tagRepository;
+    TagController tagController;
     TagProductoRepository tagProductoRepository;
 
     private ProductoEntity productoEditando;                         // Producto que está editándose
@@ -116,14 +117,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         medidaRepository = new MedidaRepository(context);
         marcaRepository = new MarcaRepository(context);
         productoRepository = new ProductoRepository(context);
-        tagRepository = new TagRepository(context);
+        tagController = new TagController( context );
         tagProductoRepository = new TagProductoRepository(context);
 
         // Obtener la colección de medidas, marcas y etiquetas
         // Las etiquetas del producto solo se obtienen si se está editando
         medidaList = medidaRepository.getAll();
         marcaList = marcaRepository.getNombres();
-        etiquetaList = tagRepository.getNombres();
+        etiquetaList = tagController.getNombres();
 
         // Inicializamos los componente
         // No se cargan datos
@@ -567,7 +568,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         text_tags.setText(texto);
 
         // Guardar el tag, recibimos un id
-        int idTag = tagRepository.insert(tag.trim());
+        int idTag = tagController.insert(tag.trim());
 
         // Insertar el tag en la lista
         etiquetaList.add(tag.trim());
@@ -589,7 +590,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
         // Recorrer las etiquetas y asociarlas al producto
         for (String tag : tags) {
-            int idTag = tagRepository.getIdByName(tag.trim());
+            int idTag = tagController.getIdByName(tag.trim());
             Log.d("LDLC", "DetalleProductoFragment.asociarTagsAlProducto\n" +
                     "tag: " + tag + " id: " + tags.length);
             tagProductoRepository.insert(

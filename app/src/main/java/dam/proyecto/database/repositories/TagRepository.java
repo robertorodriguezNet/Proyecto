@@ -4,6 +4,8 @@ import android.content.Context;
 import android.nfc.Tag;
 import android.util.Log;
 
+import androidx.room.Dao;
+
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,6 +36,15 @@ public class TagRepository extends Repositorio {
         dao.clear();
     }
 
+    /**
+     * Devuelve un TagEntity a partir de un nombre
+     * @param name es el nombre buscado
+     * @return TagEntity relacionado con el nombre
+     */
+    public TagEntity findByName( String name ){
+        return dao.findByName( name );
+    }
+
     public ArrayList<TagEntity> getAll(){
         return (ArrayList<TagEntity>) db.tagDao().getAll();
     }
@@ -56,24 +67,21 @@ public class TagRepository extends Repositorio {
     }
 
     /**
-     * Devuelve una colección con los id de los productos que contienen el texto
-     * en la etiqueta
-     * @param texto
+     * Devuelve el id de una etiqueta por su nombre
+     * @param name el tag buscado
      * @return
      */
-    public ArrayList<String> getProductosByTag( String texto ){
-        ArrayList<String> list = (ArrayList<String>) dao.getProductosByTag( texto );
-        ArrayList<String> idList = new ArrayList<>();
-
-        Iterator it = list.iterator();
-        while ( it.hasNext() ){
-            String producto = (String) it.next();
-            idList.add( producto );
-        }
-
-        return idList;
+    public int getIdByName( String name ){
+        return dao.getIdByName( name );
     }
 
+    /**
+     * Devuelve el valor máximo de los id de la tabla
+     * @return int id
+     */
+    public int getMaxId(){
+        return dao.getMaxId();
+    }
 
     /**
      * Devuelve un listado con tan sólo los nombres
@@ -98,85 +106,50 @@ public class TagRepository extends Repositorio {
     public ArrayList<String> getNombres( ArrayList<Integer> ids ){
 
         ArrayList<String> etiquetas = new ArrayList<>();
-
         for(Integer id : ids) {
             etiquetas.add( dao.getNameById( id ));
         }
-
         return etiquetas;
     }
 
     /**
-     * Devuelve true si el tag existe
-     * @param tag
+     * Devuelve una colección con los id de los productos que contienen el texto
+     * en la etiqueta
+     * @param texto
      * @return
      */
-    public boolean exists( String tag ){
-        TagEntity tagEntity = null;
-        tagEntity = dao.findByName( tag );
-        return tagEntity != null;
+    public ArrayList<String> getProductosByTag( String texto ){
+        ArrayList<String> list = (ArrayList<String>) dao.getProductosByTag( texto );
+        ArrayList<String> idList = new ArrayList<>();
+
+        Iterator it = list.iterator();
+        while ( it.hasNext() ){
+            String producto = (String) it.next();
+            idList.add( producto );
+        }
+
+        return idList;
     }
-    /**
-     * Devuelve el objeto si el tag existe
-     * @param tag
-     * @return
-     */
 
     /**
      * Inserta una colección de objetos
      */
     public void insertAll( List<TagEntity> data ){
-        db.tagDao().insertAll( data );
+        dao.insertAll( data );
     }
+
+    /**
+     * Inserta un objeto
+     */
+    public void insert( TagEntity tag ){
+        dao.insert( tag );
+    }
+
+
 
     @Override
     public String toString() {
         return super.toString();
-    }
-
-    /**
-     * Inserta un nuevo tag y devuelve el id
-     * @param tag
-     * @return
-     */
-    public int insert( String tag ){
-
-//        String log = "TagRepository.insert() Estamos insertando un nuevo tag" +
-//                "\ntag: " + tag;
-
-        // Crear un objeto tag a partir de la etiqueta recibida
-        TagEntity newTag = new TagEntity( tag );
-
-        // Insertamos el tagEntity si no existe
-        if( !exists( tag ) ){
-//            log += "\nEl tag no existe y se ha insertado en la BD";
-            dao.insert( newTag );  // Insertamos el tag
-        }
-
-        // Recuperar el tag recién guardado
-        if( exists( tag ) ){
-//            log += "\nHemos recuperado el tag de la BD";
-            newTag = dao.findByName( tag );
-        }
-
-//        log += "\nEl id de " + tag + " es " + newTag.getId();
-//        Log.d("LDLC", log);
-
-        // Si la etiqueta no existiera, el id = 0
-        return newTag.getId();
-    }
-
-    /**
-     * Devuelve el id de una etiqueta por su nombre
-     * @param name el tag buscado
-     * @return
-     */
-    public int getIdByName( String name ){
-
-        int idName = dao.getIdByName( name );
-//        Log.d("LDLC", "TagRepository.getIdByName() \n" +
-//            "Pedido el id de " + name + ": " + idName );
-        return idName;
     }
 
 }
