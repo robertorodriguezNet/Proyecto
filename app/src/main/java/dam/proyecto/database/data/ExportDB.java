@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import dam.proyecto.controllers.ComercioController;
 
+import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.MarcaBlancaController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.MedidaController;
@@ -19,18 +20,8 @@ import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.OfertaController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.controllers.TagProductoController;
-import dam.proyecto.database.entity.ComercioEntity;
-import dam.proyecto.database.entity.CompraEntity;
 
 import dam.proyecto.database.entity.MarcaBlancaEntity;
-import dam.proyecto.database.entity.MarcaEntity;
-import dam.proyecto.database.entity.MedidaEntity;
-import dam.proyecto.database.entity.NombreCompraEntity;
-import dam.proyecto.database.entity.OfertaEntity;
-import dam.proyecto.database.entity.ProductoEntity;
-import dam.proyecto.database.entity.TagEntity;
-import dam.proyecto.database.entity.TagsProductoEntity;
-import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
 
 /**
@@ -92,32 +83,28 @@ public class ExportDB {
 
     private static void exportarComercioEntity() {
         ComercioController controller = new ComercioController(context);
-        ArrayList<ComercioEntity> data = controller.getAll();
 
         StringBuilder code = new StringBuilder();
-        for (ComercioEntity objeto : data) {
-            code.append(objeto.getId())
-                    .append(",")
-                    .append(objeto.getName())
-                    .append("\n");
-        }
+        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+                .append(",")
+                .append(objeto.getName())
+                .append("\n"));
+
         grabar("ComercioEntity.csv", code.toString());
     }
 
 
     private static void exportarNombreCompraEntity() {
         NombreCompraController controller = new NombreCompraController(context);
-        ArrayList<NombreCompraEntity> data = controller.getAll();
 
         StringBuilder code = new StringBuilder();
-        for (NombreCompraEntity objeto : data) {
-            code.append(objeto.getId())
-                    .append(",")
-                    .append(objeto.getNombre())
-                    .append(",")
-                    .append(objeto.getComercio())
-                    .append("\n");
-        }
+        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+                .append(",")
+                .append(objeto.getNombre())
+                .append(",")
+                .append(objeto.getComercio())
+                .append("\n"));
+
         grabar("NombreCompraEntity.csv", code.toString());
     }
 
@@ -127,15 +114,13 @@ public class ExportDB {
      */
     private static void exportarTagEnity() {
         TagController controller = new TagController(context);
-        ArrayList<TagEntity> data = controller.getAll();
 
         StringBuilder code = new StringBuilder();
-        for (TagEntity objeto : data) {
-            code.append(objeto.getId())
-                    .append(",")
-                    .append(objeto.getName())
-                    .append("\n");
-        }
+        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+                .append(",")
+                .append(objeto.getName())
+                .append("\n"));
+
         grabar("TagEntity.csv", code.toString());
     }
 
@@ -144,26 +129,25 @@ public class ExportDB {
      * automática al crearse el objeto.
      */
     private static void exportarCompraEntity() {
-        CompraRepository repository = new CompraRepository(context);
-        ArrayList<CompraEntity> data = repository.getAll();
+        CompraController controller = new CompraController(context);
 
         StringBuilder code = new StringBuilder();
-        for (CompraEntity objeto : data) {
-            code.append(objeto.getProducto())
-                    .append(",")
-                    .append(objeto.getFecha())
-                    .append(",")
-                    .append(objeto.getCantidad())
-                    .append(",")
-                    .append(objeto.getPagado())
-                    .append(",")
-                    .append(objeto.getPrecio())
-                    .append(",")
-                    .append(objeto.getPrecioMedido())
-                    .append(",")
-                    .append(objeto.getOferta())
-                    .append("\n");
-        }
+        controller.getAll().forEach( objeto ->code.append(objeto.getProducto())
+                        .append(",")
+                        .append(objeto.getFecha())
+                        .append(",")
+                        .append(objeto.getCantidad())
+                        .append(",")
+                        .append(objeto.getPagado())
+                        .append(",")
+                        .append(objeto.getPrecio())
+                        .append(",")
+                        .append(objeto.getPrecioMedido())
+                        .append(",")
+                        .append(objeto.getOferta())
+                        .append("\n")
+                );
+
         grabar("CompraEntity.csv", code.toString());
     }
 
@@ -185,29 +169,24 @@ public class ExportDB {
 
     private static void exportarMarcaEntity() {
         MarcaController controller = new MarcaController(context);
-        ArrayList<MarcaEntity> data = controller.getAll();
 
         StringBuilder code = new StringBuilder();
-        for (MarcaEntity objeto : data) {
-            code.append(objeto.getId())
-                    .append(",")
-                    .append(objeto.getName())
-                    .append("\n");
-        }
+        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+                .append(",")
+                .append(objeto.getName())
+                .append("\n"));
+
         grabar("MarcaEntity.csv", code.toString() );
     }
 
     private static void exportarMedidaEntity() {
         MedidaController controller = new MedidaController(context);
-        ArrayList<MedidaEntity> data = controller.getAll();
 
         StringBuilder code = new StringBuilder();
-        for (MedidaEntity objeto : data) {
-            code.append(objeto.getId())
-                    .append(",")
-                    .append(objeto.getDescription())
-                    .append("\n");
-        }
+        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+                .append(",")
+                .append(objeto.getDescription())
+                .append("\n"));
 
         grabar("MedidaEntity.csv", code.toString());
     }
@@ -220,54 +199,48 @@ public class ExportDB {
      */
     private static void exportarProductoEntity() {
 
-        ProductoRepository repository = new ProductoRepository(context);
-        ArrayList<ProductoEntity> data = repository.getAll();
+        ProductoRepository controller = new ProductoRepository(context);
 
         StringBuilder code = new StringBuilder();
-        for (ProductoEntity objeto : data) {
-            code.append(objeto.getId())
-                    .append(",")
-                    .append(objeto.getDenominacion())
-                    .append(",")
-                    .append(objeto.getMarca())
-                    .append(",")
-                    .append(objeto.getUnidades())
-                    .append(",")
-                    .append(objeto.getMedida())
-                    .append(",")
-                    .append(objeto.getCantidad())
-                    .append("\n");
-        }
+        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+                .append(",")
+                .append(objeto.getDenominacion())
+                .append(",")
+                .append(objeto.getMarca())
+                .append(",")
+                .append(objeto.getUnidades())
+                .append(",")
+                .append(objeto.getMedida())
+                .append(",")
+                .append(objeto.getCantidad())
+                .append("\n"));
+
         grabar("ProductoEntity.csv", code.toString());
     }
 
     private static void exportarTagsProductoEntity() {
         TagProductoController controller = new TagProductoController(context);
-        ArrayList<TagsProductoEntity> data = controller.getAll();
 
         StringBuilder code = new StringBuilder();
-        for (TagsProductoEntity objeto : data) {
-            code.append( objeto.getId() )
-                    .append(",")
-                    .append(objeto.getProducto())
-                    .append(",")
-                    .append(objeto.getTag())
-                    .append("\n");
-        }
+        controller.getAll().forEach( objeto -> code.append( objeto.getId() )
+                .append(",")
+                .append(objeto.getProducto())
+                .append(",")
+                .append(objeto.getTag())
+                .append("\n"));
+
         grabar("TagsProductoEntity.csv", code.toString());
     }
 
     private static void exportarOfertaEntity() {
         OfertaController controller = new OfertaController(context);
-        ArrayList<OfertaEntity> data = controller.getAll();
 
         StringBuilder code = new StringBuilder();
-        for (OfertaEntity objeto : data) {
-            code.append(objeto.getAbbr())
-                    .append(",")
-                    .append(objeto.getTexto())
-                    .append("\n");
-        }
+        controller.getAll().forEach( objeto -> code.append(objeto.getAbbr())
+                .append(",")
+                .append(objeto.getTexto())
+                .append("\n"));
+
         grabar("OfertaEntity.csv", code.toString());
     }
 

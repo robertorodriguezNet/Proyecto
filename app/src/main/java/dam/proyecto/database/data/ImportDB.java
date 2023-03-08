@@ -108,11 +108,9 @@ public class ImportDB {
             ProductoController.clear(context);
 
             // Cada línea leída es un ProductoEntity
-            ArrayList<String> registros = getRegistros(file);
-            for (String registro : registros) {
-
-                String[] data = registro.split(",");
-                // Pedimos al controlador de productos que lo guarde *
+            getRegistros(file).forEach( v -> {
+                String[] data = v.split(",");
+                // Pedimos al controlador de productos que lo guarde
                 ProductoController.insertProducto(
                         data[0],
                         data[1],
@@ -122,7 +120,7 @@ public class ImportDB {
                         Float.parseFloat(data[5]),
                         context
                 );
-            }
+            }) ;
 
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer ProductoEntity", Toast.LENGTH_SHORT).show();
@@ -146,11 +144,9 @@ public class ImportDB {
             controller.clear();
 
             // Cada línea leída es un ProductoEntity
-            ArrayList<String> registros = getRegistros(file);
-            for (String registro : registros) {
-
-                String[] data = registro.split(",");
-                // Pedimos al controlador de productos que lo guarde *
+            getRegistros(file).forEach(v -> {
+                String[] data = v.split(",");
+                // Pedimos al controlador de productos que lo guarde
                 controller.insert(
                         data[0],
                         data[1],
@@ -160,7 +156,8 @@ public class ImportDB {
                         Float.parseFloat(data[5]),
                         Integer.parseInt(data[6])
                 );
-            }
+            });
+
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer CompraEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC", "Error al importar CompraEntity:\n"
@@ -181,17 +178,16 @@ public class ImportDB {
             controller.clear();
 
             // Cada línea leída es un ProductoEntity
-            ArrayList<String> registros = getRegistros(file);
-            for (String registro : registros) {
-
-                String[] data = registro.split(",");
-                // Pedimos al controlador de productos que lo guarde *
+            getRegistros(file).forEach(v -> {
+                String[] data = v.split(",");
+                // Pedimos al controlador de productos que lo guarde
                 controller.insert(
                         data[0],
                         data[1],
                         Integer.parseInt(data[2])
                 );
-            }
+            });
+
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer NombreCompraEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC", "Error al importar NombreCompraEntity:\n"
@@ -213,18 +209,15 @@ public class ImportDB {
             controller.clear();
 
             // Pedir las líneas del ficher de texto
-            ArrayList<String> registros = getRegistros(file);
-
-            // Cada línea leída es un ProductoEntity
-            for (String registro : registros) {
-
-                String[] data = registro.split(",");
+            getRegistros(file).forEach(v -> {
+                String[] data = v.split(",");
                 // Pedimos al controlador de productos que lo guarde
                 controller.insert(
                         Integer.parseInt(data[0]),
                         data[1]
                 );
-            }
+            });
+
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer TagEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC", "Error al importar TagEntity:\n"
@@ -246,15 +239,15 @@ public class ImportDB {
             controller.clear();
 
             // Cada línea leída es un ProductoEntity
-            ArrayList<String> registros = getRegistros(file);
-            for (String registro : registros) {
-
-                String[] data = registro.split(",");
+            getRegistros(file).forEach(v -> {
+                String[] data = v.split(",");
+                // Pedimos al controlador de productos que lo guarde
                 controller.insert(
-                        Integer.parseInt( data[0]),
-                        (data.length == 1)? "" : data[1]
+                        Integer.parseInt(data[0]),
+                        (data.length == 1) ? "" : data[1]
                 );
-            }
+            });
+
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer ComercioEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC", "Error al importar ComercioEntity:\n"
@@ -277,17 +270,16 @@ public class ImportDB {
             controller.clear();
 
             // Cada línea leída es un ProductoEntity
-            ArrayList<String> registros = getRegistros(file);
-            for (String registro : registros) {
-
-                String[] data = registro.split(",");
+            getRegistros(file).forEach(v -> {
+                String[] data = v.split(",");
                 // Pedimos al controlador de productos que lo guarde
                 controller.insert(
                         Integer.parseInt(data[0]),
                         data[1],
                         Integer.parseInt(data[2])
                 );
-            }
+            });
+
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer TagsProductoEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC", "Error al importar TagsProductoEntity:\n"
@@ -318,8 +310,8 @@ public class ImportDB {
                 // Es posible que data tenga tan solo un registro, pues
                 // existe un nombre de comercio en blanco
                 controller.insert(
-                        Integer.parseInt( data[0] ),
-                        ( data.length == 1) ? "" : data[1]
+                        Integer.parseInt(data[0]),
+                        (data.length == 1) ? "" : data[1]
                 );
             }
         } catch (Exception e) {

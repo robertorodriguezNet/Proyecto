@@ -47,6 +47,13 @@ public class CompraController {
         REPOSITORY.clear();
     }
 
+    /**
+     * Devuelve la colección de objetos completa
+     * @return la colección de objetos
+     */
+    public ArrayList<CompraEntity> getAll(){
+        return REPOSITORY.getAll();
+    }
 
     /**
      * Devuelve una compra a partir del id recibido
