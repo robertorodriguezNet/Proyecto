@@ -81,10 +81,10 @@ public class Ejemplos {
     private static void cargarComercio() {
 
         try {
-            ComercioData.getData().forEach( l -> Log.d("LDLC", l.getId() + " " + l.getName()));
-//            ComercioController controller = new ComercioController(context);
-//            controller.clear();
-//            controller.insertAll(ComercioData.getData());
+//            ComercioData.getData().forEach( l -> Log.d("LDLC", l.getId() + " " + l.getName()));
+            ComercioController controller = new ComercioController(context);
+            controller.clear();
+            controller.insertAll(ComercioData.getData());
         }catch (Exception e){
             Log.e("LDLC", "Error al cargar los comercios " + e.getMessage() );
         }

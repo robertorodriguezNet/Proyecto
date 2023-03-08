@@ -11,6 +11,7 @@ public class ComercioEntity {
     @ColumnInfo( name = "name" ) private String name;
 
     public ComercioEntity( int id, String name ) {
+        this.id = id;
         this.name = name;
     }
 
