@@ -1,18 +1,14 @@
 package dam.proyecto.database.repositories;
 
 import android.content.Context;
-import android.nfc.Tag;
-import android.util.Log;
 
-import androidx.room.Dao;
+import androidx.annotation.NonNull;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.dao.TagDao;
-import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.TagEntity;
 
 /**
@@ -22,18 +18,18 @@ import dam.proyecto.database.entity.TagEntity;
  */
 public class TagRepository extends Repositorio {
 
-    private TagDao dao;
+    private final TagDao DAO;
 
     public TagRepository(Context context) {
         super(context);
-        this.dao = db.tagDao();
+        this.DAO = db.tagDao();
     }
 
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
-        dao.clear();
+        DAO.clear();
     }
 
     /**
@@ -42,7 +38,7 @@ public class TagRepository extends Repositorio {
      * @return TagEntity relacionado con el nombre
      */
     public TagEntity findByName( String name ){
-        return dao.findByName( name );
+        return DAO.findByName( name );
     }
 
     public ArrayList<TagEntity> getAll(){
@@ -51,28 +47,28 @@ public class TagRepository extends Repositorio {
 
     /**
      * Devuelve una colección de tags contienen el texto
-     * @param texto
-     * @return
+     * @param texto buscado
+     * @return colección de objetos Tag que contienen el texto
      */
     public ArrayList<TagEntity> getAll( String texto ){
-        return (ArrayList<TagEntity>) dao.getAll( texto );
+        return (ArrayList<TagEntity>) DAO.getAll( texto );
     }
     /**
      * Devuelve una colección de id de las etiquetas que contienen el texto
-     * @param texto
-     * @return
+     * @param texto buscado
+     * @return colección de id's de las etiquetas que contienen el texto
      */
     public ArrayList<Integer> getAllId( String texto ){
-        return (ArrayList<Integer>) dao.getAllId( texto );
+        return (ArrayList<Integer>) DAO.getAllId( texto );
     }
 
     /**
      * Devuelve el id de una etiqueta por su nombre
      * @param name el tag buscado
-     * @return
+     * @return el id de la etiqueta pedida
      */
     public int getIdByName( String name ){
-        return dao.getIdByName( name );
+        return DAO.getIdByName( name );
     }
 
     /**
@@ -80,12 +76,12 @@ public class TagRepository extends Repositorio {
      * @return int id
      */
     public int getMaxId(){
-        return dao.getMaxId();
+        return DAO.getMaxId();
     }
 
     /**
      * Devuelve un listado con tan sólo los nombres
-     * @return
+     * @return listado de etiequetas (solo name)
      */
     public ArrayList<String> getNombres(){
         ArrayList<TagEntity> objetos = getAll();
@@ -101,13 +97,13 @@ public class TagRepository extends Repositorio {
     /**
      * Devuelve un listado con las etiquetas pedidas
      * @param ids listado de etiquetas pedidas
-     * @return
+     * @return listado de los nombres asociados a los id's
      */
     public ArrayList<String> getNombres( ArrayList<Integer> ids ){
 
         ArrayList<String> etiquetas = new ArrayList<>();
         for(Integer id : ids) {
-            etiquetas.add( dao.getNameById( id ));
+            etiquetas.add( DAO.getNameById( id ));
         }
         return etiquetas;
     }
@@ -115,38 +111,29 @@ public class TagRepository extends Repositorio {
     /**
      * Devuelve una colección con los id de los productos que contienen el texto
      * en la etiqueta
-     * @param texto
-     * @return
+     * @param texto el texto buscado
+     * @return colección de id's de productos que contienen el id
      */
     public ArrayList<String> getProductosByTag( String texto ){
-        ArrayList<String> list = (ArrayList<String>) dao.getProductosByTag( texto );
-        ArrayList<String> idList = new ArrayList<>();
-
-        Iterator it = list.iterator();
-        while ( it.hasNext() ){
-            String producto = (String) it.next();
-            idList.add( producto );
-        }
-
-        return idList;
+        return (ArrayList<String>) DAO.getProductosByTag( texto );
     }
 
     /**
      * Inserta una colección de objetos
      */
     public void insertAll( List<TagEntity> data ){
-        dao.insertAll( data );
+        DAO.insertAll( data );
     }
 
     /**
      * Inserta un objeto
      */
     public void insert( TagEntity tag ){
-        dao.insert( tag );
+        DAO.insert( tag );
     }
 
 
-
+    @NonNull
     @Override
     public String toString() {
         return super.toString();

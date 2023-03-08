@@ -50,6 +50,7 @@ public interface TagDao {
 
     @Query( "select producto from TagsProducto where tag in ( select id from tag where name like '%' || :tag || '%');")
     List<String> getProductosByTag( String tag );
+
     // UPDATE ------------------------------------
     @Update
     void update(TagEntity object);
