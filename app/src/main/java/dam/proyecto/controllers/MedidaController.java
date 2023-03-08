@@ -17,21 +17,41 @@ import dam.proyecto.database.repositories.MedidaRepository;
 
 public class MedidaController {
 
-    private Context context;
-    private MedidaRepository repository;
+    private final MedidaRepository REPOSITORY;
 
     public MedidaController(Context context ){
-        this.context = context;
-        this.repository = new MedidaRepository( context );
+        this.REPOSITORY = new MedidaRepository( context );
+    }
+
+    /**
+     * Borra los datos de la tabla
+     */
+    public void clear(){
+        REPOSITORY.clear();
     }
 
     /**
      * Devuelve un listado completo de los registros.
-     * @return
+     * @return devuelve la colección completa
      */
     public ArrayList<MedidaEntity> getAll(){
-        return (ArrayList<MedidaEntity>) repository.getAll();
+        return (ArrayList<MedidaEntity>) REPOSITORY.getAll();
     }
 
+    /**
+     * Inserta un objeto en la tabla
+     * @param objeto que se quiere insertar
+     */
+    public void insert( MedidaEntity objeto ){
+        REPOSITORY.insert( objeto );
+    }
 
+    /**
+     * Inserta un objeto en la tabla
+     * @param id que se quiere insertar
+     * @param name de la medida
+     */
+    public void insert( String id, String name ){
+        REPOSITORY.insert( new MedidaEntity( id, name ) );
+    }
 }

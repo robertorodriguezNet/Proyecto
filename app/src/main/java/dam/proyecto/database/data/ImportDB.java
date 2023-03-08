@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.MarcaController;
+import dam.proyecto.controllers.MedidaController;
 import dam.proyecto.controllers.TagController;
 
 /**
@@ -39,7 +40,7 @@ public class ImportDB {
         importarTagEntity();
         importarComercioEntity();
         importarMarcaEntity();
-//        importarMedidaEntity();
+        importarMedidaEntity();
 //        importarOfertaEntity();
 //        importarMarcaBlancaEntity();
 //
@@ -326,31 +327,31 @@ public class ImportDB {
     private static void importarMedidaEntity() {
 
         String file = "MedidaEntity.csv";
-//        MedidaController controller = new MedidaController(context);
-//
-//        try {
-//            // Borrar los datos
-//            controller.clear();
-//
-//            // Cada línea leída es un ProductoEntity
-//            ArrayList<String> registros = getRegistros(file);
-//            for (String registro : registros) {
-//
-//                String[] data = registro.split(",");
-//
-//                // Pedimos al controlador de productos que lo guarde
-//                // Es posible que data tenga tan solo un registro, pues
-//                // existe un nombre de comercio en blanco
-//                controller.insert(
-//                        data[0],
-//                        (data.length == 1) ? "" : data[1]
-//                );
-//            }
-//        } catch (Exception e) {
-//            Toast.makeText(context, "Error al leer MedidaEntity", Toast.LENGTH_SHORT).show();
-//            Log.e("LDLC", "Error al importar MedidaEntity:\n"
-//                    + e.getMessage());
-//        }
+        MedidaController controller = new MedidaController(context);
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros(file);
+            for (String registro : registros) {
+
+                String[] data = registro.split(",");
+
+                // Pedimos al controlador de productos que lo guarde
+                // Es posible que data tenga tan solo un registro, pues
+                // existe un nombre de comercio en blanco
+                controller.insert(
+                        data[0],
+                        (data.length == 1) ? "" : data[1]
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer MedidaEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC", "Error al importar MedidaEntity:\n"
+                    + e.getMessage());
+        }
     }
 
     /**
