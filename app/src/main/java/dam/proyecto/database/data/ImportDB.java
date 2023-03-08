@@ -37,15 +37,15 @@ public class ImportDB {
         // Importar las clases auxiliares, que no tienen relaciones
         importarTagEntity();
         importarComercioEntity();
-        importarMarcaEntity();
-        importarMedidaEntity();
-        importarOfertaEntity();
-        importarMarcaBlancaEntity();
-
-        importarCompraEntity();
-        importarProductoEntity();
-        importarNombreCompraEntity();
-        importarProductoTagEntity();
+//        importarMarcaEntity();
+//        importarMedidaEntity();
+//        importarOfertaEntity();
+//        importarMarcaBlancaEntity();
+//
+//        importarCompraEntity();
+//        importarProductoEntity();
+//        importarNombreCompraEntity();
+//        importarProductoTagEntity();
     }
 
     /**

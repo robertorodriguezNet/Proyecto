@@ -2,6 +2,8 @@ package dam.proyecto.database.repositories;
 
 import android.content.Context;
 
+import androidx.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,22 +18,52 @@ import dam.proyecto.database.entity.MarcaEntity;
  * @version 2023.02.21
  */
 public class MarcaRepository extends Repositorio{
+
+    private final MarcaDao DAO;
+
     public MarcaRepository(Context context) {
         super(context);
+        DAO = db.marcaDao();
     }
 
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
-        db.marcaDao().clear();
+        DAO.clear();
+    }
+
+    /**
+     * Devuelve el objeto a partir del nombre
+     * @param name el nombre buscado
+     * @return el objeto
+     */
+    public MarcaEntity findByName( String name ){
+        return DAO.findByName( name );
+    }
+
+    /**
+     * Devuelve el objeto a partir del id
+     * @param id de la marca buscada
+     * @return el objeto
+     */
+    public MarcaEntity findById( int id ){
+        return DAO.findById( id );
+    }
+
+    /**
+     * Inserta el objeto en la tabla
+     * @param objeto que se quiere insertar
+     */
+    public void insert( MarcaEntity objeto ){
+        DAO.insert( objeto );
     }
 
     /**
      * Inserta una colección de objetos
      */
     public void insertAll( List<MarcaEntity> data ){
-        db.marcaDao().insertAll( data );
+        DAO.insertAll( data );
     }
 
     /**
@@ -39,80 +71,19 @@ public class MarcaRepository extends Repositorio{
      * @return los datos.
      */
     public ArrayList<MarcaEntity> getAll(){
-        return (ArrayList<MarcaEntity>) getDb().marcaDao().getAll();
+        return (ArrayList<MarcaEntity>) DAO.getAll();
     }
 
     /**
-     * Devuelve un listado con tan sólo los nombres
-     * @return
+     * Devuelve el id más alto registrado
+     * @return el id más alto
      */
-    public ArrayList<String> getNombres(){
-        ArrayList<MarcaEntity> objetos = getAll();
-        ArrayList<String> nombres = new ArrayList<>();
-
-        for ( MarcaEntity objeto: objetos ) {
-            nombres.add( objeto.getName() );
-        }
-
-        return nombres;
+    public int getMaxId(){
+        return DAO.getMaxId();
     }
 
-    /**
-     * Devuelve el nombre de la marca correspondiente al id recibido
-     * @param  id del cual hay que devolver el nombre
-     * @return
-     */
-    public String getNameById( int id ){
 
-        MarcaEntity marca = db.marcaDao().findById( id );
-        return marca.getName();
-
-    }
-
-    /**
-     * Devuelve el id de una marca si existe, si no existe, la guarda.
-     * @param marcaStr la marca buscada
-     * @param control No tengo claro para qué lo puse, pero debe ser false
-     * @return
-     */
-    public int getIdByName( String marcaStr, boolean control ){
-
-        MarcaDao dao = db.marcaDao();
-        String marca = marcaStr.trim();
-
-        // Obtenemos el objeto MarcaEntity
-        MarcaEntity marcaEntity = null;
-        marcaEntity = dao.findByName( marca );
-
-        // Si marcaEntity es nulo, es que el objeto no existe
-        if( marcaEntity == null ){
-            // Guardamos la marca
-            dao.insert( new MarcaEntity( marca ));
-            marcaEntity = dao.findByName( marca );
-        }
-
-        return ( marcaEntity == null ) ? -1 : (int) marcaEntity.getId();
-    }
-
-    public int getIdByName( String marcaStr ){
-
-        MarcaDao dao = db.marcaDao();
-        String marca = marcaStr.trim();
-
-        // Obtenemos el objeto MarcaEntity
-        MarcaEntity marcaEntity = null;
-        marcaEntity = dao.findByName( marca );
-
-        // Si marcaEntity es nulo, es que el objeto no existe
-        if( marcaEntity == null ){
-            // Guardamos la marca
-            dao.insert( new MarcaEntity( marca ));
-            marcaEntity = dao.findByName( marca );
-        }
-
-        return ( marcaEntity == null ) ? -1 : (int) marcaEntity.getId();
-    }
-
+    @NonNull
     @Override
     public String toString() {
         return super.toString();

@@ -24,14 +24,18 @@ public interface MarcaDao {
     void insertAll(List<MarcaEntity> objects);
 
     // READ ---------------------------------------
-    @Query("SELECT * FROM Marca")
-    List<MarcaEntity> getAll();
 
     @Query("SELECT * FROM Marca WHERE id = :id")
     MarcaEntity findById(int id);
 
     @Query("SELECT * FROM Marca WHERE name = :name")
     MarcaEntity findByName(String name);
+
+    @Query( "SELECT MAX(id) FROM Marca")
+    int getMaxId();
+
+    @Query("SELECT * FROM Marca")
+    List<MarcaEntity> getAll();
 
     // UPDATE ------------------------------------
     @Update

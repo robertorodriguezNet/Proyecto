@@ -17,21 +17,104 @@ import dam.proyecto.database.repositories.MarcaRepository;
 
 public class MarcaController {
 
-    private Context context;
-    private MarcaRepository repository;
+    private final MarcaRepository REPOSITORY;
 
     public MarcaController(Context context ){
-        this.context = context;
-        this.repository = new MarcaRepository( context );
+        this.REPOSITORY = new MarcaRepository( context );
     }
+
 
     /**
      * Devuelve un listado completo de los registros.
-     * @return
+     * @return devuelve el listado de objetos
      */
     public ArrayList<MarcaEntity> getAll(){
-        return (ArrayList<MarcaEntity>) repository.getAll();
+        return REPOSITORY.getAll();
     }
+
+
+//    /**
+////     * Devuelve el id de una marca si existe, si no existe, la guarda.
+////     * @param marcaStr la marca buscada
+////     * @param control No tengo claro para qué lo puse, pero debe ser false
+////     * @return el id de la marca
+////     */
+////    public int getIdByName( String marcaStr, boolean control ){
+////
+////        String marca = marcaStr.trim();
+////
+////        // Obtenemos el objeto MarcaEntity
+////        MarcaEntity marcaEntity = null;
+////        marcaEntity = REPOSITORY.findByName( marca );
+////
+////        // Si marcaEntity es nulo, es que el objeto no existe
+////        if( marcaEntity == null ){
+////            // Guardamos la marca
+////            REPOSITORY.insert( new MarcaEntity( getNewId(), marca ));
+////            marcaEntity = REPOSITORY.findByName( marca );
+////        }
+////
+////        return ( marcaEntity == null ) ? -1 : (int) marcaEntity.getId();
+////    }
+
+    /**
+     * Devuelve el id de una marca si existe, si no existe, la guarda.
+     * @param marcaStr la marca buscada
+     * @return el id de la marca
+     */
+    public int getIdByName( String marcaStr ){
+
+        String marca = marcaStr.trim();
+
+        // Obtenemos el objeto MarcaEntity
+        MarcaEntity marcaEntity = REPOSITORY.findByName( marca );
+
+        // Si marcaEntity es nulo, es que el objeto no existe
+        if( marcaEntity == null ){
+            // Guardamos la marca
+            REPOSITORY.insert( new MarcaEntity( getNewId(), marca ));
+            marcaEntity = REPOSITORY.findByName( marca );
+        }
+
+        return ( marcaEntity == null ) ? -1 : marcaEntity.getId();
+    }
+
+    /**
+     * Devuelve el nombre de la marca correspondiente al id recibido
+     * @param  id del cual hay que devolver el nombre
+     * @return nombre de la marca asociada al id
+     */
+    public String getNameById( int id ){
+
+        MarcaEntity marca = REPOSITORY.findById( id );
+        return marca.getName();
+
+    }
+
+    /**
+     * Devuelve el primer índice válido de la tabla
+     * @return un índice válido para un nuevo registro
+     */
+    public int getNewId(){
+        return 0;
+    }
+
+
+    /**
+     * Devuelve un listado con tan sólo los nombres
+     * @return nombres de las marcas
+     */
+    public ArrayList<String> getNombres(){
+        ArrayList<MarcaEntity> objetos = getAll();
+        ArrayList<String> nombres = new ArrayList<>();
+
+        for ( MarcaEntity objeto: objetos ) {
+            nombres.add( objeto.getName() );
+        }
+
+        return nombres;
+    }
+
 
 
 }

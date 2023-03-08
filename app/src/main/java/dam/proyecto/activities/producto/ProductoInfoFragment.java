@@ -26,6 +26,7 @@ import java.util.Set;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.lista.ListaListaFragment;
+import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.MedidaEntity;
@@ -52,7 +53,7 @@ public class ProductoInfoFragment extends Fragment {
     private MedidaEntity medida;                                   // Objeto con la unidad de medida
 
     // Repositorios
-    private MarcaRepository marcaRepository;
+    private MarcaController marcaController;
     private ProductoRepository productoRepository;
     private MedidaRepository medidaRepository;
     private CompraRepository compraRepository;
@@ -196,7 +197,7 @@ public class ProductoInfoFragment extends Fragment {
     private void escribirLosdatos() {
 
         // Título
-        String marca = marcaRepository.getNameById(producto.getMarca());
+        String marca = marcaController.getNameById(producto.getMarca());
         String cantidad = producto.getCantidad() + " " + producto.getMedida() + ".";
         lblTitulo.setText(producto.getDenominacion()
                 + " - " + marca
@@ -228,7 +229,7 @@ public class ProductoInfoFragment extends Fragment {
     private void iniciliazarRepositorios(){
         compraRepository = new CompraRepository( context );
         productoRepository = new ProductoRepository( context );
-        marcaRepository = new MarcaRepository( context );
+        marcaController = new MarcaController( context );
         medidaRepository = new MedidaRepository( context );
     }
 

@@ -28,11 +28,11 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.ArrayList;
 
 import dam.proyecto.R;
+import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
-import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.database.repositories.TagProductoRepository;
@@ -75,7 +75,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     // Repositorios
     MedidaRepository medidaRepository;
-    MarcaRepository marcaRepository;
+    MarcaController marcaController;
     ProductoRepository productoRepository;
     TagController tagController;
     TagProductoRepository tagProductoRepository;
@@ -107,9 +107,9 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
         botonera = new ArrayList<>();                          // Cargar los botones en el ArrayList
 
-        // Inicializar los repositorios
+        // Inicializar los repositorios y controladores
         medidaRepository = new MedidaRepository(context);
-        marcaRepository = new MarcaRepository(context);
+        marcaController = new MarcaController( context );
         productoRepository = new ProductoRepository(context);
         tagController = new TagController( context );
         tagProductoRepository = new TagProductoRepository(context);
@@ -117,7 +117,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         // Obtener la colección de medidas, marcas y etiquetas
         // Las etiquetas del producto solo se obtienen si se está editando
         medidaList = medidaRepository.getAll();
-        marcaList = marcaRepository.getNombres();
+        marcaList = marcaController.getNombres();
         etiquetaList = tagController.getNombres();
 
         // Inicializamos los componente
@@ -424,7 +424,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // Obtenemos el id de la marca
             // Si la marca no existe, se guarda y se obtiene el id
             String marca = tv_marca.getText().toString();
-            int marcaInt = marcaRepository.getIdByName(marca);
+            int marcaInt = marcaController.getIdByName(marca);
 
             // Nos aseguramos de que las unidades y la cantidad tengan contenido
             String uStr = tv_unidades.getText().toString();
@@ -481,16 +481,16 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // La lista se inicializa aquí porque tan solo se carga si se
             // está editando un producto
             tagProductoList = tagProductoRepository.getNombres(producto.getId());
-            String tagString = "";
+            StringBuilder tagString = new StringBuilder();
             for (String tag : tagProductoList) {
-                tagString += tag + ", ";
+                tagString.append( tag ).append(",");
             }
             text_tags.setText(tagString);
 
             tv_codigoDeBarras.setText(producto.getId());
             tv_denominacion.setText(producto.getDenominacion());
 
-            String marca = marcaRepository.getNameById(producto.getMarca());
+            String marca = marcaController.getNameById(producto.getMarca());
             tv_marca.setText(marca);
 
             tv_unidades.setText(String.valueOf(producto.getUnidades()));
