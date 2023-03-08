@@ -36,8 +36,6 @@ import dam.proyecto.database.repositories.MarcaRepository;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.database.repositories.TagProductoRepository;
-import dam.proyecto.database.repositories.TagRepository;
-
 
 /**
  * @author Roberto Rodríguez Jiménez
@@ -86,12 +84,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     private Context context;
 
-    /** **************************************************************************************** **/
-    /** ** FUNCIONES *************************************************************************** **/
-    /**
-     * ***************************************************************************************
-     **/
-    public DetalleProductoFragment() {
+    /* ** FUNCIONES *************************************************************************** */
+     public DetalleProductoFragment() {
     }
 
     @Override
@@ -148,19 +142,17 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     private void inicializarComponentes(View view) {
 
-        tv_codigoDeBarras = (TextView) view.findViewById(R.id.aep_inp_codigo);
-        tv_denominacion = (TextView) view.findViewById(R.id.aep_inp_denominacion);
-        tv_marca = (AutoCompleteTextView) view.findViewById(R.id.aep_inp_marca);
-        tv_etiqueta = (AutoCompleteTextView) view.findViewById(R.id.aep_inp_etiqueta);
-        tv_unidades = (TextView) view.findViewById(R.id.aep_inp_unidades);
-        tv_cantidad = (TextView) view.findViewById(R.id.aep_inp_cantidad);
-        spn_medida = (Spinner) view.findViewById(R.id.aep_spn_medida);
-        text_tags = (TextView) view.findViewById(R.id.fdp_text_etiquetas);
+        tv_codigoDeBarras = view.findViewById(R.id.aep_inp_codigo);
+        tv_denominacion =  view.findViewById(R.id.aep_inp_denominacion);
+        tv_marca =  view.findViewById(R.id.aep_inp_marca);
+        tv_etiqueta =  view.findViewById(R.id.aep_inp_etiqueta);
+        tv_unidades =  view.findViewById(R.id.aep_inp_unidades);
+        tv_cantidad =  view.findViewById(R.id.aep_inp_cantidad);
+        spn_medida =  view.findViewById(R.id.aep_spn_medida);
+        text_tags =  view.findViewById(R.id.fdp_text_etiquetas);
 
-        btn_addTag = (Button) view.findViewById(R.id.fdp_btn_tagOK);
-        btn_addTag.setOnClickListener(v -> {
-            addTag();
-        });
+        btn_addTag =  view.findViewById(R.id.fdp_btn_tagOK);
+        btn_addTag.setOnClickListener(v -> addTag());
 
         // Cargar el spinner
         ArrayAdapter<MedidaEntity> adapterMedidas = new ArrayAdapter<>(
@@ -207,18 +199,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         btn_eliminar = view.findViewById(R.id.aep_btn_eliminar);
         btn_guardar = view.findViewById(R.id.aep_btn_guardar);
 
-        btn_cancelar.setOnClickListener(v -> {
-            cancelar();
-        });
-        btn_limpiar.setOnClickListener(v -> {
-            limpiar();
-        });
-        btn_eliminar.setOnClickListener(v -> {
-            eliminar();
-        });
-        btn_guardar.setOnClickListener(v -> {
-            guardar();
-        });
+        btn_cancelar.setOnClickListener(v -> cancelar());
+        btn_limpiar.setOnClickListener(v -> limpiar());
+        btn_eliminar.setOnClickListener(v -> eliminar());
+        btn_guardar.setOnClickListener(v -> guardar());
 
         botonera.add(btn_limpiar);
         botonera.add(btn_eliminar);
@@ -303,8 +287,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      * Después de cada pulsación, evaluamos el formulario.
      * Este método evalúa el código de barras y la denominación, pero no muestra los errores, tan
      * solo los evalúa para poder activar los botones.
-     *
-     * @param editable
+     * @param editable componente que queremos cambiar
      */
     @Override
     public void afterTextChanged(Editable editable) {
@@ -320,9 +303,6 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         // Si hay datos introducidos
         if (hayDatosIntroducidos()) {
 
-//            Log.d("LDLC", "DetalleProductoFragment.afterTextChanged: " +
-//                    "Sí hay datos introducidos");
-
             habilitarBtnLimpiar(true);                               // Habilitar el botón limipar
 
             // El código de barras y la denominación son válidas
@@ -335,13 +315,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 //            Log.d("LDLC", "DetalleProductoFragment.afterTextChanged\n" +
 //                    "errorCB: " + errorCB + ", errorD: " + errorD);
 
-            if ((errorCB < 0) && (errorD < 0)) {
-
-                habilitarBtnGuardar(true);
-
-            } else {
-                habilitarBtnGuardar(false);
-            }
+            habilitarBtnGuardar((errorCB < 0) && (errorD < 0));
 
         } else {
 
@@ -418,8 +392,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     /**
      * Método para comprobar si se han introducido datos en el formulario.
-     *
-     * @return
+     * @return true si los datos están completos
      */
     private boolean hayDatosIntroducidos() {
         return !tv_codigoDeBarras.getText().toString().isEmpty() ||
@@ -448,10 +421,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
             // Nos aseguramos de que las unidades y la cantidad tengan contenido
             String uStr = tv_unidades.getText().toString();
-            int unidades = (uStr.isEmpty()) ? 0 : Integer.parseInt((String) uStr);
+            int unidades = (uStr.isEmpty()) ? 0 : Integer.parseInt(uStr);
 
             String cStr = tv_cantidad.getText().toString();
-            float cantidad = (cStr.isEmpty()) ? 0 : Float.parseFloat((String) cStr);
+            float cantidad = (cStr.isEmpty()) ? 0 : Float.parseFloat( cStr);
 
             // En la medida tenemos el índice que ocupa en el spinner, no el id
             int medidaInt = (int) spn_medida.getSelectedItemId();
@@ -491,8 +464,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     /**
      * Carga el producto que se está editando.
-     *
-     * @param producto
+     * @param producto que se quiere cargar
      */
     private void cargarProducto(ProductoEntity producto) {
 
@@ -533,8 +505,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     /**
      * Devuelve la posción que ocupa la medida en la colección.
-     *
-     * @return
+     * @return posición buscada
      */
     private int getPosicionMedida() {
         int index = 0;

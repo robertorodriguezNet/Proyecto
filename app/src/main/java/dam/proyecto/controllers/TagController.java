@@ -1,7 +1,6 @@
 package dam.proyecto.controllers;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,11 +18,9 @@ import dam.proyecto.database.repositories.TagRepository;
 
 public class TagController {
 
-    private Context context;
-    private TagRepository repository;
+    private final TagRepository repository;
 
     public TagController(Context context) {
-        this.context = context;
         this.repository = new TagRepository(context);
     }
 
@@ -34,15 +31,13 @@ public class TagController {
      * @return [true|false] si la etiqueta existe o no
      */
     public boolean exists(String tag) {
-        TagEntity tagEntity = null;
-        tagEntity = repository.findByName(tag);
+        TagEntity tagEntity = repository.findByName(tag);
         return tagEntity != null;
     }
 
     /**
      * Método que devuelve la colección completa de etiquetas
-     *
-     * @return
+     * @return colección de tags
      */
     public ArrayList<TagEntity> getAll() {
         return repository.getAll();
@@ -63,20 +58,17 @@ public class TagController {
     /**
      * Devuelve una colección con los id's de los productos que en sus etiquetas
      * contienen el texto
-     *
-     * @param texto
-     * @return
+     * @param texto texto buscado en las etiquetas
+     * @return listado de prroductos (id's) que contienen la etiqueta
      */
     public ArrayList<String> getProductosByTag(String texto) {
-        ArrayList<String> list = repository.getProductosByTag(texto);
-        return list;
+        return repository.getProductosByTag(texto);
     }
 
     /**
      * Devuelve una colección de etiquetas que contienen el texto pedido
-     *
      * @param texto buscado
-     * @return
+     * @return colección de etiquetas que contienen el texto buscado
      */
     public ArrayList<TagEntity> getAll(String texto) {
         return repository.getAll(texto);
@@ -84,9 +76,8 @@ public class TagController {
 
     /**
      * Devuelve una colección de id de las etiquetas que contienen el texto pedido
-     *
      * @param texto buscado
-     * @return
+     * @return colección de etiquetas (id's) que contienen el texto buscado
      */
     public ArrayList<Integer> getAllId(String texto) {
         return repository.getAllId(texto);
@@ -95,7 +86,7 @@ public class TagController {
     /**
      * Devuelve el id de una etiqueta por su nombre
      * @param name el tag buscado
-     * @return
+     * @return [int] id asociado al texot
      */
     public int getIdByName( String name ){
         return repository.getIdByName( name );
@@ -103,7 +94,7 @@ public class TagController {
 
     /**
      * Devuelve un listado con tan sólo los nombres
-     * @return
+     * @return listado (name's) de etiquetas
      */
     public ArrayList<String> getNombres(){
         ArrayList<TagEntity> objetos = getAll();                    // Obtener todos los objetos Tag
@@ -136,9 +127,8 @@ public class TagController {
 
     /**
      * Inserta un nuevo tag y devuelve el id
-     *
-     * @param tag
-     * @return
+     * @param tag el texto de la nueva etiqueta
+     * @return el id asociado a la nueva etiqueta
      */
     public int insert(String tag) {
 
