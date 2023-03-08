@@ -3,6 +3,7 @@ package dam.proyecto.controllers;
 import android.content.Context;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.repositories.MarcaRepository;
@@ -23,6 +24,12 @@ public class MarcaController {
         this.REPOSITORY = new MarcaRepository( context );
     }
 
+    /**
+     * Borra los datos de la tabla
+     */
+    public void clear(){
+        REPOSITORY.clear();
+    }
 
     /**
      * Devuelve un listado completo de los registros.
@@ -115,6 +122,30 @@ public class MarcaController {
         return nombres;
     }
 
+
+    /**
+     * Inserta una colección de objetos
+     */
+    public void insertAll( List<MarcaEntity> data ){
+        REPOSITORY.insertAll( data );
+    }
+
+    /**
+     * Insertar un objeto con sólo el nombre
+     * @param name nombre del objeto
+     */
+    public void insert( String name ){
+        REPOSITORY.insert( new MarcaEntity( getNewId(), name ));
+    }
+
+    /**
+     * Insertar un objeto a partir del id y del nombre
+     * @param id del objeto
+     * @param name del objeto
+     */
+    public void insert( int id, String name ){
+        REPOSITORY.insert( new MarcaEntity( id, name ));
+    }
 
 
 }

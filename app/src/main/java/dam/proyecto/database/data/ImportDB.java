@@ -10,6 +10,7 @@ import java.util.ArrayList;
 
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.CompraController;
+import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.TagController;
 
 /**
@@ -37,7 +38,7 @@ public class ImportDB {
         // Importar las clases auxiliares, que no tienen relaciones
         importarTagEntity();
         importarComercioEntity();
-//        importarMarcaEntity();
+        importarMarcaEntity();
 //        importarMedidaEntity();
 //        importarOfertaEntity();
 //        importarMarcaBlancaEntity();
@@ -211,7 +212,7 @@ public class ImportDB {
                 String[] data = registro.split(",");
                 // Pedimos al controlador de productos que lo guarde
                 controller.insert(
-                        Integer.valueOf(data[0]),
+                        Integer.parseInt(data[0]),
                         data[1]
                 );
             }
@@ -241,7 +242,7 @@ public class ImportDB {
 
                 String[] data = registro.split(",");
                 controller.insert(
-                        Integer.valueOf( data[0]),
+                        Integer.parseInt( data[0]),
                         (data.length == 1)? "" : data[1]
                 );
             }
@@ -291,31 +292,31 @@ public class ImportDB {
     private static void importarMarcaEntity() {
 
         String file = "MarcaEntity.csv";
-//        MarcaController controller = new MarcaController(context);
-//
-//        try {
-//            // Borrar los datos
-//            controller.clear();
-//
-//            // Cada línea leída es un ProductoEntity
-//            ArrayList<String> registros = getRegistros(file);
-//            for (String registro : registros) {
-//
-//                String[] data = registro.split(",");
-//
-//                // Pedimos al controlador de productos que lo guarde
-//                // Es posible que data tenga tan solo un registro, pues
-//                // existe un nombre de comercio en blanco
-//                controller.insert(
-//                        Integer.valueOf( data[0] ),
-//                        ( data.length == 1) ? "" : data[1]
-//                );
-//            }
-//        } catch (Exception e) {
-//            Toast.makeText(context, "Error al leer MarcaEntity", Toast.LENGTH_SHORT).show();
-//            Log.e("LDLC", "Error al importar MarcaEntity:\n"
-//                    + e.getMessage());
-//        }
+        MarcaController controller = new MarcaController(context);
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Cada línea leída es un ProductoEntity
+            ArrayList<String> registros = getRegistros(file);
+            for (String registro : registros) {
+
+                String[] data = registro.split(",");
+
+                // Pedimos al controlador de productos que lo guarde
+                // Es posible que data tenga tan solo un registro, pues
+                // existe un nombre de comercio en blanco
+                controller.insert(
+                        Integer.parseInt( data[0] ),
+                        ( data.length == 1) ? "" : data[1]
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer MarcaEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC", "Error al importar MarcaEntity:\n"
+                    + e.getMessage());
+        }
     }
 
     /**
