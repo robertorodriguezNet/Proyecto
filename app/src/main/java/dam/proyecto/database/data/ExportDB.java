@@ -1,8 +1,9 @@
 package dam.proyecto.database.data;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
+
 import android.widget.Toast;
 
 import java.io.IOException;
@@ -40,6 +41,7 @@ import dam.proyecto.database.repositories.ProductoRepository;
  */
 public class ExportDB {
 
+    @SuppressLint("StaticFieldLeak")
     private static Context context;
 
     public static void exportDB(Context c) {
@@ -95,8 +97,7 @@ public class ExportDB {
         String code = "";
         for (ComercioEntity objeto : data) {
             code += objeto.getId() + ","
-                    + objeto.getName()
-                    + "\n";
+                    + objeto.getName() + "\n";
         }
         grabar("ComercioEntity.csv", code);
     }
@@ -111,7 +112,6 @@ public class ExportDB {
         ProductoRepository repository = new ProductoRepository(context);
         ArrayList<ProductoEntity> data = repository.getAll();
 
-        boolean salto = false;
         String code = "";
 
         for (ProductoEntity objeto : data) {
@@ -120,11 +120,7 @@ public class ExportDB {
                     + objeto.getMarca() + ","
                     + objeto.getUnidades() + ","
                     + objeto.getMedida() + ","
-                    + objeto.getCantidad();
-            salto = true;
-            if (salto) {
-                code += "\n";
-            }
+                    + objeto.getCantidad() + "\n";
         }
         grabar("ProductoEntity.csv", code);
     }
@@ -133,16 +129,11 @@ public class ExportDB {
         NombreCompraController controller = new NombreCompraController(context);
         ArrayList<NombreCompraEntity> data = controller.getAll();
 
-        boolean salto = false;
         String code = "";
         for (NombreCompraEntity objeto : data) {
             code += objeto.getId() + ","
                     + objeto.getNombre() + ","
-                    + objeto.getComercio();
-            salto = true;
-            if (salto) {
-                code += "\n";
-            }
+                    + objeto.getComercio() + "\n";
         }
         grabar("NombreCompraEntity.csv", code);
     }
@@ -155,15 +146,10 @@ public class ExportDB {
         TagController controller = new TagController(context);
         ArrayList<TagEntity> data = controller.getAll();
 
-        boolean salto = false;
         String code = "";
         for (TagEntity objeto : data) {
             code += objeto.getId() + ","
-                    + objeto.getName();
-            salto = true;
-            if (salto) {
-                code += "\n";
-            }
+                    + objeto.getName() + "\n";
         }
         grabar("TagEntity.csv", code);
     }
@@ -176,8 +162,7 @@ public class ExportDB {
         for (MarcaBlancaEntity objeto : data) {
             code += objeto.getId() + ","
                     + objeto.getMarca() + ","
-                    + objeto.getComercio()
-                    + "\n";
+                    + objeto.getComercio() + "\n";
         }
         grabar("MarcaBlancaEntity.csv", code);
     }
@@ -186,15 +171,10 @@ public class ExportDB {
         MedidaController controller = new MedidaController(context);
         ArrayList<MedidaEntity> data = controller.getAll();
 
-        boolean salto = false;
         String code = "";
         for (MedidaEntity objeto : data) {
             code += objeto.getId() + ","
-                    + objeto.getDescription();
-            salto = true;
-            if (salto) {
-                code += "\n";
-            }
+                    + objeto.getDescription() + "\n";
         }
         grabar("MedidaEntity.csv", code);
     }
@@ -216,11 +196,7 @@ public class ExportDB {
                     + objeto.getPagado() + ","
                     + objeto.getPrecio() + ","
                     + objeto.getPrecioMedido() + ","
-                    + objeto.getOferta();
-            salto = true;
-            if (salto) {
-                code += "\n";
-            }
+                    + objeto.getOferta() + "\n";
         }
         grabar("CompraEntity.csv", code);
     }
@@ -229,15 +205,10 @@ public class ExportDB {
         MarcaController controller = new MarcaController(context);
         ArrayList<MarcaEntity> data = controller.getAll();
 
-        boolean salto = false;
         String code = "";
         for (MarcaEntity objeto : data) {
             code += objeto.getId() + ","
-                    + objeto.getName();
-            salto = true;
-            if (salto) {
-                code += "\n";
-            }
+                    + objeto.getName() + "\n";
         }
         grabar("MarcaEntity.csv", code);
     }
@@ -247,15 +218,10 @@ public class ExportDB {
         TagProductoController controller = new TagProductoController(context);
         ArrayList<TagsProductoEntity> data = controller.getAll();
 
-        boolean salto = false;
         String code = "";
         for (TagsProductoEntity objeto : data) {
             code += objeto.getProducto() + ","
-                    + objeto.getTag();
-            salto = true;
-            if (salto) {
-                code += "\n";
-            }
+                    + objeto.getTag() + "\n";
         }
         grabar("TagsProductoEntity.csv", code);
     }
@@ -264,15 +230,10 @@ public class ExportDB {
         OfertaController controller = new OfertaController(context);
         ArrayList<OfertaEntity> data = controller.getAll();
 
-        boolean salto = false;
         String code = "";
         for (OfertaEntity objeto : data) {
             code += objeto.getId() + ","
-                    + objeto.getTexto();
-            salto = true;
-            if (salto) {
-                code += "\n";
-            }
+                    + objeto.getTexto() + "\n";
         }
         grabar("OfertaEntity.csv", code);
     }

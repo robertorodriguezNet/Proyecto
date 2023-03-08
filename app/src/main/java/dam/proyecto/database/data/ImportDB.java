@@ -10,8 +10,7 @@ import java.util.ArrayList;
 
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.CompraController;
-import dam.proyecto.controllers.ProductoController;
-import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.controllers.TagController;
 
 /**
  * Importa los registros desde los archivos previamente generados y guardados.
@@ -52,13 +51,13 @@ public class ImportDB {
     /**
      * Grabar en la base de datos el contenido de file
      *
-     * @param file
+     * @param file es el fichero que se lee
      * @return StringBuilde el texto con los registros
      */
     private static ArrayList<String> getRegistros(String file) {
 
         InputStreamReader isr = null;
-        BufferedReader bufferedReader = null;
+        BufferedReader bufferedReader;
 
         ArrayList<String> data = new ArrayList<>();
 
@@ -196,29 +195,31 @@ public class ImportDB {
      */
     private static void importarTagEntity() {
 
-//        String file = "TagEntity.csv";
-//        TagController controller = new TagController(context);
-//
-//        try {
-//            // Borrar los datos
-//            controller.clear();
-//
-//            // Cada línea leída es un ProductoEntity
-//            ArrayList<String> registros = getRegistros(file);
-//            for (String registro : registros) {
-//
-//                String[] data = registro.split(",");
-//                // Pedimos al controlador de productos que lo guarde *
-//                controller.insert(
-//                        Integer.valueOf(data[0]),
-//                        data[1]
-//                );
-//            }
-//        } catch (Exception e) {
-//            Toast.makeText(context, "Error al leer TagEntity", Toast.LENGTH_SHORT).show();
-//            Log.e("LDLC", "Error al importar TagEntity:\n"
-//                    + e.getMessage());
-//        }
+        String file = "TagEntity.csv";
+        TagController controller = new TagController(context);
+
+        try {
+            // Borrar los datos
+            controller.clear();
+
+            // Pedir las líneas del ficher de texto
+            ArrayList<String> registros = getRegistros(file);
+
+            // Cada línea leída es un ProductoEntity
+            for (String registro : registros) {
+
+                String[] data = registro.split(",");
+                // Pedimos al controlador de productos que lo guarde
+                controller.insert(
+                        Integer.valueOf(data[0]),
+                        data[1]
+                );
+            }
+        } catch (Exception e) {
+            Toast.makeText(context, "Error al leer TagEntity", Toast.LENGTH_SHORT).show();
+            Log.e("LDLC", "Error al importar TagEntity:\n"
+                    + e.getMessage());
+        }
     }
 
     /**

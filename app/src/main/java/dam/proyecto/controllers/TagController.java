@@ -18,10 +18,18 @@ import dam.proyecto.database.repositories.TagRepository;
 
 public class TagController {
 
-    private final TagRepository repository;
+    private final TagRepository REPOSITORY;
 
     public TagController(Context context) {
-        this.repository = new TagRepository(context);
+        this.REPOSITORY = new TagRepository(context);
+    }
+
+
+    /**
+     * Borra los datos de la tabla
+     */
+    public void clear(){
+        REPOSITORY.clear();
     }
 
     /**
@@ -31,7 +39,7 @@ public class TagController {
      * @return [true|false] si la etiqueta existe o no
      */
     public boolean exists(String tag) {
-        TagEntity tagEntity = repository.findByName(tag);
+        TagEntity tagEntity = REPOSITORY.findByName(tag);
         return tagEntity != null;
     }
 
@@ -40,7 +48,7 @@ public class TagController {
      * @return colección de tags
      */
     public ArrayList<TagEntity> getAll() {
-        return repository.getAll();
+        return REPOSITORY.getAll();
     }
 
     /**
@@ -50,7 +58,7 @@ public class TagController {
      * @return id vádlido
      */
     public int getNewId() {
-        int id = repository.getMaxId();
+        int id = REPOSITORY.getMaxId();
         id++;
         return id;
     }
@@ -62,7 +70,7 @@ public class TagController {
      * @return listado de prroductos (id's) que contienen la etiqueta
      */
     public ArrayList<String> getProductosByTag(String texto) {
-        return repository.getProductosByTag(texto);
+        return REPOSITORY.getProductosByTag(texto);
     }
 
     /**
@@ -71,7 +79,7 @@ public class TagController {
      * @return colección de etiquetas que contienen el texto buscado
      */
     public ArrayList<TagEntity> getAll(String texto) {
-        return repository.getAll(texto);
+        return REPOSITORY.getAll(texto);
     }
 
     /**
@@ -80,7 +88,7 @@ public class TagController {
      * @return colección de etiquetas (id's) que contienen el texto buscado
      */
     public ArrayList<Integer> getAllId(String texto) {
-        return repository.getAllId(texto);
+        return REPOSITORY.getAllId(texto);
     }
 
     /**
@@ -89,7 +97,7 @@ public class TagController {
      * @return [int] id asociado al texot
      */
     public int getIdByName( String name ){
-        return repository.getIdByName( name );
+        return REPOSITORY.getIdByName( name );
     }
 
     /**
@@ -115,28 +123,38 @@ public class TagController {
      * Inserta una colección de objetos
      */
     public void insertAll(List<TagEntity> data) {
-        repository.insertAll(data);
+        REPOSITORY.insertAll(data);
     }
 
     /**
      * Inserta un objeto
      */
     public void insert(TagEntity tag) {
-        repository.insert(tag);
+        REPOSITORY.insert(tag);
+    }
+
+    /**
+     * Inserta un objeto con id y etiqueta
+     * @param id el id de la etiqueta
+     * @param tag la etiqueta
+     */
+    public void insert(int id, String tag) {
+        REPOSITORY.insert(new TagEntity(id,tag));
     }
 
     /**
      * Inserta un nuevo tag y devuelve el id
+     *
      * @param tag el texto de la nueva etiqueta
      * @return el id asociado a la nueva etiqueta
      */
-    public int insert(String tag) {
+    public int insert( String tag) {
 
         // Comprobamos que el objeto no exista
         if (!exists(tag)) {
 
             int id = getNewId();
-            repository.insert( new TagEntity( id, tag) );
+            REPOSITORY.insert( new TagEntity( id, tag) );
             return id;
         }
 

@@ -340,8 +340,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         btn_limpiar.setClickable(habilitar);
         btn_limpiar.setEnabled(habilitar);
         btn_limpiar
-                .setTextColor(getResources()
-                        .getColor((habilitar) ? R.color.IconoAzul : R.color.Gris));
+                .setTextColor((habilitar) ?
+                        getResources().getColor(R.color.IconoAzul, context.getTheme()) :
+                        getResources().getColor(R.color.Gris, context.getTheme())
+                );
         btn_limpiar.setAlpha((habilitar) ? 1 : BOTON_DESACTIVADO_ALPHA);
     }
 
@@ -352,8 +354,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         btn_guardar.setClickable(habilitar);
         btn_guardar.setEnabled(habilitar);
         btn_guardar
-                .setTextColor(getResources()
-                        .getColor((habilitar) ? R.color.green_700 : R.color.Gris));
+                .setTextColor((habilitar) ?
+                        getResources().getColor(R.color.green_700, context.getTheme()) :
+                        getResources().getColor(R.color.Gris, context.getTheme())
+                );
         btn_guardar.setAlpha((habilitar) ? 1 : BOTON_DESACTIVADO_ALPHA);
     }
 
@@ -365,8 +369,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         btn_eliminar.setClickable(habilitar);
         btn_eliminar.setEnabled(habilitar);
         btn_eliminar
-                .setTextColor(getResources()
-                        .getColor((habilitar) ? R.color.error : R.color.Gris));
+                .setTextColor((habilitar) ?
+                        getResources().getColor(R.color.error, context.getTheme()) :
+                        getResources().getColor(R.color.Gris, context.getTheme())
+                );
         btn_eliminar.setAlpha((habilitar) ? 1 : BOTON_DESACTIVADO_ALPHA);
     }
 
@@ -384,7 +390,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         for (Button boton : botonera) {
             boton.setEnabled(false);
             boton.setClickable(false);
-            boton.setTextColor(getResources().getColor(R.color.Gris));
+            boton.setTextColor(getResources()
+                    .getColor(R.color.Gris, context.getTheme()));
             boton.setAlpha(BOTON_DESACTIVADO_ALPHA);
         }
 

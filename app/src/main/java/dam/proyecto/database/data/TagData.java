@@ -55,7 +55,7 @@ public class TagData {
             new TagEntity(40,"zumo"),
             new TagEntity(41,"natural"),
             new TagEntity(42,"mayonesa"),
-            new TagEntity(43,"0,0"),
+            new TagEntity(43,"0.0"),
             new TagEntity(44,"pimiento"),
             new TagEntity(45,"rojo-a"),
             new TagEntity(46,"hortalizas"),
