@@ -92,6 +92,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     TagProductoController tagProductoController;
 
     private ProductoEntity productoEditando;                         // Producto que está editándose
+    private String codigoDeBarras;                     // Código de barras recibido para ser editado
 
     private Context context;
 
@@ -107,6 +108,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         navegador = getActivity().findViewById(R.id.navegador);
         navegador.setVisibility(View.INVISIBLE);
 
+        // Cámara para leer el código de barras
         barcodeLauncher = registerForActivityResult(new ScanContract(),
                 result -> {
                     if (result.getContents() == null) {
@@ -140,18 +142,26 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         marcaList = marcaController.getNombres();
         etiquetaList = tagController.getNombres();
 
+
+
+        // Editar un producto si se ha recibido como argumento
+        Bundle argumets = this.getArguments();
+
+        // Antes de inicializar los componentes, comprobamos
+        // si se ha de escribir el código de barras
+        codigoDeBarras = ( argumets != null )?
+                    (String) getArguments().getString("idProducto") : "";
+
         // Inicializamos los componente
         // No se cargan datos
         inicializarComponentes(view);
 
-        // Editar un producto si se ha recibido como argumento
-        Bundle argumets = this.getArguments();
+        // Una vez, cargado el formulario, pedimos que se edite el
+        // producto si se ha solicitado
         if (argumets != null) {
-            productoEditando = (ProductoEntity) getArguments()
-                    .getSerializable("producto");
+            productoEditando = (ProductoEntity) getArguments().getSerializable("producto");
             if (productoEditando != null) {
                 cargarProducto(productoEditando);
-//            Log.d( "LDLC", "Producto editando: " + productoEditando );
             }
         }
         return view;
@@ -162,7 +172,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     private void inicializarComponentes(View view) {
 
+        Log.d("LDLC","DetalleProductoFragment.inicializarComponentes\n" +
+                "Código de barras recibido: "+ codigoDeBarras );
+
+
+        // Añadimos el código de barras si lo tenemos
         tv_codigoDeBarras = view.findViewById(R.id.aep_inp_codigo);
+        tv_codigoDeBarras.setText( codigoDeBarras );
+
         tv_denominacion = view.findViewById(R.id.aep_inp_denominacion);
         tv_marca = view.findViewById(R.id.aep_inp_marca);
         tv_etiqueta = view.findViewById(R.id.aep_inp_etiqueta);

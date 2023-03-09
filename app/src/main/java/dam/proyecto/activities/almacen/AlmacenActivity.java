@@ -4,7 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -27,8 +27,6 @@ import dam.proyecto.databinding.ActivityAlmacenBinding;
  */
 public class AlmacenActivity extends AppCompatActivity implements AlmacenListener {
 
-    private final String TAG = "AlmacenActivity";
-
     ActivityAlmacenBinding  bindingAlmacen;
 
     // Usado en addProductoALaLista()
@@ -39,6 +37,7 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
 
 
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,13 +99,9 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
      * Edita el producto seleccionado de la lista del almancén.
      * Cargamos DetalleProductoFragment, pero le pasamos el id
      * para que lo recargue.
-     * @param producto
+     * @param producto que se quiere editar
      */
     public void editarProducto(ProductoEntity producto){
-
-
-//        Log.d("LDLC", "AlmacenActivity.editarProducto " +
-//                producto.getDenominacion() );
 
         Fragment fragment = new DetalleProductoFragment();
 
@@ -162,18 +157,8 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
             };
 
             builder.setTitle( "Selecciona una opción")
-                    .setSingleChoiceItems(opciones, posicion, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            posicion = i;
-                        }
-                    })
-                    .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            listaController.addProducto( producto, precios[posicion] );
-                        }
-                    })
+                    .setSingleChoiceItems(opciones, posicion, (dialogInterface, i) -> posicion = i)
+                    .setPositiveButton("Aceptar", (dialogInterface, i) -> listaController.addProducto( producto, precios[posicion] ))
                     .setNegativeButton("Cancelar", null);
 
             builder.create();

@@ -49,6 +49,102 @@ public class ProductoController {
     }
 
     /**
+     * Comprueba si existe un producto a partir de su id
+     * @param id buscado
+     * @param context contexto
+     * @return true si el producto está registrado
+     */
+    public static boolean exists( String id, Context context ){
+        ProductoEntity producto = new ProductoRepository( context ).getById( id );
+        return (producto != null);
+    }
+
+
+    /**
+     * Obtener el último precio de un producto en un comercio dados
+     * @param idProducto producto buscado
+     * @param idComercio en que el que se busca
+     * @param context contexto
+     * @return precio del producto buscado
+     */
+    public static float getUltimoPrecio( String idProducto, int idComercio, Context context){
+
+        // Obtnemos todas las compras del producto
+        // ordenadas por fecha descendentes
+        ArrayList<CompraEntity> compras = new CompraRepository( context)
+                        .getAllByProducto( idProducto );
+
+
+        // Obtener todas las compras del comercio,
+        // ordenadas descendentes
+        ArrayList<String> nombreCompras = new NombreCompraRepository( context )
+                        .getAllByIdComercio( idComercio );
+
+        // Recorremos en los productos para buscar si se compró en comercio
+        for( CompraEntity compra : compras ){
+            if( nombreCompras.contains( compra.getFecha() )){
+                // Este es el último producto comprado en el comercio buscado
+                return compra.getPrecio();
+            }
+        }
+
+        return 0.0f;
+
+    }
+
+    /**
+     * Devuelve la colección completa de productos
+     * @return colección de productos
+     */
+    public static ArrayList<ProductoEntity> getAll( Context context){
+        return new ProductoRepository( context ).getAll();
+    }
+
+    /**
+     * Devuelve la colección completa de productos que contienen el texto
+     * @return colección de productos
+     */
+    public static ArrayList<ProductoEntity> getAll( String texto, Context context){
+
+        TagController tagControler = new TagController( context );
+
+        // Pedimos al controlador de etiquetas un listado con los productos que
+        // contienen el texto buscado
+        ArrayList<String> idProductos = tagControler.getProductosByTag( texto );
+
+        // Pedimos el listado completo de productos
+        ArrayList<ProductoEntity> listado = ProductoController.getAll( context );
+
+        listado.removeIf(producto -> !idProductos.contains(producto.getId()));
+
+        return listado;
+    }
+
+    /**
+     * Devuelve el ProductoEntity correspondiente con el id
+     * @param id buscado
+     * @param context contexto
+     * @return el producto buscado
+     */
+    public static ProductoEntity getById( String id, Context context ){
+        return new ProductoRepository( context ).getById( id );
+    }
+
+
+    /**
+     * Devuelve el último precio registrado pero, si devilvemos el último precio, éste será
+     * el que se acabe de guardar al crear la lista.
+     * Se debe devolver el último, descartando el actual.
+     * @param idProducto el producto buscado
+     * @param context contexto
+     * @return último precio
+     */
+    public static float getUltimoPrecio( String idProducto, Context context ){
+        String idCompraActual = Preferencias.getListaAbiertaId( context );
+        return new CompraRepository( context ).getUltimoPrecio( idProducto, idCompraActual );
+    }
+
+    /**
      * Método que inserta un producto en la base de datos
      */
     public static void insertProducto(String id,
@@ -137,104 +233,6 @@ public class ProductoController {
 
         return -1;
 
-    }
-
-    /**
-     * Obtener el último precio de un producto en un comercio dados
-     * @param idProducto producto buscado
-     * @param idComercio en que el que se busca
-     * @param context contexto
-     * @return precio del producto buscado
-     */
-    public static float getUltimoPrecio( String idProducto, int idComercio, Context context){
-
-        // Obtnemos todas las compras del producto
-        // ordenadas por fecha descendentes
-        ArrayList<CompraEntity> compras = new CompraRepository( context)
-                        .getAllByProducto( idProducto );
-
-
-        // Obtener todas las compras del comercio,
-        // ordenadas descendentes
-        ArrayList<String> nombreCompras = new NombreCompraRepository( context )
-                        .getAllByIdComercio( idComercio );
-
-
-        // Recorremos en los productos para buscar si se compró en comercio
-        for( CompraEntity compra : compras ){
-
-            if( nombreCompras.contains( compra.getFecha() )){
-
-                // Este es el último producto comprado en el comercio buscado
-                return compra.getPrecio();
-
-            }
-
-        }
-
-        return 0.0f;
-
-    }
-
-    /**
-     * Devuelve el último precio registrado pero, si devilvemos el último precio, éste será
-     * el que se acabe de guardar al crear la lista.
-     * Se debe devolver el último, descartando el actual.
-     * @param idProducto el producto buscado
-     * @param context contexto
-     * @return último precio
-     */
-    public static float getUltimoPrecio( String idProducto, Context context ){
-        String idCompraActual = Preferencias.getListaAbiertaId( context );
-        return new CompraRepository( context ).getUltimoPrecio( idProducto, idCompraActual );
-    }
-
-    /**
-     * Devuelve la colección completa de productos
-     * @return colección de productos
-     */
-    public static ArrayList<ProductoEntity> getAll( Context context){
-        return new ProductoRepository( context ).getAll();
-    }
-
-    /**
-     * Devuelve la colección completa de productos que contienen el texto
-     * @return colección de productos
-     */
-    public static ArrayList<ProductoEntity> getAll( String texto, Context context){
-
-        TagController tagControler = new TagController( context );
-
-        // Pedimos al controlador de etiquetas un listado con los productos que
-        // contienen el texto buscado
-        ArrayList<String> idProductos = tagControler.getProductosByTag( texto );
-
-        // Pedimos el listado completo de productos
-        ArrayList<ProductoEntity> listado = ProductoController.getAll( context );
-
-        // Recorremos la colección y eliminamos los productos que no están
-        // en la colección de los tags
-//        Iterator<ProductoEntity> it = listado.iterator();
-//        while ( it.hasNext() ){
-//            ProductoEntity producto = it.next();
-//            if( !idProductos.contains( producto.getId() ) ){
-//                it.remove();
-//            }
-//        }
-
-        listado.removeIf(producto -> !idProductos.contains(producto.getId()));
-
-        return listado;
-    }
-
-    /**
-     * Devuelve el ProductoEntity correspondiente con el id
-     * @param id buscado
-     * @param context contexto
-     * @return el producto buscado
-     */
-    public static ProductoEntity getById( String id, Context context ){
-        return new ProductoRepository( context ).getById( id );
     }
 
 }
