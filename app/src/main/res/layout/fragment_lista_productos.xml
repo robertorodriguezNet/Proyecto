@@ -39,10 +39,21 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
         android:background="@color/green_700"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/flp_btn_camara"
         app:layout_constraintStart_toEndOf="@id/flp_btn_clear"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_baseline_search_32" />
+
+    <ImageButton
+        android:id="@+id/flp_btn_camara"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:background="@color/green_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/flp_btn_search"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_linked_camera_32" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/listRecyclerView"
