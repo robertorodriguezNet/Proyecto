@@ -47,6 +47,12 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+
+        <activity android:name=".activities.almacen.clases.CaptureActivityPortrait"
+            android:screenOrientation="fullSensor"
+            android:theme="@style/zxing_CaptureTheme"
+            android:windowSoftInputMode="stateAlwaysHidden"
+            />
     </application>
 
 </manifest>

@@ -7,6 +7,7 @@ import static dam.proyecto.controllers.ProductoController.validarDenominacion;
 import android.content.Context;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -19,15 +20,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.journeyapps.barcodescanner.ScanContract;
+import com.journeyapps.barcodescanner.ScanOptions;
 
 import java.util.ArrayList;
 
 import dam.proyecto.R;
+import dam.proyecto.activities.almacen.clases.CaptureActivityPortrait;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
@@ -46,6 +51,9 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     private final String HEAD = "DetalleProductoFragment";
 
+    // Cámara
+    private ActivityResultLauncher<ScanOptions> barcodeLauncher;
+
     // Instancia del navegador, necesaria para porde
     // habolitarlo o deshabilitarlo
     BottomNavigationView navegador;
@@ -61,6 +69,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     private Spinner spn_medida;
 
     // Botones
+    private ImageButton btn_camara;
     private Button btn_addTag,
             btn_cancelar,
             btn_limpiar,
@@ -87,7 +96,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     private Context context;
 
     /* ** FUNCIONES *************************************************************************** */
-     public DetalleProductoFragment() {
+    public DetalleProductoFragment() {
     }
 
     @Override
@@ -98,8 +107,16 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         navegador = getActivity().findViewById(R.id.navegador);
         navegador.setVisibility(View.INVISIBLE);
 
-    }
+        barcodeLauncher = registerForActivityResult(new ScanContract(),
+                result -> {
+                    if (result.getContents() == null) {
+                        Toast.makeText(context, "Cancelado", Toast.LENGTH_SHORT).show();
+                    } else {
+                        insertarCodigo( result.getContents() );
+                    }
+                });
 
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -107,13 +124,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         View view = inflater.inflate(R.layout.fragment_detalle_producto, container, false);
         context = view.getContext();
 
+
         botonera = new ArrayList<>();                          // Cargar los botones en el ArrayList
 
         // Inicializar los repositorios y controladores
         medidaRepository = new MedidaRepository(context);
-        marcaController = new MarcaController( context );
+        marcaController = new MarcaController(context);
         productoRepository = new ProductoRepository(context);
-        tagController = new TagController( context );
+        tagController = new TagController(context);
         tagProductoController = new TagProductoController(context);
 
         // Obtener la colección de medidas, marcas y etiquetas
@@ -145,15 +163,17 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     private void inicializarComponentes(View view) {
 
         tv_codigoDeBarras = view.findViewById(R.id.aep_inp_codigo);
-        tv_denominacion =  view.findViewById(R.id.aep_inp_denominacion);
-        tv_marca =  view.findViewById(R.id.aep_inp_marca);
-        tv_etiqueta =  view.findViewById(R.id.aep_inp_etiqueta);
-        tv_unidades =  view.findViewById(R.id.aep_inp_unidades);
-        tv_cantidad =  view.findViewById(R.id.aep_inp_cantidad);
-        spn_medida =  view.findViewById(R.id.aep_spn_medida);
-        text_tags =  view.findViewById(R.id.fdp_text_etiquetas);
+        tv_denominacion = view.findViewById(R.id.aep_inp_denominacion);
+        tv_marca = view.findViewById(R.id.aep_inp_marca);
+        tv_etiqueta = view.findViewById(R.id.aep_inp_etiqueta);
+        tv_unidades = view.findViewById(R.id.aep_inp_unidades);
+        tv_cantidad = view.findViewById(R.id.aep_inp_cantidad);
+        spn_medida = view.findViewById(R.id.aep_spn_medida);
+        text_tags = view.findViewById(R.id.fdp_text_etiquetas);
 
-        btn_addTag =  view.findViewById(R.id.fdp_btn_tagOK);
+        btn_camara = view.findViewById(R.id.fdp_btn_camara);
+        btn_camara.setOnClickListener(v -> scanear() );
+        btn_addTag = view.findViewById(R.id.fdp_btn_tagOK);
         btn_addTag.setOnClickListener(v -> addTag());
 
         // Cargar el spinner
@@ -262,7 +282,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     public void guardar() {
 
-        StringBuilder log = new StringBuilder( HEAD + ".guardar()");
+        StringBuilder log = new StringBuilder(HEAD + ".guardar()");
 
         // Si es un producto nuevo, nos quedamos en el formulario
         guardarProducto();
@@ -274,7 +294,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             log.append("\nLlamada a cancelar(), salir del formulario");
             cancelar();
         }
-        Log.i("LDLC", log.toString() );
+        Log.i("LDLC", log.toString());
 
     }
 
@@ -295,6 +315,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      * Después de cada pulsación, evaluamos el formulario.
      * Este método evalúa el código de barras y la denominación, pero no muestra los errores, tan
      * solo los evalúa para poder activar los botones.
+     *
      * @param editable componente que queremos cambiar
      */
     @Override
@@ -407,6 +428,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     /**
      * Método para comprobar si se han introducido datos en el formulario.
+     *
      * @return true si los datos están completos
      */
     private boolean hayDatosIntroducidos() {
@@ -439,7 +461,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             int unidades = (uStr.isEmpty()) ? 0 : Integer.parseInt(uStr);
 
             String cStr = tv_cantidad.getText().toString();
-            float cantidad = (cStr.isEmpty()) ? 0 : Float.parseFloat( cStr);
+            float cantidad = (cStr.isEmpty()) ? 0 : Float.parseFloat(cStr);
 
             // En la medida tenemos el índice que ocupa en el spinner, no el id
             int medidaInt = (int) spn_medida.getSelectedItemId();
@@ -454,7 +476,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             } else {
                 // Es un producto nuevo
                 Log.d("LDLC", "DetalleProductoFragment.guardarProducto: guardado" +
-                        "\nid: " + id );
+                        "\nid: " + id);
                 ProductoController.insertProducto(
                         id,
                         tv_denominacion.getText().toString(),
@@ -467,7 +489,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             }
 
             // Después de guardar el producto, vamos a sociarle las etiquetas
-            asociarTagsAlProducto( id );
+            asociarTagsAlProducto(id);
 
 
         } catch (Exception e) {
@@ -480,6 +502,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     /**
      * Carga el producto que se está editando.
+     *
      * @param producto que se quiere cargar
      */
     private void cargarProducto(ProductoEntity producto) {
@@ -492,7 +515,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             tagProductoList = tagProductoController.getNombres(producto.getId());
             StringBuilder tagString = new StringBuilder();
             for (String tag : tagProductoList) {
-                tagString.append( tag ).append(",");
+                tagString.append(tag).append(",");
             }
             text_tags.setText(tagString);
 
@@ -521,6 +544,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     /**
      * Devuelve la posción que ocupa la medida en la colección.
+     *
      * @return posición buscada
      */
     private int getPosicionMedida() {
@@ -543,7 +567,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     private void addTag() {
 
-        StringBuilder log = new StringBuilder( HEAD + ".addTag");
+        StringBuilder log = new StringBuilder(HEAD + ".addTag");
 
         // Caja de texto en la que se muestran las etiquetas
         String texto = text_tags.getText().toString();
@@ -568,14 +592,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                 "Guardado: " + tag + "(" + idTag + ")",
                 Toast.LENGTH_SHORT).show();
 
-        Log.i( "LDLC", log.toString() );
+        Log.i("LDLC", log.toString());
     }
 
     /**
      * Asocia las etiquetas al producto.
      * Las etiquetas están registradas en text_tags
      */
-    private void asociarTagsAlProducto( String idProducto) {
+    private void asociarTagsAlProducto(String idProducto) {
 
         // Obtener un array con las etiquetas
         String[] tags = text_tags.getText().toString().split(",");
@@ -591,6 +615,31 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             );
         }
 
+    }
+
+    /**
+     * Método que abre la cámara para obtener el código de barras
+     */
+    private void scanear() {
+
+        ScanOptions options = new ScanOptions();
+        options.setDesiredBarcodeFormats( ScanOptions.ALL_CODE_TYPES );
+        options.setPrompt("ESCANEAR CÓDIGO");
+        options.setCameraId(0);
+        options.setOrientationLocked( false );
+        options.setBeepEnabled( false );
+        options.setCaptureActivity( CaptureActivityPortrait.class );
+        options.setBarcodeImageEnabled( false );
+        barcodeLauncher.launch( options );
+
+    }
+
+    /**
+     * Inserta el código devuelto por la librería del lector
+     * @param contents el contenido en texto
+     */
+    private void insertarCodigo(String contents) {
+        tv_codigoDeBarras.setText( contents );
     }
 
 }
