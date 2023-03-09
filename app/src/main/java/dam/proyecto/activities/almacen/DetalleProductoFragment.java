@@ -44,6 +44,8 @@ import dam.proyecto.database.repositories.ProductoRepository;
  */
 public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
+    private final String HEAD = "DetalleProductoFragment";
+
     // Instancia del navegador, necesaria para porde
     // habolitarlo o deshabilitarlo
     BottomNavigationView navegador;
@@ -236,6 +238,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         tv_cantidad.setText(R.string.str_cadenaVacia);
         tv_cantidad.setHint(R.string.str_ceroDecimal);
         spn_medida.setSelection(0);
+        text_tags.setText("");
 
         // Desactivar botonera
         desactivarBotonera();
@@ -259,14 +262,19 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     public void guardar() {
 
+        StringBuilder log = new StringBuilder( HEAD + ".guardar()");
+
         // Si es un producto nuevo, nos quedamos en el formulario
         guardarProducto();
+
         if (productoEditando == null) {
+            log.append("\nLlamada a limpiar(), permanecer en el formulario");
             limpiar();
         } else {
+            log.append("\nLlamada a cancelar(), salir del formulario");
             cancelar();
         }
-
+        Log.i("LDLC", log.toString() );
 
     }
 
@@ -463,6 +471,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
 
         } catch (Exception e) {
+
             Log.e("LDLC", "DetalleProductoFragment.guardarProducto" +
                     "\nError: " + e.getMessage());
         }
@@ -534,7 +543,11 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     private void addTag() {
 
+        StringBuilder log = new StringBuilder( HEAD + ".addTag");
+
+        // Caja de texto en la que se muestran las etiquetas
         String texto = text_tags.getText().toString();
+        // Texto que se va a guardar
         String tag = tv_etiqueta.getText().toString().trim();
 
         btn_addTag.setEnabled(false);
@@ -555,6 +568,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                 "Guardado: " + tag + "(" + idTag + ")",
                 Toast.LENGTH_SHORT).show();
 
+        Log.i( "LDLC", log.toString() );
     }
 
     /**

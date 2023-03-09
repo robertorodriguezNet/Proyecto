@@ -88,35 +88,40 @@ public class CompraController {
     /**
      * Devuelve la última compra de un producto concreto
      * @param id el producto buscado
+     * @return [Map|null] mapa con los datos de la última compra o null si no hay compra aún
      */
     @SuppressLint("DefaultLocale")
     public Map<String, String> getUltimaCompraDe(String id ){
 
-        // Obtener el producto para poder conocer las unidades de medida
-        ProductoEntity producto = ProductoController.getById( id, CONTEXT);
+        try {
+            // Obtener el producto para poder conocer las unidades de medida
+            ProductoEntity producto = ProductoController.getById(id, CONTEXT);
 
-        // Obtener la última compra del producto
-        CompraEntity compra = REPOSITORY.getUltimaCompraByProducto( id );
+            // Obtener la última compra del producto
+            CompraEntity compra = REPOSITORY.getUltimaCompraByProducto(id);
 
-        // Obtener el comercio en el que se realizó la compra
-        String comercio = getNombreComercioByCompra( compra.getFecha() );
+            // Obtener el comercio en el que se realizó la compra
+            String comercio = getNombreComercioByCompra(compra.getFecha());
 
-        // Ya tenemos todos los datos
+            // Ya tenemos todos los datos
 
-        Log.d("LDLC", "Producto: " + producto.getId()
-                + "\nFecha de la compra: " + compra.getFecha()
-                + "\nComercio: " + comercio );
+            Log.d("LDLC", "Producto: " + producto.getId()
+                    + "\nFecha de la compra: " + compra.getFecha()
+                    + "\nComercio: " + comercio);
 
-        // El precio se da por unidad de medida
+            // El precio se da por unidad de medida
 
-        HashMap<String, String> mapa = new HashMap<>();
-        mapa.put("precio",String.format("%.02f", compra.getPrecio()));
-        mapa.put("precioM", String.format("%.02f", compra.getPrecioMedido()) +
-                "€/" + producto.getMedida() );
-        mapa.put("fecha", Fecha.getFechaFormateada( compra.getFecha() ) );
-        mapa.put("comercio", comercio);
+            HashMap<String, String> mapa = new HashMap<>();
+            mapa.put("precio", String.format("%.02f", compra.getPrecio()));
+            mapa.put("precioM", String.format("%.02f", compra.getPrecioMedido()) +
+                    "€/" + producto.getMedida());
+            mapa.put("fecha", Fecha.getFechaFormateada(compra.getFecha()));
+            mapa.put("comercio", comercio);
 
-        return mapa;
+            return mapa;
+        }catch ( Exception e ){
+            return null;
+        }
     }
 
     /**

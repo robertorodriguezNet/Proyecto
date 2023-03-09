@@ -1,6 +1,7 @@
 package dam.proyecto.controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,15 @@ import dam.proyecto.database.repositories.TagRepository;
 
 public class TagController {
 
+    private final StringBuilder LOG; // Cadena de texto para mostrar el log
+
     private final TagRepository REPOSITORY;
 
     public TagController(Context context) {
+
         this.REPOSITORY = new TagRepository(context);
+        LOG = new StringBuilder();
+        LOG.append("TagController");
     }
 
 
@@ -161,18 +167,30 @@ public class TagController {
      * Inserta un nuevo tag y devuelve el id
      *
      * @param tag el texto de la nueva etiqueta
-     * @return el id asociado a la nueva etiqueta
+     * @return el id asociado a la nueva etiqueta o -1 si la etiqueta ya existe
      */
     public int insert( String tag) {
 
+        LOG.append(String.format("\ninsert(tag): %s", tag));
+
         // Comprobamos que el objeto no exista
         if (!exists(tag)) {
+            LOG.append("\n" +  tag + " no existe, pedimos un id" );
 
+            // Obtener el id para el tag
             int id = getNewId();
+
+            LOG.append("\nid recibido al insertar el tag: " + id );
             REPOSITORY.insert( new TagEntity( id, tag) );
+
+            Log.i("LDLC", LOG.toString());
             return id;
+
         }
 
+        LOG.append("\n" +  tag + " existe, se devuelve -1" );
+
+        Log.i("LDLC", LOG.toString());
         return -1;
     }
 

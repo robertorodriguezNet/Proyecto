@@ -174,15 +174,16 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
 //            marca.setText( String.valueOf( producto.getMarca() ) );
             marca.setText(DATA_MARCA.get(producto.getMarca() - 1).getName());
 
-            // Debemos obtener la última compra del producto
+            // Debemos obtener la última compra del producto,
+            // OJO, puede que no haya compra del producto
             CompraController controller = new CompraController( CONTEXT );
             HashMap<String,String> mapa =
                     (HashMap<String, String>) controller.getUltimaCompraDe( producto.getId() );
 
-            ultimaFecha.setText( mapa.get("fecha"));
-            ultimoComercio.setText( mapa.get("comercio"));
-            ultimoPrecio.setText( mapa.get("precio"));
-            ultimoPrecioM.setText( mapa.get("precioM"));
+            ultimaFecha.setText( ( mapa == null )? "" : mapa.get("fecha"));
+            ultimoComercio.setText( ( mapa == null )? "" : mapa.get("comercio"));
+            ultimoPrecio.setText( ( mapa == null )? "" : mapa.get("precio"));
+            ultimoPrecioM.setText( ( mapa == null )? "" : mapa.get("precioM"));
 
         }
 
