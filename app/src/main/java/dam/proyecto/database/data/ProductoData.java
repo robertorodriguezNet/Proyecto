@@ -74,7 +74,7 @@ public class ProductoData {
             new ProductoEntity("1000534544660","Tomate ensalada",8,0,"k",(float)0),
             new ProductoEntity("8480000161246","Pimiento asado tiras",9,3,"k",(float)0.180),
 
-            new ProductoEntity("8480024292193","Papel higiénico",5,4,"u",(float)4),
+            new ProductoEntity("8480024292193","Papel higiénico",25,4,"u",(float)4),
             new ProductoEntity("8480024750600","Perejil tarro",3,1,"k",(float)0.4),
             new ProductoEntity("8480024819055","Ensalada 4 estaciones",3,1,"k",(float)0.25),
 
