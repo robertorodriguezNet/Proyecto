@@ -1,6 +1,7 @@
 package dam.proyecto.activities.almacen.adapters;
 
 import android.content.Context;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,8 @@ import java.util.HashMap;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.listeners.AlmacenListener;
 import dam.proyecto.controllers.CompraController;
@@ -23,13 +26,13 @@ import dam.proyecto.database.repositories.MarcaRepository;
 
 /**
  * @author Roberto Rodríguez Jiménez
- * @since 19/02/2023
  * @version 2023.03.04
+ * @since 19/02/2023
  */
 public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.ViewHolder> {
 
     // Datos
-    private final  ArrayList<ProductoEntity> DATA_PRODUCTOS;                           // Colección de datos
+    private final ArrayList<ProductoEntity> DATA_PRODUCTOS;                           // Colección de datos
     private final ArrayList<MarcaEntity> DATA_MARCA;                                 // Colección de marcas
 
     private final Context CONTEXT;
@@ -50,7 +53,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
         this.LISTENER = listener;
 
         this.DATA_PRODUCTOS = dataProductos;                               // Datos con los productos
-        this.DATA_MARCA = new MarcaRepository( context ).getAll();            // Datos con las marcas
+        this.DATA_MARCA = new MarcaRepository(context).getAll();            // Datos con las marcas
 
     }
 
@@ -68,7 +71,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
         // Obtenemos la vista del CardView con el diseño del producto
         View view = LayoutInflater
                 .from(parent.getContext())
-                .inflate(R.layout.cardview_producto, parent,false);
+                .inflate(R.layout.cardview_producto, parent, false);
 
         // Devolvemos el componente ViewHolder al cual pasamos la vista (CardView)
         return new ViewHolder(view);
@@ -85,22 +88,22 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
         // Llamada al método binData y se le pasa el objeto de la lista
-        ProductoEntity actual = DATA_PRODUCTOS.get( position );
+        ProductoEntity actual = DATA_PRODUCTOS.get(position);
 
         // correspondiente a la posición recibida como argumento
-        holder.binData( actual );
+        holder.binData(actual);
 
         // Asociamos el oyente a los diferentes eventos
-        holder.itemView.setOnLongClickListener( view -> {
-            if ( null != LISTENER){
-                LISTENER.editarProducto( actual );
+        holder.itemView.setOnLongClickListener(view -> {
+            if (null != LISTENER) {
+                LISTENER.editarProducto(actual);
             }
             return true;
         });
 
-        holder.itemView.setOnClickListener( view -> {
-            if ( null != LISTENER){
-                LISTENER.addProductoALaLista( actual );
+        holder.itemView.setOnClickListener(view -> {
+            if (null != LISTENER) {
+                LISTENER.addProductoALaLista(actual);
             }
         });
     }
@@ -162,12 +165,13 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
          */
         public void binData(ProductoEntity producto) {
 
+            // Cargar la imagen con Glide
+            String path = "https://robertorodriguez.webcindario.com/ldlc/thumbs/" +
+                    producto.getId() + ".jpg";
             // Si la imagen no es nula, la cargamos
-/*            if( !producto.getImagen().isEmpty() ){
-                Glide.with( context )
-                        .load( producto.getImagen() )
-                        .into( imagen );
-            }*/
+            Glide.with(CONTEXT)
+                    .load(path)
+                    .into(imagen);
 
             // Obtener la denominación y la marca
             denominacion.setText(producto.getDenominacion());
@@ -176,14 +180,14 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
 
             // Debemos obtener la última compra del producto,
             // OJO, puede que no haya compra del producto
-            CompraController controller = new CompraController( CONTEXT );
-            HashMap<String,String> mapa =
-                    (HashMap<String, String>) controller.getUltimaCompraDe( producto.getId() );
+            CompraController controller = new CompraController(CONTEXT);
+            HashMap<String, String> mapa =
+                    (HashMap<String, String>) controller.getUltimaCompraDe(producto.getId());
 
-            ultimaFecha.setText( ( mapa == null )? "" : mapa.get("fecha"));
-            ultimoComercio.setText( ( mapa == null )? "" : mapa.get("comercio"));
-            ultimoPrecio.setText( ( mapa == null )? "" : mapa.get("precio"));
-            ultimoPrecioM.setText( ( mapa == null )? "" : mapa.get("precioM"));
+            ultimaFecha.setText((mapa == null) ? "" : mapa.get("fecha"));
+            ultimoComercio.setText((mapa == null) ? "" : mapa.get("comercio"));
+            ultimoPrecio.setText((mapa == null) ? "" : mapa.get("precio"));
+            ultimoPrecioM.setText((mapa == null) ? "" : mapa.get("precioM"));
 
         }
 
