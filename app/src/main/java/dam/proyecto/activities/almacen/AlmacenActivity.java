@@ -150,10 +150,10 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
             // Mostrar un listado con las tres opciones
             AlertDialog.Builder builder = new AlertDialog.Builder( this );
             String [] opciones = {
-                    "Sin precio (0.00 €)",
-                    "Último conocido (" + precios[1] + " €)",
-                    "Último de " + listaController.getComercio().toUpperCase()
-                            + "(" + precios[2] + " €)",
+                    "Sin precio: 0.00 €",
+                    "Último conocido: " + precios[1] + " €",
+                    "Último de:\n " + listaController.getComercio().toUpperCase()
+                            + ": " + precios[2] + " €",
             };
 
             builder.setTitle( "Selecciona una opción")
@@ -161,8 +161,13 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
                     .setPositiveButton("Aceptar", (dialogInterface, i) -> listaController.addProducto( producto, precios[posicion] ))
                     .setNegativeButton("Cancelar", null);
 
+
             builder.create();
             builder.show();
+
+//            // Opción con Dialog
+//            Dialog dialog = builder.setView( new View(this)).create();
+//            dialog.show();
 
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
