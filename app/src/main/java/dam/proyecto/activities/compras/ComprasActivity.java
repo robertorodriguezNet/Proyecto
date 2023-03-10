@@ -3,13 +3,12 @@ package dam.proyecto.activities.compras;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -23,7 +22,6 @@ import dam.proyecto.activities.compras.listener.ListenerCompras;
 import dam.proyecto.activities.lista.ListaActivity;
 import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.repositories.NombreCompraRepository;
-import dam.proyecto.databinding.ActivityAlmacenBinding;
 import dam.proyecto.databinding.ActivityComprasBinding;
 import dam.proyecto.utilities.Fecha;
 import dam.proyecto.utilities.Preferencias;
@@ -35,23 +33,17 @@ import dam.proyecto.utilities.Preferencias;
  */
 public class ComprasActivity extends AppCompatActivity {
 
-    private final String TAG = "CA";
-    private ListenerCompras listenerCompras;
-
     ActivityComprasBinding bindingCompras;
 
     // Datos de las compras (NombreCompraEntity)
     private ArrayList<NombreCompraEntity> dataNombreCompra;
 
-    // Componentes
-    private EditText inputNombre;                       // Input para indicar el nombre de la compra
-    private ImageView checkAceptar;                                  // Check para aceptar el nombre
-
     AdaptadorCompras adaptadorCompras;                  // Adapatador para el listado de las compras
 
-    /*********************************************************************************************/
-    /***** FUNCIONES *****************************************************************************/
-    /*********************************************************************************************/
+    /* ***************************************************************************************** */
+    /* *** FUNCIONES *************************************************************************** */
+    /* ***************************************************************************************** */
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,12 +61,7 @@ public class ComprasActivity extends AppCompatActivity {
         bindingCompras.acInpNuevoNombre.setHint( Fecha.getNuevaFecha() + " o escribe un nombre");
 
         // Oyente para el check
-        bindingCompras.acImgCrearCompra.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                crearCompra( view );
-            }
-        });
+        bindingCompras.acImgCrearCompra.setOnClickListener(this::crearCompra);
 
         // == Zona de la lista =====================================================================
         // Obtener el listado de las compras
@@ -125,15 +112,15 @@ public class ComprasActivity extends AppCompatActivity {
 
     }
 
-    /**********************************************************************************************/
-    /***** MÉTODO OYENTES *************************************************************************/
-    /**********************************************************************************************/
+    /* ****************************************************************************************** */
+    /* *** MÉTODO OYENTES *********************************************************************** */
+    /* ****************************************************************************************** */
     /**
      * Borrar una compra de la lista.
      *
      * @param compra la compra que se quiere borrar
      */
-    public void borrarCompra(NombreCompraEntity compra, int posicion) {
+    public void borrarCompra(NombreCompraEntity compra, int ignoredPosicion) {
 
         // 1.- Borrar la compra de dataNombreCompra
         dataNombreCompra.remove( compra );
@@ -158,17 +145,11 @@ public class ComprasActivity extends AppCompatActivity {
         Toast.makeText(this,
                 "Compra " + compra.getNombre() + " eliminada",
                 Toast.LENGTH_SHORT).show();
-
-
-
-        Log.d( TAG, "ComprasActivity.borrarCompra() - Borrar la poscion: " + posicion
-            + "\nque se corresponde con : " + compra.toString()
-            + "\nLa posición es ocupada por: " + dataNombreCompra.get( posicion ));
     }
 
     /**
      * Edita una compra
-     * @param compra
+     * @param compra que se quiere editar
      */
     public void editarCompra(NombreCompraEntity compra) {
 
@@ -188,7 +169,8 @@ public class ComprasActivity extends AppCompatActivity {
      *
      * @param view la vista del formualrio
      */
-    private void crearCompra( View view ){
+    @SuppressLint("SetTextI18n")
+    private void crearCompra(View view ){
 
         // Crear una instancia del repositorio de NombreCompra
         NombreCompraRepository repository = new NombreCompraRepository( this );

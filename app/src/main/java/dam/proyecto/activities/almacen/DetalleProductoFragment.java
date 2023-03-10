@@ -18,7 +18,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
@@ -43,7 +42,6 @@ import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.controllers.TagProductoController;
-import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.relaciones.VistaCompra;
@@ -578,15 +576,11 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                     R.layout.item_vista_compra,
                     relacionDeCompras);
             listaComparativa.setAdapter( adapter );
-            listaComparativa.setOnItemClickListener( new AdapterView.OnItemClickListener(){
-                @Override
-                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                    VistaCompra compra = relacionDeCompras.get(position);
-
-                    // Abrimos la lista
-                    Preferencias.setListaAbiertaId( compra.fecha, getContext());
-                    startActivity( new Intent( getContext(), ListaActivity.class ) );
-                }
+            listaComparativa.setOnItemClickListener((adapterView, view, position, id) -> {
+                VistaCompra compra = relacionDeCompras.get(position);
+                // Abrimos la lista
+                Preferencias.setListaAbiertaId( compra.fecha, getContext());
+                startActivity( new Intent( getContext(), ListaActivity.class ) );
             });
 
             habilitarBtnEliminar(true);
@@ -625,8 +619,6 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     private void addTag() {
 
-        StringBuilder log = new StringBuilder(HEAD + ".addTag");
-
         // Caja de texto en la que se muestran las etiquetas
         String texto = text_tags.getText().toString();
         // Texto que se va a guardar
@@ -650,7 +642,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                 "Guardado: " + tag + "(" + idTag + ")",
                 Toast.LENGTH_SHORT).show();
 
-        Log.i("LDLC", log.toString());
+        Log.i("LDLC", HEAD + ".addTag");
     }
 
     /**
