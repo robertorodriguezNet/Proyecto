@@ -5,6 +5,7 @@ import static dam.proyecto.controllers.ProductoController.validarCodigoDeBarras;
 import static dam.proyecto.controllers.ProductoController.validarDenominacion;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -17,10 +18,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,19 +36,25 @@ import java.util.ArrayList;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.clases.CaptureActivityPortrait;
+import dam.proyecto.activities.lista.ListaActivity;
+import dam.proyecto.activities.producto.adapters.VistaCompraAdapter;
+import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.controllers.TagProductoController;
+import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
+import dam.proyecto.utilities.Preferencias;
 
 /**
  * @author Roberto Rodríguez Jiménez
- * @version 2023.02.22
  * @since 17/02/2023
+ * @version 2023.03.10
  */
 public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
@@ -68,6 +77,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             tv_etiqueta;
     private Spinner spn_medida;
 
+    private ListView listaComparativa;                      // Para mostrar las compras del producto
+
     // Botones
     private ImageButton btn_camara;
     private Button btn_addTag,
@@ -79,10 +90,15 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     // Array con los botones que son modificables
     private ArrayList<Button> botonera;
 
+    // Listas de datos
+    // Datos globales
     private ArrayList<MedidaEntity> medidaList;                              // Colección de medidas
     private ArrayList<String> marcaList;                                      // Colección de marcas
     private ArrayList<String> etiquetaList;                                  // Listado de etiquetas
+
+    // Datos relacionados con el producto
     private ArrayList<String> tagProductoList;      // Etiquetas que se corresponden con el producto
+    private ArrayList<VistaCompra> relacionDeCompras;            // Relación de compras del producto
 
     // Repositorios
     MedidaRepository medidaRepository;
@@ -187,6 +203,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         tv_cantidad = view.findViewById(R.id.aep_inp_cantidad);
         spn_medida = view.findViewById(R.id.aep_spn_medida);
         text_tags = view.findViewById(R.id.fdp_text_etiquetas);
+
+        listaComparativa = view.findViewById( R.id.fdp_lv_comprasRelacionadas );
 
         btn_camara = view.findViewById(R.id.fdp_btn_camara);
         btn_camara.setOnClickListener(v -> scanear() );
@@ -518,11 +536,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     }
 
     /**
-     * Carga el producto que se está editando.
-     *
+     * Carga el producto que se está editando.     *
      * @param producto que se quiere cargar
      */
     private void cargarProducto(ProductoEntity producto) {
+
+        // El controlador de las compras es necesario para obtener
+        // el listado de compras del producto
+        CompraController compraController = new CompraController( context );
 
         try {
 
@@ -547,6 +568,26 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
             // El spinner debe recibir un entero indicando la posición en la colección
             spn_medida.setSelection(getPosicionMedida());
+
+            // Mostramos las compras del producto
+            // Le pedimos el listado al controlador de las compras
+
+            // Listado de la comparativa
+            relacionDeCompras = compraController.loadVistaCompraByProducto(producto.getId() );
+            VistaCompraAdapter adapter = new VistaCompraAdapter( context,
+                    R.layout.item_vista_compra,
+                    relacionDeCompras);
+            listaComparativa.setAdapter( adapter );
+            listaComparativa.setOnItemClickListener( new AdapterView.OnItemClickListener(){
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                    VistaCompra compra = relacionDeCompras.get(position);
+
+                    // Abrimos la lista
+                    Preferencias.setListaAbiertaId( compra.fecha, getContext());
+                    startActivity( new Intent( getContext(), ListaActivity.class ) );
+                }
+            });
 
             habilitarBtnEliminar(true);
             habilitarBtnGuardar(true);

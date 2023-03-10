@@ -212,12 +212,24 @@
             android:layout_height="wrap_content"
             android:hint="@string/fdp_str_hintEtiquetas" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="@color/green_700"
+            app:barrierDirection="top" />
+
+        <ListView
+            android:id="@+id/fdp_lv_comprasRelacionadas"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
+        app:layout_constraintVertical_bias="1"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">

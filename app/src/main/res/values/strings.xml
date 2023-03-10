@@ -61,9 +61,9 @@
     <string name="aep_str_titulo">EDITAR PRODUCTO</string>
 
     <!-- menu_edit_producto.xml -->
-    <string name="mep_str_it_cancelar">Cancelar</string>
+    <string name="mep_str_it_cancelar">Salir</string>
     <string name="mep_str_it_limpiar">Limpiar</string>
-    <string name="mep_str_it_eliminar">Eliminar</string>
+    <string name="mep_str_it_eliminar">Borrar</string>
     <string name="mep_str_it_guardar">Guardar</string>
     <string name="ap_str_infoTitulo">Info</string>
     <string name="ap_str_comparativaTitulo">Comparativa</string>
