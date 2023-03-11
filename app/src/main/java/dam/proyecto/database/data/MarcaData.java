@@ -40,6 +40,9 @@ public class MarcaData {
             new MarcaEntity(25,"Selex"),
             new MarcaEntity(26,"Rio d'oro"),
             new MarcaEntity(27,"El mercado"),
+            new MarcaEntity(28,"Fairy"),
+            new MarcaEntity(29,"Bosque verde"),
+            new MarcaEntity(30,"Garnier"),
 
     };
 

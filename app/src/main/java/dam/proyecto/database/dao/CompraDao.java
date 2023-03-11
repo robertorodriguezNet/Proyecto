@@ -28,6 +28,7 @@ public interface CompraDao {
 
     @Query( "SELECT * FROM Compra WHERE producto = :idProducto ORDER BY fecha DESC")
     List<CompraEntity> getAllByProducto( String idProducto );
+
     @Query( "SELECT * FROM Compra WHERE producto = :idProducto ORDER BY fecha DESC LIMIT 1")
     CompraEntity getUltimaCompraByProducto( String idProducto );
 

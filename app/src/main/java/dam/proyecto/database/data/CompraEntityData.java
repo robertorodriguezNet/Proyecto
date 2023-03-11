@@ -110,6 +110,25 @@ public class CompraEntityData {
             new CompraEntity("24031486","2303031858", (float)2,(float)0.65,(float)1.30, (float)2.60,0),
             new CompraEntity("1000534544661","2303031858", (float)1,(float)2.21,(float)2.21, (float)0.19,0),
 
+            new CompraEntity("8437003018008","2303111914",(float) 1.0,(float) 0.0,(float) 0.73,(float) 0.0,0),
+            new CompraEntity("8480000211934","2303111914",(float)1.0,(float)1.45,(float)1.45,(float)1.933,0),
+            new CompraEntity("1000534544661","2303111914",(float)1.0,(float)0.0,(float)2.95,(float)0.0,0),
+            new CompraEntity("8437004621061","2303111914",(float)2.0,(float)1.44,(float)0.72,(float)2.88,0),
+            new CompraEntity( "8437003894275","2303111914",(float)1.0,(float)0.0,(float)3.87,(float)0.0,0),
+            new CompraEntity("8480000823021","2303111914",(float)1.0,(float)0.0,(float)1.55,(float)0.0,0),
+            new CompraEntity("1000087865444","2303111914",(float)1.0,(float)0.0,(float)1.9894737,(float)0.0,0),
+            new CompraEntity("8480000505460","2303111914",(float)1.0,(float)0.0,(float)2.98,(float)0.0,0),
+            new CompraEntity("8480000049544","2303111914",(float)1.0,(float)0.0,(float)1.3,(float)0.0,0),
+            new CompraEntity("1000534544671","2303111914",(float)1.0,(float)1.99,(float)1.99,(float)1.99,0),
+            new CompraEntity("8480000038524","2303111914",(float)1.0,(float)1.75,(float)1.75,(float)8.75,0),
+            new CompraEntity("8480000213075","2303111914",(float)1.0,(float)1.45,(float)1.45,(float)1.933,0),
+            new CompraEntity("8006540948811","2303111914",(float)1.0,(float)3.8,(float)3.8,(float)4.368,0),
+            new CompraEntity("8480000430243","2303111914",(float)1.0,(float)1.15,(float)1.15,(float)0.575,0),
+            new CompraEntity("3600542379342","2303111914",(float)1.0,(float)3.5,(float)3.5,(float)3.5,0),
+            new CompraEntity("8480000829610","2303111914",(float)1.0,(float)5.5,(float)5.5,(float)16.923,0),
+            new CompraEntity("1000534544663","2303111914",(float)0.521,(float)4.059,(float)7.79,(float)7.79,0),
+            new CompraEntity( "8480000622129","2303111914",(float)2.0,(float)7.7,(float)3.85,(float)9.625,0),
+
 
 
 

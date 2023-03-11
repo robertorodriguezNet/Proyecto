@@ -20,6 +20,9 @@ import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.adapters.AdaptadorCompras;
 import dam.proyecto.activities.compras.listener.ListenerCompras;
 import dam.proyecto.activities.lista.ListaActivity;
+import dam.proyecto.controllers.CompraController;
+import dam.proyecto.controllers.NombreCompraController;
+import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.databinding.ActivityComprasBinding;
@@ -61,7 +64,7 @@ public class ComprasActivity extends AppCompatActivity {
         bindingCompras.acInpNuevoNombre.setHint( Fecha.getNuevaFecha() + " o escribe un nombre");
 
         // Oyente para el check
-        bindingCompras.acImgCrearCompra.setOnClickListener(this::crearCompra);
+        bindingCompras.acImgCrearCompra.setOnClickListener(view1 -> crearCompra( true));
 
         // == Zona de la lista =====================================================================
         // Obtener el listado de las compras
@@ -76,6 +79,11 @@ public class ComprasActivity extends AppCompatActivity {
                     @Override
                     public void cli_img_deleteOnClik(NombreCompraEntity compra, int posicion) {
                         borrarCompra( compra, posicion );
+                    }
+
+                    @Override
+                    public void cli_img_copyOnClik(NombreCompraEntity compra) {
+                        duplicarCompra( compra );
                     }
 
                     @Override
@@ -112,6 +120,7 @@ public class ComprasActivity extends AppCompatActivity {
 
     }
 
+
     /* ****************************************************************************************** */
     /* *** MÉTODO OYENTES *********************************************************************** */
     /* ****************************************************************************************** */
@@ -147,6 +156,67 @@ public class ComprasActivity extends AppCompatActivity {
                 Toast.LENGTH_SHORT).show();
     }
 
+
+    /**
+     * Duplica una compra.
+     * Duplicamos NombreCompraEntity
+     *
+     * @param compraOriginal que se quiere duplicar
+     */
+    private void duplicarCompra(NombreCompraEntity compraOriginal ) {
+
+        // Controlador para el nombre de la compra
+        NombreCompraController nombreCompraController = new NombreCompraController( this );
+        CompraController compraController = new CompraController( this );
+
+        /*
+          Se crea un objeto NombreCompraEntity
+          .- String id:     se genera automáticamente con formado aammddhhmm
+          .- String nombre: el mismo texto que el id
+          .- int comercio:  1, corresponde a comercio en blanco
+         */
+        String idCompraNueva = crearCompra( false);
+
+        // En este punto la compra copia está creada y aparece en el listado
+
+        // La compra está creada y se muestra
+        // Obtenemos la compra copia
+        NombreCompraEntity compraCopia = nombreCompraController.getById( idCompraNueva );
+
+        // Establecer el comercio de la compra copia
+        compraCopia.setComercio(compraOriginal.getComercio() );
+
+        // Actualizar la compra copia
+        nombreCompraController.update( compraCopia );
+
+        // Duplicar las compra de la original a la copia
+        // Obtener todos los productos que pertenecen a la compra original
+        // CompraEntity guarda el producto y la fecha de su compra
+        // Le pedimos a CompraEntity todas las CompraEntity que tengan como fecha la fecha original
+        ArrayList<CompraEntity> productos = compraController.getProductosByFecha( compraOriginal.getId() );
+
+        // Recorrer los productos, establecer la nueva fecha e insertalos
+        // origen es un objeto CompraEntity
+        productos.forEach( origen -> {
+
+            CompraEntity copia = new CompraEntity(
+                    origen.getProducto(),
+                    idCompraNueva,
+                    origen.getCantidad(),
+                    origen.getPagado(),
+                    origen.getPrecio(),
+                    origen.getPrecioMedido(),
+                    origen.getOferta()
+            );
+            copia.setId( origen.getProducto() + idCompraNueva );
+            copia.setFecha( idCompraNueva );
+            compraController.insert( copia );
+        });
+
+        // Abrimos la lista
+        editarCompra( compraCopia );
+    }
+
     /**
      * Edita una compra
      * @param compra que se quiere editar
@@ -167,10 +237,11 @@ public class ComprasActivity extends AppCompatActivity {
      * Al crear la compra, se genera un id único con formato: aammddhhmm
      * Si el nombre de la compra se ha dejado en blanco, se le asigna el id.
      *
-     * @param view la vista del formualrio
+     * @param abrir true si queremos abrir la nueva lista
+     * @return el id de la nueva lista
      */
     @SuppressLint("SetTextI18n")
-    private void crearCompra(View view ){
+    private String crearCompra( boolean abrir ){
 
         // Crear una instancia del repositorio de NombreCompra
         NombreCompraRepository repository = new NombreCompraRepository( this );
@@ -190,7 +261,6 @@ public class ComprasActivity extends AppCompatActivity {
             // Si no hay nombre o tiene menos de 3 caracteres, se toma el id
             String nombreDeLaLista = (nombre.length() >= 3) ? nombre : id;
 
-
             // Creamos el objeto NombreCompra
             // Por defecto se crea el comercio 1 -> ""
             NombreCompraEntity compra = new NombreCompraEntity(id, nombreDeLaLista, 1);
@@ -200,14 +270,14 @@ public class ComprasActivity extends AppCompatActivity {
             repository.insert( compra );
 
             // 3.- Abrimos la lista
-            // Se guarda en preferencias para que está disponible
-            // aunque se cierre la app
-            Preferencias.setListaAbiertaId( compra.getId(), this);
-            Log.d("PREF", "creamos listaAbiertaId: " + compra.getId() );
-            startActivity( new Intent( this, ListaActivity.class ) );
+            if( abrir ) {
+                editarCompra( compra );
+            }
 
+            return id;
         }else{
 
+            // El nombre existe
             int minuto = Integer.parseInt( id.substring(8,10) );
             minuto++;
             String hora = id.substring(6,8) + ":" + minuto;
@@ -225,7 +295,9 @@ public class ComprasActivity extends AppCompatActivity {
 
             AlertDialog dialog = builder.create();
             dialog.show();
+
         }
 
+        return null;
     }
 }

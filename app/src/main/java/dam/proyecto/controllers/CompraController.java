@@ -47,6 +47,8 @@ public class CompraController {
         REPOSITORY.clear();
     }
 
+
+
     /**
      * Devuelve la colección de objetos completa
      * @return la colección de objetos
@@ -73,7 +75,6 @@ public class CompraController {
         return REPOSITORY.getAllByProducto( producto );
     }
 
-
     /**
      * Devuelve el id del comercio en el que se ha hecho una compra
      * @param idCompra es la fecha de la compra
@@ -83,6 +84,11 @@ public class CompraController {
         NombreCompraRepository nombreCompraRepository =
                 new NombreCompraRepository(CONTEXT);
         return nombreCompraRepository.getNombreComercioByCompra( idCompra );
+    }
+
+    // Obtener la compra por una compra dada
+    public ArrayList<CompraEntity> getProductosByFecha(String fecha ){
+        return (ArrayList<CompraEntity>) REPOSITORY.getProductosByFecha( fecha );
     }
 
     /**
@@ -149,6 +155,14 @@ public class CompraController {
                 precioMedido,
                 oferta)
         );
+    }
+
+    /**
+     * Inserta la compra recibida
+     * @param compra que se quiere insertar
+     */
+    public void insert( CompraEntity compra ){
+        REPOSITORY.insert( compra );
     }
 
     /**

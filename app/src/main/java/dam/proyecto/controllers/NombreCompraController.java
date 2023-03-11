@@ -39,6 +39,15 @@ public class NombreCompraController {
     }
 
     /**
+     * Obtener un nombre de la compra a partir del id
+     * @param id el id de la compra, con formato aammddhhmm
+     * @return nombre de la compra
+     */
+    public NombreCompraEntity getById( String id ){
+        return REPOSITORY.getById( id );
+    }
+
+    /**
      * Inserta un nuevo registro
      * @param id de la compra
      * @param nombre que se le da a la compra
@@ -47,5 +56,10 @@ public class NombreCompraController {
     public void insert(String id, String nombre, int comercio){
         REPOSITORY.insert( new NombreCompraEntity( id, nombre, comercio));
     }
+
+    public void update(NombreCompraEntity nombreCompra) {
+        REPOSITORY.update( nombreCompra );
+    }
+
 
 }

@@ -46,42 +46,6 @@ public class CompraRepository extends Repositorio {
     }
 
     /**
-     * Inserta una colección de objetos
-     */
-    public void insertAll( List<CompraEntity> data ){
-        DAO.insertAll( data );
-    }
-
-    /**
-     * Inserta una compra
-     * @param compra la compra que se quiere insertar
-     */
-    public void insert( CompraEntity compra ){
-
-        try{
-            DAO.insert( compra );
-        }catch ( Exception e ){
-            Log.d( "LDLC", "CompraRepository.insert() - Error al guardar la compra: " + compra.toString() );
-        }
-
-    }
-    // Obtener la compra por una compra dada
-    public ArrayList<CompraEntity> getProductosByFecha(String fecha ){
-        return (ArrayList<CompraEntity>) DAO.findByFecha( fecha );
-    }
-
-    /**
-     * Devuelve una compra a partir del id recibido
-     * @param id buscado
-     * @return compra relacionada con el id
-     */
-    public CompraEntity getCompra( String id ){
-        return DAO.findById( id );
-    }
-
-
-
-    /**
      * Actualiza una compra
      * @param compra que se quiere actualizar
      */
@@ -96,6 +60,20 @@ public class CompraRepository extends Repositorio {
      */
     public ArrayList<CompraEntity> getAllByProducto( String idProducto){
         return (ArrayList<CompraEntity>) DAO.getAllByProducto( idProducto );
+    }
+
+    /**
+     * Devuelve una compra a partir del id recibido
+     * @param id buscado
+     * @return compra relacionada con el id
+     */
+    public CompraEntity getCompra( String id ){
+        return DAO.findById( id );
+    }
+
+    // Obtener la compra por una compra dada
+    public ArrayList<CompraEntity> getProductosByFecha(String fecha ){
+        return (ArrayList<CompraEntity>) DAO.findByFecha( fecha );
     }
 
     /**
@@ -119,6 +97,29 @@ public class CompraRepository extends Repositorio {
         Log.d("LDLC", "CompraRepository.getUltimoPecio() -- fecha actual " + fecha + " - " + p);
         return p;
     }
+
+
+    /**
+     * Inserta una compra
+     * @param compra la compra que se quiere insertar
+     */
+    public void insert( CompraEntity compra ){
+
+        try{
+            DAO.insert( compra );
+        }catch ( Exception e ){
+            Log.d( "LDLC", "CompraRepository.insert() - Error al guardar la compra: " + compra.toString() );
+        }
+
+    }
+
+    /**
+     * Inserta una colección de objetos
+     */
+    public void insertAll( List<CompraEntity> data ){
+        DAO.insertAll( data );
+    }
+
 
     @Override
     @NonNull
