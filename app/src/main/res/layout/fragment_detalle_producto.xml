@@ -5,312 +5,321 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/aep_contenedor"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:padding="8dp">
 
-    <LinearLayout
-        android:id="@+id/aep_lly_nuevoProducto"
+    <TextView
+        android:id="@+id/dnp_lbl_titulo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="@string/aep_str_titulo"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <EditText
+        android:id="@+id/aep_inp_codigo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fondoInputVerde"
+        android:ems="10"
+        android:hint="@string/dnp_str_lbl_codigo"
+        android:inputType="number"
+        android:maxLength="13"
+        android:text="@string/str_cadenaVacia"
+        app:layout_constraintBottom_toBottomOf="@id/fdp_btn_qr"
+        app:layout_constraintEnd_toStartOf="@id/fdp_btn_qr"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/fdp_btn_qr"
+        tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <ImageButton
+        android:id="@+id/fdp_btn_qr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintBottom_toBottomOf="@id/aep_inp_codigo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/aep_inp_codigo"
+        app:layout_constraintTop_toBottomOf="@id/dnp_lbl_titulo"
+        app:srcCompat="@drawable/ic_baseline_qr_code_32"
+        tools:ignore="SpeakableTextPresentCheck" />
+
+    <ImageView
+        android:id="@+id/fdp_img_miniatura"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fdp_btn_qr"
+        app:srcCompat="@drawable/ic_baseline_photo_camera_back_64" />
+
+    <EditText
+        android:id="@+id/aep_inp_denominacion"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fondoInputVerde"
+        android:ems="10"
+        android:hint="@string/dnp_str_lbl_denominacion"
+        android:inputType="text"
+        android:maxLength="100"
+        android:text="@string/str_cadenaVacia"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/fdp_img_miniatura"
+        app:layout_constraintEnd_toStartOf="@id/fdp_img_miniatura"
+        app:layout_constraintBottom_toTopOf="@id/aep_inp_marca"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/aep_inp_marca"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fondoInputVerde"
+        android:completionThreshold="1"
+        android:ems="10"
+        android:hint="@string/dnp_str_lbl_marca"
+        android:inputType="text"
+        android:text="@string/str_cadenaVacia"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/aep_inp_denominacion"
+        app:layout_constraintEnd_toStartOf="@id/fdp_img_miniatura"
+        app:layout_constraintBottom_toBottomOf="@id/fdp_img_miniatura"/>
+
+    <TextView
+        android:id="@+id/aep_lbl_unidades"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/dnp_str_lbl_unidades"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/aep_lbl_cantidad"
+        app:layout_constraintTop_toTopOf="@id/aep_lbl_medida"
+        app:layout_constraintBottom_toBottomOf="@id/aep_lbl_medida"/>
+
+    <EditText
+        android:id="@+id/aep_inp_unidades"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fondoInputVerde"
+        android:ems="10"
+        android:hint="@string/str_cero"
+        android:inputType="number"
+        android:paddingEnd="4dp"
+        android:text="@string/str_cadenaVacia"
+        android:textAlignment="textEnd"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:layout_constraintStart_toStartOf="@id/aep_lbl_unidades"
+        app:layout_constraintTop_toBottomOf="@id/aep_lbl_unidades"
+        app:layout_constraintEnd_toEndOf="@id/aep_lbl_unidades"/>
+
+
+    <TextView
+        android:id="@+id/aep_lbl_cantidad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/dnp_str_lbl_cantidad"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textAlignment="textEnd"
+        app:layout_constraintStart_toEndOf="@id/aep_lbl_unidades"
+        app:layout_constraintTop_toTopOf="@id/aep_lbl_medida"
+        app:layout_constraintEnd_toStartOf="@id/aep_lbl_medida"
+        app:layout_constraintBottom_toBottomOf="@id/aep_lbl_medida"/>
+
+    <EditText
+        android:id="@+id/aep_inp_cantidad"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:background="@color/fondoInputVerde"
+        android:ems="10"
+        android:hint="@string/str_ceroDecimal"
+        android:inputType="numberDecimal"
+        android:paddingEnd="4dp"
+        android:text="@string/str_cadenaVacia"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toEndOf="@id/aep_lbl_cantidad"
+        app:layout_constraintStart_toStartOf="@id/aep_lbl_cantidad"
+        app:layout_constraintTop_toBottomOf="@id/aep_lbl_cantidad"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <TextView
+        android:id="@+id/aep_lbl_medida"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="@string/dnp_str_lbl_medida"
+        android:textAlignment="center"
+        android:textColor="#000000"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/aep_lbl_cantidad"
+        app:layout_constraintTop_toBottomOf="@id/fdp_img_miniatura" />
+
+    <Spinner
+        android:id="@+id/aep_spn_medida"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck"
+        app:layout_constraintStart_toStartOf="@id/aep_lbl_medida"
+        app:layout_constraintTop_toBottomOf="@id/aep_lbl_medida"
+        app:layout_constraintEnd_toEndOf="@id/aep_lbl_medida"/>
+
+    <AutoCompleteTextView
+        android:id="@+id/aep_inp_etiqueta"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
+        android:background="@color/fondoInputVerde"
+        android:completionThreshold="1"
+        android:ems="10"
+        android:hint="@string/dnp_str_lbl_etiqueta"
+        android:inputType="text"
+        android:text="@string/str_cadenaVacia"
+        app:layout_constraintBottom_toBottomOf="@id/fdp_btn_tagOK"
+        app:layout_constraintEnd_toStartOf="@id/fdp_btn_tagOK"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@id/fdp_btn_tagOK"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+
+    <Button
+        android:id="@+id/fdp_btn_tagOK"
+        android:layout_width="64dp"
+        android:layout_height="48dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:enabled="false"
+        android:text="OK"
+        app:layout_constraintBottom_toBottomOf="@id/aep_inp_etiqueta"
+        app:layout_constraintEnd_toStartOf="@id/fdp_text_etiquetas"
+        app:layout_constraintStart_toEndOf="@id/aep_inp_etiqueta"
+        app:layout_constraintTop_toBottomOf="@id/aep_inp_cantidad" />
 
-        <TextView
-            android:id="@+id/dnp_lbl_titulo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
-            android:text="@string/aep_str_titulo"
-            android:textAlignment="center"
-            android:textColor="#000000"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+    <TextView
+        android:id="@+id/fdp_text_etiquetas"
+        android:layout_width="0dp"
+        android:layout_height="48dp"
+        android:hint="@string/fdp_str_hintEtiquetas"
+        app:layout_constraintStart_toEndOf="@id/fdp_btn_tagOK"
+        app:layout_constraintTop_toTopOf="@id/fdp_btn_tagOK"
+        app:layout_constraintBottom_toBottomOf="@id/fdp_btn_tagOK"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <EditText
-                android:id="@+id/aep_inp_codigo"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/fondoInputVerde"
-                android:ems="10"
-                android:hint="@string/dnp_str_lbl_codigo"
-                android:inputType="number"
-                android:maxLength="13"
-                android:layout_weight="3"
-                android:layout_gravity="center_vertical"
-                android:text="@string/str_cadenaVacia"
-                tools:ignore="SpeakableTextPresentCheck,SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-            <ImageButton
-                android:id="@+id/fdp_btn_camara"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_weight="1"
-                android:background="@color/fondoBotonVerdeAvtivo"
-                app:srcCompat="@android:drawable/ic_menu_camera" />
-        </LinearLayout>
-
-
-        <EditText
-            android:id="@+id/aep_inp_denominacion"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:hint="@string/dnp_str_lbl_denominacion"
-            android:background="@color/fondoInputVerde"
-            android:ems="10"
-            android:inputType="text"
-            android:maxLength="100"
-            android:text="@string/str_cadenaVacia"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-
-        <AutoCompleteTextView
-            android:id="@+id/aep_inp_marca"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginRight="12dp"
-            android:background="@color/fondoInputVerde"
-            android:completionThreshold="1"
-            android:ems="10"
-            android:hint="@string/dnp_str_lbl_marca"
-            android:inputType="text"
-            android:text="@string/str_cadenaVacia"
-            tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp">
-
-            <TextView
-                android:id="@+id/aep_lbl_unidades"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dnp_str_lbl_unidades"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/aep_inp_unidades"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:background="@color/fondoInputVerde"
-                android:ems="10"
-                android:hint="@string/str_cero"
-                android:inputType="number"
-                android:paddingEnd="4dp"
-                android:text="@string/str_cadenaVacia"
-                android:textAlignment="textEnd"
-                app:layout_constraintStart_toStartOf="@+id/aep_lbl_unidades"
-                app:layout_constraintTop_toBottomOf="@+id/aep_lbl_unidades"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-
-            <TextView
-                android:id="@+id/aep_lbl_contidad"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dnp_str_lbl_cantidad"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/aep_inp_cantidad"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <EditText
-                android:id="@+id/aep_inp_cantidad"
-                android:layout_width="80dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:background="@color/fondoInputVerde"
-                android:ems="10"
-                android:hint="@string/str_ceroDecimal"
-                android:inputType="numberDecimal"
-                android:paddingEnd="4dp"
-                android:text="@string/str_cadenaVacia"
-                android:textAlignment="textEnd"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/aep_inp_unidades"
-                tools:ignore="SpeakableTextPresentCheck" />
-
-            <TextView
-                android:id="@+id/aep_lbl_medida"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/dnp_str_lbl_medida"
-                android:textColor="#000000"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                app:layout_constraintStart_toStartOf="@+id/aep_spn_medida"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <Spinner
-                android:id="@+id/aep_spn_medida"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/aep_inp_cantidad"
-                tools:ignore="TouchTargetSizeCheck,SpeakableTextPresentCheck" />
-
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <AutoCompleteTextView
-                android:id="@+id/aep_inp_etiqueta"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@color/fondoInputVerde"
-                android:completionThreshold="1"
-                android:ems="10"
-                android:hint="@string/dnp_str_lbl_etiqueta"
-                android:inputType="text"
-                android:text="@string/str_cadenaVacia"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/fdp_btn_tagOK"
-                app:layout_constraintBottom_toBottomOf="@id/fdp_btn_tagOK"
-                app:layout_constraintEnd_toStartOf="@id/fdp_btn_tagOK"
-                tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
-
-            <Button
-                android:id="@+id/fdp_btn_tagOK"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:enabled="false"
-                android:text="OK"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/aep_inp_etiqueta"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <TextView
-            android:id="@+id/fdp_text_etiquetas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/fdp_str_hintEtiquetas" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="2dp"
-            android:background="@color/green_700"
-            app:barrierDirection="top" />
-
-        <ListView
-            android:id="@+id/fdp_lv_comprasRelacionadas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-    <LinearLayout
+    <View
+        android:id="@+id/view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintVertical_bias="1"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="2dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:background="@color/green_700"
+        app:barrierDirection="top"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fdp_btn_tagOK" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/aep_btn_cancelar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_weight="1"
-            android:backgroundTint="@color/white"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:text="@string/mep_str_it_cancelar"
-            android:textColor="@color/OrangeRed"
-            android:textSize="12sp"
-            app:icon="@drawable/ic_baseline_exit_to_app_24"
-            app:iconGravity="top"
-            app:iconTint="@color/OrangeRed" />
+    <ListView
+        android:id="@+id/fdp_lv_comprasRelacionadas"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/aep_btn_cancelar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/aep_btn_limpiar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="2px"
-            android:layout_marginRight="2px"
-            android:layout_weight="1"
-            android:alpha="0.3"
-            android:backgroundTint="@color/white"
-            android:clickable="false"
-            android:enabled="false"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:text="@string/mep_str_it_limpiar"
-            android:textColor="@color/Gris"
-            android:textSize="12sp"
-            app:icon="@drawable/ic_baseline_cleaning_services_24"
-            app:iconGravity="top"
-            app:iconTint="@color/IconoAzul" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/aep_btn_cancelar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:backgroundTint="@color/white"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/mep_str_it_cancelar"
+        android:textColor="@color/OrangeRed"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_baseline_exit_to_app_24"
+        app:iconGravity="top"
+        app:iconTint="@color/OrangeRed"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/aep_btn_limpiar"
+        app:layout_constraintTop_toBottomOf="@id/fdp_lv_comprasRelacionadas"
+        />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/aep_btn_eliminar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_weight="1"
-            android:alpha="0.3"
-            android:backgroundTint="@color/white"
-            android:clickable="false"
-            android:enabled="false"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:text="@string/mep_str_it_eliminar"
-            android:textColor="@color/Gris"
-            android:textSize="12sp"
-            app:icon="@drawable/ic_baseline_delete_forever_24"
-            app:iconGravity="top"
-            app:iconTint="@color/error" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/aep_btn_limpiar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:alpha="0.3"
+        android:backgroundTint="@color/white"
+        android:clickable="false"
+        android:enabled="false"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/mep_str_it_limpiar"
+        android:textColor="@color/Gris"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_baseline_cleaning_services_24"
+        app:iconGravity="top"
+        app:iconTint="@color/IconoAzul"
+        app:layout_constraintTop_toTopOf="@+id/aep_btn_cancelar"
+        app:layout_constraintEnd_toStartOf="@id/aep_btn_eliminar"
+        app:layout_constraintStart_toEndOf="@id/aep_btn_cancelar" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/aep_btn_guardar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_weight="1"
-            android:alpha="0.3"
-            android:backgroundTint="@color/white"
-            android:clickable="false"
-            android:enabled="false"
-            android:paddingLeft="4dp"
-            android:paddingRight="4dp"
-            android:text="@string/mep_str_it_guardar"
-            android:textColor="@color/Gris"
-            android:textSize="12sp"
-            app:icon="@drawable/ic_baseline_save_24"
-            app:iconGravity="top"
-            app:iconTint="@color/green_700" />
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/aep_btn_eliminar"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:alpha="0.3"
+        android:backgroundTint="@color/white"
+        android:clickable="false"
+        android:enabled="false"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/mep_str_it_eliminar"
+        android:textColor="@color/Gris"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_baseline_delete_forever_24"
+        app:iconGravity="top"
+        app:iconTint="@color/error"
+        app:layout_constraintStart_toEndOf="@+id/aep_btn_limpiar"
+        app:layout_constraintEnd_toStartOf="@id/aep_btn_guardar"
+        app:layout_constraintTop_toTopOf="@+id/aep_btn_limpiar" />
 
-    </LinearLayout>
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/aep_btn_guardar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:alpha="0.3"
+        android:backgroundTint="@color/white"
+        android:clickable="false"
+        android:enabled="false"
+        android:paddingLeft="4dp"
+        android:paddingRight="4dp"
+        android:text="@string/mep_str_it_guardar"
+        android:textColor="@color/Gris"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_baseline_save_24"
+        app:iconGravity="top"
+        app:iconTint="@color/green_700"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/aep_btn_eliminar"
+        app:layout_constraintTop_toTopOf="@+id/aep_btn_eliminar" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

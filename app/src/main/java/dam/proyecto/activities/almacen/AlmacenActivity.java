@@ -165,10 +165,6 @@ public class AlmacenActivity extends AppCompatActivity implements AlmacenListene
             builder.create();
             builder.show();
 
-//            // Opción con Dialog
-//            Dialog dialog = builder.setView( new View(this)).create();
-//            dialog.show();
-
         } else {
             AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setTitle( "No hay una lista abierta")

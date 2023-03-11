@@ -10,7 +10,9 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -18,10 +20,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -63,7 +68,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     // Instancia del navegador, necesaria para porde
     // habolitarlo o deshabilitarlo
-    BottomNavigationView navegador;
+    private BottomNavigationView navegador;
+    private int heightVista;                        // Para guardar la alturea previa del contenedor
 
     // Elementos que componen el formulario
     private TextView tv_codigoDeBarras,
@@ -121,6 +127,15 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         // Deshabilitamos el bottom menu
         navegador = getActivity().findViewById(R.id.navegador);
         navegador.setVisibility(View.INVISIBLE);
+
+        // Hay que redimensionar el contenedor
+        FragmentContainerView contenedor = getActivity().findViewById( R.id.almacenContenedor );
+        ViewGroup.LayoutParams params = contenedor.getLayoutParams();
+        heightVista = params.height;
+        params.height = WindowManager.LayoutParams.MATCH_PARENT;
+        contenedor.setLayoutParams( params );
+
+
 
         // Cámara para leer el código de barras
         barcodeLauncher = registerForActivityResult(new ScanContract(),
@@ -204,7 +219,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
         listaComparativa = view.findViewById( R.id.fdp_lv_comprasRelacionadas );
 
-        btn_camara = view.findViewById(R.id.fdp_btn_camara);
+        btn_camara = view.findViewById(R.id.fdp_btn_qr);
         btn_camara.setOnClickListener(v -> scanear() );
         btn_addTag = view.findViewById(R.id.fdp_btn_tagOK);
         btn_addTag.setOnClickListener(v -> addTag());
@@ -271,6 +286,13 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     public void cancelar() {
         navegador.setVisibility(View.VISIBLE);
+
+        // Le damos las dimensiones correctas
+        FragmentContainerView contenedor = getActivity().findViewById( R.id.almacenContenedor );
+        ViewGroup.LayoutParams params = contenedor.getLayoutParams();
+        params.height = heightVista;
+        contenedor.setLayoutParams( params );
+
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
