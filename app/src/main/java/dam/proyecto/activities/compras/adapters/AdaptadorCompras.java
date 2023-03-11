@@ -1,5 +1,6 @@
 package dam.proyecto.activities.compras.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,11 +28,11 @@ import dam.proyecto.utilities.Fecha;
  */
 public class AdaptadorCompras extends ArrayAdapter<NombreCompraEntity> {
 
-    private Context context;
-    private int compras_list_item;                                    // Layout que dibuja cada ítem
-    private List<NombreCompraEntity> data;                   // Colección de objetos de NombreCompra
+    private final Context CONTEXT;
+    private final int COMPRAS_LIST_ITEMS;                             // Layout que dibuja cada ítem
+    private final List<NombreCompraEntity> DATA;             // Colección de objetos de NombreCompra
 
-    private ListenerCompras oyente;                                   // Oyente para los componentes
+    private final ListenerCompras OYENTE;                             // Oyente para los componentes
 
     /**
      * Cosntructor
@@ -46,30 +47,30 @@ public class AdaptadorCompras extends ArrayAdapter<NombreCompraEntity> {
 
         super( context, compras_list_item, data);
 
-        this.oyente = oyente;                                                              // Oyente
+        this.OYENTE = oyente;                                                              // Oyente
 
-        this.data = data;
-        this.compras_list_item = compras_list_item;
-        this.context = context;
+        this.DATA = data;
+        this.COMPRAS_LIST_ITEMS = compras_list_item;
+        this.CONTEXT = context;
 
     }
 
     /**
      * Se ejecuta cada vez que se lee un elemento de la colección
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
+     * @param position posición leída
+     * @param convertView vista
+     * @param parent elemento padre
+     * @return la vista
      */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        View view = LayoutInflater
-                .from( context )
-                .inflate( compras_list_item, parent, false );
+        @SuppressLint("ViewHolder") View view = LayoutInflater
+                .from( CONTEXT )
+                .inflate(COMPRAS_LIST_ITEMS, parent, false );
 
-        NombreCompraEntity actual = data.get( position );
+        NombreCompraEntity actual = DATA.get( position );
 
         // Obtener los componentes de la interfaz
         TextView fecha = ( TextView ) view.findViewById( R.id.cli_tv_fecha);
@@ -78,15 +79,16 @@ public class AdaptadorCompras extends ArrayAdapter<NombreCompraEntity> {
         ImageView deleteIcon = ( ImageView ) view.findViewById( R.id.cli_img_delete);
 
         // Formatear la fecha
-        String formatFecha = null;
+        String formatFecha;
         try {
-            formatFecha = Fecha.getFecha( actual.getId() );
+            formatFecha = Fecha.getFecha( actual.getId() )
+                            .replace(",","\n");
         } catch (ParseException e) {
             formatFecha = "";
         }
 
         // Obtener el comercio a partir del id
-        String strComercio = new ComercioRespository( context )
+        String strComercio = new ComercioRespository( CONTEXT )
                                 .getNombreComercio( actual.getComercio() );
 
         // Seteamos los datos
@@ -96,15 +98,15 @@ public class AdaptadorCompras extends ArrayAdapter<NombreCompraEntity> {
 
         // Asignamos un oyente al layout ¿?
         view.findViewById( R.id.cli_lly_datosCompra).setOnClickListener( v -> {
-            if( null != oyente ){
-                oyente.cli_lly_datosCompraOnClick( actual );
+            if( null != OYENTE){
+                OYENTE.cli_lly_datosCompraOnClick( actual );
             }
         });
 
         // Asignamos un oyente al icono de borrar
         deleteIcon.setOnClickListener( v -> {
-            if( null != oyente ){
-                oyente.cli_img_deleteOnClik( actual, position );
+            if( null != OYENTE){
+                OYENTE.cli_img_deleteOnClik( actual, position );
             }
 
         });
