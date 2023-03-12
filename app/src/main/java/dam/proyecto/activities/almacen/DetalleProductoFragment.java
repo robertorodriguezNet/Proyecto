@@ -1,18 +1,28 @@
 package dam.proyecto.activities.almacen;
 
+import static android.app.Activity.RESULT_OK;
 import static dam.proyecto.Config.BOTON_DESACTIVADO_ALPHA;
+import static dam.proyecto.Config.PATH_PRODUCTS_THUMB;
 import static dam.proyecto.controllers.ProductoController.validarCodigoDeBarras;
 import static dam.proyecto.controllers.ProductoController.validarDenominacion;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResult;
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContract;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -35,6 +45,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import dam.proyecto.R;
@@ -54,9 +66,10 @@ import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.utilities.Preferencias;
 
 /**
+ * @see "https://robertorodriguez.webcindario.com/ldlc/thumbs/"
  * @author Roberto Rodríguez Jiménez
- * @version 2023.03.10
  * @since 17/02/2023
+ * @version 2023.03.12
  */
 public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
@@ -314,7 +327,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         tv_cantidad.setHint(R.string.str_ceroDecimal);
         spn_medida.setSelection(0);
         text_tags.setText("");
-        img_miniatura.setImageResource( R.drawable.ic_baseline_photo_camera_back_64);
+        img_miniatura.setImageResource(R.drawable.ic_baseline_photo_camera_back_64);
 
         relacionDeCompras.clear();
 
@@ -586,8 +599,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             tv_denominacion.setText(producto.getDenominacion());
 
             // Cargar la imagen con Glide
-            String path = "https://robertorodriguez.webcindario.com/ldlc/thumbs/" +
-                    producto.getId() + ".jpg";
+            String path = PATH_PRODUCTS_THUMB + producto.getId() + ".jpg";
             // Si la imagen no es nula, la cargamos
             Glide.with(this)
                     .load(path)
@@ -722,19 +734,17 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     /**
      * Inserta el código devuelto por la librería del lector.
      * Si el producto existe, lo carga.     *
+     *
      * @param contents el contenido en texto
      */
     private void insertarCodigo(String contents) {
 
         if (ProductoController.exists(contents, getContext())) {
-            cargarProducto( ProductoController.getById( contents, getContext() ));
+            cargarProducto(ProductoController.getById(contents, getContext()));
         } else {
             tv_codigoDeBarras.setText(contents);
         }
     }
 
-    private void tomarFoto() {
-
-    }
 
 }

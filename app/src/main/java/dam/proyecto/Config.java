@@ -41,5 +41,8 @@ public class Config {
 
     // Buscar productos
     // Caracteres mínimos para iniciar una búsqueda, a parte de 0
-    public static int CARACTERES_MINIMOS_PARA_BUSCAR = 3;
+    public final static int CARACTERES_MINIMOS_PARA_BUSCAR = 3;
+
+    // Ruta hacia las miniaturas de los productos
+    public final static String PATH_PRODUCTS_THUMB = "https://robertorodriguez.webcindario.com/ldlc/thumbs/";
 }

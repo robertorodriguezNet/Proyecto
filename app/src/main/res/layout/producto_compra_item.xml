@@ -8,46 +8,57 @@
     android:padding="8dp">
 
 
+    <ImageView
+        android:id="@+id/pci_img_miniatura"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_baseline_camera_64" />
+
     <TextView
         android:id="@+id/pci_tv_producto"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Producto"
         android:paddingLeft="8dp"
-        app:layout_constraintEnd_toStartOf="@+id/pci_tv_unidadesCompradas"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:text="Producto"
+        app:layout_constraintStart_toEndOf="@id/pci_img_miniatura"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
     <TextView
         android:id="@+id/pci_tv_unidadesCompradas"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:width="50dp"
         android:inputType="numberDecimal"
         android:text="@string/str_cero"
-        android:width="50dp"
         android:textAlignment="textEnd"
-        app:layout_constraintEnd_toStartOf="@+id/pci_tv_precioUniodad"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/pci_img_miniatura"
+        app:layout_constraintBottom_toBottomOf="@id/pci_img_miniatura"
+        app:layout_constraintEnd_toStartOf="@id/pci_tv_precioUniodad"
+         />
 
     <TextView
         android:id="@+id/pci_tv_precioUniodad"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:width="50dp"
         android:text="@string/str_ceroDecimal"
         android:textAlignment="textEnd"
-        app:layout_constraintEnd_toStartOf="@+id/pci_tv_totalProducto"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/pci_tv_unidadesCompradas"
+        app:layout_constraintBottom_toBottomOf="@id/pci_tv_unidadesCompradas" />
 
     <TextView
         android:id="@+id/pci_tv_totalProducto"
-        android:layout_width="wrap_content"
+        android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:width="50dp"
         android:text="@string/str_ceroDecimal"
         android:textAlignment="textEnd"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintStart_toEndOf="@id/pci_tv_precioUniodad"
+        app:layout_constraintBottom_toBottomOf="@id/pci_tv_precioUniodad"
+        app:layout_constraintEnd_toEndOf="parent"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

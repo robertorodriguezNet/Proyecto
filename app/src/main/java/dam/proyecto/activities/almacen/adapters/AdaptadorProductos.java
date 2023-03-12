@@ -1,5 +1,7 @@
 package dam.proyecto.activities.almacen.adapters;
 
+import static dam.proyecto.Config.PATH_PRODUCTS_THUMB;
+
 import android.content.Context;
 
 import android.view.LayoutInflater;
@@ -166,8 +168,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
         public void binData(ProductoEntity producto) {
 
             // Cargar la imagen con Glide
-            String path = "https://robertorodriguez.webcindario.com/ldlc/thumbs/" +
-                    producto.getId() + ".jpg";
+            String path = PATH_PRODUCTS_THUMB + producto.getId() + ".jpg";
             // Si la imagen no es nula, la cargamos
             Glide.with(CONTEXT)
                     .load(path)

@@ -1,15 +1,20 @@
 package dam.proyecto.activities.lista.adapters;
 
+import static dam.proyecto.Config.PATH_PRODUCTS_THUMB;
+
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.bumptech.glide.Glide;
 
 import java.util.List;
 
@@ -86,6 +91,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
                                             .getDenominacionProducto(actual.getProducto());
 
         // Obtener los componentes de la interfaz
+        ImageView miniatura = ( ImageView ) view.findViewById( R.id.pci_img_miniatura);
         TextView producto = (TextView) view.findViewById(R.id.pci_tv_producto);
         TextView ud = (TextView) view.findViewById(R.id.pci_tv_unidadesCompradas);
         TextView precio = (TextView) view.findViewById(R.id.pci_tv_precioUniodad);
@@ -99,6 +105,14 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         // .- comercio: el id del producto y el id del comercio
 
         // Seteamos los datos
+
+        // Cargar la imagen con Glide
+        String path = PATH_PRODUCTS_THUMB + actual.getProducto() + ".jpg";
+        // Si la imagen no es nula, la cargamos
+        Glide.with(context)
+                .load(path)
+                .into(miniatura);
+
         producto.setText(denominacion);
         float cantidadF = actual.getCantidad();
         float precioF = actual.getPrecio();
