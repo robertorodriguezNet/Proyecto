@@ -2,6 +2,7 @@ package dam.proyecto.activities.lista.adapters;
 
 import static dam.proyecto.Config.PATH_PRODUCTS_THUMB;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -34,13 +35,13 @@ import dam.proyecto.database.repositories.ProductoRepository;
  */
 public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
 
-    private Context context;
-    private int vistaItem;                                    // Layout que dibuja cada ítem
-    private List<CompraEntity> data;                       // Colección de productos de NombreCompra
+    private final Context CONTEXT;
+    private final int VISTA_ITEM;                                     // Layout que dibuja cada ítem
+    private final List<CompraEntity> data;                 // Colección de productos de NombreCompra
 
-    private ListaListener oyente;
+    private final ListaListener oyente;
 
-    private String opcionDePrecio;                             // Tipo de precio que se va a mostrar
+    private final String opcionDePrecio;                       // Tipo de precio que se va a mostrar
     /**
      * Cosntructor
      *
@@ -57,8 +58,8 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         super(context, vistaItem, data);
 
         this.data = data;
-        this.vistaItem = vistaItem;
-        this.context = context;
+        this.VISTA_ITEM = vistaItem;
+        this.CONTEXT = context;
 
         this.oyente = oyente;
 
@@ -69,33 +70,34 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
     /**
      * Se ejecuta cada vez que se lee un elemento de la colección
      *
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
+     * @param position posición del elemento en la colección
+     * @param convertView vista
+     * @param parent contenedor padre
+     * @return la vista generada
      */
+    @SuppressLint("DefaultLocale")
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        View view = LayoutInflater
-                .from(context)
-                .inflate(vistaItem, parent, false);
+        @SuppressLint("ViewHolder") View view = LayoutInflater
+                .from(CONTEXT)
+                .inflate(VISTA_ITEM, parent, false);
 
         // Es el registro de una compra, es decir, el producto comprado
         // con sus datos
         CompraEntity actual = data.get(position);
 
         // Obtener la denominación del producto
-        String denominacion = new ProductoRepository( context )
+        String denominacion = new ProductoRepository( CONTEXT )
                                             .getDenominacionProducto(actual.getProducto());
 
         // Obtener los componentes de la interfaz
-        ImageView miniatura = ( ImageView ) view.findViewById( R.id.pci_img_miniatura);
-        TextView producto = (TextView) view.findViewById(R.id.pci_tv_producto);
-        TextView ud = (TextView) view.findViewById(R.id.pci_tv_unidadesCompradas);
-        TextView precio = (TextView) view.findViewById(R.id.pci_tv_precioUniodad);
-        TextView pagado = (TextView) view.findViewById(R.id.pci_tv_totalProducto);
+        ImageView miniatura = view.findViewById( R.id.pci_img_miniatura);
+        TextView producto = view.findViewById(R.id.pci_tv_producto);
+        TextView ud = view.findViewById(R.id.pci_tv_unidadesCompradas);
+        TextView precio = view.findViewById(R.id.pci_tv_precioUniodad);
+        TextView pagado = view.findViewById(R.id.pci_tv_totalProducto);
 
 
 //        Log.d("LDLC", "ProductoCompraListAdapter.getView() - opción de precio: " + opcionDePrecio );
@@ -109,7 +111,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         // Cargar la imagen con Glide
         String path = PATH_PRODUCTS_THUMB + actual.getProducto() + ".jpg";
         // Si la imagen no es nula, la cargamos
-        Glide.with(context)
+        Glide.with(CONTEXT)
                 .load(path)
                 .into(miniatura);
 
@@ -117,7 +119,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         float cantidadF = actual.getCantidad();
         float precioF = actual.getPrecio();
         if( opcionDePrecio.equals("global")){
-            precioF = ProductoController.getUltimoPrecio( actual.getProducto(), context);
+            precioF = ProductoController.getUltimoPrecio( actual.getProducto(), CONTEXT);
             Log.d("LDLC", "Obteniendo precio global de " + actual.getProducto()
             + " precio: " + precioF);
 
@@ -129,9 +131,7 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         precio.setText(String.format("%.02f", precioF));
         pagado.setText(String.format("%.02f", total));
 
-        view.setOnClickListener( v -> {
-            oyente.onProductoCompradoClick( actual );
-        });
+        view.setOnClickListener( v -> oyente.onProductoCompradoClick( actual ));
 
         view.setOnLongClickListener( v -> {
             oyente.onProductoCompradoLongClick( actual );
