@@ -314,6 +314,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         tv_cantidad.setHint(R.string.str_ceroDecimal);
         spn_medida.setSelection(0);
         text_tags.setText("");
+        img_miniatura.setImageResource( R.drawable.ic_baseline_photo_camera_back_64);
+
+        relacionDeCompras.clear();
+
 
         // Desactivar botonera
         desactivarBotonera();
@@ -716,8 +720,8 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     }
 
     /**
-     * Inserta el código devuelto por la librería del lector
-     *
+     * Inserta el código devuelto por la librería del lector.
+     * Si el producto existe, lo carga.     *
      * @param contents el contenido en texto
      */
     private void insertarCodigo(String contents) {
