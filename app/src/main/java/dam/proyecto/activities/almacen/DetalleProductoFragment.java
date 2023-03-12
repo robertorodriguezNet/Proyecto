@@ -10,7 +10,6 @@ import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBar;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
@@ -24,14 +23,14 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
@@ -56,8 +55,8 @@ import dam.proyecto.utilities.Preferencias;
 
 /**
  * @author Roberto Rodríguez Jiménez
- * @since 17/02/2023
  * @version 2023.03.10
+ * @since 17/02/2023
  */
 public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
@@ -80,11 +79,12 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     private AutoCompleteTextView tv_marca,
             tv_etiqueta;
     private Spinner spn_medida;
+    private ImageView img_miniatura;                                     // Imagen para la miniatura
 
     private ListView listaComparativa;                      // Para mostrar las compras del producto
 
     // Botones
-    private ImageButton btn_camara;
+    private ImageButton btn_qr;  // Botón para capturar el Código de barras
     private Button btn_addTag,
             btn_cancelar,
             btn_limpiar,
@@ -129,12 +129,11 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         navegador.setVisibility(View.INVISIBLE);
 
         // Hay que redimensionar el contenedor
-        FragmentContainerView contenedor = getActivity().findViewById( R.id.almacenContenedor );
+        FragmentContainerView contenedor = getActivity().findViewById(R.id.almacenContenedor);
         ViewGroup.LayoutParams params = contenedor.getLayoutParams();
         heightVista = params.height;
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
-        contenedor.setLayoutParams( params );
-
+        contenedor.setLayoutParams(params);
 
 
         // Cámara para leer el código de barras
@@ -143,7 +142,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                     if (result.getContents() == null) {
                         Toast.makeText(context, "Cancelado", Toast.LENGTH_SHORT).show();
                     } else {
-                        insertarCodigo( result.getContents() );
+                        insertarCodigo(result.getContents());
                     }
                 });
 
@@ -172,14 +171,13 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         etiquetaList = tagController.getNombres();
 
 
-
         // Editar un producto si se ha recibido como argumento
         Bundle argumets = this.getArguments();
 
         // Antes de inicializar los componentes, comprobamos
         // si se ha de escribir el código de barras
-        codigoDeBarras = ( argumets != null )?
-                    (String) getArguments().getString("idProducto") : "";
+        codigoDeBarras = (argumets != null) ?
+                (String) getArguments().getString("idProducto") : "";
 
         // Inicializamos los componente
         // No se cargan datos
@@ -201,13 +199,13 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     private void inicializarComponentes(View view) {
 
-        Log.d("LDLC","DetalleProductoFragment.inicializarComponentes\n" +
-                "Código de barras recibido: "+ codigoDeBarras );
+        Log.d("LDLC", "DetalleProductoFragment.inicializarComponentes\n" +
+                "Código de barras recibido: " + codigoDeBarras);
 
 
         // Añadimos el código de barras si lo tenemos
         tv_codigoDeBarras = view.findViewById(R.id.aep_inp_codigo);
-        tv_codigoDeBarras.setText( codigoDeBarras );
+        tv_codigoDeBarras.setText(codigoDeBarras);
 
         tv_denominacion = view.findViewById(R.id.aep_inp_denominacion);
         tv_marca = view.findViewById(R.id.aep_inp_marca);
@@ -217,10 +215,12 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         spn_medida = view.findViewById(R.id.aep_spn_medida);
         text_tags = view.findViewById(R.id.fdp_text_etiquetas);
 
-        listaComparativa = view.findViewById( R.id.fdp_lv_comprasRelacionadas );
+        listaComparativa = view.findViewById(R.id.fdp_lv_comprasRelacionadas);
 
-        btn_camara = view.findViewById(R.id.fdp_btn_qr);
-        btn_camara.setOnClickListener(v -> scanear() );
+        img_miniatura = view.findViewById(R.id.fdp_img_miniatura);
+
+        btn_qr = view.findViewById(R.id.fdp_btn_qr);
+        btn_qr.setOnClickListener(v -> scanear());
         btn_addTag = view.findViewById(R.id.fdp_btn_tagOK);
         btn_addTag.setOnClickListener(v -> addTag());
 
@@ -288,10 +288,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         navegador.setVisibility(View.VISIBLE);
 
         // Le damos las dimensiones correctas
-        FragmentContainerView contenedor = getActivity().findViewById( R.id.almacenContenedor );
+        FragmentContainerView contenedor = getActivity().findViewById(R.id.almacenContenedor);
         ViewGroup.LayoutParams params = contenedor.getLayoutParams();
         params.height = heightVista;
-        contenedor.setLayoutParams( params );
+        contenedor.setLayoutParams(params);
 
         getActivity()
                 .getSupportFragmentManager()
@@ -556,14 +556,15 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     }
 
     /**
-     * Carga el producto que se está editando.     *
+     * Carga el producto que se está editando.
+     *
      * @param producto que se quiere cargar
      */
     private void cargarProducto(ProductoEntity producto) {
 
         // El controlador de las compras es necesario para obtener
         // el listado de compras del producto
-        CompraController compraController = new CompraController( context );
+        CompraController compraController = new CompraController(context);
 
         try {
 
@@ -580,6 +581,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             tv_codigoDeBarras.setText(producto.getId());
             tv_denominacion.setText(producto.getDenominacion());
 
+            // Cargar la imagen con Glide
+            String path = "https://robertorodriguez.webcindario.com/ldlc/thumbs/" +
+                    producto.getId() + ".jpg";
+            // Si la imagen no es nula, la cargamos
+            Glide.with(this)
+                    .load(path)
+                    .into(img_miniatura);
+
             String marca = marcaController.getNameById(producto.getMarca());
             tv_marca.setText(marca);
 
@@ -593,16 +602,16 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // Le pedimos el listado al controlador de las compras
 
             // Listado de la comparativa
-            relacionDeCompras = compraController.loadVistaCompraByProducto(producto.getId() );
-            VistaCompraAdapter adapter = new VistaCompraAdapter( context,
+            relacionDeCompras = compraController.loadVistaCompraByProducto(producto.getId());
+            VistaCompraAdapter adapter = new VistaCompraAdapter(context,
                     R.layout.item_vista_compra,
                     relacionDeCompras);
-            listaComparativa.setAdapter( adapter );
+            listaComparativa.setAdapter(adapter);
             listaComparativa.setOnItemClickListener((adapterView, view, position, id) -> {
                 VistaCompra compra = relacionDeCompras.get(position);
                 // Abrimos la lista
-                Preferencias.setListaAbiertaId( compra.fecha, getContext());
-                startActivity( new Intent( getContext(), ListaActivity.class ) );
+                Preferencias.setListaAbiertaId(compra.fecha, getContext());
+                startActivity(new Intent(getContext(), ListaActivity.class));
             });
 
             habilitarBtnEliminar(true);
@@ -695,23 +704,33 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     private void scanear() {
 
         ScanOptions options = new ScanOptions();
-        options.setDesiredBarcodeFormats( ScanOptions.ALL_CODE_TYPES );
+        options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES);
         options.setPrompt("ESCANEAR CÓDIGO");
         options.setCameraId(0);
-        options.setOrientationLocked( false );
-        options.setBeepEnabled( false );
-        options.setCaptureActivity( CaptureActivityPortrait.class );
-        options.setBarcodeImageEnabled( false );
-        barcodeLauncher.launch( options );
+        options.setOrientationLocked(false);
+        options.setBeepEnabled(false);
+        options.setCaptureActivity(CaptureActivityPortrait.class);
+        options.setBarcodeImageEnabled(false);
+        barcodeLauncher.launch(options);
 
     }
 
     /**
      * Inserta el código devuelto por la librería del lector
+     *
      * @param contents el contenido en texto
      */
     private void insertarCodigo(String contents) {
-        tv_codigoDeBarras.setText( contents );
+
+        if (ProductoController.exists(contents, getContext())) {
+            cargarProducto( ProductoController.getById( contents, getContext() ));
+        } else {
+            tv_codigoDeBarras.setText(contents);
+        }
+    }
+
+    private void tomarFoto() {
+
     }
 
 }
