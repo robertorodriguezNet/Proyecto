@@ -63,7 +63,7 @@ public class CompraController {
      * @return objeto relacionado con el id
      */
     public CompraEntity getById( String id ){
-        return REPOSITORY.getCompra( id );
+        return REPOSITORY.getById( id );
     }
 
     /**
@@ -221,6 +221,15 @@ public class CompraController {
                 precio,
                 0.0f,
                 0);
+    }
+
+
+    /**
+     * Actualiza una compra
+     * @param compra que se quiere actualizar
+     */
+    public void update( CompraEntity compra ){
+        REPOSITORY.update( compra );
     }
 
 }

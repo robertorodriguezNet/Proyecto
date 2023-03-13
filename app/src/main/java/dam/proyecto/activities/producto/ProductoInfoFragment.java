@@ -1,10 +1,9 @@
 package dam.proyecto.activities.producto;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.text.Editable;
@@ -15,25 +14,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.load.engine.Resource;
-
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.lista.ListaListaFragment;
+import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.MarcaController;
-import dam.proyecto.database.Repositorio;
+import dam.proyecto.controllers.MedidaController;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
-import dam.proyecto.database.repositories.CompraRepository;
-import dam.proyecto.database.repositories.MarcaRepository;
-import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
 
 /**
@@ -52,11 +44,11 @@ public class ProductoInfoFragment extends Fragment {
     private ProductoEntity producto;                                            // Producto comprado
     private MedidaEntity medida;                                   // Objeto con la unidad de medida
 
-    // Repositorios
+    // Controladores
     private MarcaController marcaController;
     private ProductoRepository productoRepository;
-    private MedidaRepository medidaRepository;
-    private CompraRepository compraRepository;
+    private MedidaController medidaController;
+    private CompraController compraController;
 
 
     private int ofertActiva;                             // Guarda la oferta aplicada, 0 por defecto
@@ -102,12 +94,13 @@ public class ProductoInfoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        // Obtenemos el id de la compra (CompraEntity) que se ha solicictado
         idCompra = getArguments().getString("id");
 
-        // Inicializar los repositorios
+        // Inicializar los repositorios de la base de datos
         iniciliazarRepositorios();
 
-        // Cargamos los datos desde la BD
+        // Cargamos los datos de la compra desde la BD
         cargarDatos();
 
         View view = inflater.inflate(R.layout.fragment_producto_info,
@@ -123,8 +116,8 @@ public class ProductoInfoFragment extends Fragment {
         escribirLosdatos();
 
         // Oyentes  para los input editables
-        inpPrecio.addTextChangedListener( textWatcher );
-        inpCantidad.addTextChangedListener( textWatcher );
+        inpPrecio.addTextChangedListener(textWatcher);
+        inpCantidad.addTextChangedListener(textWatcher);
 
         return view;
     }
@@ -168,48 +161,48 @@ public class ProductoInfoFragment extends Fragment {
         btnSalirSinGuardar = view.findViewById(R.id.fpi_btn_salir);
 
         // Oyentes para los botones
-        btnGuardarYSalir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                actualizarCompra();
-            }
-        });
+        btnGuardarYSalir.setOnClickListener(view1 -> actualizarCompra());
 
-        btnSalirSinGuardar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                salir();
-            }
-        });
+        btnSalirSinGuardar.setOnClickListener(view12 -> salir());
     }
 
-    private void salir(){
+    private void salir() {
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .replace( R.id.listaContenedor, new ListaListaFragment() )
+                .replace(R.id.listaContenedor, new ListaListaFragment())
                 .commit();
     }
 
     /**
      * Seteamos los datos en la vista
      */
+    @SuppressLint("DefaultLocale")
     private void escribirLosdatos() {
 
         // Título
-        String marca = marcaController.getNameById(producto.getMarca());
-        String cantidad = producto.getCantidad() + " " + producto.getMedida() + ".";
-        lblTitulo.setText(producto.getDenominacion()
-                + " - " + marca
-                + " - " + cantidad);
+        StringBuilder titulo = new StringBuilder();
+        titulo.append(producto.getDenominacion())
+                .append(" - ")
+                .append(marcaController.getNameById(producto.getMarca()))
+                .append(" - ")
+                .append(producto.getCantidad())
+                .append(" ")
+                .append(producto.getMedida());
 
+        lblTitulo.setText(titulo);                                           // Establecer el título
         try {
 
             inpPrecio.setText(String.format("%.02f", compra.getPrecio()));
             inpCantidad.setText(String.format("%.02f", compra.getCantidad()));
             inpTotal.setText(String.format("%.02f", compra.getPagado()));
 
-            float precioMedida = compra.getPrecio() / producto.getCantidad();
+            // La cantidad se refiere a la cantidad de producto que entra en el
+            // artículo, no la cantidad de artículos comprados
+            // Si el producto es a granel, la cantidad es 1
+            // Para saber si es granel, miramos que la cantidad de producto sea 0
+            float precioMedida = compra.getPrecio() / (( producto.getCantidad() == 0)?
+                                                    1f : producto.getCantidad());
 
             tvUnidadMedida.setText(medida.getDescription());
             tvPrecioMedida.setText(String.format("%.02f", precioMedida));
@@ -226,20 +219,20 @@ public class ProductoInfoFragment extends Fragment {
     /**
      * Inicializar los repositorios
      */
-    private void iniciliazarRepositorios(){
-        compraRepository = new CompraRepository( context );
-        productoRepository = new ProductoRepository( context );
-        marcaController = new MarcaController( context );
-        medidaRepository = new MedidaRepository( context );
+    private void iniciliazarRepositorios() {
+        compraController = new CompraController(context);
+        productoRepository = new ProductoRepository(context);
+        marcaController = new MarcaController(context);
+        medidaController = new MedidaController(context);
     }
 
     /**
      * Desacargamos los datos de la BD
      */
     private void cargarDatos() {
-        compra = compraRepository.getCompra(idCompra);
+        compra = compraController.getById(idCompra);
         producto = productoRepository.getById(compra.getProducto());
-        medida = medidaRepository.getById(producto.getMedida());
+        medida = medidaController.getById(producto.getMedida());
     }
 
     /**
@@ -258,13 +251,13 @@ public class ProductoInfoFragment extends Fragment {
         // oferta
         // pagado
 
-        compra.setPrecio( Float.parseFloat( inpPrecio.getText().toString().replace(",",".") ) );
-        compra.setCantidad( Float.parseFloat( inpCantidad.getText().toString().replace(",",".") ) );
-        compra.setPagado( Float.parseFloat( inpTotal.getText().toString().replace(",",".") ) );
-        compra.setPrecioMedido( Float.parseFloat( tvPrecioMedida.getText().toString().replace(",",".") ) );
+        compra.setPrecio(Float.parseFloat(inpPrecio.getText().toString().replace(",", ".")));
+        compra.setCantidad(Float.parseFloat(inpCantidad.getText().toString().replace(",", ".")));
+        compra.setPagado(Float.parseFloat(inpTotal.getText().toString().replace(",", ".")));
+        compra.setPrecioMedido(Float.parseFloat(tvPrecioMedida.getText().toString().replace(",", ".")));
 
         //Ahora que tenemos el objeto compra, lo actualizamos en la BD
-        compraRepository.update( compra );
+        compraController.update(compra);
 
         salir();
 
@@ -282,8 +275,8 @@ public class ProductoInfoFragment extends Fragment {
                 Button btn = botoneraOferta.get(id);
 
                 int color = (id == compra.getOferta()) ?
-                        getResources().getColor(R.color.fondoBotonVerdeAvtivo) :
-                        getResources().getColor(R.color.fondoBotonVerde);
+                        context.getColor(R.color.fondoBotonVerdeAvtivo) :
+                        context.getColor(R.color.fondoBotonVerde);
 
                 btn.setBackgroundColor(color);
             } catch (Exception e) {
@@ -299,14 +292,17 @@ public class ProductoInfoFragment extends Fragment {
     /* ** INTERFAZ PARA EL OYENTE DE LOS EDIT TEXT ******************************************* ** */
     /* ****************************************************************************************** */
 
-    private TextWatcher textWatcher = new TextWatcher(){
+    private TextWatcher textWatcher = new TextWatcher() {
 
         @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
         @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {}
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        }
 
+        @SuppressLint("DefaultLocale")
         @Override
         public void afterTextChanged(Editable editable) {
 
@@ -324,7 +320,7 @@ public class ProductoInfoFragment extends Fragment {
                         .replace(",", "."));
 
                 // Precio por medida
-                tvPrecioMedida.setText( String.format( "%.03f", preciof / producto.getCantidad() ));
+                tvPrecioMedida.setText(String.format("%.03f", preciof / producto.getCantidad()));
                 inpTotal.setText(String.format("%.03f", (preciof * cantidadf)));
 
             } catch (Exception e) {

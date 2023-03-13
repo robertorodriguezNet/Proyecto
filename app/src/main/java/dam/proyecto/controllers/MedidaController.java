@@ -39,6 +39,16 @@ public class MedidaController {
     }
 
     /**
+     * Devuelve el objeto Medida a partir de su id
+     * @param id buscado
+     * @return el objeto
+     */
+    public MedidaEntity getById( String id ){
+        return REPOSITORY.getById( id );
+    }
+
+
+    /**
      * Inserta un objeto en la tabla
      * @param objeto que se quiere insertar
      */

@@ -67,7 +67,7 @@ public class CompraRepository extends Repositorio {
      * @param id buscado
      * @return compra relacionada con el id
      */
-    public CompraEntity getCompra( String id ){
+    public CompraEntity getById( String id ){
         return DAO.findById( id );
     }
 
