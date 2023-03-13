@@ -1,6 +1,5 @@
 package dam.proyecto.activities.almacen;
 
-import static android.app.Activity.RESULT_OK;
 import static dam.proyecto.Config.BOTON_DESACTIVADO_ALPHA;
 import static dam.proyecto.Config.PATH_PRODUCTS_THUMB;
 import static dam.proyecto.controllers.ProductoController.validarCodigoDeBarras;
@@ -8,21 +7,13 @@ import static dam.proyecto.controllers.ProductoController.validarDenominacion;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResult;
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContract;
-import androidx.activity.result.contract.ActivityResultContracts;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
-import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -45,8 +36,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
 import dam.proyecto.R;
@@ -64,12 +53,13 @@ import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.database.repositories.MedidaRepository;
 import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.utilities.Preferencias;
+import dam.proyecto.utilities.Words;
 
 /**
- * @see "https://robertorodriguez.webcindario.com/ldlc/thumbs/"
  * @author Roberto Rodríguez Jiménez
- * @since 17/02/2023
  * @version 2023.03.12
+ * @see "https://robertorodriguez.webcindario.com/ldlc/thumbs/"
+ * @since 17/02/2023
  */
 public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
@@ -269,6 +259,11 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         // Establecemos los oyentes para los input
         tv_codigoDeBarras.addTextChangedListener(this);
         tv_denominacion.addTextChangedListener(this);
+        tv_denominacion.setOnFocusChangeListener((v, tieneElFoco) -> {
+            if (!tieneElFoco) {
+                addTagDesdeDenominacion();
+            }
+        });
         tv_marca.addTextChangedListener(this);
         tv_unidades.addTextChangedListener(this);
         tv_cantidad.addTextChangedListener(this);
@@ -329,7 +324,9 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         text_tags.setText("");
         img_miniatura.setImageResource(R.drawable.ic_baseline_photo_camera_back_64);
 
-        relacionDeCompras.clear();
+        if (relacionDeCompras != null) {
+            relacionDeCompras.clear();
+        }
 
 
         // Desactivar botonera
@@ -393,9 +390,6 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
 
-//        Log.d("LDlC", "DetalleProductoFragment.afterTextChanged id que cambia: " +
-//                editable.toString() );
-
         // Comprobar el campo de tag, si tiene al menos 3 caracteres, se habilita
         if (tv_etiqueta.getText().toString().length() >= 3) {
             btn_addTag.setEnabled(true);
@@ -413,17 +407,9 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                     context);
             int errorD = validarDenominacion(tv_denominacion.getText().toString());
 
-//            Log.d("LDLC", "DetalleProductoFragment.afterTextChanged\n" +
-//                    "errorCB: " + errorCB + ", errorD: " + errorD);
-
             habilitarBtnGuardar((errorCB < 0) && (errorD < 0));
 
         } else {
-
-//            Log.d("LDLC", "DetalleProductoFragment.afterTextChanged: " +
-//                    "No hay datos introducidos");
-
-            // No hay datos escritos
             habilitarBtnLimpiar(false);
         }
 
@@ -662,14 +648,30 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     }
 
     /**
-     * Método que guarda una etiqueta en la base de datos
+     * Método que guarda una etiqueta en la base de datos.
+     * Aunque la etiqueta se guarda en la tabla "tag", no se asocia al producto.
+     * La etiqueta es añadida al campo de texto muestra las etiquetas.
      */
     private void addTag() {
 
-        // Caja de texto en la que se muestran las etiquetas
-        String texto = text_tags.getText().toString();
         // Texto que se va a guardar
         String tag = tv_etiqueta.getText().toString().trim();
+        String normal = Words.normalizar(tag);
+        addTag(normal);
+
+    }
+
+    /**
+     * Método que guarda una etiqueta en la base de datos.
+     * Aunque la etiqueta se guarda en la tabla "tag", no se asocia al producto.
+     * La etiqueta es añadida al campo de texto muestra las etiquetas.
+     *
+     * @param tag
+     */
+    private void addTag(String tag) {
+
+        // Caja de texto en la que se muestran las etiquetas
+        String texto = text_tags.getText().toString();
 
         btn_addTag.setEnabled(false);
         tv_etiqueta.setText("");
@@ -679,7 +681,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
         text_tags.setText(texto);
 
-        // Guardar el tag, recibimos un id
+        // Guardar el tag en la base de datos, recibimos un id
         int idTag = tagController.insert(tag.trim());
 
         // Insertar el tag en la lista
@@ -689,7 +691,31 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                 "Guardado: " + tag + "(" + idTag + ")",
                 Toast.LENGTH_SHORT).show();
 
-        Log.i("LDLC", HEAD + ".addTag");
+    }
+
+    /**
+     * Utiliza la denominación como etiqueta.
+     * El método es llamado cuando el input denominación pierde el foco
+     *
+     * @return
+     */
+    @Nullable
+    private View.OnFocusChangeListener addTagDesdeDenominacion() {
+
+        String denominacion = tv_denominacion.getText().toString();
+
+        Log.i("LDLC", "DetalleProductoFragment.addTagDesdeDenominación" +
+                "\ndenominación: " + denominacion);
+
+        // Separamos la denominación por los espacios en blanco
+        String[] palabras = denominacion.split(" ");
+
+        // Para cada palabra
+        for (String palabra : palabras) {
+            String p = Words.normalizar(palabra); //Normalizar la palabra (minúsculas y sin tilde)
+            addTag(palabra);
+        }
+        return null;
     }
 
     /**
@@ -698,7 +724,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     private void asociarTagsAlProducto(String idProducto) {
 
-        // Obtener un array con las etiquetas
+        // Obtener un array con las etiquetas a partir del campo de texto
         String[] tags = text_tags.getText().toString().split(",");
 
         // Recorrer las etiquetas y asociarlas al producto

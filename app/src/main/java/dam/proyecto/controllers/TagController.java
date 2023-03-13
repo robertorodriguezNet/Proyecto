@@ -167,11 +167,19 @@ public class TagController {
      * Inserta un nuevo tag y devuelve el id
      *
      * @param tag el texto de la nueva etiqueta
-     * @return el id asociado a la nueva etiqueta o -1 si la etiqueta ya existe
+     * @return el id asociado a la nueva etiqueta o
+     *      -1 si la etiqueta ya existe
+     *      -2 si la etiqueta está vacía
      */
     public int insert( String tag) {
 
         LOG.append(String.format("\ninsert(tag): %s", tag));
+
+        if( tag.isEmpty() ){
+            LOG.append("La cadena está vacía");
+            Log.i("LDLC", LOG.toString());
+            return -2;
+        }
 
         // Comprobamos que el objeto no exista
         if (!exists(tag)) {

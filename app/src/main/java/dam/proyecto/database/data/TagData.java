@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @since 2023/01/23
- * @author Roberto Rodríguez
+ * @author Roberto Rodriguez
  * @version 2023.02.15
  */
 public class TagData {
@@ -16,12 +16,12 @@ public class TagData {
             new TagEntity(1,"agua"),
             new TagEntity(2,"ahumado"),
             new TagEntity(3,"alcohol"),
-            new TagEntity(4,"alibia"),
+            new TagEntity(4,"alubia"),
             new TagEntity(5,"atun"),
-            new TagEntity(6,"balsámico"),
+            new TagEntity(6,"balsamico"),
             new TagEntity(7,"bifidus"),
             new TagEntity(8,"bollo"),
-            new TagEntity(9,"café"),
+            new TagEntity(9,"cafe"),
             new TagEntity(10,"centeno"),
             new TagEntity(11,"cerveza"),
             new TagEntity(12,"conserva"),
@@ -36,7 +36,7 @@ public class TagData {
             new TagEntity(21,"lentejas"),
             new TagEntity(22,"limpieza"),
             new TagEntity(23,"lonchas"),
-            new TagEntity(24,"melocotón"),
+            new TagEntity(24,"melocoton"),
             new TagEntity(25,"microondas"),
             new TagEntity(26,"paleta"),
             new TagEntity(27,"pan"),
@@ -67,13 +67,13 @@ public class TagData {
             new TagEntity(52,"oliva"),
             new TagEntity(53,"virgen"),
             new TagEntity(54,"extra"),
-            new TagEntity(55,"champú"),
+            new TagEntity(55,"champu"),
             new TagEntity(56,"colutorio"),
             new TagEntity(57,"jabón"),
-            new TagEntity(58,"calabacín"),
+            new TagEntity(58,"calabacin"),
             new TagEntity(59,"guacamole"),
             new TagEntity(60,"lavavajillas"),
-            new TagEntity(61,"lejía"),
+            new TagEntity(61,"lejia"),
             new TagEntity(62,"tinte"),
             new TagEntity(63,"curry"),
             new TagEntity(64,"bacalao"),
@@ -84,7 +84,7 @@ public class TagData {
             new TagEntity(69,"perejil"),
             new TagEntity(70,"tarro"),
             new TagEntity(71,"papel"),
-            new TagEntity(72,"higiénico"),
+            new TagEntity(72,"higienico"),
             new TagEntity(73,"asado"),
             new TagEntity(74,"tiras"),
             new TagEntity(75,"lomo"),
