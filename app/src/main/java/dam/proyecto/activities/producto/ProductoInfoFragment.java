@@ -135,6 +135,10 @@ public class ProductoInfoFragment extends Fragment {
         inpCantidad = view.findViewById(R.id.fpi_inp_cantidad);
         inpTotal = view.findViewById(R.id.fpi_inp_pagado);
 
+        // Oyentes para los inputs
+        inpPrecio.setSelectAllOnFocus( true );
+        inpCantidad.setSelectAllOnFocus( true );
+
         // Componentes para el precio por unidad de medida
         tvUnidadMedida = view.findViewById(R.id.fpi_tv_unidadMedida);
         tvPrecioMedida = view.findViewById(R.id.fpi_tv_precioMedida);
