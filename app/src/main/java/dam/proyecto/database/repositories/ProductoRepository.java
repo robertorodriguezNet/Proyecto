@@ -34,13 +34,6 @@ public class ProductoRepository extends Repositorio {
     }
 
     /**
-     * Inserta una colección de productos
-     */
-    public void insertAll( List<ProductoEntity> data ){
-        DAO.insertAll( data );
-    }
-
-    /**
      * Devuelve un listado completo de los registros.
      * @return listado compde registros
      */
@@ -61,13 +54,6 @@ public class ProductoRepository extends Repositorio {
         }catch ( Exception e ){
             return "";
         }
-    }
-    /**
-     * Inserta un producto en la base de datos
-     * @param producto producto que se quiere insertar
-     */
-    public void insertProducto( ProductoEntity producto ){
-        DAO.insert( producto );
     }
 
     /**
@@ -107,18 +93,14 @@ public class ProductoRepository extends Repositorio {
         return list.get( 0 ).getId();
     }
 
+
+
     /**
-     * Recibe un valor numérico en formato String y lo devuelve incrementado en 1
-     * @param idStr El valor que se debe icrementar
-     * @return el valor incrementado
+     * Elimina el producto de la base de datos a partir de su id
+     * @param id buscado para ser eliminado
      */
-    private static String incrementarValor( String idStr ){
-
-        // Debemos obtener un valor numérico válido y lo incrementamos
-        Long idL = Long.valueOf( idStr );
-        idL++;
-
-        return String.valueOf( idL );
+    public void deleteById( String id ){
+        DAO.deleteById( id );
     }
 
     /**
@@ -134,20 +116,50 @@ public class ProductoRepository extends Repositorio {
     }
 
     /**
-     * Elimina el producto de la base de datos a partir de su id
-     * @param id buscado para ser eliminado
-     */
-    public void deleteById( String id ){
-        DAO.deleteById( id );
-    }
-
-    /**
      * Devuelve un producto a través del id
      * @param id id del producto
      * @return el producto buscado
      */
     public ProductoEntity getById( String id ){
         return DAO.findById( id );
+    }
+
+
+    /**
+     * Inserta una colección de productos
+     */
+    public void insertAll( List<ProductoEntity> data ){
+        DAO.insertAll( data );
+    }
+
+    /**
+     * Recibe un valor numérico en formato String y lo devuelve incrementado en 1
+     * @param idStr El valor que se debe icrementar
+     * @return el valor incrementado
+     */
+    private static String incrementarValor( String idStr ){
+
+        // Debemos obtener un valor numérico válido y lo incrementamos
+        Long idL = Long.valueOf( idStr );
+        idL++;
+
+        return String.valueOf( idL );
+    }
+
+    /**
+     * Inserta un producto en la base de datos
+     * @param producto producto que se quiere insertar
+     */
+    public void insertProducto( ProductoEntity producto ){
+        DAO.insert( producto );
+    }
+
+    /**
+     * Actualiza un producto
+     * @param objeto producto que se actualiza
+     */
+    public void update( ProductoEntity objeto ){
+        DAO.update( objeto );
     }
 
     @Override

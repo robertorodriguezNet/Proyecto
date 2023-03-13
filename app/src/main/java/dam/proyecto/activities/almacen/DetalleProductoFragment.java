@@ -529,7 +529,18 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // Si estamos editando, se actualiza el producto, si no
             // se inserta uno nuevo
             if (productoEditando != null) {
+                // ProductoEditando es la instancia de ProductoEntity
                 Log.d("LDLC", "DetalleProductoFragment.guardarProducto: actualizado");
+
+                // El id no se modifica
+                productoEditando.setDenominacion( tv_denominacion.getText().toString());
+                productoEditando.setMarca( marcaInt );
+                productoEditando.setUnidades( unidades );
+                productoEditando.setMedida( medida );
+                productoEditando.setCantidad( cantidad );
+
+                ProductoController.update( productoEditando, context );
+
 
             } else {
                 // Es un producto nuevo

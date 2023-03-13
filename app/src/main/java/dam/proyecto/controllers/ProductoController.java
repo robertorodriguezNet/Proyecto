@@ -7,6 +7,7 @@ import static dam.proyecto.Config.PRODUCTO_DENOMINACION_MIN_LENGTH;
 import android.content.Context;
 
 import java.util.ArrayList;
+
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.CompraRepository;
@@ -16,9 +17,10 @@ import dam.proyecto.utilities.Preferencias;
 
 /**
  * Controlador para Producto
+ *
  * @author Roberto Rodríguez
- * @since 11/02/2023
  * @version 2023.03.08
+ * @since 11/02/2023
  */
 public class ProductoController {
 
@@ -26,21 +28,21 @@ public class ProductoController {
     /**
      * Borra los datos de la tabla
      */
-    public static void clear( Context context){
-        new ProductoRepository( context ).clear();
+    public static void clear(Context context) {
+        new ProductoRepository(context).clear();
     }
 
     /**
      * Crea un objeto ProductoEntity
      */
-    public static ProductoEntity crearProducto (String id,
-                                                String denominacion,
-                                                int marca,
-                                                int unidades,
-                                                String medida,
-                                                float cantidad) {
+    public static ProductoEntity crearProducto(String id,
+                                               String denominacion,
+                                               int marca,
+                                               int unidades,
+                                               String medida,
+                                               float cantidad) {
 
-        return  new ProductoEntity( id,
+        return new ProductoEntity(id,
                 denominacion,
                 marca,
                 unidades,
@@ -50,39 +52,41 @@ public class ProductoController {
 
     /**
      * Comprueba si existe un producto a partir de su id
-     * @param id buscado
+     *
+     * @param id      buscado
      * @param context contexto
      * @return true si el producto está registrado
      */
-    public static boolean exists( String id, Context context ){
-        ProductoEntity producto = new ProductoRepository( context ).getById( id );
+    public static boolean exists(String id, Context context) {
+        ProductoEntity producto = new ProductoRepository(context).getById(id);
         return (producto != null);
     }
 
 
     /**
      * Obtener el último precio de un producto en un comercio dados
+     *
      * @param idProducto producto buscado
      * @param idComercio en que el que se busca
-     * @param context contexto
+     * @param context    contexto
      * @return precio del producto buscado
      */
-    public static float getUltimoPrecio( String idProducto, int idComercio, Context context){
+    public static float getUltimoPrecio(String idProducto, int idComercio, Context context) {
 
         // Obtnemos todas las compras del producto
         // ordenadas por fecha descendentes
-        ArrayList<CompraEntity> compras = new CompraRepository( context)
-                        .getAllByProducto( idProducto );
+        ArrayList<CompraEntity> compras = new CompraRepository(context)
+                .getAllByProducto(idProducto);
 
 
         // Obtener todas las compras del comercio,
         // ordenadas descendentes
-        ArrayList<String> nombreCompras = new NombreCompraRepository( context )
-                        .getAllByIdComercio( idComercio );
+        ArrayList<String> nombreCompras = new NombreCompraRepository(context)
+                .getAllByIdComercio(idComercio);
 
         // Recorremos en los productos para buscar si se compró en comercio
-        for( CompraEntity compra : compras ){
-            if( nombreCompras.contains( compra.getFecha() )){
+        for (CompraEntity compra : compras) {
+            if (nombreCompras.contains(compra.getFecha())) {
                 // Este es el último producto comprado en el comercio buscado
                 return compra.getPrecio();
             }
@@ -94,26 +98,28 @@ public class ProductoController {
 
     /**
      * Devuelve la colección completa de productos
+     *
      * @return colección de productos
      */
-    public static ArrayList<ProductoEntity> getAll( Context context){
-        return new ProductoRepository( context ).getAll();
+    public static ArrayList<ProductoEntity> getAll(Context context) {
+        return new ProductoRepository(context).getAll();
     }
 
     /**
      * Devuelve la colección completa de productos que contienen el texto
+     *
      * @return colección de productos
      */
-    public static ArrayList<ProductoEntity> getAll( String texto, Context context){
+    public static ArrayList<ProductoEntity> getAll(String texto, Context context) {
 
-        TagController tagControler = new TagController( context );
+        TagController tagControler = new TagController(context);
 
         // Pedimos al controlador de etiquetas un listado con los productos que
         // contienen el texto buscado
-        ArrayList<String> idProductos = tagControler.getProductosByTag( texto );
+        ArrayList<String> idProductos = tagControler.getProductosByTag(texto);
 
         // Pedimos el listado completo de productos
-        ArrayList<ProductoEntity> listado = ProductoController.getAll( context );
+        ArrayList<ProductoEntity> listado = ProductoController.getAll(context);
 
         listado.removeIf(producto -> !idProductos.contains(producto.getId()));
 
@@ -122,12 +128,13 @@ public class ProductoController {
 
     /**
      * Devuelve el ProductoEntity correspondiente con el id
-     * @param id buscado
+     *
+     * @param id      buscado
      * @param context contexto
      * @return el producto buscado
      */
-    public static ProductoEntity getById( String id, Context context ){
-        return new ProductoRepository( context ).getById( id );
+    public static ProductoEntity getById(String id, Context context) {
+        return new ProductoRepository(context).getById(id);
     }
 
 
@@ -135,13 +142,14 @@ public class ProductoController {
      * Devuelve el último precio registrado pero, si devilvemos el último precio, éste será
      * el que se acabe de guardar al crear la lista.
      * Se debe devolver el último, descartando el actual.
+     *
      * @param idProducto el producto buscado
-     * @param context contexto
+     * @param context    contexto
      * @return último precio
      */
-    public static float getUltimoPrecio( String idProducto, Context context ){
-        String idCompraActual = Preferencias.getListaAbiertaId( context );
-        return new CompraRepository( context ).getUltimoPrecio( idProducto, idCompraActual );
+    public static float getUltimoPrecio(String idProducto, Context context) {
+        String idCompraActual = Preferencias.getListaAbiertaId(context);
+        return new CompraRepository(context).getUltimoPrecio(idProducto, idCompraActual);
     }
 
     /**
@@ -153,56 +161,58 @@ public class ProductoController {
                                       int unidades,
                                       String medida,
                                       float cantidad,
-                                      Context context){
+                                      Context context) {
 
-        ProductoEntity producto = crearProducto(id,denominacion,marca,unidades,medida,cantidad);
-        new ProductoRepository( context ).insertProducto( producto );
+        ProductoEntity producto = crearProducto(id, denominacion, marca, unidades, medida, cantidad);
+        new ProductoRepository(context).insertProducto(producto);
 
     }
 
     /**
      * Inserta un producto
+     *
      * @param producto que se quiere insertar
      */
-    public static void insertProducto(ProductoEntity producto, Context context ){
-        new ProductoRepository( context ).insertProducto( producto );
+    public static void insertProducto(ProductoEntity producto, Context context) {
+        new ProductoRepository(context).insertProducto(producto);
     }
 
     /**
      * Evalúa el código de barras recibido como argumento.
      * El código de barras puede estar en blanco.
      * El producto puede estar editándose y querer cambiar el código de barras.
+     *
      * @param cb el código de barras
      * @return int valor según error, 0 si no hay error
      */
-    public static int validarCodigoDeBarras( String cb, boolean editando, Context context ){
+    public static int validarCodigoDeBarras(String cb, boolean editando, Context context) {
 
         // Si se ha escrito el código de barras, hay que validarlo
 
 //        Log.d("LDLC", "ProductoController.validarCodigoDeBarras: " + cb );
 
 
-        ProductoRepository productoRepository = new ProductoRepository( context );
+        ProductoRepository productoRepository = new ProductoRepository(context);
 
         // Si está vacío, devolvemos -1
-        if( cb.isEmpty() ){
+        if (cb.isEmpty()) {
             return -1;
         } else {
 
             // No está vacío, pero no tiene los caracteres epecificados
             boolean err = false;
-            for( int ean : CODIGO_DE_BARRAS_LENGTH ){
-                if( err || ( cb.length() == ean ) ){
+            for (int ean : CODIGO_DE_BARRAS_LENGTH) {
+                if (err || (cb.length() == ean)) {
                     err = true;
                 }
             }
-            if(!err){
+            if (!err) {
                 return 1;
             }
 
             // Si el código de barras tiene la longitud correcta, se comprueba
             // que no exista, en caso de que editando = false
-            if( !editando && productoRepository.existsProducto( cb ) ){
+            if (!editando && productoRepository.existsProducto(cb)) {
                 return 0;
             }
 
@@ -214,25 +224,38 @@ public class ProductoController {
 
     /**
      * Evalúa la denominación
+     *
      * @param denominacion que se quiere validar
      * @return el valor del error que pudiera dar
      */
-    public static int validarDenominacion( String denominacion ){
+    public static int validarDenominacion(String denominacion) {
 
 //        Log.d("LDLC", "ProductoController.validarDenominacion: " + denominacion );
 
         // Condiciones
         // El texto no puede estar en blanco
-        if( denominacion.isEmpty() ){
+        if (denominacion.isEmpty()) {
             return 3;
         }
         // El texto es demasiado corto
-        if ( denominacion.length() < PRODUCTO_DENOMINACION_MIN_LENGTH ){
+        if (denominacion.length() < PRODUCTO_DENOMINACION_MIN_LENGTH) {
             return 4;
         }
 
         return -1;
 
+    }
+
+
+    /**
+     * Actualiza un producto
+     *
+     * @param objeto producto que se actualiza
+     * @param context contexto
+     */
+    public static void update(ProductoEntity objeto, Context context) {
+        ProductoRepository repository = new ProductoRepository(context);
+        repository.update(objeto);
     }
 
 }
