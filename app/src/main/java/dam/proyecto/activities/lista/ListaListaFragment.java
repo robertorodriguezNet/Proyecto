@@ -1,5 +1,6 @@
 package dam.proyecto.activities.lista;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -9,7 +10,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +20,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -36,7 +35,6 @@ import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
-import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.utilities.Preferencias;
 
@@ -49,7 +47,6 @@ import dam.proyecto.utilities.Preferencias;
  */
 public class ListaListaFragment extends Fragment {
 
-    private static final String TAG = "LL";
     private Context context;
 
     private ListaListener oyente;
@@ -90,6 +87,7 @@ public class ListaListaFragment extends Fragment {
 
     }
 
+    @SuppressLint("DefaultLocale")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -126,39 +124,24 @@ public class ListaListaFragment extends Fragment {
             nombreCompra = nombreCompraRepository.getById(idCompra);
 
             // Inicializar componente
-            lblNombreDeLaCompra = (TextView) view.findViewById(R.id.fla_tv_nombreCompra);
-            btnPrecio = (ImageView) view.findViewById( R.id.fla_img_precio);
-            btnSalir = (ImageView) view.findViewById(R.id.fla_img_cerrar);
-            btnAgregar = (ImageView) view.findViewById(R.id.fla_fab_addProduct);
+            lblNombreDeLaCompra = view.findViewById(R.id.fla_tv_nombreCompra);
+            btnPrecio = view.findViewById( R.id.fla_img_precio);
+            btnSalir = view.findViewById(R.id.fla_img_cerrar);
+            btnAgregar = view.findViewById(R.id.fla_fab_addProduct);
             inicializarSpinner( view );
 
 
             // Nombre de la compra
-            lblNombreDeLaCompra.setText(nombreCompra.getNombre().toString());
+            lblNombreDeLaCompra.setText(nombreCompra.getNombre());
 
             // Botón para mostrar diferentes precios
-            btnPrecio.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    abrirCambiarPrecios();
-                }
-            });
+            btnPrecio.setOnClickListener(view1 -> abrirCambiarPrecios());
 
             // Botón salir
-            btnSalir.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    salir();
-                }
-            });
+            btnSalir.setOnClickListener(view12 -> salir());
 
             // Botón para añadir productos
-            btnAgregar.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(context, AlmacenActivity.class));
-                }
-            });
+            btnAgregar.setOnClickListener(view13 -> startActivity(new Intent(context, AlmacenActivity.class)));
 
             // Cargar la lista
             // Obtener el ListView
@@ -187,7 +170,7 @@ public class ListaListaFragment extends Fragment {
         if (context instanceof ListaListener) {
             oyente = (ListaListener) context;
         } else {
-            throw new RuntimeException(context.toString()
+            throw new RuntimeException(context
                     + " debes implementar el oyente.");
         }
     }
@@ -268,24 +251,9 @@ public class ListaListaFragment extends Fragment {
         dialogPrecio.show();
 
         // Oyentes para los eventos
-        btnActual.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnCambiarPrecioOnClick( view, dialogPrecio );
-            }
-        });
-        btnGlobal.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnCambiarPrecioOnClick( view, dialogPrecio );
-            }
-        });
-        btnComercio.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                btnCambiarPrecioOnClick( view, dialogPrecio );
-            }
-        });
+        btnActual.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio ));
+        btnGlobal.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio ));
+        btnComercio.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio ));
 
     }
 
@@ -325,7 +293,8 @@ public class ListaListaFragment extends Fragment {
     /* ***** EVENTOS PARA LOS BOTONES DEL ALERT PRECIOS ***************************************** */
     /* ****************************************************************************************** */
 
-    public void btnCambiarPrecioOnClick( View view, AlertDialog dialog ){
+    @SuppressLint("NonConstantResourceId")
+    public void btnCambiarPrecioOnClick(View view, AlertDialog dialog ){
 
         dialog.dismiss();
 
@@ -343,7 +312,7 @@ public class ListaListaFragment extends Fragment {
             case R.id.acp_btn_comercio:
                 opcion = "comercio";
                 break;
-            default: ;
+            default:
         }
 
         argumentos.putString( "opcion", opcion);
@@ -363,11 +332,11 @@ public class ListaListaFragment extends Fragment {
 
     /**
      * Spinner para seleccionar el comercio
-     * @param view
+     * @param view vista
      */
     private void inicializarSpinner( View view ){
 
-        spinner = (Spinner) view.findViewById(R.id.fla_spn_seleccionarComercio);
+        spinner = view.findViewById(R.id.fla_spn_seleccionarComercio);
         ArrayAdapter<ComercioEntity> adapter = new ArrayAdapter<>(
                 context,
                 androidx

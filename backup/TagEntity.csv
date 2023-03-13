@@ -1,12 +1,12 @@
 1,agua
 2,ahumado
 3,alcohol
-4,alibia
+4,alubia
 5,atun
-6,balsámico
+6,balsamico
 7,bifidus
 8,bollo
-9,café
+9,cafe
 10,centeno
 11,cerveza
 12,conserva
@@ -21,7 +21,7 @@
 21,lentejas
 22,limpieza
 23,lonchas
-24,melocotón
+24,melocoton
 25,microondas
 26,paleta
 27,pan
@@ -52,13 +52,13 @@
 52,oliva
 53,virgen
 54,extra
-55,champú
+55,champu
 56,colutorio
 57,jabón
-58,calabacín
+58,calabacin
 59,guacamole
 60,lavavajillas
-61,lejía
+61,lejia
 62,tinte
 63,curry
 64,bacalao
@@ -69,7 +69,7 @@
 69,perejil
 70,tarro
 71,papel
-72,higiénico
+72,higienico
 73,asado
 74,tiras
 75,lomo
@@ -80,3 +80,4 @@
 80,aceituna
 81,negra
 82,sin hueso
+83,Servilleta
