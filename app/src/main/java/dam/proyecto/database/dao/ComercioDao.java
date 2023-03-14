@@ -35,6 +35,9 @@ public interface ComercioDao {
     @Query( "SELECT * FROM Comercio ORDER BY name")
     List<ComercioEntity> getAll();
 
+    @Query( "SELECT name FROM Comercio ORDER BY name")
+    List<String> getAllNames();
+
     @Query( "SELECT MAX(id) FROM comercio")
     int getMaxId();
 

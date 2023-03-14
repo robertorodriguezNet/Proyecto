@@ -101,6 +101,14 @@
     <string name="flp_str_act_buscar">Buscar...</string>
     <string name="mp_str_it_importarDB">Importar DB</string>
     <string name="dc_str_tv_titulo">Nuevo comercio</string>
+    <string name="title_activity_marcaBlanca">Marca Blanca</string>
+    <string name="mp_str_it_marcaBlanca">Marca blanca</string>
+    <string name="str_salir">Salir</string>
+    <string name="amb_str_tv_leyenda">En esta pantalla se relacionan las marcas con sus comercios</string>
+    <string name="str_comercios">Comercios</string>
+    <string name="str_marcas">Marcas</string>
+    <string name="str_asociados">Asociados</string>
+    <string name="amb_tv_todasLasMarcas">Todas la marcas</string>
 
     <string-array name="opciones_precio">
         <item>Actual</item>

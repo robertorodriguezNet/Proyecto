@@ -75,6 +75,14 @@ public class MarcaRepository extends Repositorio{
     }
 
     /**
+     * Devuelve un listado con los nombres.
+     * @return los datos.
+     */
+    public ArrayList<String> getAllNames(){
+        return (ArrayList<String>) DAO.getAllNames();
+    }
+
+    /**
      * Devuelve el id más alto registrado
      * @return el id más alto
      */

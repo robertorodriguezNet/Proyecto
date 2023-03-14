@@ -8,6 +8,11 @@
         android:title="@string/mp_str_it_comercio"
         app:showAsAction="ifRoom" />
     <item
+        android:id="@+id/mp_it_marcaBlanca"
+        android:icon="@drawable/ic_baseline_rtt_24"
+        android:title="@string/mp_str_it_marcaBlanca"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/mp_it_ayuda"
         android:icon="@drawable/ic_baseline_help_outline_24"
         android:title="@string/mp_str_it_ayuda"

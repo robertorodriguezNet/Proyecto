@@ -13,7 +13,7 @@ import dam.proyecto.database.repositories.MarcaRepository;
  *
  * @author Roberto Rodríguez Jiménez
  * @since 04/03/2023
- * @version 2023.03.07
+ * @version 2023.03.14
  */
 
 public class MarcaController {
@@ -38,31 +38,6 @@ public class MarcaController {
     public ArrayList<MarcaEntity> getAll(){
         return REPOSITORY.getAll();
     }
-
-
-//    /**
-////     * Devuelve el id de una marca si existe, si no existe, la guarda.
-////     * @param marcaStr la marca buscada
-////     * @param control No tengo claro para qué lo puse, pero debe ser false
-////     * @return el id de la marca
-////     */
-////    public int getIdByName( String marcaStr, boolean control ){
-////
-////        String marca = marcaStr.trim();
-////
-////        // Obtenemos el objeto MarcaEntity
-////        MarcaEntity marcaEntity = null;
-////        marcaEntity = REPOSITORY.findByName( marca );
-////
-////        // Si marcaEntity es nulo, es que el objeto no existe
-////        if( marcaEntity == null ){
-////            // Guardamos la marca
-////            REPOSITORY.insert( new MarcaEntity( getNewId(), marca ));
-////            marcaEntity = REPOSITORY.findByName( marca );
-////        }
-////
-////        return ( marcaEntity == null ) ? -1 : (int) marcaEntity.getId();
-////    }
 
     /**
      * Devuelve el id de una marca si existe, si no existe, la guarda.
@@ -112,16 +87,8 @@ public class MarcaController {
      * @return nombres de las marcas
      */
     public ArrayList<String> getNombres(){
-        ArrayList<MarcaEntity> objetos = getAll();
-        ArrayList<String> nombres = new ArrayList<>();
-
-        for ( MarcaEntity objeto: objetos ) {
-            nombres.add( objeto.getName() );
-        }
-
-        return nombres;
+        return REPOSITORY.getAllNames();
     }
-
 
     /**
      * Inserta una colección de objetos

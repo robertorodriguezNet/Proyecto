@@ -31,11 +31,30 @@ public class MarcaBlancaController {
     }
 
     /**
+     * Comprueba la asociación de una marca con un comercio
+     * @param comercio buscado
+     * @param marca buscada
+     * @return true si la asociación existe
+     */
+    public boolean exists( int comercio, int marca ){
+        return REPOSITORY.getByArgs( comercio, marca ) != null;
+    }
+
+    /**
      * Devuelve un listado completo de los registros.
      * @return la colección de objetos completa
      */
     public ArrayList<MarcaBlancaEntity> getAll(){
         return REPOSITORY.getAll();
+    }
+
+    /**
+     * Devuelve las marcas (id) de un comercio dado
+     * @param comercio buscado
+     * @return listado de marcas
+     */
+    public ArrayList<Integer> getMarcasByComercio( int comercio ){
+        return REPOSITORY.getMarcasByComercio( comercio );
     }
 
     /**

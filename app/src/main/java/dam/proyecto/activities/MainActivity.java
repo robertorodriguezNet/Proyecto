@@ -20,6 +20,7 @@ import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
+import dam.proyecto.activities.marcablanca.MarcaBlancaActivity;
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.database.data.Ejemplos;
 import dam.proyecto.database.data.ExportDB;
@@ -105,6 +106,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.mp_it_acercade:
                 Toast.makeText(this, "acerca de...", Toast.LENGTH_SHORT).show();
                 break;
+            case R.id.mp_it_marcaBlanca:
+                editarMarcaBlanca();
+                break;
             case R.id.mp_it_ayuda:
                 Toast.makeText(this, "ayuda", Toast.LENGTH_SHORT).show();
                 break;
@@ -145,6 +149,13 @@ public class MainActivity extends AppCompatActivity {
         builder.create();
         builder.show();
 
+    }
+
+    /**
+     * Carga la actividad para editar las marcas blancas
+     */
+    private void editarMarcaBlanca(){
+        startActivity( new Intent( this,  MarcaBlancaActivity.class ) );
     }
 
 }

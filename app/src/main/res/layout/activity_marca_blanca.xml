@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activities.marcablanca.MarcaBlancaActivity">
+
+    <TextView
+        android:id="@+id/amb_tv_leyenda"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:text="@string/amb_str_tv_leyenda"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
+    <AutoCompleteTextView
+        android:id="@+id/amb_inp_comercio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:completionThreshold="1"
+        android:hint="@string/str_comercios"
+        android:text="@string/str_cadenaVacia"
+        android:textAlignment="center"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amb_tv_leyenda"
+        app:layout_constraintEnd_toStartOf="@id/amb_btn_clear"
+        app:layout_constraintBottom_toBottomOf="@id/amb_btn_clear"
+        tools:ignore="TouchTargetSizeCheck" />
+
+
+    <AutoCompleteTextView
+        android:id="@+id/amb_inp_marca"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:completionThreshold="1"
+        android:hint="@string/str_marcas"
+        android:text="@string/str_cadenaVacia"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="@id/amb_btn_start"
+        app:layout_constraintEnd_toEndOf="@id/amb_inp_comercio"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amb_inp_comercio"
+        app:layout_constraintVertical_bias="0.53"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <ImageButton
+        android:id="@+id/amb_btn_clear"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:background="@color/green_700"
+        app:layout_constraintBottom_toBottomOf="@id/amb_inp_comercio"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/amb_inp_comercio"
+        app:layout_constraintTop_toTopOf="@id/amb_inp_comercio"
+        app:srcCompat="@drawable/ic_baseline_cleaning_services_32" />
+
+
+    <ImageButton
+        android:id="@+id/amb_btn_start"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@color/green_700"
+        app:layout_constraintBottom_toBottomOf="@id/amb_inp_marca"
+        app:layout_constraintEnd_toEndOf="@id/amb_btn_clear"
+        app:layout_constraintStart_toStartOf="@id/amb_btn_clear"
+        app:layout_constraintTop_toBottomOf="@id/amb_btn_clear"
+        app:srcCompat="@drawable/ic_baseline_not_started_32" />
+
+    <TextView
+        android:id="@+id/amb_tv_lblComercios"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/str_asociados"
+        android:textAlignment="center"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amb_inp_marca"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/amb_lv_listaComercios"/>
+
+    <ListView
+        android:id="@+id/amb_lv_listaComercios"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="32dp"
+        android:layout_marginEnd="32dp"
+        app:layout_constraintBottom_toTopOf="@id/amb_btn_salir"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/amb_tv_lblComercios" />
+
+    <Button
+        android:id="@+id/amb_btn_salir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="@string/str_salir"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="TextContrastCheck" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -16,17 +16,17 @@ import dam.proyecto.database.repositories.ComercioRespository;
  *
  * @author Roberto Rodríguez Jiménez
  * @since 04/03/2023
- * @version 2023.03.04
+ * @version 2023.03.14
  */
 
 public class ComercioController {
 
-    private Context context;
-    private ComercioRespository repository;
+    private final Context CONTEXT;
+    private final ComercioRespository REPOSITORY;
 
     public ComercioController(Context context ){
-        this.context = context;
-        this.repository = new ComercioRespository( context );
+        this.CONTEXT = context;
+        this.REPOSITORY = new ComercioRespository( context );
     }
 
     /**
@@ -47,7 +47,7 @@ public class ComercioController {
 //        Log.d( "LDLC", "Añadir comercio: " + name );
 
         if( error >= 0 ){
-            Toast.makeText(context,
+            Toast.makeText(CONTEXT,
                     name + "\n" + ERROR_CREAR_COMERCIO[error],
                     Toast.LENGTH_SHORT).show();
         } else {
@@ -60,7 +60,35 @@ public class ComercioController {
      * Borra los datos de la tabla
      */
     public void clear() {
-        repository.clear();
+        REPOSITORY.clear();
+    }
+
+
+    /**
+     * Comprueba si un comercio ya está registrado a partir de su nombre
+     * @param name nombre del comercio buscado
+     * @return true si el comercio existe
+     */
+    public boolean existsComercio( String name ){
+        ComercioEntity comercio = REPOSITORY.findByName( name );
+        return ( comercio != null );
+    }
+
+    /**
+     * Método que devuelve la colección completa de comecios
+     * @return colección de objetos
+     */
+    public ArrayList<ComercioEntity> getAll(){
+        return REPOSITORY.getAll();
+    }
+
+    /**
+     * Devuelve un listado completo de los nombres de los registros.
+     *
+     * @return la colección de nombres
+     */
+    public ArrayList<String> getAllNames() {
+        return (ArrayList<String>) REPOSITORY.getAllNames();
     }
 
     /**
@@ -69,34 +97,35 @@ public class ComercioController {
      * @return ComercioEntity relacionado con el idComercio
      */
     public ComercioEntity getById( int idComercio ){
-        return repository.findById( idComercio );
+        return REPOSITORY.findById( idComercio );
     }
 
     /**
-     * Comprueba si un comercio ya está registrado a partir de su nombre
-     * @param name nombre del comercio buscado
-     * @return true si el comercio existe
+     * Devuelve el objeto comercio a partir de su nombre
+     * @param nombre del comercio
+     * @return ComercioEntity relacionado con el nombre
      */
-    public boolean existsComercio( String name ){
-        ComercioEntity comercio = null;
-        comercio = repository.findByName( name );
-        return ( comercio != null );
+    public ComercioEntity getByName( String nombre ){
+        return REPOSITORY.findByName( nombre );
     }
 
     /**
-     * Método que devuelve la colección completa de comecios
-     * @return
+     * Devuelve el id de un comercio a partir de su nombre
+     * @param nombre del comercio
+     * @return id del comercio buscado
      */
-    public ArrayList<ComercioEntity> getAll(){
-        return repository.getAll();
+    public int getIdByName( String nombre ){
+        return getByName( nombre ).getId();
     }
+
+
 
     /**
      * Devuelve un nuevo id válido
-     * @return
+     * @return id válido
      */
     public int getNewId(){
-        int id = repository.getMaxId();
+        int id = REPOSITORY.getMaxId();
         id++;
         return id;
     }
@@ -128,7 +157,7 @@ public class ComercioController {
      * @param comercio el comercio que se quiere insertar
      */
     public void insert( ComercioEntity comercio ){
-        repository.insert( comercio );
+        REPOSITORY.insert( comercio );
     }
 
 
@@ -136,6 +165,6 @@ public class ComercioController {
      * Inserta una colección de objetos
      */
     public void insertAll(List<ComercioEntity> data) {
-        repository.insertAll(data);
+        REPOSITORY.insertAll(data);
     }
 }

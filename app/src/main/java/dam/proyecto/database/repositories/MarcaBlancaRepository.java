@@ -26,6 +26,25 @@ public class MarcaBlancaRepository extends Repositorio {
     }
 
     /**
+     * Devuelve un objeto a partir del id del comercio y marca
+     * @param comercio buscado
+     * @param marca buscada
+     * @return el comercio osociado
+     */
+    public MarcaBlancaEntity getByArgs( int comercio, int marca ){
+        return DAO.findByArgs( comercio, marca );
+    }
+
+    /**
+     * Devuelve las marcas (id) de un comercio dado
+     * @param comercio buscado
+     * @return listado de marcas
+     */
+    public ArrayList<Integer> getMarcasByComercio( int comercio ){
+        return (ArrayList<Integer>) DAO.getMarcaByComercio( comercio );
+    }
+
+    /**
      * Devuelve el id más alto registrado
      * @return el id más alto registrado
      */

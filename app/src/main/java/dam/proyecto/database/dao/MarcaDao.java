@@ -37,6 +37,9 @@ public interface MarcaDao {
     @Query("SELECT * FROM Marca")
     List<MarcaEntity> getAll();
 
+    @Query("SELECT name FROM Marca ORDER BY name ASC")
+    List<String> getAllNames();
+
     // UPDATE ------------------------------------
     @Update
     void update(MarcaEntity object);
