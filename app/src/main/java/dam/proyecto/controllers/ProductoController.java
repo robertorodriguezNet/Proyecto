@@ -121,6 +121,7 @@ public class ProductoController {
         // Pedimos el listado completo de productos
         ArrayList<ProductoEntity> listado = ProductoController.getAll(context);
 
+        // Eliminamos los productos que no estén en la colección de idProductos
         listado.removeIf(producto -> !idProductos.contains(producto.getId()));
 
         return listado;

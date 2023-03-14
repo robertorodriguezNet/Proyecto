@@ -47,6 +47,9 @@ public interface MarcaBlancaDao {
     @Query( "SELECT marca FROM MarcaBlanca WHERE comercio = :comercio")
     List<Integer> getMarcaByComercio( int comercio );
 
+    @Query( "SELECT comercio FROM MarcaBlanca WHERE marca = :marca")
+    List<Integer> getComercioByMarca( int marca );
+
     @Query( "SELECT MAX(id) FROM MarcaBlanca")
     int getMaxId();
 

@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +31,13 @@ import dam.proyecto.R;
 import dam.proyecto.activities.almacen.adapters.AdaptadorProductos;
 import dam.proyecto.activities.almacen.clases.CaptureActivityPortrait;
 import dam.proyecto.activities.almacen.listeners.AlmacenListener;
+import dam.proyecto.controllers.MarcaBlancaController;
+import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
+import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
+import dam.proyecto.utilities.Preferencias;
 
 /**
  * Carga la lista de productos almacenados en la base de datos.
@@ -172,9 +177,21 @@ public class ListaProductosFragment extends Fragment {
             // Boramos la colección de productos
             productoData.clear();
 
+            // Obtener los comercios que contienen el texto
             ArrayList<ProductoEntity> productosBuscados =
                                         ProductoController.getAll(text, getContext());
 
+            // Controlador de MarcaBlanca
+            MarcaBlancaController marcaBlancaController = new MarcaBlancaController( getContext() );
+
+            NombreCompraController nombreCompraController = new NombreCompraController( getContext() );
+            productosBuscados = marcaBlancaController
+                    .filtrarMarcaBlanca(
+                            productosBuscados,
+                            nombreCompraController
+                                    .getById( Preferencias.getListaAbiertaId( getContext() ) )
+                                    .getComercio()
+                            );
             productoData.addAll( productosBuscados );
 
             // Notificamos el cambio al adaptador

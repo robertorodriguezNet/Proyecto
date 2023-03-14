@@ -1,10 +1,13 @@
 package dam.proyecto.controllers;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
+import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.MarcaBlancaEntity;
+import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.MarcaBlancaRepository;
 
 /**
@@ -49,6 +52,15 @@ public class MarcaBlancaController {
     }
 
     /**
+     * Devuelve los comercios (id) de uan marca dada
+     * @param marca buscada
+     * @return listado de comercios
+     */
+    public ArrayList<Integer> getComerciosByMarca( int marca ){
+        return REPOSITORY.getComerciosByMarca( marca );
+    }
+
+    /**
      * Devuelve las marcas (id) de un comercio dado
      * @param comercio buscado
      * @return listado de marcas
@@ -68,6 +80,35 @@ public class MarcaBlancaController {
     }
 
     /**
+     * Elimna de la colección de productos aquellos que son marca blanca de otros comercios.
+     * ProductoEntity tiene una propiedad int marca.
+     * @param productos que se evalúan
+     * @param idComercio comercio buscado
+     * @return colección limpia
+     */
+    public ArrayList<ProductoEntity> filtrarMarcaBlanca(ArrayList<ProductoEntity>productos,
+                                                        int idComercio ){
+        Log.d("LDLC", "Filtrado de marca blanca. " +
+                "\nComercio: " + idComercio );
+
+        // Lista que se va a devolver
+        ArrayList<ProductoEntity> listaLimpia = new ArrayList<>();
+
+        // Se recorren los productos
+        for (ProductoEntity producto : productos ){
+
+            // Preguntamos si el producto pertenece a otro comercio
+            boolean esAjena = isMarcaAjena( idComercio, producto.getMarca() );
+
+            if(!esAjena){
+                listaLimpia.add( producto );
+            }
+        }
+
+        return listaLimpia;
+    }
+
+    /**
      * Inserta un objeto a partir de la marca y el comercio
      * @param marca nueva
      * @param comercio al que pertenece la marca
@@ -84,6 +125,31 @@ public class MarcaBlancaController {
      */
     public void insert( int id, int marca, int comercio ){
         REPOSITORY.insert( new MarcaBlancaEntity( id, marca, comercio ));
+    }
+
+    /**
+     * Comprueba si una marca es marca blanca de otro comercio
+     * @param marca buscado
+     * @param comercio buscado
+     * @return true si la marca buscada pertenece al comercio
+     */
+    public boolean isMarcaAjena( int comercio, int marca ){
+
+        // Obtener la relación si la hay
+        ArrayList<Integer> relacion = getComerciosByMarca( marca );
+
+        return ( ( relacion.size() > 0 ) && ( !relacion.contains( comercio ) ) );
+    }
+
+    /**
+     * Comprueba si una marca es marca blanca de un comercio
+     * @param marca buscado
+     * @param comercio buscado
+     * @return true si la marca buscada pertenece al comercio
+     */
+    public boolean isMarcaBlanca( int comercio, int marca ){
+        MarcaBlancaEntity marcaBlanca = REPOSITORY.getByArgs( comercio, marca );
+        return marcaBlanca != null;
     }
 
 }

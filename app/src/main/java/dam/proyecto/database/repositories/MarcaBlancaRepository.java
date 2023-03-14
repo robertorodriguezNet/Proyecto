@@ -36,6 +36,15 @@ public class MarcaBlancaRepository extends Repositorio {
     }
 
     /**
+     * Devuelve los comercios (id) de uan marca dada
+     * @param marca buscada
+     * @return listado de comercios
+     */
+    public ArrayList<Integer> getComerciosByMarca( int marca ){
+        return (ArrayList<Integer>) DAO.getComercioByMarca( marca );
+    }
+
+    /**
      * Devuelve las marcas (id) de un comercio dado
      * @param comercio buscado
      * @return listado de marcas
