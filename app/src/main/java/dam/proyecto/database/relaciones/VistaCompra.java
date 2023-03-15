@@ -12,17 +12,17 @@ package dam.proyecto.database.relaciones;
  * @author Roberto Rodríguez Jiménez
  * @since 02/03/2023
  * @version 2023.03.02
- */
-
-/**
- * Constructor
+ *
  * Se declaran dos datos que se necesitan mostrar.
  * Las claves no se muestran porque se entiende que ya se tienen,
  * pues son necesarias para obetener los registros.
  */
 public class VistaCompra {
-     public String name;
+
+     public String denominacion;
+     public String name;                                                      // Nombre del comercio
      public String precio;
+     public String precioMedido;
      public String fecha;
 
 

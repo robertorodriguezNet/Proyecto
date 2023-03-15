@@ -24,7 +24,7 @@ public class VistaCompraRepository extends Repositorio{
     }
 
     public ArrayList<VistaCompra> loadVistaCompraByProducto( String idProducto ){
-        return (ArrayList<VistaCompra>) dao.loadVistaCompraByProducto( idProducto );
+        return (ArrayList<VistaCompra>) dao.getVistaCompraByProducto( idProducto );
     }
 
 }

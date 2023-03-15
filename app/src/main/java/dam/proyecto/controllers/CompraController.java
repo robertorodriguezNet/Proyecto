@@ -177,7 +177,7 @@ public class CompraController {
 
         // Colección completa
         ArrayList<VistaCompra> completa = (ArrayList<VistaCompra>) vistaCompraDao
-                            .loadVistaCompraByProducto( idProducto );
+                            .getVistaCompraByProducto( idProducto );
 
         // Colección completa
         ArrayList<VistaCompra> data = new ArrayList<>();

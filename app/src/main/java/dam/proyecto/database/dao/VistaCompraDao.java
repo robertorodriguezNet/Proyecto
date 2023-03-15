@@ -21,13 +21,23 @@ import dam.proyecto.database.relaciones.VistaCompra;
 @Dao
 public interface VistaCompraDao {
 
-    @Query( "select m.name, c.precio, c.fecha " +
+    @Query( "select p.denominacion, m.name, c.precio, c.preciomedido, c.fecha " +
             "from Compra as c, Nombrecompra as n, Comercio as m, Productos as p " +
             "where c.producto = :idProducto " +
             "and c.fecha = n.id " +
             "and m.id = n.comercio " +
             "and p.id = c.producto " +
             "order by c.fecha DESC")
-    List<VistaCompra> loadVistaCompraByProducto( String idProducto );
+    List<VistaCompra> getVistaCompraByProducto(String idProducto );
+
+    @Query( "select p.denominacion, m.name, c.precio, c.preciomedido, c.fecha " +
+            "from Compra as c, Nombrecompra as n, Comercio as m, Productos as p " +
+            "where c.producto in (SELECT producto FROM TagsProducto WHERE tag = :idTag) " +
+            "and c.fecha = n.id " +
+            "and m.id = n.comercio " +
+            "and p.id = c.producto " +
+            "order by c.fecha DESC")
+
+    List<VistaCompra> getVistaCompraByTag( int idTag );
 
 }
