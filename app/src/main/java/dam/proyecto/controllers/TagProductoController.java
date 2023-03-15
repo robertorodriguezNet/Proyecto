@@ -46,7 +46,7 @@ public class TagProductoController {
 
     /**
      * Devuelve un listado de los tags de un producto con tan sólo los nombres
-     * @param idProducto el producto buscado
+     * @param idProducto el producto buscado en formato código de barras
      * @return listado del los tags
      */
     public ArrayList<String> getNombres( String idProducto ){
@@ -68,6 +68,24 @@ public class TagProductoController {
             return new ArrayList<>();
         }
 
+    }
+
+    /**
+     * Devuelve los tags de un producto
+     * @param idProducto producto
+     * @return lista de id's asociados al producto
+     */
+    public ArrayList<Integer> getTagByProducto(String idProducto){
+        return (ArrayList<Integer>) REPOSITORY.getTagByProducto( idProducto );
+    }
+
+    /**
+     * Devuelve el primer tag del producto
+     * @param idProducto buscado
+     * @return el id del tag
+     */
+    public int getTagMasImportante(String idProducto ){
+        return getTagByProducto( idProducto ).get(0);
     }
 
     /**
@@ -112,5 +130,12 @@ public class TagProductoController {
         return REPOSITORY.getAll();
     }
 
-
+    /**
+     * Devuelve una colección de productos relacionados con el tag
+     * @param tag buscado
+     * @return colección de id's de productos
+     */
+    public ArrayList<String> getProcutosByTag( int tag ){
+        return REPOSITORY.getProcutosByTag( tag );
+    }
 }

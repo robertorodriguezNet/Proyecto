@@ -89,6 +89,7 @@ public class ProductoData {
             new ProductoEntity("8006540948811", "Lavavajillas", 28, 1, "l", (float) 0.87),
             new ProductoEntity("8480000430243","Lejía con detergente" ,29,1,"l",(float) 2.0),
             new ProductoEntity("8480000829610","Salmón al curry",9,1,"k",(float) 0.325),
+
     };
 
     /**

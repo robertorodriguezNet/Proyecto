@@ -36,6 +36,9 @@ public interface TagsProductoDao {
     @Query("SELECT tag FROM TagsProducto WHERE producto = :args")
     List<Integer> getTagByProducto(String args);
 
+    @Query("SELECT producto FROM TagsProducto WHERE tag = :tag")
+    List<String> getProductosByTag( int tag);
+
     // UPDATE ------------------------------------
     @Update
     void update(TagsProductoEntity object);

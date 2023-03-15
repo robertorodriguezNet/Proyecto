@@ -18,7 +18,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fpc_tv_producto"/>
 
     <TextView
         android:id="@+id/fpc_tv_producto"
@@ -26,19 +27,53 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:padding="4dp"
-        android:text="producto"
+        android:text="@string/str_producto"
         android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fpc_tv_titulo" />
+        app:layout_constraintTop_toBottomOf="@id/fpc_tv_titulo"
+        app:layout_constraintBottom_toTopOf="@id/fpc_lv_comparativa"/>
 
     <ListView
         android:id="@+id/fpc_lv_comparativa"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="80dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fpc_tv_producto" />
+        app:layout_constraintTop_toBottomOf="@id/fpc_tv_producto"
+        app:layout_constraintBottom_toTopOf="@id/guia"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_percent="0.55" />
+
+    <TextView
+        android:id="@+id/fpc_tv_otros"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:padding="4dp"
+        android:textSize="16sp"
+        android:textColor="@color/black"
+        android:text="@string/str_otros_productos"
+        app:layout_constraintBottom_toTopOf="@id/fpc_lv_otros"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/guia" />
+
+    <ListView
+        android:id="@+id/fpc_lv_otros"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/fpc_tv_otros" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

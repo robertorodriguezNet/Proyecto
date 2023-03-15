@@ -9,7 +9,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -17,11 +16,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import dam.proyecto.R;
+import dam.proyecto.activities.producto.adapters.OtrosAdapter;
 import dam.proyecto.activities.producto.adapters.VistaCompraAdapter;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ProductoController;
+import dam.proyecto.controllers.TagProductoController;
 import dam.proyecto.database.entity.CompraEntity;
-import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.relaciones.VistaCompra;
 
@@ -38,6 +38,7 @@ public class ProductoComparativaFragment extends Fragment {
 
     // Controladores
     private CompraController compraController;                           // Controlador de la compra
+    private TagProductoController tagProductoController;
 
     // Datos referentes al producto
     private String idCompra;         // id de la compra que se está editando (el producto comprrado)
@@ -48,6 +49,7 @@ public class ProductoComparativaFragment extends Fragment {
     // Componentes de la UI
     private TextView tvCompra;
     private ListView listaComparativa;              // Contenedor para el listdado de la comparativa
+    private ListView listaOtros;                  // Lista para mostrar otros productos relacionados
 
     // -- FUNCIONES --------------------------------------------------------------------------------
 
@@ -79,6 +81,23 @@ public class ProductoComparativaFragment extends Fragment {
                 R.layout.item_vista_compra,
                 relacionDeCompras);
         listaComparativa.setAdapter( adapter );
+
+        // Listado de la comparativa de productos relacionados
+        listaOtros = view.findViewById( R.id.fpc_lv_otros );
+        tagProductoController = new TagProductoController( getContext() );
+        // Necesitamos un listado que contenga: denominación, precioMedida, comercio y fecha
+        // 1.- Listado de productos que contengan el primer tag del elemento comparado
+        int tagMasImportante = tagProductoController.getTagMasImportante( producto.getId() );
+
+        // 2.- Ahora necesitamos los productos cuyo primer tag sea el mismo
+        ArrayList<String> productosRelacionados =
+                tagProductoController.getProcutosByTag( tagMasImportante );
+
+        // Ya tenemos el listado de productos
+        OtrosAdapter adapterOtros = new OtrosAdapter( context,
+                R.layout.item_lista_otros,
+                productosRelacionados);
+        listaOtros.setAdapter( adapterOtros );
 
         return view;
     }

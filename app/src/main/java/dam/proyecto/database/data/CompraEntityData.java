@@ -129,6 +129,9 @@ public class CompraEntityData {
             new CompraEntity("1000534544663","2303111914",(float)0.521,(float)4.059,(float)7.79,(float)7.79,0),
             new CompraEntity( "8480000622129","2303111914",(float)2.0,(float)7.7,(float)3.85,(float)9.625,0),
 
+            new CompraEntity( "1000000002348","2303141917",(float)1.0,(float)1.2,(float)1.2,(float)1.20,0),
+            new CompraEntity( "1000534544664","2303141917",(float)1.0,(float)1.14,(float)1.14,(float)1.14,0),
+
 
 
 

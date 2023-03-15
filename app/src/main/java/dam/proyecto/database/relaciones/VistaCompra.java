@@ -24,4 +24,6 @@ public class VistaCompra {
      public String name;
      public String precio;
      public String fecha;
+
+
 }

@@ -14,7 +14,7 @@ import dam.proyecto.database.entity.TagsProductoEntity;
 /**
  * @author Roberto Rodríguez
  * @since 23/01/2023
- * @version 2023.02.28
+ * @version 2023.03.14
  */
 public class TagProductoRepository extends Repositorio {
     
@@ -50,6 +50,15 @@ public class TagProductoRepository extends Repositorio {
     }
 
     /**
+     * Devuelve una colección de productos relacionados con el tag
+     * @param tag buscado
+     * @return colección de id's de productos
+     */
+    public ArrayList<String> getProcutosByTag( int tag ){
+        return (ArrayList<String>) DAO.getProductosByTag( tag );
+    }
+
+    /**
      * Devuelve los tags de un producto
      * @param args producto
      * @return lista de id's asociados al producto
@@ -74,6 +83,12 @@ public class TagProductoRepository extends Repositorio {
     }
 
 
+    /**
+     * Devuelve true si ya hay un producto asociado a la etiqueta
+     * @param producto producto buscado
+     * @param tag etiqueta asociada
+     * @return true si hay asociación
+     */
     public TagsProductoEntity getAsociacion( String producto, int tag ){
         return DAO.getAsociacion( producto, tag );
     }
