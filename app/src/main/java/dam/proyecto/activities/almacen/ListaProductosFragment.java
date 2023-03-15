@@ -12,7 +12,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,7 +34,6 @@ import dam.proyecto.controllers.MarcaBlancaController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
-import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.utilities.Preferencias;
 
@@ -162,6 +160,12 @@ public class ListaProductosFragment extends Fragment {
     @SuppressLint("NotifyDataSetChanged")
     private void search() {
 
+        // Controlador de MarcaBlanca
+        MarcaBlancaController marcaBlancaController = new MarcaBlancaController(getContext());
+
+        // Controlador de nombre de compra
+        NombreCompraController nombreCompraController = new NombreCompraController(getContext());
+
         // Capturamos el texto que hay que buscar
         String text = inpTexto
                 .getText()
@@ -177,40 +181,32 @@ public class ListaProductosFragment extends Fragment {
             // Boramos la colección de productos
             productoData.clear();
 
-            // Obtener los comercios que contienen el texto
+            // Obtener los productos que contienen el texto
             ArrayList<ProductoEntity> productosBuscados =
-                    ProductoController.getAll(text, getContext());
+                                            ProductoController.getAll(text, getContext());
 
-            // Controlador de MarcaBlanca
-            MarcaBlancaController marcaBlancaController = new MarcaBlancaController(getContext());
+            // Ahora le pedimos a MarcaBlancaController.filtrarMarcaBlanca que elimine
+            // de la lista de productosBuscados aquellos que sean marca blanca
+            // de un comercio diferente al seleccionado en la lista abierta.
+            // Si la lista abierta no tiene un comercio, se muestran todos los productos buscados
 
-            // Controlador de nombre de compra
-            NombreCompraController nombreCompraController = new NombreCompraController(getContext());
+            // Pedimos el comercio de la lista abierta
+            String idListaAbierta;
+            int idComercio =
+                    ( ( idListaAbierta = Preferencias.getListaAbiertaId( getContext() )) == null ) ?
+                            1 :  nombreCompraController
+                                                        .getById(idListaAbierta)
+                                                        .getComercio();
 
-            Log.d("LDLC", "filtrarMarcaBlanca requiere el id del comercio, pero puede ir en blanco");
-
-            // Buscamos los productos, filtrando la marca blanca
-            // id del comercio:
-            //  .- Le pedimos a las preferencias el id de la lista abierta
-            //  .- A nombreCompraController, que le hemos pasado el id de la compra, le
-            //     pedimos el id del comercio.
-            // Excepción controlada:
-            //  .-  El id del comercio devuelto puede ser un objeto nulo si no está registrado
-            //      correctamente o la lista no tiene aún un comercio o no hay una lista abierta.
-            int idComercio;
-            try{
-                idComercio = nombreCompraController
-                        .getById(Preferencias.getListaAbiertaId(getContext()))
-                        .getComercio();
-            }catch (NullPointerException e){
-                idComercio = 1;
+            // Sólo filtramos la marca blanca si el comercio es diferente de 1
+            if( idComercio != 1 ) {
+                productosBuscados = marcaBlancaController
+                        .filtrarMarcaBlanca(
+                                productosBuscados,
+                                idComercio
+                        );
             }
 
-            productosBuscados = marcaBlancaController
-                    .filtrarMarcaBlanca(
-                            productosBuscados,
-                            idComercio
-                    );
             productoData.addAll(productosBuscados);
 
             // Notificamos el cambio al adaptador
