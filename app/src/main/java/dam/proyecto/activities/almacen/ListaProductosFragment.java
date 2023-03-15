@@ -43,8 +43,8 @@ import dam.proyecto.utilities.Preferencias;
  * Carga la lista de productos almacenados en la base de datos.
  *
  * @author Roberto Rodríguez Jiménez
- * @since 19/02/2023
  * @version 2023.03.04
+ * @since 19/02/2023
  */
 public class ListaProductosFragment extends Fragment {
 
@@ -96,20 +96,20 @@ public class ListaProductosFragment extends Fragment {
                     if (result.getContents() == null) {
                         Toast.makeText(view.getContext(), "Cancelado", Toast.LENGTH_SHORT).show();
                     } else {
-                        insertarCodigo( result.getContents() );
+                        insertarCodigo(result.getContents());
                     }
                 });
 
 
         // Campos de búsqueda
-        inpTexto = (AutoCompleteTextView ) view.findViewById( R.id.flp_inp_search );
-        btnClear = view.findViewById( R.id.flp_btn_clear );
+        inpTexto = (AutoCompleteTextView) view.findViewById(R.id.flp_inp_search);
+        btnClear = view.findViewById(R.id.flp_btn_clear);
         btnClear.setOnClickListener(v -> clear());
-        btnSearch = view.findViewById( R.id.flp_btn_search );
+        btnSearch = view.findViewById(R.id.flp_btn_search);
         btnSearch.setOnClickListener(v -> search());
         btnCamara = view.findViewById(R.id.flp_btn_camara);
-        btnCamara.setOnClickListener(v -> scanear() );
-        etiquetaList = new TagController( getContext() ).getNombres();
+        btnCamara.setOnClickListener(v -> scanear());
+        etiquetaList = new TagController(getContext()).getNombres();
 
         // Establecemos el adaptador para las etiquetas
         ArrayAdapter<String> adapterEtiquetas = new ArrayAdapter<>(
@@ -120,8 +120,8 @@ public class ListaProductosFragment extends Fragment {
         inpTexto.setAdapter(adapterEtiquetas);
 
         // Botón para agregar un nuevo producto
-        fabAgregarProducto = view.findViewById( R.id.fa_fab_addProductoAlmacen );
-        fabAgregarProducto.setOnClickListener( v -> listener.addNuevoProducto());
+        fabAgregarProducto = view.findViewById(R.id.fa_fab_addProductoAlmacen);
+        fabAgregarProducto.setOnClickListener(v -> listener.addNuevoProducto());
 
         // Obtener los datos
         // Pedir al controlador de Producto el listado completo de productos
@@ -152,7 +152,7 @@ public class ListaProductosFragment extends Fragment {
     /**
      * Limpia el campo de búsqueda.
      */
-    private void clear(){
+    private void clear() {
         inpTexto.setText("");
     }
 
@@ -164,14 +164,14 @@ public class ListaProductosFragment extends Fragment {
 
         // Capturamos el texto que hay que buscar
         String text = inpTexto
-                        .getText()
-                        .toString()
-                        .trim()
-                        .toLowerCase();
+                .getText()
+                .toString()
+                .trim()
+                .toLowerCase();
 
         // Se admite la cadena vacía para mostrar todos los productos,
         // pues puede darse el caso de que alguno no tenga le etiqueta correcta
-        if( text.isEmpty() || ( text.length() >= CARACTERES_MINIMOS_PARA_BUSCAR ) ) {
+        if (text.isEmpty() || (text.length() >= CARACTERES_MINIMOS_PARA_BUSCAR)) {
             // Le pedimos al controlador que nos devuelva la lista de productos
 
             // Boramos la colección de productos
@@ -179,20 +179,39 @@ public class ListaProductosFragment extends Fragment {
 
             // Obtener los comercios que contienen el texto
             ArrayList<ProductoEntity> productosBuscados =
-                                        ProductoController.getAll(text, getContext());
+                    ProductoController.getAll(text, getContext());
 
             // Controlador de MarcaBlanca
-            MarcaBlancaController marcaBlancaController = new MarcaBlancaController( getContext() );
+            MarcaBlancaController marcaBlancaController = new MarcaBlancaController(getContext());
 
-            NombreCompraController nombreCompraController = new NombreCompraController( getContext() );
+            // Controlador de nombre de compra
+            NombreCompraController nombreCompraController = new NombreCompraController(getContext());
+
+            Log.d("LDLC", "filtrarMarcaBlanca requiere el id del comercio, pero puede ir en blanco");
+
+            // Buscamos los productos, filtrando la marca blanca
+            // id del comercio:
+            //  .- Le pedimos a las preferencias el id de la lista abierta
+            //  .- A nombreCompraController, que le hemos pasado el id de la compra, le
+            //     pedimos el id del comercio.
+            // Excepción controlada:
+            //  .-  El id del comercio devuelto puede ser un objeto nulo si no está registrado
+            //      correctamente o la lista no tiene aún un comercio o no hay una lista abierta.
+            int idComercio;
+            try{
+                idComercio = nombreCompraController
+                        .getById(Preferencias.getListaAbiertaId(getContext()))
+                        .getComercio();
+            }catch (NullPointerException e){
+                idComercio = 1;
+            }
+
             productosBuscados = marcaBlancaController
                     .filtrarMarcaBlanca(
                             productosBuscados,
-                            nombreCompraController
-                                    .getById( Preferencias.getListaAbiertaId( getContext() ) )
-                                    .getComercio()
-                            );
-            productoData.addAll( productosBuscados );
+                            idComercio
+                    );
+            productoData.addAll(productosBuscados);
 
             // Notificamos el cambio al adaptador
             adaptadorProductos.notifyDataSetChanged();
@@ -205,16 +224,17 @@ public class ListaProductosFragment extends Fragment {
     /**
      * Busca un producto a través del código de barras y lo muestra.
      * El código de barras es el id de ProductoEntity
+     *
      * @param barCode código de barras buscado
      */
     @SuppressLint("NotifyDataSetChanged")
-    private void search(String barCode ){
+    private void search(String barCode) {
         // Obtenemos el objeto
-        ProductoEntity producto = ProductoController.getById( barCode, getContext() );
+        ProductoEntity producto = ProductoController.getById(barCode, getContext());
 
         // Añadimos el objeto a la lista de productos que se pasa al adaptador
         productoData.clear();
-        productoData.add( producto );
+        productoData.add(producto);
 
         // Notificamos el cambio al adaptador
         adaptadorProductos.notifyDataSetChanged();
@@ -224,11 +244,11 @@ public class ListaProductosFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        if( context instanceof AlmacenListener){
+        if (context instanceof AlmacenListener) {
             listener = (AlmacenListener) context;
         } else {
-            throw new RuntimeException( context
-                    + " debes implementar el oyente." );
+            throw new RuntimeException(context
+                    + " debes implementar el oyente.");
         }
     }
 
@@ -244,51 +264,53 @@ public class ListaProductosFragment extends Fragment {
     private void scanear() {
 
         ScanOptions options = new ScanOptions();
-        options.setDesiredBarcodeFormats( ScanOptions.ALL_CODE_TYPES );
+        options.setDesiredBarcodeFormats(ScanOptions.ALL_CODE_TYPES);
         options.setPrompt("ESCANEAR CÓDIGO");
         options.setCameraId(0);
-        options.setOrientationLocked( false );
-        options.setBeepEnabled( false );
-        options.setCaptureActivity( CaptureActivityPortrait.class );
-        options.setBarcodeImageEnabled( false );
-        barcodeLauncher.launch( options );
+        options.setOrientationLocked(false);
+        options.setBeepEnabled(false);
+        options.setCaptureActivity(CaptureActivityPortrait.class);
+        options.setBarcodeImageEnabled(false);
+        barcodeLauncher.launch(options);
 
     }
 
     /**
      * Inserta el código devuelto por la librería del lector
+     *
      * @param contents el contenido en texto
      */
     private void insertarCodigo(String contents) {
-        inpTexto.setText( contents );
+        inpTexto.setText(contents);
 
         // Buscar el producto y mostarlo si está en la lista
         // o cargarlo en detalle si no lo está
-        if( ProductoController.exists( contents, getContext() ) ){
+        if (ProductoController.exists(contents, getContext())) {
             // Existe y lo cargamos en el listado
-            search( contents );
-        }else{
+            search(contents);
+        } else {
             // No está registrado el producto, cargamos la edición
-            editarNuevoProducto( contents );
+            editarNuevoProducto(contents);
         }
     }
 
     /**
      * Carga el fragment detalle, en blanco, con el código de barras asociado
+     *
      * @param idProducto código de barras
      */
-    private void editarNuevoProducto( String idProducto ){
+    private void editarNuevoProducto(String idProducto) {
 
         Fragment fragment = new DetalleProductoFragment();
 
         Bundle bundle = new Bundle();
-        bundle.putString( "idProducto", idProducto );
-        fragment.setArguments( bundle );
+        bundle.putString("idProducto", idProducto);
+        fragment.setArguments(bundle);
 
         getActivity()
                 .getSupportFragmentManager()
                 .beginTransaction()
-                .replace( R.id.almacenContenedor, fragment )
+                .replace(R.id.almacenContenedor, fragment)
                 .commit();
 
     }

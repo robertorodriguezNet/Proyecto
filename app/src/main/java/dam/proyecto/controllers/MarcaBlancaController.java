@@ -44,6 +44,35 @@ public class MarcaBlancaController {
     }
 
     /**
+     * Elimna de la colección de productos aquellos que son marca blanca de otros comercios.
+     * ProductoEntity tiene una propiedad int marca.
+     * @param productos listado de productos que se evalúan
+     * @param idComercio comercio buscado
+     * @return colección limpia
+     */
+    public ArrayList<ProductoEntity> filtrarMarcaBlanca(ArrayList<ProductoEntity>productos,
+                                                        int idComercio ){
+        Log.d("LDLC", "Filtrado de marca blanca. " +
+                "\nComercio: " + idComercio );
+
+        // Lista que se va a devolver
+        ArrayList<ProductoEntity> listaLimpia = new ArrayList<>();
+
+        // Se recorren los productos
+        for (ProductoEntity producto : productos ){
+
+            // Preguntamos si el producto pertenece a otro comercio
+            boolean esAjena = isMarcaAjena( idComercio, producto.getMarca() );
+
+            if(!esAjena){
+                listaLimpia.add( producto );
+            }
+        }
+
+        return listaLimpia;
+    }
+
+    /**
      * Devuelve un listado completo de los registros.
      * @return la colección de objetos completa
      */
@@ -77,35 +106,6 @@ public class MarcaBlancaController {
         int id = REPOSITORY.getMaxId();
         id++;
         return id;
-    }
-
-    /**
-     * Elimna de la colección de productos aquellos que son marca blanca de otros comercios.
-     * ProductoEntity tiene una propiedad int marca.
-     * @param productos que se evalúan
-     * @param idComercio comercio buscado
-     * @return colección limpia
-     */
-    public ArrayList<ProductoEntity> filtrarMarcaBlanca(ArrayList<ProductoEntity>productos,
-                                                        int idComercio ){
-        Log.d("LDLC", "Filtrado de marca blanca. " +
-                "\nComercio: " + idComercio );
-
-        // Lista que se va a devolver
-        ArrayList<ProductoEntity> listaLimpia = new ArrayList<>();
-
-        // Se recorren los productos
-        for (ProductoEntity producto : productos ){
-
-            // Preguntamos si el producto pertenece a otro comercio
-            boolean esAjena = isMarcaAjena( idComercio, producto.getMarca() );
-
-            if(!esAjena){
-                listaLimpia.add( producto );
-            }
-        }
-
-        return listaLimpia;
     }
 
     /**
