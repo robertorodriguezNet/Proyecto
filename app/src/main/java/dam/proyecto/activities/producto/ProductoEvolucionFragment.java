@@ -11,11 +11,13 @@ import android.view.ViewGroup;
 import dam.proyecto.R;
 
 /**
- * Muestra la evolución del precio del producto en el comercio dado
+ * Muestra la evolución del precio del producto y de su etiqueta principal.
+ *
+ *  Hay que obtener todas las compras de un producto y todas las compras de una etiqueta.
  *
  * @author Roberto Rodríguez
- * @version 1.2023.02.14
- * @since 2023/02/14
+ * @since 14/02/2023
+ * @version 2023.03.16
  */
 public class ProductoEvolucionFragment extends Fragment {
 
@@ -33,6 +35,12 @@ public class ProductoEvolucionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_producto_evolucion, container, false);
+        View view = inflater.inflate(R.layout.fragment_producto_evolucion, container, false);
+        return view;
+    }
+
+
+    private void getDatos(){
+
     }
 }
