@@ -74,14 +74,16 @@ public class OtrosAdapter extends ArrayAdapter<VistaCompra> {
 
         String strDenominacion = actual.denominacion.toLowerCase();
         String strComercio = actual.name.toLowerCase();
-        String strPrecio = actual.precio.replace(".",",");
+        String strPrecio = actual.precioMedido.replace(".",",");
+//        Float fPrecio = Float.parseFloat( actual.precioMedido );
         String strFecha = getFecha(actual.fecha );
 
 
         // Escribir los datos
         denominacion.setText(strDenominacion);
         comercio.setText(strComercio);
-        precio.setText(strPrecio);
+//        precio.setText(String.format("%.02f", strPrecio));
+        precio.setText( strPrecio );
         fecha.setText(strFecha);
 
         return view;
