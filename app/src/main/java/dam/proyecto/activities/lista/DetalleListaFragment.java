@@ -53,10 +53,6 @@ public class DetalleListaFragment extends Fragment {
 
         String idCompra =  getArguments().getString( "id" );
 
-        // Necesitamos el id de la compra, no del nombre de la compra
-        Log.d( "LDLC", "ProductoDetalle idCompra: " );
-
-
         // Inicializar componentes
         tabLayout = view.findViewById( R.id.ap_tly_tabLayout );
         viewPager2 = view.findViewById( R.id.ap_vp_viewPager );

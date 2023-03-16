@@ -67,11 +67,11 @@ public class CompraController {
 
     /**
      * Devuelve todas las compras que se han hecho de un producto
-     * @param producto buscado
+     * @param idProducto buscado
      * @return listado de las compras en las que se ha comprado el producto
      */
-    public ArrayList<CompraEntity> getNombreCompraByProducto( String producto ){
-        return REPOSITORY.getAllByProducto( producto );
+    public ArrayList<CompraEntity> getCompraByProducto( String idProducto ){
+        return REPOSITORY.getAllByProducto( idProducto );
     }
 
     /**

@@ -60,7 +60,9 @@ public class ProductoViewPagerAdapter extends FragmentStateAdapter {
                 fragment.setArguments( bundle );
                 return fragment;
             case 2:
-                return new ProductoEvolucionFragment();
+                fragment = new ProductoEvolucionFragment();
+                fragment.setArguments( bundle );
+                return fragment;
             default: return new ProductoInfoFragment();
         }
     }
