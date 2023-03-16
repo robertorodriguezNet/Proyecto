@@ -41,6 +41,15 @@ public class TagRepository extends Repositorio {
         return DAO.findByName( name );
     }
 
+    /**
+     * Devuelve un TagEntity a partir de un id
+     * @param id es el id buscado
+     * @return TagEntity relacionado con el id
+     */
+    public TagEntity findById( int id ){
+        return DAO.findById( id );
+    }
+
     public ArrayList<TagEntity> getAll(){
         return (ArrayList<TagEntity>) db.tagDao().getAll();
     }

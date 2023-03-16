@@ -26,11 +26,11 @@ import dam.proyecto.utilities.Fecha;
  * @since 02/03/2023
  * @version 2023.03.02
  */
-public class OtrosAdapter extends ArrayAdapter<String> {
+public class OtrosAdapter extends ArrayAdapter<VistaCompra> {
 
     private Context context;
     private int vistaItem;                                            // Layout que dibuja cada ítem
-    private ArrayList<String> data;                                                 // Colección de datos
+    private List<VistaCompra> data;                                            // Colección de datos
 
     /**
      * Constructor
@@ -40,7 +40,7 @@ public class OtrosAdapter extends ArrayAdapter<String> {
      */
     public OtrosAdapter(@NonNull Context context,
                         int vistaItem,
-                        ArrayList<String> data) {
+                        ArrayList<VistaCompra> data) {
 
         super(context, vistaItem, data);
 
@@ -64,20 +64,25 @@ public class OtrosAdapter extends ArrayAdapter<String> {
         View view = LayoutInflater.from(context).inflate(vistaItem, parent, false);
 
         // Objeto actual
-        String actual = data.get(position);
+        VistaCompra actual = data.get(position);
 
         // Componentes de la interfaz
         TextView denominacion = view.findViewById(R.id.ilo_tv_denominacion);
+        TextView comercio = view.findViewById(R.id.ilo_tv_comercio);
         TextView precio = view.findViewById(R.id.ilo_tv_precio);
         TextView fecha = view.findViewById(R.id.ilo_tv_fecha);
-        TextView comercio = view.findViewById(R.id.ilo_tv_comercio);
+
+        String strDenominacion = actual.denominacion.toLowerCase();
+        String strComercio = actual.name.toLowerCase();
+        String strPrecio = actual.precio.replace(".",",");
+        String strFecha = getFecha(actual.fecha );
 
 
         // Escribir los datos
-        denominacion.setText( actual );
-        comercio.setText("El comercio");
-        precio.setText("0.00 €/k");
-        fecha.setText("00-mar-2023");
+        denominacion.setText(strDenominacion);
+        comercio.setText(strComercio);
+        precio.setText(strPrecio);
+        fecha.setText(strFecha);
 
         return view;
     }

@@ -615,7 +615,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // Le pedimos el listado al controlador de las compras
 
             // Listado de la comparativa
-            relacionDeCompras = compraController.loadVistaCompraByProducto(producto.getId());
+            relacionDeCompras = compraController.getVistaCompraByProducto(producto.getId());
             VistaCompraAdapter adapter = new VistaCompraAdapter(context,
                     R.layout.item_vista_compra,
                     relacionDeCompras);

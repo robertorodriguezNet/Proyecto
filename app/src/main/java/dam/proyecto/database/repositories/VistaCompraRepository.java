@@ -16,15 +16,29 @@ import dam.proyecto.database.relaciones.VistaCompra;
  */
 public class VistaCompraRepository extends Repositorio{
 
-    private VistaCompraDao dao;
+    private final VistaCompraDao DAO;
 
     public VistaCompraRepository(Context context) {
         super(context);
-        this.dao = getDb().vistaCompraDao();
+        this.DAO = getDb().vistaCompraDao();
     }
 
-    public ArrayList<VistaCompra> loadVistaCompraByProducto( String idProducto ){
-        return (ArrayList<VistaCompra>) dao.getVistaCompraByProducto( idProducto );
+    /**
+     * Devuelve un listados con las compras de un producto
+     * @param idProducto buscado
+     * @return la colección de compras
+     */
+    public ArrayList<VistaCompra> getVistaCompraByProducto( String idProducto ){
+        return (ArrayList<VistaCompra>) DAO.getVistaCompraByProducto( idProducto );
+    }
+
+    /**
+     * Devuelve un listados con las compras de una etiqueta
+     * @param idTag buscada
+     * @return la colección de compras
+     */
+    public ArrayList<VistaCompra> getVistaCompraByTag( int idTag ){
+        return (ArrayList<VistaCompra>) DAO.getVistaCompraByTag( idTag );
     }
 
 }

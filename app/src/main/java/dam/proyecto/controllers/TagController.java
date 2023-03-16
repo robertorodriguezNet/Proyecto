@@ -58,28 +58,6 @@ public class TagController {
     }
 
     /**
-     * Devuelve el siguiente valor al más alto registrado en la tabla Tag.
-     * Este id es válido para la inserción de un nuevo registro
-     *
-     * @return id vádlido
-     */
-    public int getNewId() {
-        int id = REPOSITORY.getMaxId();
-        id++;
-        return id;
-    }
-
-    /**
-     * Devuelve una colección con los id's de los productos que en sus etiquetas
-     * contienen el texto
-     * @param texto texto buscado en las etiquetas
-     * @return listado de prroductos (id's) que contienen la etiqueta
-     */
-    public ArrayList<String> getProductosByTag(String texto) {
-        return REPOSITORY.getProductosByTag(texto);
-    }
-
-    /**
      * Devuelve una colección de etiquetas que contienen el texto pedido
      * @param texto buscado
      * @return colección de etiquetas que contienen el texto buscado
@@ -107,6 +85,37 @@ public class TagController {
     }
 
     /**
+     * Devuelve el siguiente valor al más alto registrado en la tabla Tag.
+     * Este id es válido para la inserción de un nuevo registro
+     *
+     * @return id vádlido
+     */
+    public int getNewId() {
+        int id = REPOSITORY.getMaxId();
+        id++;
+        return id;
+    }
+
+    /**
+     * Devuelve una colección con los id's de los productos que en sus etiquetas
+     * contienen el texto
+     * @param texto texto buscado en las etiquetas
+     * @return listado de prroductos (id's) que contienen la etiqueta
+     */
+    public ArrayList<String> getProductosByTag(String texto) {
+        return REPOSITORY.getProductosByTag(texto);
+    }
+
+    /**
+     * Devuelve un listado con tan sólo los nombres
+     * @param id de la etiqueta buscada
+     * @return el nombre de la etiqueta
+     */
+    public String getNombre( int id ){
+        return REPOSITORY.findById( id ).getName();
+    }
+
+    /**
      * Devuelve un listado con tan sólo los nombres
      * @return listado (name's) de etiquetas
      */
@@ -121,7 +130,6 @@ public class TagController {
         return nombres;
     }
 
-
     /**
      * Devuelve un listado con las etiquetas pedidas
      * @param ids listado de etiquetas pedidas
@@ -135,10 +143,6 @@ public class TagController {
         }
         return etiquetas;
     }
-
-    /* ******************************************************************************* */
-    /* ***** INSERT ****************************************************************** */
-    /* ******************************************************************************* */
 
     /**
      * Inserta una colección de objetos

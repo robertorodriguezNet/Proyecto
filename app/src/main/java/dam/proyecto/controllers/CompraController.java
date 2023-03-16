@@ -6,15 +6,14 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
-import dam.proyecto.database.dao.VistaCompraDao;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.database.repositories.CompraRepository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
+import dam.proyecto.database.repositories.VistaCompraRepository;
 import dam.proyecto.utilities.Fecha;
 
 /**
@@ -131,6 +130,53 @@ public class CompraController {
     }
 
     /**
+     * Método que devuelve un listado con comercio, precio y fecha de
+     * cada compra de un producto
+     * @param idProducto es el producto buscado
+     * @return listado del VistaCompra
+     */
+    public ArrayList<VistaCompra> getVistaCompraByProducto(String idProducto ){
+
+        // Repositorio de VistaCompra
+        VistaCompraRepository vcr = new VistaCompraRepository( CONTEXT );
+
+        // Colección completa
+        ArrayList<VistaCompra> completa = (ArrayList<VistaCompra>) vcr
+                .getVistaCompraByProducto( idProducto );
+
+        // Colección completa
+        ArrayList<VistaCompra> data = new ArrayList<>();
+
+        // Lista temporal de comercios
+        ArrayList<String> comercios = new ArrayList<>();
+
+        // Colección limpia
+        // Debemos eliminar los comercios repetidos
+        // La lista completa está ordenada por fecha descedente, por lo que solo
+        // la primera aparición es válida
+        for (VistaCompra compra : completa) {
+            // Buscamos el comercio en la lista dats
+            if (!comercios.contains(compra.name)) {
+                data.add(compra);
+                comercios.add(compra.name);
+            }
+        }
+
+        return data;
+    }
+
+    /**
+     * Método que devuelve un listado con la denominación,  comercio, precio medio y fecha de
+     * cada compra de una etiqueta concreta.
+     *
+     * @param idTag es la etiqueta buscada
+     * @return listado del VistaCompra
+     */
+    public ArrayList<VistaCompra> getVistaCompraByTag( int idTag ){
+        return new VistaCompraRepository(CONTEXT).getVistaCompraByTag( idTag );
+    }
+
+    /**
      * Inserta un nuevo objeto
      * @param producto id del producto (código de barras)
      * @param fecha fecha de la compra
@@ -164,47 +210,6 @@ public class CompraController {
     public void insert( CompraEntity compra ){
         REPOSITORY.insert( compra );
     }
-
-    /**
-     * Método que devuelve un listado con comercio, precio y fecha de
-     * cada compra de un producto
-     * @param idProducto es el producto buscado
-     * @return listado del VistaCompra
-     */
-    public ArrayList<VistaCompra> loadVistaCompraByProducto(String idProducto ){
-        // Dao
-        VistaCompraDao vistaCompraDao = REPOSITORY.getDb().vistaCompraDao();
-
-        // Colección completa
-        ArrayList<VistaCompra> completa = (ArrayList<VistaCompra>) vistaCompraDao
-                            .getVistaCompraByProducto( idProducto );
-
-        // Colección completa
-        ArrayList<VistaCompra> data = new ArrayList<>();
-
-        // Lista temporal de comercios
-        ArrayList<String> comercios = new ArrayList<>();
-
-        // Colección limpia
-        // Debemos eliminar los comercios repetidos
-        // La lista completa está ordenada por fecha descedente, por lo que solo
-        // la primera aparición es válida
-        Iterator<VistaCompra> it = completa.iterator();
-        while( it.hasNext() ){
-            VistaCompra compra = it.next();
-
-            // Buscamos el comercio en la lista dats
-            if( !comercios.contains( compra.name )){
-                data.add( compra );
-                comercios.add( compra.name );
-            }
-        }
-
-        return data;
-    }
-
-
-
 
     /**
      * Constructores para las compras
