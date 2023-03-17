@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import java.util.ArrayList;
 
 import dam.proyecto.R;
+import dam.proyecto.activities.producto.classes.Grafico;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
@@ -39,7 +40,12 @@ public class ProductoEvolucionFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_producto_evolucion, container, false);
+        View view = inflater.inflate(R.layout.fragment_producto_evolucion, container, false);
+
+        Grafico grafico = view.findViewById( R.id.grafico );
+        grafico.setDatos( getDatos() );
+
+        return view;
     }
 
     /**

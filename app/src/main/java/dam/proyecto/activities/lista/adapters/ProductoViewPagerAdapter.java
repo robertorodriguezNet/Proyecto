@@ -15,9 +15,10 @@ import dam.proyecto.activities.producto.ProductoInfoFragment;
 /**
  * Adaptador para la vista de ProductoActivity.
  * Recibimos el id de la compra por parámtero
- * @since 2023/02/14
+ *
  * @author Roberto Rodríguez
  * @version 2023.02.14
+ * @since 2023/02/14
  */
 public class ProductoViewPagerAdapter extends FragmentStateAdapter {
 
@@ -25,6 +26,7 @@ public class ProductoViewPagerAdapter extends FragmentStateAdapter {
 
     /**
      * Constructor
+     *
      * @param fragmentActivity
      */
     public ProductoViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, String idCompra) {
@@ -32,11 +34,12 @@ public class ProductoViewPagerAdapter extends FragmentStateAdapter {
 
         this.idCompra = idCompra;
 
-        Log.d( "LDLC", "PageAdapter idCompra: " + this.idCompra );
+        Log.d("LDLC", "PageAdapter idCompra: " + this.idCompra);
     }
 
     /**
      * Devolvemos el fragment correspondiente a postion
+     *
      * @param position el índice del fragment seleccionado
      * @return el fragment seleccionado
      */
@@ -46,27 +49,31 @@ public class ProductoViewPagerAdapter extends FragmentStateAdapter {
 
         // Hay que crear un Bundle para pasar los datos a cada fragment
         Bundle bundle = new Bundle();
-        bundle.putString( "id", idCompra );
+        bundle.putString("id", idCompra);
 
         Fragment fragment;
 
-        switch ( position ){
+        switch (position) {
             case 0:
                 fragment = new ProductoInfoFragment();
-                fragment.setArguments( bundle );
+                fragment.setArguments(bundle);
                 return fragment;
             case 1:
                 fragment = new ProductoComparativaFragment();
-                fragment.setArguments( bundle );
+                fragment.setArguments(bundle);
                 return fragment;
             case 2:
-                return new ProductoEvolucionFragment();
-            default: return new ProductoInfoFragment();
+                fragment = new ProductoEvolucionFragment();
+                fragment.setArguments(bundle);
+                return fragment;
+            default:
+                return new ProductoInfoFragment();
         }
     }
 
     /**
      * Indicamos que hay 3 tabs
+     *
      * @return
      */
     @Override
