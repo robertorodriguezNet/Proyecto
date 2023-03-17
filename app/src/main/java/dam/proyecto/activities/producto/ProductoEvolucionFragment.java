@@ -2,19 +2,18 @@ package dam.proyecto.activities.producto;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import java.util.ArrayList;
 
-import dam.proyecto.R;
+import dam.proyecto.activities.producto.classes.Grafico;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ProductoController;
-import dam.proyecto.controllers.TagProductoController;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 
@@ -39,29 +38,23 @@ public class ProductoEvolucionFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
-        getDatos();
-
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_producto_evolucion, container, false);
-
-
-        return view;
+        return new Grafico(getDatos(), getContext());
     }
 
 
     /**
-     * Método que obtiene los datos necesarios para mostrar los gráficos
+     * Método que obtiene los datos necesarios para mostrar los gráficos.
+     * Debe mostrar todas las compras del producto que se está editando.
      */
-    private void getDatos() {
+    private ArrayList<CompraEntity> getDatos() {
 
         CompraController compraController = new CompraController(getContext());
-        TagProductoController tagProductoController = new TagProductoController(getContext());
 
         // La compra la obtenemos a partir de los argumentos
         // que recibe el fragment
+        assert getArguments() != null;
         CompraEntity compra = compraController
                 .getById(
                         getArguments()
@@ -69,33 +62,20 @@ public class ProductoEvolucionFragment extends Fragment {
                 );
 
 
-        // Obtener el producto
+        // Obtener el producto de la compra
         ProductoEntity producto = ProductoController
                 .getById(
                         compra.getProducto(),
                         getContext()
                 );
 
-        // Obtener la etiqueta del producto
-        int idTag = tagProductoController.getTagMasImportante(producto.getId());
-
         // Tenemos que obtener todas las compras de un producto.
         // Sólo necesitamos el precio.
         // Da igual el comercio.
-        ArrayList<CompraEntity> todasLasComprasDelProducto = compraController
+        return compraController
                 .getCompraByProducto(
                         producto.getId()
                 );
-
-        StringBuilder datos = new StringBuilder();
-        todasLasComprasDelProducto.forEach(c -> datos
-                .append(c.getPrecio())
-                .append("\n")
-        );
-
-        Log.d("LDLC", "Precios de " + producto.getDenominacion());
-        Log.d("LDLC", "Tag principal " + idTag );
-        Log.d("LDLC", datos.toString());
 
     }
 }

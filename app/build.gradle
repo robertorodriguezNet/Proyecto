@@ -60,7 +60,5 @@ dependencies {
     // Para la comunicación entre fragments
     implementation 'androidx.fragment:fragment:1.5.5'
 
-    // https://youtu.be/RoyGzP9dupg
-    implementation 'org.quanqi:android-holo-graph:0.1.0'
 
 }

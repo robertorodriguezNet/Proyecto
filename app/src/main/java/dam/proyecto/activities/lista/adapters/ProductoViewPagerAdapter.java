@@ -11,6 +11,7 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import dam.proyecto.activities.producto.ProductoComparativaFragment;
 import dam.proyecto.activities.producto.ProductoEvolucionFragment;
 import dam.proyecto.activities.producto.ProductoInfoFragment;
+import dam.proyecto.activities.producto.classes.Grafico;
 
 /**
  * Adaptador para la vista de ProductoActivity.
