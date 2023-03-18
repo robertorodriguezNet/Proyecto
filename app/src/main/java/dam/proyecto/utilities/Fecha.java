@@ -67,7 +67,7 @@ public class Fecha {
 
     /**
      * Obtener el formato correctode la fecha.
-     * @param f
+     * @param f la fecha con formato aammddhhmm
      * @return dd - mes(3 carac.) - aaaa
      */
     public static String getFechaFormateada( String f ){
