@@ -12,6 +12,7 @@ import java.util.ArrayList;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.producto.classes.Grafico;
+import dam.proyecto.activities.producto.classes.GraficoData;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
@@ -42,8 +43,8 @@ public class ProductoEvolucionFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_producto_evolucion, container, false);
 
-        Grafico grafico = view.findViewById( R.id.grafico );
-        grafico.setDatos( getDatos() );
+        Grafico grafico = view.findViewById(R.id.grafico);
+        grafico.setDatos(getDatos());
 
         return view;
     }
@@ -52,7 +53,7 @@ public class ProductoEvolucionFragment extends Fragment {
      * Método que obtiene los datos necesarios para mostrar los gráficos.
      * Debe mostrar todas las compras del producto que se está editando.
      */
-    private ArrayList<CompraEntity> getDatos() {
+    private ArrayList<GraficoData> getDatos() {
 
         CompraController compraController = new CompraController(getContext());
 
@@ -74,12 +75,24 @@ public class ProductoEvolucionFragment extends Fragment {
                 );
 
         // Tenemos que obtener todas las compras de un producto.
-        // Sólo necesitamos el precio.
+        // Sólo necesitamos el precio y la fecha
         // Da igual el comercio.
-        return compraController
+        ArrayList<CompraEntity> compras = compraController
                 .getCompraByProducto(
                         producto.getId()
                 );
 
+        // Creamos la colección de datos que pasaremos al gráfico
+        ArrayList<GraficoData> data = new ArrayList<>();
+        // Recorremos las compras y almacenamos los valores del precio y la fecha
+        compras.forEach(c -> data.add(
+                        new GraficoData(
+                                c.getFecha(),
+                                c.getPrecio()
+                        )
+                )
+        );
+
+        return data;
     }
 }
