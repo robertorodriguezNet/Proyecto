@@ -161,22 +161,13 @@ public class Grafico extends View {
      */
     private void dibujarVerticales(Canvas canvas) {
 
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(1);
-
         // Dividir el ancho entre los registros
         float ancho = getMeasuredWidth() - marginRight - marginLeft;
         float intervalo = (int) Math.floor(ancho / (datos.size() + 1));
         float pos = intervalo + marginLeft;
 
-        float[] espacio = {5, 20};
-        DashPathEffect estilo = new DashPathEffect(espacio, 1);
-        paint.setPathEffect(estilo);
-
         for (GraficoData d : datos) {
-            canvas.drawLine(pos, origenY, pos, marginTop, paint);
+            canvas.drawLine(pos, origenY, pos, marginTop, getPaintPunteado());
             pos += intervalo;
         }
 
@@ -282,7 +273,7 @@ public class Grafico extends View {
      * Dibuja los puntos de la gráfica
      * @param canvas el lienzo
      */
-    private void dibujarPuntos( Canvas canvas, float topeAlto, float topeBajo ) {
+    private boolean dibujarPuntos( Canvas canvas, float topeAlto, float topeBajo ) {
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
@@ -298,7 +289,17 @@ public class Grafico extends View {
         for (GraficoData d : datos) {
             float y = getPosY( Float.parseFloat( d.getDataY() ), topeAlto, topeBajo );
 
-            canvas.drawCircle( x, y, 10, paint);
+            canvas.drawCircle( x, y, 10, paint); // Dibujamos el punto
+
+            // Dibujar el precio
+            canvas.drawText( d.getDataY(), 0, y, getPaintPrecio());
+
+            // Dibujamos la línea horizontal
+            canvas.drawLine( origenX,
+                    y,
+                    getMeasuredWidth() - marginRight,
+                    y,
+                    getPaintPunteado() );
 
             if(( anteriorY > 0 ) && ( anteriorX > 0 )){
                 canvas.drawLine(anteriorX,anteriorY,x,y,paint);
@@ -310,6 +311,7 @@ public class Grafico extends View {
 
             x += intervalo;
         }
+        return true;
     }
 
     /**
@@ -332,6 +334,38 @@ public class Grafico extends View {
         // La diferencia entre el mínimo y el precio
         float dif = precio - topeBajo;
         return origenY - ( (dif*100) * paso );
+    }
+
+    /**
+     * Devuelve el paint para dibujar las líneas de puntos
+     * @return
+     */
+    private Paint getPaintPunteado(){
+
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(1);
+
+        float[] espacio = {5, 20};
+        DashPathEffect estilo = new DashPathEffect(espacio, 1);
+        paint.setPathEffect(estilo);
+
+        return paint;
+
+    }
+
+    /**
+     *
+     */
+    private Paint getPaintPrecio(){
+
+        Paint paint = new Paint();
+        paint.setTextSize(40);
+        paint.setAntiAlias( true );
+
+        return paint;
+
     }
 
 }
