@@ -7,10 +7,12 @@ import static dam.proyecto.controllers.ProductoController.validarDenominacion;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
@@ -136,6 +138,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         ViewGroup.LayoutParams params = contenedor.getLayoutParams();
         heightVista = params.height;
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
+//        contenedor.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.Gris));
         contenedor.setLayoutParams(params);
 
 

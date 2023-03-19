@@ -256,10 +256,10 @@
         app:icon="@drawable/ic_baseline_exit_to_app_24"
         app:iconGravity="top"
         app:iconTint="@color/OrangeRed"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/aep_btn_limpiar"
-        app:layout_constraintTop_toBottomOf="@id/fdp_lv_comprasRelacionadas"
-        />
+        app:layout_constraintStart_toStartOf="parent"
+ />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/aep_btn_limpiar"
@@ -277,9 +277,10 @@
         app:icon="@drawable/ic_baseline_cleaning_services_24"
         app:iconGravity="top"
         app:iconTint="@color/IconoAzul"
-        app:layout_constraintTop_toTopOf="@+id/aep_btn_cancelar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/aep_btn_eliminar"
-        app:layout_constraintStart_toEndOf="@id/aep_btn_cancelar" />
+        app:layout_constraintStart_toEndOf="@id/aep_btn_cancelar"
+ />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/aep_btn_eliminar"
@@ -297,9 +298,10 @@
         app:icon="@drawable/ic_baseline_delete_forever_24"
         app:iconGravity="top"
         app:iconTint="@color/error"
-        app:layout_constraintStart_toEndOf="@+id/aep_btn_limpiar"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/aep_btn_guardar"
-        app:layout_constraintTop_toTopOf="@+id/aep_btn_limpiar" />
+        app:layout_constraintStart_toEndOf="@+id/aep_btn_limpiar"
+ />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/aep_btn_guardar"
@@ -317,9 +319,10 @@
         app:icon="@drawable/ic_baseline_save_24"
         app:iconGravity="top"
         app:iconTint="@color/green_700"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/aep_btn_eliminar"
-        app:layout_constraintTop_toTopOf="@+id/aep_btn_eliminar" />
+  />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

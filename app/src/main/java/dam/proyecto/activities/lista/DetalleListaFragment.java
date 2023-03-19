@@ -4,23 +4,22 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentContainerView;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.lista.adapters.ProductoViewPagerAdapter;
-import dam.proyecto.database.entity.NombreCompraEntity;
-import dam.proyecto.database.repositories.NombreCompraRepository;
-import dam.proyecto.utilities.Preferencias;
 
 public class DetalleListaFragment extends Fragment {
 
@@ -42,6 +41,12 @@ public class DetalleListaFragment extends Fragment {
         // Deshabilitamos el bottom menu
         BottomNavigationView navegador = getActivity().findViewById( R.id.navegador );
         navegador.setVisibility( View.INVISIBLE );
+        // Hay que redimensionar el contenedor
+        FragmentContainerView contenedor = getActivity().findViewById(R.id.listaContenedor);
+        ViewGroup.LayoutParams params = contenedor.getLayoutParams();
+        params.height = WindowManager.LayoutParams.MATCH_PARENT;
+//        contenedor.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.Gris));
+        contenedor.setLayoutParams(params);
     }
 
     @Override
@@ -52,10 +57,6 @@ public class DetalleListaFragment extends Fragment {
         context = view.getContext();
 
         String idCompra =  getArguments().getString( "id" );
-
-        // Necesitamos el id de la compra, no del nombre de la compra
-        Log.d( "LDLC", "ProductoDetalle idCompra: " );
-
 
         // Inicializar componentes
         tabLayout = view.findViewById( R.id.ap_tly_tabLayout );
@@ -69,7 +70,7 @@ public class DetalleListaFragment extends Fragment {
 
             /**
              * Al seleccionar un tab, establecemos el ítem actual obteniendo la posición
-             * @param tab
+             * @param tab pestaña seleccionada
              */
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
