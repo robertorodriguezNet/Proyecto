@@ -1,22 +1,18 @@
 package dam.proyecto.activities.producto.classes;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.DashPathEffect;
 import android.graphics.Paint;
-import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
-import androidx.annotation.Dimension;
 import androidx.annotation.Nullable;
 
-
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 
 import dam.proyecto.utilities.Fecha;
@@ -66,7 +62,7 @@ public class Grafico extends View {
     /**
      * Iniciamos los valores
      *
-     * @param set
+     * @param set atributos del componente
      */
     private void init(@Nullable AttributeSet set) {
 
@@ -130,7 +126,7 @@ public class Grafico extends View {
 
     /**
      * Dibuja la línea de intervalos del ejeX
-     * @param canvas
+     * @param canvas lienzo
      */
     private void dibujarIntervalosX( Canvas canvas ){
 
@@ -213,7 +209,7 @@ public class Grafico extends View {
         leyenda.setTextSize(48);
         leyenda.setTextAlign(Paint.Align.CENTER);
         leyenda.setAntiAlias( true );
-        canvas.drawText( "FECHA", getMeasuredWidth() / 2, getMeasuredHeight() -50, leyenda);
+        canvas.drawText( "FECHA", (float) getMeasuredWidth() / 2, getMeasuredHeight() -50, leyenda);
     }
 
     /**
@@ -233,7 +229,8 @@ public class Grafico extends View {
      * Dibuja los puntos de la gráfica
      * @param canvas el lienzo
      */
-    private void dibujarHorizontales( Canvas canvas ) {
+    @SuppressLint("DefaultLocale")
+    private void dibujarHorizontales(Canvas canvas ) {
 
         float precioAlto = 0.0f;
         float precioBajo = precioAlto;
@@ -273,7 +270,7 @@ public class Grafico extends View {
      * Dibuja los puntos de la gráfica
      * @param canvas el lienzo
      */
-    private boolean dibujarPuntos( Canvas canvas, float topeAlto, float topeBajo ) {
+    private void dibujarPuntos( Canvas canvas, float topeAlto, float topeBajo ) {
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
@@ -285,7 +282,6 @@ public class Grafico extends View {
         float intervalo = (int) Math.floor(ancho / (datos.size() + 1));
         float x = intervalo + marginLeft;
 
-        float precio;
         for (GraficoData d : datos) {
             float y = getPosY( Float.parseFloat( d.getDataY() ), topeAlto, topeBajo );
 
@@ -313,7 +309,7 @@ public class Grafico extends View {
 
             x += intervalo;
         }
-        return true;
+
     }
 
     /**
@@ -340,7 +336,7 @@ public class Grafico extends View {
 
     /**
      * Devuelve el paint para dibujar las líneas de puntos
-     * @return
+     * @return el paint creado
      */
     private Paint getPaintPunteado(){
 
