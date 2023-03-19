@@ -301,9 +301,11 @@ public class Grafico extends View {
                     y,
                     getPaintPunteado() );
 
-            if(( anteriorY > 0 ) && ( anteriorX > 0 )){
+            if( datos.indexOf(d) > 0 ){
                 canvas.drawLine(anteriorX,anteriorY,x,y,paint);
             }
+
+            Log.d("LDLC","Posición: " + datos.indexOf(d));
 
             // Guardar los nuevo valores
             anteriorX = x;
