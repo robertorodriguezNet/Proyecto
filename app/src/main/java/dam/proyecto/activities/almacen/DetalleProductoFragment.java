@@ -7,12 +7,10 @@ import static dam.proyecto.controllers.ProductoController.validarDenominacion;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.annotation.Nullable;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentContainerView;
 
@@ -183,7 +181,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         // Antes de inicializar los componentes, comprobamos
         // si se ha de escribir el código de barras
         codigoDeBarras = (argumets != null) ?
-                (String) getArguments().getString("idProducto") : "";
+                getArguments().getString("idProducto") : "";
 
         // Inicializamos los componente
         // No se cargan datos
@@ -680,7 +678,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      * Aunque la etiqueta se guarda en la tabla "tag", no se asocia al producto.
      * La etiqueta es añadida al campo de texto muestra las etiquetas.
      *
-     * @param tag
+     * @param tag que se guarda
      */
     private void addTag(String tag) {
 
@@ -711,7 +709,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      * Utiliza la denominación como etiqueta.
      * El método es llamado cuando el input denominación pierde el foco
      *
-     * @return
+     * @return null al perder el foco
      */
     @Nullable
     private View.OnFocusChangeListener addTagDesdeDenominacion() {
@@ -727,7 +725,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         // Para cada palabra
         for (String palabra : palabras) {
             String p = Words.normalizar(palabra); //Normalizar la palabra (minúsculas y sin tilde)
-            addTag(palabra);
+            addTag(p);
         }
         return null;
     }
