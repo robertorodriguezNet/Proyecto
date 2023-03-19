@@ -38,6 +38,11 @@ public class Grafico extends View {
     private float origenX,
             origenY;
 
+    // Guardan los valores del punto anterior para poder dibujar las
+    // líneas del gráfico
+    private float anteriorX,
+            anteriorY;
+
     public Grafico(Context context) {
         super(context);
         init(null);
@@ -276,10 +281,8 @@ public class Grafico extends View {
     /**
      * Dibuja los puntos de la gráfica
      * @param canvas el lienzo
-     * @param topealto el precio más alto calculado
-     * @param topeBajo el precio más bajo calculado
      */
-    private void dibujarPuntos( Canvas canvas, float topealto, float topeBajo ) {
+    private void dibujarPuntos( Canvas canvas, float topeAlto, float topeBajo ) {
 
         Paint paint = new Paint();
         paint.setAntiAlias(true);
@@ -289,13 +292,46 @@ public class Grafico extends View {
         // Dividir el ancho entre los registros
         float ancho = getMeasuredWidth() - marginRight - marginLeft;
         float intervalo = (int) Math.floor(ancho / (datos.size() + 1));
-        float pos = intervalo + marginLeft;
+        float x = intervalo + marginLeft;
 
         float precio;
         for (GraficoData d : datos) {
-            canvas.drawCircle( pos, 1000, 10, paint);
-            pos += intervalo;
+            float y = getPosY( Float.parseFloat( d.getDataY() ), topeAlto, topeBajo );
+
+            canvas.drawCircle( x, y, 10, paint);
+
+            if(( anteriorY > 0 ) && ( anteriorX > 0 )){
+                canvas.drawLine(anteriorX,anteriorY,x,y,paint);
+            }
+
+            // Guardar los nuevo valores
+            anteriorX = x;
+            anteriorY = y;
+
+            x += intervalo;
         }
+    }
+
+    /**
+     * Devuelve la posición y de cada punto
+     * @param precio del proucto
+     * @param topeAlto el precio más alto calculado
+     * @param topeBajo el precio más bajo calculado
+     * @return la posición y
+     */
+    private float getPosY( float precio, float topeAlto, float topeBajo ){
+
+        // topeAlto se dibuja en margonTop + 20
+        // topeBajo se dibuja en origenY
+
+        float rango = origenY - (marginTop -20);            // Rango de valores válidos para dibujar
+        float centimos = (topeAlto - topeBajo)*100;      // Céntimos de diferencia entre el máx y y el min
+        float paso = rango / centimos;                             // Valor para cada cétimo
+
+        // Calcular Y
+        // La diferencia entre el mínimo y el precio
+        float dif = precio - topeBajo;
+        return origenY - ( (dif*100) * paso );
     }
 
 }
