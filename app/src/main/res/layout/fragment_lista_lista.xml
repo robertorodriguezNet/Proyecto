@@ -53,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_share_64" />
+                android:src="@drawable/whatsapp_icon_64" />
 
             <ImageView
                 android:id="@+id/fla_img_precio"

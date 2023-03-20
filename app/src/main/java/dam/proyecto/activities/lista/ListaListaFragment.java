@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,7 @@ import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
 import dam.proyecto.activities.lista.listeners.ListaListener;
 import dam.proyecto.controllers.ListaController;
+import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
@@ -42,9 +44,10 @@ import dam.proyecto.utilities.Preferencias;
 
 /**
  * Controlador para Producto
+ *
  * @author Roberto Rodríguez
- * @since 11/02/2023
  * @version 2023.02.24
+ * @since 11/02/2023
  */
 public class ListaListaFragment extends Fragment {
 
@@ -74,6 +77,7 @@ public class ListaListaFragment extends Fragment {
     ArrayList<ComercioEntity> dataComercio;                // Colección de comercios para el spinner
     ArrayList<CompraEntity> dataProductos;                    // Colección de productos de la compra
 
+    float totalTicket;                       // Declaramos esta variable para poder usarla en lambda
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -86,7 +90,7 @@ public class ListaListaFragment extends Fragment {
         }
 
         // Obtener los argumentos, si es que los hay
-        argumentos  = getArguments();
+        argumentos = getArguments();
 
     }
 
@@ -94,7 +98,6 @@ public class ListaListaFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-
 
 
         View view = inflater.inflate(R.layout.fragment_lista_lista, container, false);
@@ -109,7 +112,7 @@ public class ListaListaFragment extends Fragment {
         if (idCompra != null) {
 
             // Obtenemos un controlador para la lista
-            listaController = new ListaController( context );
+            listaController = new ListaController(context);
 
             // Cargar los datos de los comercios
             comercioRespository = new ComercioRespository(context);
@@ -128,11 +131,11 @@ public class ListaListaFragment extends Fragment {
 
             // Inicializar componente
             lblNombreDeLaCompra = view.findViewById(R.id.fla_tv_nombreCompra);
-            btnShare = view.findViewById( R.id.fla_img_share);
-            btnPrecio = view.findViewById( R.id.fla_img_precio);
+            btnShare = view.findViewById(R.id.fla_img_share);
+            btnPrecio = view.findViewById(R.id.fla_img_precio);
             btnSalir = view.findViewById(R.id.fla_img_cerrar);
             btnAgregar = view.findViewById(R.id.fla_fab_addProduct);
-            inicializarSpinner( view );
+            inicializarSpinner(view);
 
 
             // Nombre de la compra
@@ -159,7 +162,7 @@ public class ListaListaFragment extends Fragment {
                     R.layout.producto_compra_item,
                     dataProductos,
                     oyente,
-                    ( argumentos == null )? "actual" : argumentos.getString( "opcion"));
+                    (argumentos == null) ? "actual" : argumentos.getString("opcion"));
             listView.setAdapter(adapterLista);
 
             // Escribimos el total
@@ -218,7 +221,7 @@ public class ListaListaFragment extends Fragment {
     /* ***** ACCIONES DE LOS BOTONES ************************************************************ */
     /* ****************************************************************************************** */
 
-    public void borrar(){
+    public void borrar() {
 
     }
 
@@ -235,38 +238,45 @@ public class ListaListaFragment extends Fragment {
     /**
      * Compartir la lista de la compra
      */
-    public void compartir(){
-        Toast.makeText(context, "compartir", Toast.LENGTH_SHORT).show();
+    public void compartir() {
+
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, getListaParaCompratir());
+        sendIntent.setType("text/plain");
+        sendIntent.setPackage("com.whatsapp");
+        startActivity(sendIntent);
+
     }
 
     /**
      * Cambia el precio de los productos de la lista
      */
-    public void abrirCambiarPrecios(){
+    public void abrirCambiarPrecios() {
 
         // Botones del diálogo
         Button btnActual, btnGlobal, btnComercio;
 
         // Mostramos un diálogo con las opciones
         LayoutInflater inflater = this.getLayoutInflater();
-        AlertDialog.Builder builder = new AlertDialog.Builder( context );
-        View view = inflater.inflate( R.layout.alert_cambiar_precios, null );
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = inflater.inflate(R.layout.alert_cambiar_precios, null);
 
-        builder.setNegativeButton( "Cancelar", null);
-        builder.setView( view );
+        builder.setNegativeButton("Cancelar", null);
+        builder.setView(view);
 
         // Inicializar los botones del diálogo
-        btnActual = view.findViewById( R.id.acp_btn_actual );
-        btnGlobal= view.findViewById( R.id.acp_btn_global );
-        btnComercio = view.findViewById( R.id.acp_btn_comercio );
+        btnActual = view.findViewById(R.id.acp_btn_actual);
+        btnGlobal = view.findViewById(R.id.acp_btn_global);
+        btnComercio = view.findViewById(R.id.acp_btn_comercio);
 
         AlertDialog dialogPrecio = builder.create();
         dialogPrecio.show();
 
         // Oyentes para los eventos
-        btnActual.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio ));
-        btnGlobal.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio ));
-        btnComercio.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio ));
+        btnActual.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio));
+        btnGlobal.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio));
+        btnComercio.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio));
 
     }
 
@@ -276,6 +286,7 @@ public class ListaListaFragment extends Fragment {
 
     /**
      * Devuelve el importe total de la compra.
+     *
      * @return el importe total de la compra
      */
     private float getTotalCompra() {
@@ -295,7 +306,7 @@ public class ListaListaFragment extends Fragment {
      * Actualiza la compra.
      * Esta función es llamada desde salir() o al cambiar el spinner del comercio
      */
-    private void actualizarCompra(){
+    private void actualizarCompra() {
         // Obtnemos el comercio directamente del spinner
         nombreCompra.setComercio(((ComercioEntity) spinner.getSelectedItem()).getId());
         nombreCompraRepository.update(nombreCompra);
@@ -307,7 +318,7 @@ public class ListaListaFragment extends Fragment {
     /* ****************************************************************************************** */
 
     @SuppressLint("NonConstantResourceId")
-    public void btnCambiarPrecioOnClick(View view, AlertDialog dialog ){
+    public void btnCambiarPrecioOnClick(View view, AlertDialog dialog) {
 
         dialog.dismiss();
 
@@ -315,9 +326,9 @@ public class ListaListaFragment extends Fragment {
         argumentos = new Bundle();
         String opcion = "actual";
 
-        switch ( view.getId() ){
+        switch (view.getId()) {
             case R.id.acp_btn_actual:
-                    opcion = "actual";
+                opcion = "actual";
                 break;
             case R.id.acp_btn_global:
                 opcion = "global";
@@ -328,12 +339,12 @@ public class ListaListaFragment extends Fragment {
             default:
         }
 
-        argumentos.putString( "opcion", opcion);
-        fragment.setArguments( argumentos );
+        argumentos.putString("opcion", opcion);
+        fragment.setArguments(argumentos);
 
         getActivity().getSupportFragmentManager()
                 .beginTransaction()
-                .replace( R.id.listaContenedor, fragment)
+                .replace(R.id.listaContenedor, fragment)
                 .commit();
 
 
@@ -345,9 +356,10 @@ public class ListaListaFragment extends Fragment {
 
     /**
      * Spinner para seleccionar el comercio
+     *
      * @param view vista
      */
-    private void inicializarSpinner( View view ){
+    private void inicializarSpinner(View view) {
 
         spinner = view.findViewById(R.id.fla_spn_seleccionarComercio);
         ArrayAdapter<ComercioEntity> adapter = new ArrayAdapter<>(
@@ -369,5 +381,67 @@ public class ListaListaFragment extends Fragment {
             public void onNothingSelected(AdapterView<?> adapterView) {
             }
         });
+    }
+
+    /**
+     * Devuelve la lista para compartir por Whatsapp.
+     * Leemos los datos de la lista dataProductos que contiene objetos CompraEntity
+     *
+     * @return una cedna de texto con la información.
+     */
+    private String getListaParaCompratir() {
+
+        StringBuilder lista = new StringBuilder();
+        totalTicket = 0f;
+
+        dataProductos.forEach(p -> {
+                    lista.append(
+                                    recortarTexto(
+                                            ProductoController
+                                                    .getById(p.getProducto(), getContext())
+                                                    .getDenominacion(),
+                                            18
+                                    )
+                            )
+                            .append("\n")
+                            .append(formatearPrecio(p.getCantidad()))
+                            .append(" x ")
+                            .append(formatearPrecio(p.getPrecio()))
+                            .append(" = ")
+                            .append(formatearPrecio(p.getPagado()))
+                            .append("\n-----------------------------\n");
+
+                    totalTicket += p.getPagado();
+                }
+        );
+
+        lista
+                .append("TOTAL: ......... ")
+                .append(totalTicket);
+
+        return lista.toString();
+
+    }
+
+    /**
+     * Devuelve la cadena de texto recortada
+     *
+     * @param texto
+     * @return
+     */
+    public String recortarTexto(String texto, int longitud) {
+        String resultado = (texto.length() <= longitud) ? texto : texto.substring(0, longitud);
+        return resultado;
+    }
+
+    /**
+     * Devuelve el precio con una longitud de 3 enteros y 2 decimales
+     *
+     * @param precio el precio
+     * @return el precio formateado
+     */
+    private String formatearPrecio(float precio) {
+        String resultado = String.format("%.02f", precio);
+        return resultado;
     }
 }
