@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -57,6 +58,8 @@ public class ListaListaFragment extends Fragment {
     // Componentes
     TextView lblNombreDeLaCompra;
     Spinner spinner;
+
+    ImageView btnShare;
     ImageView btnPrecio;
     ImageView btnSalir;
     ImageView btnAgregar;
@@ -125,6 +128,7 @@ public class ListaListaFragment extends Fragment {
 
             // Inicializar componente
             lblNombreDeLaCompra = view.findViewById(R.id.fla_tv_nombreCompra);
+            btnShare = view.findViewById( R.id.fla_img_share);
             btnPrecio = view.findViewById( R.id.fla_img_precio);
             btnSalir = view.findViewById(R.id.fla_img_cerrar);
             btnAgregar = view.findViewById(R.id.fla_fab_addProduct);
@@ -133,6 +137,9 @@ public class ListaListaFragment extends Fragment {
 
             // Nombre de la compra
             lblNombreDeLaCompra.setText(nombreCompra.getNombre());
+
+            // Botón para compartir la lista
+            btnShare.setOnClickListener(view1 -> compartir());
 
             // Botón para mostrar diferentes precios
             btnPrecio.setOnClickListener(view1 -> abrirCambiarPrecios());
@@ -195,7 +202,6 @@ public class ListaListaFragment extends Fragment {
                         nombreCompra.getComercio()
                 );
 
-        int idComercio = 1;
         //Buscamos el comercio en la dataComercio
         boolean nombre = false;
         ComercioEntity c = null;
@@ -224,6 +230,13 @@ public class ListaListaFragment extends Fragment {
         actualizarCompra();
 
         startActivity(new Intent(context, ComprasActivity.class));
+    }
+
+    /**
+     * Compartir la lista de la compra
+     */
+    public void compartir(){
+        Toast.makeText(context, "compartir", Toast.LENGTH_SHORT).show();
     }
 
     /**
