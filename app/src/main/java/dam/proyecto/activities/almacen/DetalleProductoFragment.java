@@ -4,6 +4,7 @@ import static dam.proyecto.Config.BOTON_DESACTIVADO_ALPHA;
 import static dam.proyecto.Config.PATH_PRODUCTS_THUMB;
 import static dam.proyecto.controllers.ProductoController.validarCodigoDeBarras;
 import static dam.proyecto.controllers.ProductoController.validarDenominacion;
+import static dam.proyecto.utilities.Words.capitalizar;
 
 import android.content.Context;
 import android.content.Intent;
@@ -530,23 +531,27 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // Si estamos editando, se actualiza el producto, si no
             // se inserta uno nuevo
             if (productoEditando != null) {
-                // ProductoEditando es la instancia de ProductoEntity
-                Log.d("LDLC", "DetalleProductoFragment.guardarProducto: actualizado");
 
                 // El id no se modifica
-                productoEditando.setDenominacion( tv_denominacion.getText().toString());
-                productoEditando.setMarca( marcaInt );
-                productoEditando.setUnidades( unidades );
-                productoEditando.setMedida( medida );
-                productoEditando.setCantidad( cantidad );
 
-                ProductoController.update( productoEditando, context );
+                // Nos aseguramos de capitalizar la denominación
+                productoEditando.setDenominacion(
+                        capitalizar(
+                                tv_denominacion
+                                        .getText()
+                                        .toString()
+                        )
+                );
+                productoEditando.setMarca(marcaInt);
+                productoEditando.setUnidades(unidades);
+                productoEditando.setMedida(medida);
+                productoEditando.setCantidad(cantidad);
+
+                ProductoController.update(productoEditando, context);
 
 
             } else {
                 // Es un producto nuevo
-                Log.d("LDLC", "DetalleProductoFragment.guardarProducto: guardado" +
-                        "\nid: " + id);
                 ProductoController.insertProducto(
                         id,
                         tv_denominacion.getText().toString(),
@@ -742,8 +747,6 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         // Recorrer las etiquetas y asociarlas al producto
         for (String tag : tags) {
             int idTag = tagController.getIdByName(tag.trim());
-            Log.d("LDLC", "DetalleProductoFragment.asociarTagsAlProducto\n" +
-                    "tag: " + tag + " id: " + tags.length);
             tagProductoController.insert(
                     idProducto,
                     idTag

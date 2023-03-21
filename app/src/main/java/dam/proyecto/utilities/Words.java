@@ -21,7 +21,7 @@ public class Words {
     }
 
     /**
-     * Devuelve una palabra sin tildes
+     * Devuelve una palabra sin tildes y en minúsculas
      * @param palabra que hay que destildar
      * @return la palabra sin la tilde
      */
@@ -37,7 +37,16 @@ public class Words {
             // Regresar a la forma compuesta, para poder comparar la enie con la tabla de valores
             normal = Normalizer.normalize(normal, Normalizer.Form.NFC);
         }
-        return normal;
+        return normal.toLowerCase();
+    }
+
+    /**
+     * Convierte la primera letra de texto en mayúscula
+     * @param texto el texto que hay que capitalizar
+     * @return el Texto
+     */
+    public static String capitalizar( String texto ){
+        return texto.substring(0,1).toUpperCase() + texto.substring(1);
     }
 
 }
