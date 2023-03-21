@@ -23,4 +23,9 @@ public interface ListenerCompras {
      */
     public void cli_lly_datosCompraOnClick( NombreCompraEntity compra);
 
+    /**
+     * Modifica el id de la lista
+     */
+    public void cli_lly_datosCompraOnLongClick( NombreCompraEntity compra);
+
 }

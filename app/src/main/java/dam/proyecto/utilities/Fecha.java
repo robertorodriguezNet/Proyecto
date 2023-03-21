@@ -88,4 +88,30 @@ public class Fecha {
             return f;
         }
     }
+
+    /**
+     * valida una fecha con formato dd/mm/aaaa
+     * @param dd día
+     * @param mm mes
+     * @param yyyy ano con 4 dígitos
+     * @return true si es válida la fecha
+     */
+    public static boolean isValidaFecha( String dd, String mm, String yyyy ){
+
+        try{
+
+            // Formato de fecha (dia/mes/año)
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            sdf.setLenient(false);
+
+            sdf.parse( dd + "/" + mm + "/" + yyyy);
+
+            // Si la comprobación no lanza error, se duvuelve true
+            return true;
+
+        }catch (Exception e){
+            return false;
+        }
+
+    }
 }

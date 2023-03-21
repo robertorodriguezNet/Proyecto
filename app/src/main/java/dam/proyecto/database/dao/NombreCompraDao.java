@@ -52,6 +52,9 @@ public interface NombreCompraDao {
     @Update
     void update( NombreCompraEntity object );
 
+    @Query( "UPDATE Nombrecompra SET id = :idNuevo, nombre = :idNuevo WHERE id = :idAnterior")
+    void updateId( String idAnterior, String idNuevo );
+
     // DELETE ------------------------------------
     @Delete
     void delete( NombreCompraEntity object );

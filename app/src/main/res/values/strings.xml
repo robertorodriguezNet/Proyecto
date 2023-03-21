@@ -113,6 +113,7 @@
     <string name="str_producto">producto</string>
     <string name="str_denominacion">Denominación</string>
     <string name="str_evolucionDelPrecio">evolución del precio</string>
+    <string name="str_nuevoId">Nuevo id</string>
 
     <string-array name="opciones_precio">
         <item>Actual</item>

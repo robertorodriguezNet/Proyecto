@@ -20,6 +20,7 @@ import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.adapters.AdaptadorCompras;
 import dam.proyecto.activities.compras.listener.ListenerCompras;
 import dam.proyecto.activities.lista.ListaActivity;
+import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.database.entity.CompraEntity;
@@ -89,6 +90,11 @@ public class ComprasActivity extends AppCompatActivity {
                     @Override
                     public void cli_lly_datosCompraOnClick(NombreCompraEntity compra) {
                         editarCompra( compra );
+                    }
+
+                    @Override
+                    public void cli_lly_datosCompraOnLongClick(NombreCompraEntity compra) {
+                        abrirDialogoCambiarIdCompra( compra );
                     }
                 }
         );
@@ -300,4 +306,56 @@ public class ComprasActivity extends AppCompatActivity {
 
         return null;
     }
+
+    /**
+     * Abre el diálogo para modificar el id de una compra (NombreCompra)
+     * @param compra que se quiere modificar
+     */
+    private void abrirDialogoCambiarIdCompra(NombreCompraEntity compra ){
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = inflater.inflate(R.layout.dialog_cambiar_id_nombre_compra, null);
+
+        TextView input = view.findViewById(R.id.dc_inp_id_nuevo);
+
+        builder.setTitle("Nuevo id");
+        builder.setMessage("El id debe tener 10 caracterer numéricos");
+        builder.setView(view);
+        builder.setNegativeButton("Cancelar", null);
+        builder.setPositiveButton("Aceptar", (dialogInterface, i) -> {
+            cambiarIdNombreCompra( compra.getId(), input.getText().toString() );
+        });
+
+        builder.create();
+        builder.show();
+
+    }
+
+    /**
+     * Método que cambia el id de un Nombre de la compra
+     * @param idAnterior id anterior
+     * @param idNuevo id nuevo
+     */
+    private void cambiarIdNombreCompra( String idAnterior, String idNuevo ){
+
+        NombreCompraController ncc = new NombreCompraController( this );
+
+        // Comprobar que el id esté libre (el controlador comprueba que sea válido)
+        if( ncc.isIdLibre( idNuevo ) ){
+
+            // Iniciamos el proceso
+
+            // Cambiar el id del objeto NombreCompra
+            ncc.updateId( idAnterior, idNuevo );
+
+            // Recargar la lista
+            adaptadorCompras.notifyDataSetChanged();
+
+        }else{
+            Toast.makeText(this, "El id no es válido", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
 }
