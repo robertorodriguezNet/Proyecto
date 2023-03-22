@@ -23,17 +23,20 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
 import dam.proyecto.activities.lista.listeners.ListaListener;
+import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ListaController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
+import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.utilities.Preferencias;
@@ -178,10 +181,23 @@ public class ListaListaFragment extends Fragment {
     public void abrirPreciosComercio() {
 
         // Obtener los datos.
-        // Los datos de los productos comprados, su fecha y su comercio, se
-        // guardan en CompraEntity.
-        // Hay que pedir al controlador de CompraEntity, los productos de la lista
-        // abierta que se han comprado en otros comercios.
+
+        // ¿Qué tengo?: una lista de compras CompraEntity en dataProductos
+        //              CompraEntity NO guarda el comercio
+        // ¿Qué necesito? la misma lista de compras pero para cada comercio
+        // ¿Cómo obtengo los comercios?
+        //              Se busca, para cada producto, los comercios en los que ha sido comprado
+        //              Para cada producto debe existir una colección de comercios (Integer)
+        CompraController cc = new CompraController(getContext());
+        HashMap<Integer, ArrayList<VistaCompra>> compras =
+                cc.getComparativaComercios(
+                        Preferencias
+                                .getListaAbiertaId(context)
+                );
+
+        // Ya tenemos la colección de comercios y sus compras
+        // Ahora hay que dar forma a los datos que se van a mostra en el layot:
+        //
 
         // Mostramos un diálogo con las opciones
         LayoutInflater inflater = this.getLayoutInflater();

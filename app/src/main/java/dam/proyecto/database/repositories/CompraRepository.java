@@ -11,6 +11,7 @@ import java.util.List;
 import dam.proyecto.database.Repositorio;
 import dam.proyecto.database.dao.CompraDao;
 import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.relaciones.VistaCompra;
 
 
 /**
@@ -71,6 +72,15 @@ public class CompraRepository extends Repositorio {
         return DAO.findById( id );
     }
 
+    /**
+     * Devuelve un listado con los comercios en los que se ha comprado un producto
+     * @param idProducto buscado
+     * @return la colección de comercios
+     */
+    public ArrayList<Integer> getComerciosByProducto( String idProducto ){
+        return (ArrayList<Integer>) DAO.getComerciosByProducto( idProducto );
+    }
+
     // Obtener la compra por una compra dada
     public ArrayList<CompraEntity> getProductosByFecha(String fecha ){
         return (ArrayList<CompraEntity>) DAO.findByFecha( fecha );
@@ -83,6 +93,16 @@ public class CompraRepository extends Repositorio {
      */
     public CompraEntity getUltimaCompraByProducto( String idProducto ){
         return DAO.getUltimaCompraByProducto( idProducto );
+    }
+
+    /**
+     * Devuelve la última compra de un producto en un comercio
+     * @param idProducto producto buscado
+     * @param idComercio comercio buscado
+     * @return la compra relacionada
+     */
+    public VistaCompra getUltimaCompraDeProductoEnComercio(String idProducto, int idComercio ){
+        return DAO.getUltimaCompraDeProductoEnComercio(idProducto,idComercio);
     }
 
     /**

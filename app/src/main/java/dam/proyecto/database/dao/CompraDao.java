@@ -9,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import dam.proyecto.database.entity.CompraEntity;
+import dam.proyecto.database.relaciones.VistaCompra;
 
 import java.util.List;
 
@@ -37,6 +38,18 @@ public interface CompraDao {
 
     @Query( "SELECT * FROM Compra WHERE fecha LIKE :fecha")
     List<CompraEntity> findByFecha( String fecha );
+
+    @Query( "select p.denominacion, m.name, c.precio, c.precioMedido, c.fecha " +
+            "from compra as c, Nombrecompra as nc, Productos as p, comercio as m " +
+            "where producto = :idProducto and nc.id = c.fecha and c.producto = p.id " +
+            "and nc.comercio = :idComercio and m.id = nc.comercio " +
+            "order by c.fecha desc limit 1" )
+    VistaCompra getUltimaCompraDeProductoEnComercio( String idProducto, int idComercio );
+
+    @Query( "SELECT DISTINCT nc.comercio " +
+            "FROM compra AS c, Nombrecompra AS nc, Productos AS p " +
+            "WHERE producto = :idProduct AND nc.id = c.fecha AND c.producto = p.id;" )
+    List<Integer> getComerciosByProducto( String idProduct );
 
     @Query( " SELECT precio FROM compra WHERE producto = :producto AND fecha != :fecha ORDER BY fecha DESC LIMIT 1 ")
     float getUltimoPrecio( String producto, String fecha );
