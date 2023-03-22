@@ -38,15 +38,12 @@ public class CompraController {
         this.REPOSITORY = new CompraRepository( context );
     }
 
-
     /**
      * Borra los datos de la tabla
      */
     public void clear(){
         REPOSITORY.clear();
     }
-
-
 
     /**
      * Devuelve la colección de objetos completa
@@ -227,7 +224,6 @@ public class CompraController {
                 0.0f,
                 0);
     }
-
 
     /**
      * Actualiza una compra

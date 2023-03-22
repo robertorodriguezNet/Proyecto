@@ -10,18 +10,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -145,7 +142,7 @@ public class ListaListaFragment extends Fragment {
             btnShare.setOnClickListener(view1 -> compartir());
 
             // Botón para mostrar diferentes precios
-            btnPrecio.setOnClickListener(view1 -> abrirCambiarPrecios());
+            btnPrecio.setOnClickListener(view1 -> abrirPreciosComercio());
 
             // Botón salir
             btnSalir.setOnClickListener(view12 -> salir());
@@ -174,65 +171,39 @@ public class ListaListaFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onAttach(@NonNull Context context) {
-        super.onAttach(context);
-        if (context instanceof ListaListener) {
-            oyente = (ListaListener) context;
-        } else {
-            throw new RuntimeException(context
-                    + " debes implementar el oyente.");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        oyente = null;
-    }
-
     /**
-     * Devuelve el id del spinner que se corresponde con el id del comercio.
-     * Hay que tener en cuenta que el spinner comienza a contar por 1.
-     *
-     * @return el id del spinner
+     * Muestra un listado con los productos de la lista abierta
+     * pero con los precios de otros comercios.
      */
-    private int getSpinnerId() {
-        // Establecer el ítem por defecto
-        // Obtener el nombre del comercio
-        String nComercio = comercioRespository
-                .getNombreComercio(
-                        nombreCompra.getComercio()
-                );
+    public void abrirPreciosComercio() {
 
-        //Buscamos el comercio en la dataComercio
-        boolean nombre = false;
-        ComercioEntity c = null;
-        int count = 0;
-        while (!nombre && (count < dataComercio.size())) {
-            c = dataComercio.get(count);
-            nombre = (c.getName().equals(nComercio));
-            count++;
-        }
-        return ((c == null) ? 1 : --count);
-    }
+        // Obtener los datos.
+        // Los datos de los productos comprados, su fecha y su comercio, se
+        // guardan en CompraEntity.
+        // Hay que pedir al controlador de CompraEntity, los productos de la lista
+        // abierta que se han comprado en otros comercios.
 
-    /* ****************************************************************************************** */
-    /* ***** ACCIONES DE LOS BOTONES ************************************************************ */
-    /* ****************************************************************************************** */
+        // Mostramos un diálogo con las opciones
+        LayoutInflater inflater = this.getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        View view = inflater.inflate(R.layout.alert_cambiar_precios, null);
 
-    public void borrar() {
+        builder.setNegativeButton("Cancelar", null);
+        builder.setView(view);
+
+        AlertDialog dialogPrecio = builder.create();
+        dialogPrecio.show();
 
     }
 
     /**
-     * Salimos de la lista de la compra hacia Compras.
+     * Actualiza la compra.
+     * Esta función es llamada desde salir() o al cambiar el spinner del comercio
      */
-    public void salir() {
-
-        actualizarCompra();
-
-        startActivity(new Intent(context, ComprasActivity.class));
+    private void actualizarCompra() {
+        // Obtnemos el comercio directamente del spinner
+        nombreCompra.setComercio(((ComercioEntity) spinner.getSelectedItem()).getId());
+        nombreCompraRepository.update(nombreCompra);
     }
 
     /**
@@ -250,137 +221,14 @@ public class ListaListaFragment extends Fragment {
     }
 
     /**
-     * Cambia el precio de los productos de la lista
-     */
-    public void abrirCambiarPrecios() {
-
-        // Botones del diálogo
-        Button btnActual, btnGlobal, btnComercio;
-
-        // Mostramos un diálogo con las opciones
-        LayoutInflater inflater = this.getLayoutInflater();
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = inflater.inflate(R.layout.alert_cambiar_precios, null);
-
-        builder.setNegativeButton("Cancelar", null);
-        builder.setView(view);
-
-        // Inicializar los botones del diálogo
-        btnActual = view.findViewById(R.id.acp_btn_actual);
-        btnGlobal = view.findViewById(R.id.acp_btn_global);
-        btnComercio = view.findViewById(R.id.acp_btn_comercio);
-
-        AlertDialog dialogPrecio = builder.create();
-        dialogPrecio.show();
-
-        // Oyentes para los eventos
-        btnActual.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio));
-        btnGlobal.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio));
-        btnComercio.setOnClickListener(v -> btnCambiarPrecioOnClick(v, dialogPrecio));
-
-    }
-
-    /* ****************************************************************************************** */
-    /* ***** FUNCIONES AUXILIARES *************************************************************** */
-    /* ****************************************************************************************** */
-
-    /**
-     * Devuelve el importe total de la compra.
+     * Devuelve el precio con una longitud de 3 enteros y 2 decimales
      *
-     * @return el importe total de la compra
+     * @param precio el precio
+     * @return el precio formateado
      */
-    private float getTotalCompra() {
-
-
-        float total = 0.0f;
-
-        for (CompraEntity producto : dataProductos) {
-            total += producto.getPrecio() * producto.getCantidad();
-        }
-
-        return total;
-
-    }
-
-    /**
-     * Actualiza la compra.
-     * Esta función es llamada desde salir() o al cambiar el spinner del comercio
-     */
-    private void actualizarCompra() {
-        // Obtnemos el comercio directamente del spinner
-        nombreCompra.setComercio(((ComercioEntity) spinner.getSelectedItem()).getId());
-        nombreCompraRepository.update(nombreCompra);
-    }
-
-
-    /* ****************************************************************************************** */
-    /* ***** EVENTOS PARA LOS BOTONES DEL ALERT PRECIOS ***************************************** */
-    /* ****************************************************************************************** */
-
-    @SuppressLint("NonConstantResourceId")
-    public void btnCambiarPrecioOnClick(View view, AlertDialog dialog) {
-
-        dialog.dismiss();
-
-        Fragment fragment = new ListaListaFragment();
-        argumentos = new Bundle();
-        String opcion = "actual";
-
-        switch (view.getId()) {
-            case R.id.acp_btn_actual:
-                opcion = "actual";
-                break;
-            case R.id.acp_btn_global:
-                opcion = "global";
-                break;
-            case R.id.acp_btn_comercio:
-                opcion = "comercio";
-                break;
-            default:
-        }
-
-        argumentos.putString("opcion", opcion);
-        fragment.setArguments(argumentos);
-
-        getActivity().getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.listaContenedor, fragment)
-                .commit();
-
-
-    }
-
-    /* ****************************************************************************************** */
-    /* ***** COMPONENTES ************************************************************************ */
-    /* ****************************************************************************************** */
-
-    /**
-     * Spinner para seleccionar el comercio
-     *
-     * @param view vista
-     */
-    private void inicializarSpinner(View view) {
-
-        spinner = view.findViewById(R.id.fla_spn_seleccionarComercio);
-        ArrayAdapter<ComercioEntity> adapter = new ArrayAdapter<>(
-                context,
-                androidx
-                        .appcompat
-                        .R.layout.support_simple_spinner_dropdown_item,
-                dataComercio
-        );
-        spinner.setAdapter(adapter);
-        spinner.setSelection(getSpinnerId());
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                actualizarCompra();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
+    @SuppressLint("DefaultLocale")
+    private String formatearPrecio(float precio) {
+        return String.format("%.02f", precio);
     }
 
     /**
@@ -424,24 +272,108 @@ public class ListaListaFragment extends Fragment {
     }
 
     /**
-     * Devuelve la cadena de texto recortada
+     * Devuelve el id del spinner que se corresponde con el id del comercio.
+     * Hay que tener en cuenta que el spinner comienza a contar por 1.
      *
-     * @param texto
-     * @return
+     * @return el id del spinner
      */
-    public String recortarTexto(String texto, int longitud) {
-        String resultado = (texto.length() <= longitud) ? texto : texto.substring(0, longitud);
-        return resultado;
+    private int getSpinnerId() {
+        // Establecer el ítem por defecto
+        // Obtener el nombre del comercio
+        String nComercio = comercioRespository
+                .getNombreComercio(
+                        nombreCompra.getComercio()
+                );
+
+        //Buscamos el comercio en la dataComercio
+        boolean nombre = false;
+        ComercioEntity c = null;
+        int count = 0;
+        while (!nombre && (count < dataComercio.size())) {
+            c = dataComercio.get(count);
+            nombre = (c.getName().equals(nComercio));
+            count++;
+        }
+        return ((c == null) ? 1 : --count);
     }
 
     /**
-     * Devuelve el precio con una longitud de 3 enteros y 2 decimales
+     * Devuelve el importe total de la compra.
      *
-     * @param precio el precio
-     * @return el precio formateado
+     * @return el importe total de la compra
      */
-    private String formatearPrecio(float precio) {
-        String resultado = String.format("%.02f", precio);
-        return resultado;
+    private float getTotalCompra() {
+        float total = 0.0f;
+        for (CompraEntity producto : dataProductos) {
+            total += producto.getPrecio() * producto.getCantidad();
+        }
+        return total;
     }
+
+    /**
+     * Spinner para seleccionar el comercio
+     *
+     * @param view vista
+     */
+    private void inicializarSpinner(View view) {
+
+        spinner = view.findViewById(R.id.fla_spn_seleccionarComercio);
+        ArrayAdapter<ComercioEntity> adapter = new ArrayAdapter<>(
+                context,
+                androidx
+                        .appcompat
+                        .R.layout.support_simple_spinner_dropdown_item,
+                dataComercio
+        );
+        spinner.setAdapter(adapter);
+        spinner.setSelection(getSpinnerId());
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                actualizarCompra();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
+        });
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof ListaListener) {
+            oyente = (ListaListener) context;
+        } else {
+            throw new RuntimeException(context
+                    + " debes implementar el oyente.");
+        }
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        oyente = null;
+    }
+
+    /**
+     * Devuelve la cadena de texto recortada
+     *
+     * @param texto que se quiere recortar
+     * @return el texto recortado
+     */
+    public String recortarTexto(String texto, int longitud) {
+        return (texto.length() <= longitud) ? texto : texto.substring(0, longitud);
+    }
+
+    /**
+     * Salimos de la lista de la compra hacia Compras.
+     */
+    public void salir() {
+
+        actualizarCompra();
+
+        startActivity(new Intent(context, ComprasActivity.class));
+    }
+
 }

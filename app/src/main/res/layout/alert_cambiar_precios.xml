@@ -6,52 +6,26 @@
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/acp_lbl_vistaPrecios"
+        android:id="@+id/acp_tv_titulo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="@string/acp_str_lblTitulo"
-        android:textColor="#000000"
-        android:textSize="24sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/acp_str_titulo"
+        android:textColor="@color/black"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@id/acp_lv_preciosComercio"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/acp_btn_actual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:width="200dp"
-        android:height="100dp"
-        android:text="@string/acp_str_btn_actual"
+    <ListView
+        android:id="@+id/acp_lv_preciosComercio"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/acp_lbl_vistaPrecios" />
-
-    <Button
-        android:id="@+id/acp_btn_global"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:width="200dp"
-        android:height="100dp"
-        android:text="@string/acp_str_btn_global"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/acp_btn_actual" />
-
-    <Button
-        android:id="@+id/acp_btn_comercio"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:width="200dp"
-        android:height="100dp"
-        android:text="@string/acp_str_btn_comercio"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/acp_btn_global" />
+        app:layout_constraintTop_toBottomOf="@id/acp_tv_titulo" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

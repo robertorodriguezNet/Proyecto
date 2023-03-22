@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="4dp">
+
+    <TextView
+        android:id="@+id/ipc_tv_comercio"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="comercio"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/ip_tv_Total"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ip_tv_Total"
+        android:layout_width="60dp"
+        android:layout_height="wrap_content"
+        android:text="Total:"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/ipc_tv_importe"
+        app:layout_constraintStart_toEndOf="@id/ipc_tv_comercio"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ipc_tv_importe"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="@string/str_ceroDecimal"
+        android:textAlignment="textEnd"
+        android:textColor="@color/black"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ip_tv_Total"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/ipc_tv_articulos"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="Artículos: "
+        app:layout_constraintEnd_toStartOf="@id/ipc_tv_numArticulos"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_comercio" />
+
+    <TextView
+        android:id="@+id/ipc_tv_numArticulos"
+        android:layout_width="30dp"
+        android:layout_height="wrap_content"
+        android:text="@string/str_cero"
+        android:textAlignment="textEnd"
+        app:layout_constraintEnd_toStartOf="@id/ipc_tv_desde"
+        app:layout_constraintStart_toEndOf="@id/ipc_tv_articulos"
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_comercio" />
+
+    <TextView
+        android:id="@+id/ipc_tv_blanco"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text=""
+        app:layout_constraintEnd_toStartOf="@id/ipc_tv_desde"
+        app:layout_constraintStart_toEndOf="@id/ipc_tv_numArticulos"
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_comercio" />
+
+    <TextView
+        android:id="@+id/ipc_tv_desde"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Desde"
+        app:layout_constraintStart_toEndOf="@id/ipc_tv_blanco"
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_comercio"
+        app:layout_constraintEnd_toStartOf="@id/ipc_tv_fechaDesde"/>
+
+    <TextView
+        android:id="@+id/ipc_tv_fechaDesde"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="00-mar-23"
+        app:layout_constraintStart_toEndOf="@id/ipc_tv_desde"
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_comercio"/>
+
+    <TextView
+        android:id="@+id/ipc_tv_hasta"
+        android:layout_width="50dp"
+        android:layout_height="wrap_content"
+        android:text="Hasta"
+        app:layout_constraintEnd_toStartOf="@id/ipc_tv_fechaHasta"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@id/ipc_tv_fechaDesde"
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_comercio" />
+
+    <TextView
+        android:id="@+id/ipc_tv_fechaHasta"
+        android:layout_width="80dp"
+        android:layout_height="wrap_content"
+        android:text="00-mar-23"
+        app:layout_constraintStart_toEndOf="@id/ipc_tv_hasta"
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_comercio"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
