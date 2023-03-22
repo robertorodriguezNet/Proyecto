@@ -237,4 +237,16 @@ public class CompraController {
         REPOSITORY.update( compra );
     }
 
+    /**
+     * Actualiza la fecha de compra de los objetos CompraEntity
+     * que tengan una fecha determinada.
+     * Los formatos de fecha, tanto la anterior como la nueva, es aammddhhmm
+     *
+     * @param fechaAnterior fecha que hay que actualizar
+     * @param fechaNueva fecha nueva
+     */
+    public void updateFecha( String fechaAnterior, String fechaNueva ){
+        REPOSITORY.updateFecha( fechaAnterior, fechaNueva);
+    }
+
 }

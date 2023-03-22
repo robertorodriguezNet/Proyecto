@@ -127,4 +127,12 @@ public class CompraRepository extends Repositorio {
         return super.toString();
     }
 
+    /**
+     * Actualiza la fecha de un objeto CompraEntity
+     * @param fechaAnterior la fecha buscada
+     * @param fechaNueva la fecha nueva
+     */
+    public void updateFecha(String fechaAnterior, String fechaNueva) {
+        DAO.updateFecha( fechaAnterior, fechaNueva);
+    }
 }

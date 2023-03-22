@@ -45,10 +45,14 @@ public interface CompraDao {
     @Update
     void update( CompraEntity object );
 
+    @Query( "UPDATE Compra SET fecha = :fechaNueva WHERE fecha = :fechaAnterior")
+    void updateFecha( String fechaAnterior, String fechaNueva);
+
     // DELETE ------------------------------------
     @Delete
     void delete( CompraEntity object );
 
     @Query( "DELETE FROM compra" )
     void clear();
-}
+
+    }

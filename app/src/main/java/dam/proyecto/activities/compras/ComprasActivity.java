@@ -127,9 +127,32 @@ public class ComprasActivity extends AppCompatActivity {
     }
 
 
-    /* ****************************************************************************************** */
-    /* *** MÉTODO OYENTES *********************************************************************** */
-    /* ****************************************************************************************** */
+    /**
+     * Abre el diálogo para modificar el id de una compra (NombreCompra)
+     * @param compra que se quiere modificar
+     */
+    private void abrirDialogoCambiarIdCompra(NombreCompraEntity compra ){
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        View view = inflater.inflate(R.layout.dialog_cambiar_id_nombre_compra, null);
+
+        TextView input = view.findViewById(R.id.dc_inp_id_nuevo);
+
+        builder.setTitle("Nuevo id");
+        builder.setMessage("El id debe tener 10 caracterer numéricos");
+        builder.setView(view);
+        builder.setNegativeButton("Cancelar", null);
+        builder.setPositiveButton("Aceptar", (dialogInterface, i) -> {
+            cambiarIdNombreCompra( compra.getId(), input.getText().toString() );
+        });
+
+        builder.create();
+        builder.show();
+
+    }
+
+
     /**
      * Borrar una compra de la lista.
      *
@@ -163,77 +186,35 @@ public class ComprasActivity extends AppCompatActivity {
     }
 
 
-    /**
-     * Duplica una compra.
-     * Duplicamos NombreCompraEntity
-     *
-     * @param compraOriginal que se quiere duplicar
-     */
-    private void duplicarCompra(NombreCompraEntity compraOriginal ) {
-
-        // Controlador para el nombre de la compra
-        NombreCompraController nombreCompraController = new NombreCompraController( this );
-        CompraController compraController = new CompraController( this );
-
-        /*
-          Se crea un objeto NombreCompraEntity
-          .- String id:     se genera automáticamente con formado aammddhhmm
-          .- String nombre: el mismo texto que el id
-          .- int comercio:  1, corresponde a comercio en blanco
-         */
-        String idCompraNueva = crearCompra( false);
-
-        // En este punto la compra copia está creada y aparece en el listado
-
-        // La compra está creada y se muestra
-        // Obtenemos la compra copia
-        NombreCompraEntity compraCopia = nombreCompraController.getById( idCompraNueva );
-
-        // Establecer el comercio de la compra copia
-        compraCopia.setComercio(compraOriginal.getComercio() );
-
-        // Actualizar la compra copia
-        nombreCompraController.update( compraCopia );
-
-        // Duplicar las compra de la original a la copia
-        // Obtener todos los productos que pertenecen a la compra original
-        // CompraEntity guarda el producto y la fecha de su compra
-        // Le pedimos a CompraEntity todas las CompraEntity que tengan como fecha la fecha original
-        ArrayList<CompraEntity> productos = compraController.getProductosByFecha( compraOriginal.getId() );
-
-        // Recorrer los productos, establecer la nueva fecha e insertalos
-        // origen es un objeto CompraEntity
-        productos.forEach( origen -> {
-
-            CompraEntity copia = new CompraEntity(
-                    origen.getProducto(),
-                    idCompraNueva,
-                    origen.getCantidad(),
-                    origen.getPagado(),
-                    origen.getPrecio(),
-                    origen.getPrecioMedido(),
-                    origen.getOferta()
-            );
-            copia.setId( origen.getProducto() + idCompraNueva );
-            copia.setFecha( idCompraNueva );
-            compraController.insert( copia );
-        });
-
-        // Abrimos la lista
-        editarCompra( compraCopia );
-    }
 
     /**
-     * Edita una compra
-     * @param compra que se quiere editar
+     * Método que cambia el id de un Nombre de la compra
+     * @param idAnterior id anterior
+     * @param idNuevo id nuevo
      */
-    public void editarCompra(NombreCompraEntity compra) {
+    private void cambiarIdNombreCompra( String idAnterior, String idNuevo ){
 
-        // Abrimos la lista
-        Log.d("PREF", "ComprasActivity.borrarCompra() - editar listaAbiertaId: " + compra.getId() );
-        Preferencias.setListaAbiertaId( compra.getId(), this);
-        Log.d("PREF", "ComprasActivity.borrarCompra() - preferencia guardada: " + Preferencias.getListaAbiertaId( this ) );
-        startActivity( new Intent( this, ListaActivity.class ) );
+        NombreCompraController ncc = new NombreCompraController( this );
+        CompraController cc = new CompraController( this );
+
+        // Comprobar que el id esté libre (el controlador comprueba que sea válido)
+        if( ncc.isIdLibre( idNuevo ) ){
+
+            // Iniciamos el proceso
+
+            // Cambiar el id del objeto NombreCompra
+            ncc.updateId( idAnterior, idNuevo );
+
+            // Ahora hay que cambiar la fecha de CompraEntity que tengan idAnterior como fecha
+            cc.updateFecha( idAnterior, idNuevo );
+
+            // Recargar la lista
+            adaptadorCompras.notifyDataSetChanged();
+
+        }else{
+            Toast.makeText(this, "El id no es válido", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     /**
@@ -308,54 +289,79 @@ public class ComprasActivity extends AppCompatActivity {
     }
 
     /**
-     * Abre el diálogo para modificar el id de una compra (NombreCompra)
-     * @param compra que se quiere modificar
+     * Duplica una compra.
+     * Duplicamos NombreCompraEntity
+     *
+     * @param compraOriginal que se quiere duplicar
      */
-    private void abrirDialogoCambiarIdCompra(NombreCompraEntity compra ){
+    private void duplicarCompra(NombreCompraEntity compraOriginal ) {
 
-        LayoutInflater inflater = this.getLayoutInflater();
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        View view = inflater.inflate(R.layout.dialog_cambiar_id_nombre_compra, null);
+        // Controlador para el nombre de la compra
+        NombreCompraController nombreCompraController = new NombreCompraController( this );
+        CompraController compraController = new CompraController( this );
 
-        TextView input = view.findViewById(R.id.dc_inp_id_nuevo);
+        /*
+          Se crea un objeto NombreCompraEntity
+          .- String id:     se genera automáticamente con formado aammddhhmm
+          .- String nombre: el mismo texto que el id
+          .- int comercio:  1, corresponde a comercio en blanco
+         */
+        String idCompraNueva = crearCompra( false);
 
-        builder.setTitle("Nuevo id");
-        builder.setMessage("El id debe tener 10 caracterer numéricos");
-        builder.setView(view);
-        builder.setNegativeButton("Cancelar", null);
-        builder.setPositiveButton("Aceptar", (dialogInterface, i) -> {
-            cambiarIdNombreCompra( compra.getId(), input.getText().toString() );
+        // En este punto la compra copia está creada y aparece en el listado
+
+        // La compra está creada y se muestra
+        // Obtenemos la compra copia
+        NombreCompraEntity compraCopia = nombreCompraController.getById( idCompraNueva );
+
+        // Establecer el comercio de la compra copia
+        compraCopia.setComercio(compraOriginal.getComercio() );
+
+        // Actualizar la compra copia
+        nombreCompraController.update( compraCopia );
+
+        // Duplicar las compra de la original a la copia
+        // Obtener todos los productos que pertenecen a la compra original
+        // CompraEntity guarda el producto y la fecha de su compra
+        // Le pedimos a CompraEntity todas las CompraEntity que tengan como fecha la fecha original
+        ArrayList<CompraEntity> productos = compraController.getProductosByFecha( compraOriginal.getId() );
+
+        // Recorrer los productos, establecer la nueva fecha e insertalos
+        // origen es un objeto CompraEntity
+        productos.forEach( origen -> {
+
+            CompraEntity copia = new CompraEntity(
+                    origen.getProducto(),
+                    idCompraNueva,
+                    origen.getCantidad(),
+                    origen.getPagado(),
+                    origen.getPrecio(),
+                    origen.getPrecioMedido(),
+                    origen.getOferta()
+            );
+            copia.setId( origen.getProducto() + idCompraNueva );
+            copia.setFecha( idCompraNueva );
+            compraController.insert( copia );
         });
 
-        builder.create();
-        builder.show();
-
+        // Abrimos la lista
+        editarCompra( compraCopia );
     }
 
     /**
-     * Método que cambia el id de un Nombre de la compra
-     * @param idAnterior id anterior
-     * @param idNuevo id nuevo
+     * Edita una compra
+     * @param compra que se quiere editar
      */
-    private void cambiarIdNombreCompra( String idAnterior, String idNuevo ){
+    public void editarCompra(NombreCompraEntity compra) {
 
-        NombreCompraController ncc = new NombreCompraController( this );
-
-        // Comprobar que el id esté libre (el controlador comprueba que sea válido)
-        if( ncc.isIdLibre( idNuevo ) ){
-
-            // Iniciamos el proceso
-
-            // Cambiar el id del objeto NombreCompra
-            ncc.updateId( idAnterior, idNuevo );
-
-            // Recargar la lista
-            adaptadorCompras.notifyDataSetChanged();
-
-        }else{
-            Toast.makeText(this, "El id no es válido", Toast.LENGTH_SHORT).show();
-        }
-
+        // Abrimos la lista
+        Log.d("PREF", "ComprasActivity.borrarCompra() - editar listaAbiertaId: " + compra.getId() );
+        Preferencias.setListaAbiertaId( compra.getId(), this);
+        Log.d("PREF", "ComprasActivity.borrarCompra() - preferencia guardada: " + Preferencias.getListaAbiertaId( this ) );
+        startActivity( new Intent( this, ListaActivity.class ) );
     }
+
+
+
 
 }
