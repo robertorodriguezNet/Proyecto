@@ -20,7 +20,6 @@ import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.adapters.AdaptadorCompras;
 import dam.proyecto.activities.compras.listener.ListenerCompras;
 import dam.proyecto.activities.lista.ListaActivity;
-import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.database.entity.CompraEntity;
@@ -62,14 +61,14 @@ public class ComprasActivity extends AppCompatActivity {
 
         // == Zona del campo de texto ==============================================================
         // Establecemos el hint para para el input del nuevoNombre        
-        bindingCompras.acInpNuevoNombre.setHint( Fecha.getNuevaFecha() + " o escribe un nombre");
+        bindingCompras.acInpNuevoNombre.setHint(Fecha.getNuevaFecha() + " o escribe un nombre");
 
         // Oyente para el check
-        bindingCompras.acImgCrearCompra.setOnClickListener(view1 -> crearCompra( true));
+        bindingCompras.acImgCrearCompra.setOnClickListener(view1 -> crearCompra(true));
 
         // == Zona de la lista =====================================================================
         // Obtener el listado de las compras
-        dataNombreCompra = new NombreCompraRepository( this).getAll();
+        dataNombreCompra = new NombreCompraRepository(this).getAll();
 
         // Crear el adaptador que vamos a pasar al ListView
         adaptadorCompras = new AdaptadorCompras(
@@ -79,41 +78,41 @@ public class ComprasActivity extends AppCompatActivity {
                 new ListenerCompras() {
                     @Override
                     public void cli_img_deleteOnClik(NombreCompraEntity compra, int posicion) {
-                        borrarCompra( compra, posicion );
+                        borrarCompra(compra, posicion);
                     }
 
                     @Override
                     public void cli_img_copyOnClik(NombreCompraEntity compra) {
-                        duplicarCompra( compra );
+                        duplicarCompra(compra);
                     }
 
                     @Override
                     public void cli_lly_datosCompraOnClick(NombreCompraEntity compra) {
-                        editarCompra( compra );
+                        editarCompra(compra);
                     }
 
                     @Override
                     public void cli_lly_datosCompraOnLongClick(NombreCompraEntity compra) {
-                        abrirDialogoCambiarIdCompra( compra );
+                        abrirDialogoCambiarIdCompra(compra);
                     }
                 }
         );
-        bindingCompras.listaCompras.setAdapter( adaptadorCompras );
+        bindingCompras.listaCompras.setAdapter(adaptadorCompras);
 
 
         // Oyente para el navegador
         bindingCompras.navegador.setOnItemSelectedListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.itAlamacen:
-                            startActivity(new Intent(this, AlmacenActivity.class ));
-                            overridePendingTransition(0,0);
+                            startActivity(new Intent(this, AlmacenActivity.class));
+                            overridePendingTransition(0, 0);
                             return true;
                         case R.id.itInicio:
-                            startActivity(new Intent( this, MainActivity.class));
+                            startActivity(new Intent(this, MainActivity.class));
                             overridePendingTransition(0, 0);
                             return true;
                         case R.id.itLista:
-                            startActivity(new Intent( this, ListaActivity.class));
+                            startActivity(new Intent(this, ListaActivity.class));
                             overridePendingTransition(0, 0);
                             return true;
                         case R.id.itCompras:
@@ -129,9 +128,10 @@ public class ComprasActivity extends AppCompatActivity {
 
     /**
      * Abre el diálogo para modificar el id de una compra (NombreCompra)
+     *
      * @param compra que se quiere modificar
      */
-    private void abrirDialogoCambiarIdCompra(NombreCompraEntity compra ){
+    private void abrirDialogoCambiarIdCompra(NombreCompraEntity compra) {
 
         LayoutInflater inflater = this.getLayoutInflater();
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -143,9 +143,9 @@ public class ComprasActivity extends AppCompatActivity {
         builder.setMessage("El id debe tener 10 caracterer numéricos");
         builder.setView(view);
         builder.setNegativeButton("Cancelar", null);
-        builder.setPositiveButton("Aceptar", (dialogInterface, i) -> {
-            cambiarIdNombreCompra( compra.getId(), input.getText().toString() );
-        });
+        builder.setPositiveButton("Aceptar", (dialogInterface, i) ->
+                cambiarIdNombreCompra(compra.getId(), input.getText().toString())
+        );
 
         builder.create();
         builder.show();
@@ -161,21 +161,21 @@ public class ComprasActivity extends AppCompatActivity {
     public void borrarCompra(NombreCompraEntity compra, int ignoredPosicion) {
 
         // 1.- Borrar la compra de dataNombreCompra
-        dataNombreCompra.remove( compra );
+        dataNombreCompra.remove(compra);
 
         // 2.- Hay que asegurarse de que la compra borrada no esté guardada en preferencias
         // Si la compra está siendo editada, establecemos la preferencia como null
         // La preferencia puede ser nula, lo que significa que la compra
         // que se va a borrar no está abierta
-        String compraPreferencias = Preferencias.getListaAbiertaId( this );
-        if( (compraPreferencias != null) && (compraPreferencias.equals( compra.getId()) )){
-            Preferencias.setListaAbiertaId( null, this);
+        String compraPreferencias = Preferencias.getListaAbiertaId(this);
+        if ((compraPreferencias != null) && (compraPreferencias.equals(compra.getId()))) {
+            Preferencias.setListaAbiertaId(null, this);
             Toast.makeText(this, "Esta compra se está editando", Toast.LENGTH_SHORT).show();
         }
 
         // 3.- Borrar la compra de la base de datos
-        NombreCompraRepository repository = new NombreCompraRepository( this );
-        repository.delete( compra );
+        NombreCompraRepository repository = new NombreCompraRepository(this);
+        repository.delete(compra);
 
         // 4.- Informar al adptador del cambio
         adaptadorCompras.notifyDataSetChanged();
@@ -186,32 +186,32 @@ public class ComprasActivity extends AppCompatActivity {
     }
 
 
-
     /**
      * Método que cambia el id de un Nombre de la compra
+     *
      * @param idAnterior id anterior
-     * @param idNuevo id nuevo
+     * @param idNuevo    id nuevo
      */
-    private void cambiarIdNombreCompra( String idAnterior, String idNuevo ){
+    private void cambiarIdNombreCompra(String idAnterior, String idNuevo) {
 
-        NombreCompraController ncc = new NombreCompraController( this );
-        CompraController cc = new CompraController( this );
+        NombreCompraController ncc = new NombreCompraController(this);
+        CompraController cc = new CompraController(this);
 
         // Comprobar que el id esté libre (el controlador comprueba que sea válido)
-        if( ncc.isIdLibre( idNuevo ) ){
+        if (ncc.isIdLibre(idNuevo)) {
 
             // Iniciamos el proceso
 
             // Cambiar el id del objeto NombreCompra
-            ncc.updateId( idAnterior, idNuevo );
+            ncc.updateId(idAnterior, idNuevo);
 
             // Ahora hay que cambiar la fecha de CompraEntity que tengan idAnterior como fecha
-            cc.updateFecha( idAnterior, idNuevo );
+            cc.updateFecha(idAnterior, idNuevo);
 
             // Recargar la lista
             adaptadorCompras.notifyDataSetChanged();
 
-        }else{
+        } else {
             Toast.makeText(this, "El id no es válido", Toast.LENGTH_SHORT).show();
         }
 
@@ -228,10 +228,10 @@ public class ComprasActivity extends AppCompatActivity {
      * @return el id de la nueva lista
      */
     @SuppressLint("SetTextI18n")
-    private String crearCompra( boolean abrir ){
+    private String crearCompra(boolean abrir) {
 
         // Crear una instancia del repositorio de NombreCompra
-        NombreCompraRepository repository = new NombreCompraRepository( this );
+        NombreCompraRepository repository = new NombreCompraRepository(this);
 
         // Obtenemos el id para la nueva lista
         String id = Fecha.getNuevaFecha();
@@ -254,31 +254,31 @@ public class ComprasActivity extends AppCompatActivity {
 
             // 2.- Lo guardamos en la base de datos en la
             // posición 0 para que se muestre al inicio
-            repository.insert( compra );
+            repository.insert(compra);
 
             // 3.- Abrimos la lista
-            if( abrir ) {
-                editarCompra( compra );
+            if (abrir) {
+                editarCompra(compra);
             }
 
             return id;
-        }else{
+        } else {
 
             // El nombre existe
-            int minuto = Integer.parseInt( id.substring(8,10) );
+            int minuto = Integer.parseInt(id.substring(8, 10));
             minuto++;
-            String hora = id.substring(6,8) + ":" + minuto;
+            String hora = id.substring(6, 8) + ":" + minuto;
 
             // El nombre ya existe
             LayoutInflater inflater = this.getLayoutInflater();
-            AlertDialog.Builder builder = new AlertDialog.Builder( this );
-            View v = inflater.inflate( R.layout.alert_nueva_compra, null );
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            View v = inflater.inflate(R.layout.alert_nueva_compra, null);
 
             TextView solucion = v.findViewById(R.id.anc_tv_solucion);
-            solucion.setText( solucion.getText() + " " + hora);
+            solucion.setText(solucion.getText() + " " + hora);
 
-            builder.setPositiveButton( "Aceptar", null );
-            builder.setView( v );
+            builder.setPositiveButton("Aceptar", null);
+            builder.setView(v);
 
             AlertDialog dialog = builder.create();
             dialog.show();
@@ -294,11 +294,11 @@ public class ComprasActivity extends AppCompatActivity {
      *
      * @param compraOriginal que se quiere duplicar
      */
-    private void duplicarCompra(NombreCompraEntity compraOriginal ) {
+    private void duplicarCompra(NombreCompraEntity compraOriginal) {
 
         // Controlador para el nombre de la compra
-        NombreCompraController nombreCompraController = new NombreCompraController( this );
-        CompraController compraController = new CompraController( this );
+        NombreCompraController nombreCompraController = new NombreCompraController(this);
+        CompraController compraController = new CompraController(this);
 
         /*
           Se crea un objeto NombreCompraEntity
@@ -306,29 +306,29 @@ public class ComprasActivity extends AppCompatActivity {
           .- String nombre: el mismo texto que el id
           .- int comercio:  1, corresponde a comercio en blanco
          */
-        String idCompraNueva = crearCompra( false);
+        String idCompraNueva = crearCompra(false);
 
         // En este punto la compra copia está creada y aparece en el listado
 
         // La compra está creada y se muestra
         // Obtenemos la compra copia
-        NombreCompraEntity compraCopia = nombreCompraController.getById( idCompraNueva );
+        NombreCompraEntity compraCopia = nombreCompraController.getById(idCompraNueva);
 
         // Establecer el comercio de la compra copia
-        compraCopia.setComercio(compraOriginal.getComercio() );
+        compraCopia.setComercio(compraOriginal.getComercio());
 
         // Actualizar la compra copia
-        nombreCompraController.update( compraCopia );
+        nombreCompraController.update(compraCopia);
 
         // Duplicar las compra de la original a la copia
         // Obtener todos los productos que pertenecen a la compra original
         // CompraEntity guarda el producto y la fecha de su compra
         // Le pedimos a CompraEntity todas las CompraEntity que tengan como fecha la fecha original
-        ArrayList<CompraEntity> productos = compraController.getProductosByFecha( compraOriginal.getId() );
+        ArrayList<CompraEntity> productos = compraController.getProductosByFecha(compraOriginal.getId());
 
         // Recorrer los productos, establecer la nueva fecha e insertalos
         // origen es un objeto CompraEntity
-        productos.forEach( origen -> {
+        productos.forEach(origen -> {
 
             CompraEntity copia = new CompraEntity(
                     origen.getProducto(),
@@ -339,29 +339,28 @@ public class ComprasActivity extends AppCompatActivity {
                     origen.getPrecioMedido(),
                     origen.getOferta()
             );
-            copia.setId( origen.getProducto() + idCompraNueva );
-            copia.setFecha( idCompraNueva );
-            compraController.insert( copia );
+            copia.setId(origen.getProducto() + idCompraNueva);
+            copia.setFecha(idCompraNueva);
+            compraController.insert(copia);
         });
 
         // Abrimos la lista
-        editarCompra( compraCopia );
+        editarCompra(compraCopia);
     }
 
     /**
      * Edita una compra
+     *
      * @param compra que se quiere editar
      */
     public void editarCompra(NombreCompraEntity compra) {
 
         // Abrimos la lista
-        Log.d("PREF", "ComprasActivity.borrarCompra() - editar listaAbiertaId: " + compra.getId() );
-        Preferencias.setListaAbiertaId( compra.getId(), this);
-        Log.d("PREF", "ComprasActivity.borrarCompra() - preferencia guardada: " + Preferencias.getListaAbiertaId( this ) );
-        startActivity( new Intent( this, ListaActivity.class ) );
+        Log.d("PREF", "ComprasActivity.borrarCompra() - editar listaAbiertaId: " + compra.getId());
+        Preferencias.setListaAbiertaId(compra.getId(), this);
+        Log.d("PREF", "ComprasActivity.borrarCompra() - preferencia guardada: " + Preferencias.getListaAbiertaId(this));
+        startActivity(new Intent(this, ListaActivity.class));
     }
-
-
 
 
 }
