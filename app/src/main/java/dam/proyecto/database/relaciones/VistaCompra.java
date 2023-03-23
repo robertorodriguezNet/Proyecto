@@ -25,5 +25,14 @@ public class VistaCompra {
      public String precioMedido;
      public String fecha;
 
-
+     @Override
+     public String toString() {
+          return "VistaCompra{" +
+                  "denominacion='" + denominacion + '\'' +
+                  ", name='" + name + '\'' +
+                  ", precio='" + precio + '\'' +
+                  ", precioMedido='" + precioMedido + '\'' +
+                  ", fecha='" + fecha + '\'' +
+                  '}';
+     }
 }

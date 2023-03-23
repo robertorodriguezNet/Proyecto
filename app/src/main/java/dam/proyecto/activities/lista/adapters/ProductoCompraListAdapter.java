@@ -29,9 +29,9 @@ import dam.proyecto.database.repositories.ProductoRepository;
  * Adaptador para cargar los producto de una compra en su lista de productos.
  * NO SE USA PARA LA TABLA, solo para ListView
  *
- * @author Roberto Rodríguez
- * @version 1.2023.01.25
- * @since 2023/01/25
+ * @author Roberto Rodríguez Jiménez
+ * @since 25/01/2023
+ * @version 2023.01.25
  */
 public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
 

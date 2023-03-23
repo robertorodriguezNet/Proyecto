@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,11 +25,15 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
+import dam.proyecto.activities.lista.adapters.DiferentesComerciosAdapter;
 import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
+import dam.proyecto.activities.lista.clases.ComercioDiferente;
 import dam.proyecto.activities.lista.listeners.ListaListener;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ListaController;
@@ -46,8 +51,8 @@ import dam.proyecto.utilities.Preferencias;
  * Controlador para Producto
  *
  * @author Roberto Rodríguez
- * @version 2023.02.24
  * @since 11/02/2023
+ * @version 2023.03.23
  */
 public class ListaListaFragment extends Fragment {
 
@@ -195,17 +200,82 @@ public class ListaListaFragment extends Fragment {
                                 .getListaAbiertaId(context)
                 );
 
-        // Ya tenemos la colección de comercios y sus compras
+        // Ya tenemos la colección de comercios y sus compras.
+        // La colección se agrupa por comercio (por su id)
+        // Cada comercio (id) guarda un ArrayList de VistaCompra, con un VistaCompra para
+        // cada uno de los productos.
         // Ahora hay que dar forma a los datos que se van a mostra en el layot:
-        //
+        // necesitamos una clase que recoja los datos y crear un array para pasarlo al
+        // adapter de la lista que se mostrará.
+        ArrayList<ComercioDiferente> diferentesComercios = new ArrayList<ComercioDiferente>();
+
+        // De los datos del array, no necesitamos la clave, pues en VistaCompra ya
+        // aparece el comercio
+        for( Map.Entry<Integer, ArrayList<VistaCompra>> compra : compras.entrySet() ){
+
+            int articulos = 0;
+            float total = 0f;
+            long desde = 0;
+            long hasta = 0;
+            String comercio = "";
+
+            // Recorrer los productos comprados en cada comercio
+            for ( VistaCompra c : compra.getValue() ) {
+
+                Long f = Long.parseLong( c.fecha );
+
+                articulos++;
+                total += Float.parseFloat( c.precio );
+
+                if( desde == 0 ){
+                    desde = f;
+                } else if ( f < desde ){
+                    desde = f;
+                }
+
+                if( hasta == 0 ){
+                    hasta = f;
+                }else if( f > hasta ){
+                    hasta = f;
+                }
+
+                comercio = c.name;
+            }
+
+            // Guardar el resumen del comercio
+            diferentesComercios.add(
+                    new ComercioDiferente(
+                            comercio,
+                            total,
+                            articulos,
+                            String.valueOf(desde),
+                            String.valueOf(hasta)
+                    )
+            );
+
+        }
+
+        // Ya tenemos una lista completa con las compras por comercio
 
         // Mostramos un diálogo con las opciones
-        LayoutInflater inflater = this.getLayoutInflater();
+
+        // Vista del dialog
+        ListView listView = new ListView( context );
+
+        ArrayAdapter adapter = new DiferentesComerciosAdapter(
+                context,
+                R.layout.item_precio_comercio,
+                diferentesComercios
+        );
+        listView.setAdapter( adapter );
+
+
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        View view = inflater.inflate(R.layout.alert_cambiar_precios, null);
+        builder.setTitle("En otros comercios");
+
 
         builder.setNegativeButton("Cancelar", null);
-        builder.setView(view);
+        builder.setView(listView);
 
         AlertDialog dialogPrecio = builder.create();
         dialogPrecio.show();
