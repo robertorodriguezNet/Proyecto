@@ -1,7 +1,6 @@
 package dam.proyecto.activities.lista;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -10,7 +9,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,24 +22,17 @@ import android.widget.TextView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
-import dam.proyecto.activities.lista.adapters.DiferentesComerciosAdapter;
 import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
-import dam.proyecto.activities.lista.clases.ComercioDiferente;
 import dam.proyecto.activities.lista.listeners.ListaListener;
-import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ListaController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
-import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.utilities.Preferencias;
@@ -150,7 +141,7 @@ public class ListaListaFragment extends Fragment {
             btnShare.setOnClickListener(view1 -> compartir());
 
             // Botón para mostrar diferentes precios
-            btnPrecio.setOnClickListener(view1 -> abrirPreciosComercio());
+            btnPrecio.setOnClickListener( v -> oyente.compararComercios() );
 
             // Botón salir
             btnSalir.setOnClickListener(view12 -> salir());
@@ -177,109 +168,6 @@ public class ListaListaFragment extends Fragment {
         }
 
         return view;
-    }
-
-    /**
-     * Muestra un listado con los productos de la lista abierta
-     * pero con los precios de otros comercios.
-     */
-    public void abrirPreciosComercio() {
-
-        // Obtener los datos.
-
-        // ¿Qué tengo?: una lista de compras CompraEntity en dataProductos
-        //              CompraEntity NO guarda el comercio
-        // ¿Qué necesito? la misma lista de compras pero para cada comercio
-        // ¿Cómo obtengo los comercios?
-        //              Se busca, para cada producto, los comercios en los que ha sido comprado
-        //              Para cada producto debe existir una colección de comercios (Integer)
-        CompraController cc = new CompraController(getContext());
-        HashMap<Integer, ArrayList<VistaCompra>> compras =
-                cc.getComparativaComercios(
-                        Preferencias
-                                .getListaAbiertaId(context)
-                );
-
-        // Ya tenemos la colección de comercios y sus compras.
-        // La colección se agrupa por comercio (por su id)
-        // Cada comercio (id) guarda un ArrayList de VistaCompra, con un VistaCompra para
-        // cada uno de los productos.
-        // Ahora hay que dar forma a los datos que se van a mostra en el layot:
-        // necesitamos una clase que recoja los datos y crear un array para pasarlo al
-        // adapter de la lista que se mostrará.
-        ArrayList<ComercioDiferente> diferentesComercios = new ArrayList<ComercioDiferente>();
-
-        // De los datos del array, no necesitamos la clave, pues en VistaCompra ya
-        // aparece el comercio
-        for( Map.Entry<Integer, ArrayList<VistaCompra>> compra : compras.entrySet() ){
-
-            int articulos = 0;
-            float total = 0f;
-            long desde = 0;
-            long hasta = 0;
-            String comercio = "";
-
-            // Recorrer los productos comprados en cada comercio
-            for ( VistaCompra c : compra.getValue() ) {
-
-                Long f = Long.parseLong( c.fecha );
-
-                articulos++;
-                total += Float.parseFloat( c.precio );
-
-                if( desde == 0 ){
-                    desde = f;
-                } else if ( f < desde ){
-                    desde = f;
-                }
-
-                if( hasta == 0 ){
-                    hasta = f;
-                }else if( f > hasta ){
-                    hasta = f;
-                }
-
-                comercio = c.name;
-            }
-
-            // Guardar el resumen del comercio
-            diferentesComercios.add(
-                    new ComercioDiferente(
-                            comercio,
-                            total,
-                            articulos,
-                            String.valueOf(desde),
-                            String.valueOf(hasta)
-                    )
-            );
-
-        }
-
-        // Ya tenemos una lista completa con las compras por comercio
-
-        // Mostramos un diálogo con las opciones
-
-        // Vista del dialog
-        ListView listView = new ListView( context );
-
-        ArrayAdapter adapter = new DiferentesComerciosAdapter(
-                context,
-                R.layout.item_precio_comercio,
-                diferentesComercios
-        );
-        listView.setAdapter( adapter );
-
-
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle("En otros comercios");
-
-
-        builder.setNegativeButton("Cancelar", null);
-        builder.setView(listView);
-
-        AlertDialog dialogPrecio = builder.create();
-        dialogPrecio.show();
-
     }
 
     /**

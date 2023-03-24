@@ -13,13 +13,10 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
-import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
 import dam.proyecto.activities.lista.listeners.ListaListener;
 import dam.proyecto.controllers.ListaController;
 import dam.proyecto.database.entity.CompraEntity;
@@ -192,6 +189,16 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace( R.id.listaContenedor, new ListaListaFragment() )
+                .commit();
+
+    }
+
+    @Override
+    public void compararComercios(){
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace( R.id.listaContenedor, new ComparativaComerciosFragment() )
                 .commit();
 
     }

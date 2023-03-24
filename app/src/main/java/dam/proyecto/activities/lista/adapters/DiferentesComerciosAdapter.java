@@ -1,5 +1,6 @@
 package dam.proyecto.activities.lista.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -11,39 +12,35 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.lista.clases.ComercioDiferente;
-import dam.proyecto.database.relaciones.VistaCompra;
 /**
  *
  * @author Roberto Rodríguez Jiménez
  * @since 23/03/2023
  * @version 2023.03.23
  */
-public class DiferentesComerciosAdapter extends ArrayAdapter<VistaCompra> {
+public class DiferentesComerciosAdapter extends ArrayAdapter<ComercioDiferente> {
 
     private final int VISTA_ITEM;                                     // Layout que dibuja cada ítem
     private final List<ComercioDiferente> DATA;
-
-    public DiferentesComerciosAdapter(@NonNull Context context, int resource, List<ComercioDiferente> data) {
-        super(context, resource);
-
-        this.VISTA_ITEM = resource;
-        this.DATA = data;
-
-    }
 
     /**
      * Cosntructor
      *
      * @param context   contexto
-     * @param vistaItem es el layout que dibuja cada ítem
-     * @param data      la colección de datos
+     * @param itemLayout es el layout que dibuja cada ítem
+     * @param datos      la colección de datos
      */
+    public DiferentesComerciosAdapter(Context context, int itemLayout, List<ComercioDiferente> datos) {
+        super(context, itemLayout, datos);
+
+        this.VISTA_ITEM = itemLayout;
+        this.DATA = datos;
+
+    }
 
 
     /**
@@ -58,11 +55,14 @@ public class DiferentesComerciosAdapter extends ArrayAdapter<VistaCompra> {
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        Log.d("LDLC","un comercio leído");
+//        Log.d("LDLC","un comercio leído");
 
         ComercioDiferente actual = DATA.get(position);
 
-        View view = LayoutInflater
+        Log.d("LDLC","un comercio leído: " + actual.getComercio() );
+
+
+        @SuppressLint("ViewHolder") View view = LayoutInflater
                 .from( getContext() )
                 .inflate( VISTA_ITEM, parent, false);
 
@@ -73,7 +73,7 @@ public class DiferentesComerciosAdapter extends ArrayAdapter<VistaCompra> {
         TextView desde = view.findViewById(R.id.ipc_tv_fechaDesde);
         TextView hasta = view.findViewById(R.id.ipc_tv_fechaHasta);
 
-        comercio.setText( actual.getComercio() );
+        comercio.setText( actual.getComercio().toUpperCase() );
         articulos.setText( String.valueOf( actual.getArticulos() ) );
         desde.setText( actual.getDesde() );
         hasta.setText( actual.getHasta() );

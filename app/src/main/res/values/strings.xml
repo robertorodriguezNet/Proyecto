@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Lista de la compra</string>
     <string name="app_author">Roberto Rodríguez Jiménez</string>
-    <string name="app_version">v0.2023.03.07</string>
+    <string name="app_version">v0.2023.03.23</string>
 
     <string name="title_activity_almacen">Almacén</string>
     <string name="title_activity_lista">Lista abierta</string>
@@ -11,6 +11,14 @@
     <string name="str_ceroDecimal">0.00</string>
     <string name="str_aceptar">Aceptar</string>
     <string name="str_cancelar">Cancelar</string>
+    <string name="str_producto">producto</string>
+    <string name="str_denominacion">Denominación</string>
+    <string name="str_evolucionDelPrecio">evolución del precio</string>
+    <string name="str_nuevoId">Nuevo id</string>
+    <string name="str_comercios">Comercios</string>
+    <string name="str_marcas">Marcas</string>
+    <string name="str_asociados">Asociados</string>
+    <string name="str_compartivaComercios">Comparativa de comercios</string>
 
     <!-- tabs -->
     <string name="itemInicio">Inicio</string>
@@ -105,15 +113,8 @@
     <string name="mp_str_it_marcaBlanca">Marca blanca</string>
     <string name="str_salir">Salir</string>
     <string name="amb_str_tv_leyenda">En esta pantalla se relacionan las marcas con sus comercios</string>
-    <string name="str_comercios">Comercios</string>
-    <string name="str_marcas">Marcas</string>
-    <string name="str_asociados">Asociados</string>
     <string name="amb_tv_todasLasMarcas">Todas la marcas</string>
     <string name="str_otros_productos">Productos relacionados con </string>
-    <string name="str_producto">producto</string>
-    <string name="str_denominacion">Denominación</string>
-    <string name="str_evolucionDelPrecio">evolución del precio</string>
-    <string name="str_nuevoId">Nuevo id</string>
     <string name="acp_str_titulo">COMERCIOS CON MEJORES PRECIOS</string>
     <string name="acp_str_btnSalir">SALIR</string>
 
