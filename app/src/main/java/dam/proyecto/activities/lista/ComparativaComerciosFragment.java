@@ -11,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -66,7 +68,7 @@ public class ComparativaComerciosFragment extends Fragment {
         // Ahora hay que dar forma a los datos que se van a mostra en el layuot:
         // necesitamos una clase que recoja los datos de "compras y crear un array
         // para poder pasarlo al adapter de la lista que se mostrará.
-        ArrayList<ComercioDiferente> datos = crearArrayParaElAdapter( compras );
+        ArrayList<ComercioDiferente> datos = crearArrayParaElAdapter(compras);
 
         View view = inflater.inflate(R.layout.fragment_comparativa_comercios, container, false);
         ViewPager2 viewPager = view.findViewById(R.id.fcc_list_comparativa);
@@ -77,6 +79,14 @@ public class ComparativaComerciosFragment extends Fragment {
 //        viewPager.setClipChildren(false);
 //        viewPager.setOffscreenPageLimit(2);
 //        viewPager.getChildAt(0).setOverScrollMode(View.OVER_SCROLL_NEVER);
+
+        // Botón para volver
+        Button btnSalir = view.findViewById(R.id.fcc_btn_salir);
+        btnSalir.setOnClickListener(v -> getParentFragmentManager()
+                .beginTransaction()
+                .replace(R.id.listaContenedor, new ListaListaFragment())
+                .commit()
+        );
 
         return view;
     }

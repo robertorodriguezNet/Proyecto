@@ -30,13 +30,19 @@
         app:layout_constraintTop_toBottomOf="@id/fcc_tv_titulo" />
 
 
-    <ImageButton
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/fcc_btn_salir"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_baseline_exit_to_app_24"
+        android:backgroundTint="@color/green_500"
+        android:text="@string/mep_str_it_cancelar"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="12sp"
+        app:icon="@drawable/ic_baseline_exit_to_app_24"
+        app:iconTint="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fcc_list_comparativa"/>
+        app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
