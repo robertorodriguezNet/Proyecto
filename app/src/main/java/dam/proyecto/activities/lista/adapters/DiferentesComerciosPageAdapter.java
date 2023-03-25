@@ -1,5 +1,6 @@
 package dam.proyecto.activities.lista.adapters;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ public class DiferentesComerciosPageAdapter
 
     public DiferentesComerciosPageAdapter(ArrayList<ComercioDiferente> datos) {
         this.datos = datos;
+        Log.d("LDLC","Adaptador datos recibidos: " + datos.size() );
     }
 
     @NonNull

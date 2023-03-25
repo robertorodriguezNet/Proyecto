@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import dam.proyecto.activities.lista.clases.ComercioDiferente;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.relaciones.VistaCompra;
@@ -114,24 +115,29 @@ public class CompraController {
     }
 
     /**
-     * Obtenemos un array de enteros que representan los comercios en los que hay compras
+     * Obtener una colección de objetos que reperesentan una misma compra en
+     * diferentes comercios.
      *
      * @param productos que pertenecen a la lista abierta
      */
-    public HashMap<Integer, ArrayList<VistaCompra>> getComparativaComercios(ArrayList<CompraEntity> productos) {
+    public ArrayList<ComercioDiferente> getComparativaComercios(ArrayList<CompraEntity> productos) {
 
-        // Colección de listas para cada comercio
-        // El valor Integer K se refiere al id del comercio
-        // El ArrayList V es la colección de productos
-        HashMap<Integer, ArrayList<VistaCompra>> compras = new HashMap<>();
+        // Colección de objetos ComercioDiferente, que incluyen el resumen y un listado
+        ArrayList<ComercioDiferente> comerciosDiferentes = new ArrayList<>();
 
         // Comercios en los que se ha comprado el producto
         HashSet<Integer> comercios = getColeccionDeComerciosByLista(productos);
 
-        // Hay que crear una lista de la compra para cada comercio
+        // Tenemos la lista de productos y el listado de comercios
+        // Para cada comercio que hemos obtenido
+        // c es el entero índice del comercio
         comercios.forEach(c -> {
 
-            // ArrayList nueva para cada comercio
+            // Creamos el objeto ComercioDiferente sin datos, solo con la lista de productos
+            ComercioDiferente comercio = new ComercioDiferente();
+
+            // ArrayList nueva para cada comercio.
+            // Esta lista es la que se añade al objeto ComercioDiferente
             ArrayList<VistaCompra> enUnComercio = new ArrayList<>();
 
             // Para cada comercio
@@ -149,20 +155,22 @@ public class CompraController {
 
             });
 
-            // Insertamos el comercio y el ArrayList en el HashMap
-            compras.put(c, enUnComercio);
+            // Insertamos los producto en un comercio en su objeto ComercioDiferente
+            comercio.setListaDeProductos( enUnComercio);
+
+            // Insertamos el comercio en la lista que debemos devolver
+            comerciosDiferentes.add(comercio);
         });
 
         // Ya tenemos la colección de compras en cada comercio
-        return compras;
+        return comerciosDiferentes;
     }
 
     /**
-     * Obtenemos un array de enteros que representan los comercios en los que hay compras
      *
      * @param idCompra id de la lista abierta (la fecha)
      */
-    public HashMap<Integer, ArrayList<VistaCompra>> getComparativaComercios(String idCompra) {
+    public ArrayList<ComercioDiferente> getComparativaComercios(String idCompra) {
         return getComparativaComercios(REPOSITORY.getProductosByFecha(idCompra));
     }
 

@@ -1,5 +1,9 @@
 package dam.proyecto.activities.lista.clases;
 
+import java.util.ArrayList;
+
+import dam.proyecto.database.relaciones.VistaCompra;
+
 public class ComercioDiferente {
 
     private String comercio;
@@ -7,6 +11,8 @@ public class ComercioDiferente {
     private int articulos;
     private String desde;
     private String hasta;
+
+    private ArrayList<VistaCompra> listaDeProductos;
 
     public ComercioDiferente(String comercio, float total, int articulos, String desde, String hasta) {
         this.comercio = comercio;
@@ -57,6 +63,14 @@ public class ComercioDiferente {
 
     public void setHasta(String hasta) {
         this.hasta = hasta;
+    }
+
+    public ArrayList<VistaCompra> getListaDeProductos() {
+        return listaDeProductos;
+    }
+
+    public void setListaDeProductos(ArrayList<VistaCompra> listaDeProductos) {
+        this.listaDeProductos = listaDeProductos;
     }
 
     @Override

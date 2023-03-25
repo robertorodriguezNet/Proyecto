@@ -1,26 +1,19 @@
 package dam.proyecto.activities.lista;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.widget.ViewPager2;
 
-import android.text.Layout;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ListView;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 import dam.proyecto.R;
-import dam.proyecto.activities.lista.adapters.DiferentesComerciosAdapter;
 import dam.proyecto.activities.lista.adapters.DiferentesComerciosPageAdapter;
 import dam.proyecto.activities.lista.clases.ComercioDiferente;
 import dam.proyecto.controllers.CompraController;
@@ -59,7 +52,7 @@ public class ComparativaComerciosFragment extends Fragment {
         // Obtener un listado de los comercios (Integer) con
         // los productos comprados en él (Array<VistaCompra>)
         // VistaCompra es un POJO de relación para room
-        HashMap<Integer, ArrayList<VistaCompra>> compras =
+        ArrayList<ComercioDiferente> compras =
                 cc.getComparativaComercios(
                         Preferencias
                                 .getListaAbiertaId(getContext())
@@ -93,30 +86,39 @@ public class ComparativaComerciosFragment extends Fragment {
 
     /**
      * Devuelve un listado de objetos ComercioDiferente, que contienen el resumen
-     * de una misma lista de la compra en diferentes comercios.
+     * de una misma lista de la compra en diferentes comercios y un listado
+     * de VistaCompra de cada producto.
+     * VistaCompra contiene los datos esenciales de una compra: denominación del producto,
+     * precio, precio medio, fecha y nombre del comercio.
+     * Es una clase de relación.
      *
-     * @param compras es el listado de las compras, asociadas a un comercio
+     * @param compras es el listado de los diferentes comercios en los
+     *                que se han comprado productos.
      * @return la colección de resúmenes de compras
      */
-    private ArrayList<ComercioDiferente> crearArrayParaElAdapter(HashMap<Integer, ArrayList<VistaCompra>> compras) {
+    private ArrayList<ComercioDiferente> crearArrayParaElAdapter(ArrayList<ComercioDiferente> compras) {
 
-        ArrayList<ComercioDiferente> diferentesComercios = new ArrayList<ComercioDiferente>();
+        ArrayList<ComercioDiferente> diferentesComercios = new ArrayList<>();
 
-        for (Map.Entry<Integer, ArrayList<VistaCompra>> compra : compras.entrySet()) {
+        // Recorrer cada uno de los objetos ComercioDiferente de la colección que
+        // recibimos como parámetro.
+        // Para cada objeto debemos obtener los valores
+        for( ComercioDiferente comercio : compras ){
 
             int articulos = 0;
             float total = 0f;
             long desde = 0;
             long hasta = 0;
-            String comercio = "";
+            String nombreComercio = "";
 
-            // Recorrer los productos comprados en cada comercio
-            for (VistaCompra c : compra.getValue()) {
+            // Recorrer los productos comprados en el comercio
+            // Comercio tiene una lista de los productos comprados
+            for( VistaCompra vistaCompra : comercio.getListaDeProductos() ){
 
-                Long f = Long.parseLong(c.fecha);
+                long f = Long.parseLong(vistaCompra.fecha);
 
                 articulos++;
-                total += Float.parseFloat(c.precio);
+                total += Float.parseFloat(vistaCompra.precio);
 
                 if (desde == 0) {
                     desde = f;
@@ -130,21 +132,20 @@ public class ComparativaComerciosFragment extends Fragment {
                     hasta = f;
                 }
 
-                comercio = c.name;
-            }
+                nombreComercio = vistaCompra.name;
 
-            // Guardar el resumen del comercio
-            diferentesComercios.add(
-                    new ComercioDiferente(
-                            comercio,
-                            total,
-                            articulos,
-                            String.valueOf(desde),
-                            String.valueOf(hasta)
-                    )
-            );
+            } // fin de recorrer el listado de productos de un comercio
 
+            // Guardar el resumen
+            comercio.setComercio( nombreComercio );
+            comercio.setArticulos(articulos);
+            comercio.setTotal(total);
+            comercio.setDesde(String.valueOf(desde));
+            comercio.setHasta(String.valueOf(hasta));
+
+            diferentesComercios.add( comercio );
         }
+
         return diferentesComercios;
     }
 }
