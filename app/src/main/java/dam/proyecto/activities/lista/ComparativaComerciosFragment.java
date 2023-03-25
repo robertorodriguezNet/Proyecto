@@ -4,7 +4,9 @@ import android.content.Context;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.viewpager2.widget.ViewPager2;
 
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import java.util.Map;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.lista.adapters.DiferentesComerciosAdapter;
+import dam.proyecto.activities.lista.adapters.DiferentesComerciosPageAdapter;
 import dam.proyecto.activities.lista.clases.ComercioDiferente;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.database.relaciones.VistaCompra;
@@ -41,9 +44,6 @@ public class ComparativaComerciosFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.fragment_comparativa_comercios, container, false);
-        Context context = view.getContext();
-
         // Obtener los datos.
 
         // ¿Qué tengo?: una lista de compras CompraEntity en dataProductos
@@ -60,30 +60,24 @@ public class ComparativaComerciosFragment extends Fragment {
         HashMap<Integer, ArrayList<VistaCompra>> compras =
                 cc.getComparativaComercios(
                         Preferencias
-                                .  getListaAbiertaId( context )
+                                .getListaAbiertaId(getContext())
                 );
-
-
-        // Ya tenemos la colección de comercios y sus compras.
-        // La colección se agrupa por comercio (por su id)
-        // Cada comercio (id) guarda un ArrayList de VistaCompra, con un VistaCompra para
-        // cada uno de los productos.
 
         // Ahora hay que dar forma a los datos que se van a mostra en el layuot:
         // necesitamos una clase que recoja los datos de "compras y crear un array
         // para poder pasarlo al adapter de la lista que se mostrará.
         ArrayList<ComercioDiferente> datos = crearArrayParaElAdapter( compras );
 
-        // Ya tenemos una lista completa con las compras por comercio
+        View view = inflater.inflate(R.layout.fragment_comparativa_comercios, container, false);
+        ViewPager2 viewPager = view.findViewById(R.id.fcc_list_comparativa);
 
-        // Obtenemos el ListView en el que cargar los datos
-        ListView listView = view.findViewById( R.id.fcc_list_comparativa );
-        DiferentesComerciosAdapter adapter = new DiferentesComerciosAdapter(
-                context,
-                R.layout.item_precio_comercio,
-                datos
-        );
-        listView.setAdapter( adapter );
+        DiferentesComerciosPageAdapter adapter = new DiferentesComerciosPageAdapter(datos);
+        viewPager.setAdapter(adapter);
+//        viewPager.setClipToPadding(false);
+//        viewPager.setClipChildren(false);
+//        viewPager.setOffscreenPageLimit(2);
+//        viewPager.getChildAt(0).setOverScrollMode(View.OVER_SCROLL_NEVER);
+
         return view;
     }
 
@@ -94,7 +88,7 @@ public class ComparativaComerciosFragment extends Fragment {
      * @param compras es el listado de las compras, asociadas a un comercio
      * @return la colección de resúmenes de compras
      */
-    private ArrayList<ComercioDiferente> crearArrayParaElAdapter( HashMap<Integer, ArrayList<VistaCompra>> compras ){
+    private ArrayList<ComercioDiferente> crearArrayParaElAdapter(HashMap<Integer, ArrayList<VistaCompra>> compras) {
 
         ArrayList<ComercioDiferente> diferentesComercios = new ArrayList<ComercioDiferente>();
 
