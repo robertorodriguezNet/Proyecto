@@ -66,7 +66,7 @@ public class ComparativaComerciosFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_comparativa_comercios, container, false);
         ViewPager2 viewPager = view.findViewById(R.id.fcc_list_comparativa);
 
-        DiferentesComerciosPageAdapter adapter = new DiferentesComerciosPageAdapter(datos);
+        DiferentesComerciosPageAdapter adapter = new DiferentesComerciosPageAdapter(datos, getContext() );
         viewPager.setAdapter(adapter);
 //        viewPager.setClipToPadding(false);
 //        viewPager.setClipChildren(false);

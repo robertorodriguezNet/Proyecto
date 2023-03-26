@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -10,7 +11,7 @@
     <TextView
         android:id="@+id/fcc_tv_titulo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:text="@string/str_compartivaComercios"
         android:textAlignment="center"
         android:textColor="@color/black"
@@ -18,13 +19,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.0" />
 
-     <androidx.viewpager2.widget.ViewPager2
+    <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/fcc_list_comparativa"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toTopOf="@id/fcc_btn_salir"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/fcc_btn_salir"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/fcc_tv_titulo" />
@@ -33,14 +34,15 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/fcc_btn_salir"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="70dp"
         android:backgroundTint="@color/green_500"
-        android:text="@string/mep_str_it_cancelar"
         android:gravity="center"
+        android:text="@string/mep_str_it_cancelar"
         android:textColor="@color/white"
         android:textSize="12sp"
         app:icon="@drawable/ic_baseline_exit_to_app_24"
         app:iconTint="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/fcc_list_comparativa"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

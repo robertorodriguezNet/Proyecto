@@ -71,7 +71,7 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintTop_toBottomOf="@id/ipc_tv_articulos"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="206dp" />
+        app:layout_constraintBottom_toTopOf="@id/ipc_rv_subLista" />
 
     <TextView
         android:id="@+id/ipc_tv_fechaDesde"
@@ -102,6 +102,15 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/ipc_tv_hasta"
         app:layout_constraintTop_toTopOf="@+id/ipc_tv_hasta" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/ipc_rv_subLista"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_fechaDesde"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
