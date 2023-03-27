@@ -14,12 +14,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.Map;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.lista.ListaListaFragment;
+import dam.proyecto.activities.producto.controllers.OfertaController;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.MedidaController;
@@ -136,8 +138,8 @@ public class ProductoInfoFragment extends Fragment {
         inpTotal = view.findViewById(R.id.fpi_inp_pagado);
 
         // Oyentes para los inputs
-        inpPrecio.setSelectAllOnFocus( true );
-        inpCantidad.setSelectAllOnFocus( true );
+        inpPrecio.setSelectAllOnFocus(true);
+        inpCantidad.setSelectAllOnFocus(true);
 
         // Componentes para el precio por unidad de medida
         tvUnidadMedida = view.findViewById(R.id.fpi_tv_unidadMedida);
@@ -146,9 +148,13 @@ public class ProductoInfoFragment extends Fragment {
 
         // Botones de ofertas
         btn2x1 = view.findViewById(R.id.fpi_btn_2x1);
+        btn2x1.setOnClickListener(v -> aplicarOferta(v));
         btn3x2 = view.findViewById(R.id.fpi_btn_3x2);
+        btn3x2.setOnClickListener(v -> aplicarOferta(v));
         btn50 = view.findViewById(R.id.fpi_btn_50);
+        btn50.setOnClickListener(v -> aplicarOferta(v));
         btn70 = view.findViewById(R.id.fpi_btn_70);
+        btn70.setOnClickListener(v -> aplicarOferta(v));
 
         // La coleción de botones sirve para poder modificar
         // su apariencia al ser seleccionados
@@ -170,12 +176,134 @@ public class ProductoInfoFragment extends Fragment {
         btnSalirSinGuardar.setOnClickListener(view12 -> salir());
     }
 
-    private void salir() {
-        getActivity()
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.listaContenedor, new ListaListaFragment())
-                .commit();
+    /**
+     * Aplica la oferta seleccionada al precio del producto editado.
+     *
+     * @param v elemento seleccionado
+     */
+    private void aplicarOferta(View v) {
+
+        // Controlador de las ofertas
+        OfertaController controller = new OfertaController(producto);
+
+        // Map para recibir los valores procesados
+        HashMap<String, Float> valores = new HashMap<>();
+
+        try {
+
+            // Obtner los datos necesarios
+            float preciof = Float.parseFloat(inpPrecio
+                    .getText()
+                    .toString()
+                    .replace(",", "."));
+            float cantidadf = Float.parseFloat(inpCantidad
+                    .getText()
+                    .toString()
+                    .replace(",", "."));
+
+
+            switch (v.getId()) {
+                case R.id.fpi_btn_2x1:
+                    valores = controller.get2x1(cantidadf, preciof);
+                    tvPrecioMedida.setText(String.format("%.03f", valores.get("precioMedio")));
+                    inpTotal.setText(String.format("%.03f", valores.get("total")));
+                    activarBotonOferta(v);
+                    ofertActiva = 1;
+                    break;
+                case R.id.fpi_btn_3x2:
+                    valores = controller.get3x2(cantidadf, preciof);
+                    tvPrecioMedida.setText(String.format("%.03f", valores.get("precioMedio")));
+                    inpTotal.setText(String.format("%.03f", valores.get("total")));
+                    activarBotonOferta(v);
+                    ofertActiva = 2;
+                    break;
+                case R.id.fpi_btn_50:
+                    valores = controller.get50(cantidadf, preciof);
+                    tvPrecioMedida.setText(String.format("%.03f", valores.get("precioMedio")));
+                    inpTotal.setText(String.format("%.03f", valores.get("total")));
+                    activarBotonOferta(v);
+                    ofertActiva = 3;
+                    break;
+                case R.id.fpi_btn_70:
+                    valores = controller.get70(cantidadf, preciof);
+                    tvPrecioMedida.setText(String.format("%.03f", valores.get("precioMedio")));
+                    inpTotal.setText(String.format("%.03f", valores.get("total")));
+                    activarBotonOferta(v);
+                    ofertActiva = 4;
+                    break;
+                default:
+            }
+        } catch (Exception e) {
+            Toast.makeText(context,
+                            "No se han podido aplicar las ofertas",
+                            Toast.LENGTH_SHORT)
+                    .show();
+        }
+
+    }
+
+    /**
+     * Marca el botón de oferta recibido por parámetro como activo
+     *
+     * @param v e botón seleccionado
+     */
+    private void activarBotonOferta(View v) {
+
+        // Aprovechamos que tenemos una colección con los botones
+        // Recorremos los botones
+        for (View b : botoneraOferta.values()) {
+
+            if( b.getId() == v.getId() ){
+                context.getColor(R.color.fondoBotonVerdeAvtivo);
+                b.setEnabled(false);
+            }else{
+                context.getColor(R.color.fondoBotonVerde);
+                b.setEnabled(true);
+            }
+
+        }
+
+    }
+
+
+    /**
+     * Actualiza los datos de la compra actual.
+     * Las operaciones se realizan en CompraController.
+     */
+    private void actualizarCompra() {
+
+        // En compra tenemos La CompraEntity que estamos editando
+        // Aunque los campos estén modificados, no se han guardado 'compra'
+
+        // Datos que guardaremos:
+        // precio
+        // cantidad
+        // precioMedido
+        // oferta
+        // pagado
+
+        compra.setPrecio(Float.parseFloat(inpPrecio.getText().toString().replace(",", ".")));
+        compra.setCantidad(Float.parseFloat(inpCantidad.getText().toString().replace(",", ".")));
+        compra.setPagado(Float.parseFloat(inpTotal.getText().toString().replace(",", ".")));
+        compra.setPrecioMedido(Float.parseFloat(tvPrecioMedida.getText().toString().replace(",", ".")));
+        compra.setOferta( ofertActiva );
+
+        //Ahora que tenemos el objeto compra, lo actualizamos en la BD
+        compraController.update(compra);
+
+        salir();
+
+    }
+
+
+
+    /**
+     * Desacargamos los datos de la BD
+     */
+    private void cargarDatos() {
+        compra = compraController.getById(idCompra);
+        producto = productoRepository.getById(compra.getProducto());
+        medida = medidaController.getById(producto.getMedida());
     }
 
     /**
@@ -205,8 +333,8 @@ public class ProductoInfoFragment extends Fragment {
             // artículo, no la cantidad de artículos comprados
             // Si el producto es a granel, la cantidad es 1
             // Para saber si es granel, miramos que la cantidad de producto sea 0
-            float precioMedida = compra.getPrecio() / (( producto.getCantidad() == 0)?
-                                                    1f : producto.getCantidad());
+            float precioMedida = compra.getPrecio() / ((producto.getCantidad() == 0) ?
+                    1f : producto.getCantidad());
 
             tvUnidadMedida.setText(medida.getDescription());
             tvPrecioMedida.setText(String.format("%.02f", precioMedida));
@@ -231,40 +359,14 @@ public class ProductoInfoFragment extends Fragment {
     }
 
     /**
-     * Desacargamos los datos de la BD
+     * Sale de la actividad.
      */
-    private void cargarDatos() {
-        compra = compraController.getById(idCompra);
-        producto = productoRepository.getById(compra.getProducto());
-        medida = medidaController.getById(producto.getMedida());
-    }
-
-    /**
-     * Actualiza los datos de la compra actual.
-     * Las operaciones se realizan en CompraController.
-     */
-    private void actualizarCompra() {
-
-        // En compra tenemos La CompraEntity que estamos editando
-        // Aunque los campos estén modificados, no se han guardado 'compra'
-
-        // Datos que guardaremos:
-        // precio
-        // cantidad
-        // precioMedido
-        // oferta
-        // pagado
-
-        compra.setPrecio(Float.parseFloat(inpPrecio.getText().toString().replace(",", ".")));
-        compra.setCantidad(Float.parseFloat(inpCantidad.getText().toString().replace(",", ".")));
-        compra.setPagado(Float.parseFloat(inpTotal.getText().toString().replace(",", ".")));
-        compra.setPrecioMedido(Float.parseFloat(tvPrecioMedida.getText().toString().replace(",", ".")));
-
-        //Ahora que tenemos el objeto compra, lo actualizamos en la BD
-        compraController.update(compra);
-
-        salir();
-
+    private void salir() {
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.listaContenedor, new ListaListaFragment())
+                .commit();
     }
 
     /**
@@ -292,10 +394,8 @@ public class ProductoInfoFragment extends Fragment {
 
     }
 
-    /* ****************************************************************************************** */
-    /* ** INTERFAZ PARA EL OYENTE DE LOS EDIT TEXT ******************************************* ** */
-    /* ****************************************************************************************** */
 
+    // Interfaz para el oyente de los EditText
     private TextWatcher textWatcher = new TextWatcher() {
 
         @Override
