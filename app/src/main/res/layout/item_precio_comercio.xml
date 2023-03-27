@@ -2,6 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ipc_rv_subLista"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="4dp">
@@ -10,11 +11,12 @@
         android:id="@+id/ipc_tv_comercio"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="comercio"
-        android:textColor="@color/black"
         android:textAlignment="center"
-        android:textStyle="bold"
+        android:textColor="@color/black"
         android:textSize="18sp"
+        android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -25,8 +27,8 @@
         android:layout_width="80dp"
         android:layout_height="wrap_content"
         android:text="Artículos: "
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/ipc_tv_numArticulos"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ipc_tv_comercio" />
 
     <TextView
@@ -47,9 +49,9 @@
         android:text="Total:"
         android:textAlignment="textEnd"
         android:textColor="@color/black"
+        app:layout_constraintEnd_toStartOf="@id/ipc_tv_importe"
         app:layout_constraintStart_toEndOf="@+id/ipc_tv_numArticulos"
-        app:layout_constraintTop_toBottomOf="@+id/ipc_tv_comercio"
-        app:layout_constraintEnd_toStartOf="@id/ipc_tv_importe"/>
+        app:layout_constraintTop_toBottomOf="@+id/ipc_tv_comercio" />
 
     <TextView
         android:id="@+id/ipc_tv_importe"
@@ -69,9 +71,8 @@
         android:text="Desde"
         app:layout_constraintEnd_toStartOf="@id/ipc_tv_fechaDesde"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintTop_toBottomOf="@id/ipc_tv_articulos"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/ipc_rv_subLista" />
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_articulos" />
 
     <TextView
         android:id="@+id/ipc_tv_fechaDesde"
@@ -103,14 +104,16 @@
         app:layout_constraintStart_toEndOf="@+id/ipc_tv_hasta"
         app:layout_constraintTop_toTopOf="@+id/ipc_tv_hasta" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/ipc_rv_subLista"
+    <ListView
+        android:id="@+id/ipc_lv_subLista"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="400dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ipc_tv_fechaDesde"
-        />
+        app:layout_constraintTop_toBottomOf="@id/ipc_tv_desde"
+        app:layout_constraintVertical_bias="0.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

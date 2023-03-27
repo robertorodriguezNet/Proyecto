@@ -5,18 +5,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.lista.clases.ComercioDiferente;
-import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.utilities.Fecha;
 
 public class DiferentesComerciosPageAdapter
@@ -54,25 +52,14 @@ public class DiferentesComerciosPageAdapter
 
         ComercioDiferente comercioDiferente = datos.get(position);
 
-        LinearLayoutManager layoutManager = new LinearLayoutManager(
-                holder.subLista.getContext(),
-                LinearLayoutManager.VERTICAL,
-                false
-        );
-        layoutManager.setInitialPrefetchItemCount(
-                comercioDiferente
-                        .getListaDeProductos()
-                        .size()
-        );
-
         VistaCompraAdapter adapter = new VistaCompraAdapter(
+                holder.subLista.getContext(),
+                R.layout.item_vista_compra,
                 comercioDiferente.getListaDeProductos()
         );
-        holder.subLista.setLayoutManager(layoutManager);
-        holder.subLista.setAdapter(adapter);
-        holder.subLista.setRecycledViewPool(viewPool);
+        holder.subLista.setAdapter( adapter );
 
-        holder.comercio.setText(comercioDiferente.getComercio());
+        holder.comercio.setText(comercioDiferente.getComercio().toUpperCase());
         holder.desde.setText(Fecha.getFechaFormateada(
                 comercioDiferente.getDesde()
         ));
@@ -96,7 +83,7 @@ public class DiferentesComerciosPageAdapter
         TextView hasta;
         TextView total;
         TextView articulos;
-        RecyclerView subLista;
+        ListView subLista;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -107,7 +94,7 @@ public class DiferentesComerciosPageAdapter
             total = itemView.findViewById(R.id.ipc_tv_importe);
             articulos = itemView.findViewById(R.id.ipc_tv_numArticulos);
 
-            subLista = itemView.findViewById(R.id.ipc_rv_subLista);
+            subLista = itemView.findViewById(R.id.ipc_lv_subLista);
         }
 
     }

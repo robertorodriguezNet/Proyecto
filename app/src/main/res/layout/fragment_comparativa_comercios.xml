@@ -7,7 +7,14 @@
     android:layout_height="match_parent"
     tools:context=".activities.lista.ComparativaComerciosFragment">
 
-    <!-- TODO: Update blank fragment layout -->
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/fcc_gl_bottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="0dp"/>
+
+
     <TextView
         android:id="@+id/fcc_tv_titulo"
         android:layout_width="match_parent"
@@ -15,7 +22,6 @@
         android:text="@string/str_compartivaComercios"
         android:textAlignment="center"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@id/fcc_list_comparativa"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -25,11 +31,10 @@
         android:id="@+id/fcc_list_comparativa"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintBottom_toTopOf="@+id/fcc_btn_salir"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/fcc_tv_titulo" />
-
+        app:layout_constraintTop_toBottomOf="@id/fcc_tv_titulo"
+        app:layout_constraintBottom_toTopOf="@id/fcc_btn_salir" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/fcc_btn_salir"
@@ -42,8 +47,7 @@
         android:textSize="12sp"
         app:icon="@drawable/ic_baseline_exit_to_app_24"
         app:iconTint="@color/white"
-        app:layout_constraintTop_toBottomOf="@id/fcc_list_comparativa"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/fcc_gl_bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
