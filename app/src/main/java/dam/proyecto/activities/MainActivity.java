@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mp_it_acercade:
-                Toast.makeText(this, "acerca de...", Toast.LENGTH_SHORT).show();
+                startActivity( new Intent( this, AcercaDeActivity.class ));
                 break;
             case R.id.mp_it_marcaBlanca:
                 editarMarcaBlanca();
