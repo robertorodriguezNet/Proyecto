@@ -34,7 +34,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Versión: v1.0 (27.03.2023)"
+        android:text="@string/app_version"
         android:textColor="@color/black"
         android:textSize="14sp"
         android:textStyle="bold"

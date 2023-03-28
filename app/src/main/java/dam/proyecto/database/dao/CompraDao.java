@@ -39,7 +39,7 @@ public interface CompraDao {
     @Query( "SELECT * FROM Compra WHERE fecha LIKE :fecha")
     List<CompraEntity> findByFecha( String fecha );
 
-    @Query( "select p.denominacion, m.name, c.precio, c.precioMedido, c.fecha " +
+    @Query( "select p.denominacion, m.name, c.precio, c.precioMedido, p.medida, c.fecha " +
             "from compra as c, Nombrecompra as nc, Productos as p, comercio as m " +
             "where producto = :idProducto and nc.id = c.fecha and c.producto = p.id " +
             "and nc.comercio = :idComercio and m.id = nc.comercio " +

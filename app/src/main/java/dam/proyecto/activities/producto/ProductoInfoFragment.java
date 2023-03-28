@@ -254,13 +254,16 @@ public class ProductoInfoFragment extends Fragment {
         for (View b : botoneraOferta.values()) {
 
             if( b.getId() == v.getId() ){
-                context.getColor(R.color.fondoBotonVerdeAvtivo);
+                b.setBackgroundColor(
+                        context.getColor(R.color.fondoBotonVerdeAvtivo)
+                );
                 b.setEnabled(false);
             }else{
-                context.getColor(R.color.fondoBotonVerde);
+                b.setBackgroundColor(
+                        context.getColor(R.color.fondoBotonVerde)
+                );
                 b.setEnabled(true);
             }
-
         }
 
     }
