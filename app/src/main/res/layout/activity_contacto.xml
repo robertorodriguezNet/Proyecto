@@ -4,8 +4,93 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="16dp"
     tools:context=".activities.ContactoActivity">
 
+
+    <TextView
+        android:id="@+id/contacto_titulo"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="CONTACTO"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/contacto_nombre"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Nombre"
+        android:inputType="textPersonName"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contacto_titulo"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <EditText
+        android:id="@+id/contacto_asunto"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Asunto"
+        android:inputType="textEmailSubject"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contacto_nombre"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <EditText
+        android:id="@+id/contacto_remite"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Dirección de e-mail"
+        android:inputType="textEmailAddress"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contacto_asunto"
+        tools:ignore="TouchTargetSizeCheck" />
+
+    <EditText
+        android:id="@+id/contacto_mensaje"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:hint="Mensaje"
+        android:inputType="textMultiLine"
+        android:lines="5"
+        android:text=""
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/contacto_remite" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/contacto_enviar"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:backgroundTint="@color/fondoBotonVerdeAvtivo"
+        android:gravity="center"
+        android:text="enviar"
+        android:textColor="@color/black"
+        android:textSize="12sp"
+        app:icon="@drawable/baseline_send_24"
+        app:iconTint="@color/black"
+        app:layout_constraintBottom_toTopOf="@id/contacto_salir"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/contacto_salir"
