@@ -1,6 +1,7 @@
 package dam.proyecto.activities.producto.adapters;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -74,9 +75,11 @@ public class OtrosAdapter extends ArrayAdapter<VistaCompra> {
 
         String strDenominacion = actual.denominacion.toLowerCase();
         String strComercio = actual.name.toLowerCase();
-        String strPrecio = actual.precio.replace(".",",");
+        String strPrecio = actual.precioMedido.replace(".",",") +
+                " €/" + actual.medida;
         String strFecha = getFecha(actual.fecha );
 
+        Log.d("LDLC", actual.toString());
 
         // Escribir los datos
         denominacion.setText(strDenominacion);

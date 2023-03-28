@@ -23,6 +23,7 @@ public class VistaCompra {
      public String name;                                                      // Nombre del comercio
      public String precio;
      public String precioMedido;
+     public String medida;
      public String fecha;
 
      @Override
@@ -31,7 +32,7 @@ public class VistaCompra {
                   "denominacion='" + denominacion + '\'' +
                   ", name='" + name + '\'' +
                   ", precio='" + precio + '\'' +
-                  ", precioMedido='" + precioMedido + '\'' +
+                  ", precioMedido='" + precioMedido + ' ' + medida + '\'' +
                   ", fecha='" + fecha + '\'' +
                   '}';
      }
