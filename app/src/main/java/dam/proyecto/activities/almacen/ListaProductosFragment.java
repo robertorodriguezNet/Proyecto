@@ -12,6 +12,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.controllers.TagController;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.utilities.Preferencias;
+import dam.proyecto.utilities.Words;
 
 /**
  * Carga la lista de productos almacenados en la base de datos.
@@ -154,87 +156,6 @@ public class ListaProductosFragment extends Fragment {
         inpTexto.setText("");
     }
 
-    /**
-     * Busca productos a traves de un texto dado
-     */
-    @SuppressLint("NotifyDataSetChanged")
-    private void search() {
-
-        // Controlador de MarcaBlanca
-        MarcaBlancaController marcaBlancaController = new MarcaBlancaController(getContext());
-
-        // Controlador de nombre de compra
-        NombreCompraController nombreCompraController = new NombreCompraController(getContext());
-
-        // Capturamos el texto que hay que buscar
-        String text = inpTexto
-                .getText()
-                .toString()
-                .trim()
-                .toLowerCase();
-
-        // Se admite la cadena vacía para mostrar todos los productos,
-        // pues puede darse el caso de que alguno no tenga le etiqueta correcta
-        if (text.isEmpty() || (text.length() >= CARACTERES_MINIMOS_PARA_BUSCAR)) {
-            // Le pedimos al controlador que nos devuelva la lista de productos
-
-            // Boramos la colección de productos
-            productoData.clear();
-
-            // Obtener los productos que contienen el texto
-            ArrayList<ProductoEntity> productosBuscados =
-                                            ProductoController.getAll(text, getContext());
-
-            // Ahora le pedimos a MarcaBlancaController.filtrarMarcaBlanca que elimine
-            // de la lista de productosBuscados aquellos que sean marca blanca
-            // de un comercio diferente al seleccionado en la lista abierta.
-            // Si la lista abierta no tiene un comercio, se muestran todos los productos buscados
-
-            // Pedimos el comercio de la lista abierta
-            String idListaAbierta;
-            int idComercio =
-                    ( ( idListaAbierta = Preferencias.getListaAbiertaId( getContext() )) == null ) ?
-                            1 :  nombreCompraController
-                                                        .getById(idListaAbierta)
-                                                        .getComercio();
-
-            // Sólo filtramos la marca blanca si el comercio es diferente de 1
-            if( idComercio != 1 ) {
-                productosBuscados = marcaBlancaController
-                        .filtrarMarcaBlanca(
-                                productosBuscados,
-                                idComercio
-                        );
-            }
-
-            productoData.addAll(productosBuscados);
-
-            // Notificamos el cambio al adaptador
-            adaptadorProductos.notifyDataSetChanged();
-
-        } else {
-            Toast.makeText(getContext(), "Mínimo 3 caracteres", Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    /**
-     * Busca un producto a través del código de barras y lo muestra.
-     * El código de barras es el id de ProductoEntity
-     *
-     * @param barCode código de barras buscado
-     */
-    @SuppressLint("NotifyDataSetChanged")
-    private void search(String barCode) {
-        // Obtenemos el objeto
-        ProductoEntity producto = ProductoController.getById(barCode, getContext());
-
-        // Añadimos el objeto a la lista de productos que se pasa al adaptador
-        productoData.clear();
-        productoData.add(producto);
-
-        // Notificamos el cambio al adaptador
-        adaptadorProductos.notifyDataSetChanged();
-    }
 
 
     @Override
@@ -309,6 +230,98 @@ public class ListaProductosFragment extends Fragment {
                 .replace(R.id.almacenContenedor, fragment)
                 .commit();
 
+    }
+
+
+    /**
+     * Busca productos a traves de un texto dado
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    private void search() {
+
+        // Controlador de MarcaBlanca
+        MarcaBlancaController marcaBlancaController = new MarcaBlancaController(getContext());
+
+        // Controlador de nombre de compra
+        NombreCompraController nombreCompraController = new NombreCompraController(getContext());
+
+        // Capturamos el texto que hay que buscar
+//        String text = inpTexto
+//                .getText()
+//                .toString()
+//                .trim()
+//                .toLowerCase();
+        String text = Words.normalizar(
+                inpTexto
+                        .getText()
+                        .toString()
+        );
+
+        // Se admite la cadena vacía para mostrar todos los productos,
+        // pues puede darse el caso de que alguno no tenga le etiqueta correcta
+        if (text.isEmpty() || (text.length() >= CARACTERES_MINIMOS_PARA_BUSCAR)) {
+            // Le pedimos al controlador que nos devuelva la lista de productos
+
+            // Boramos la colección de productos
+            productoData.clear();
+
+            // Obtener los productos que contienen el texto
+            ArrayList<ProductoEntity> productosBuscados = (text.isEmpty() )?
+                    ProductoController.getAll( getContext() ) :
+                    ProductoController.getAll(text, getContext());
+
+            // Ahora le pedimos a MarcaBlancaController.filtrarMarcaBlanca que elimine
+            // de la lista de productosBuscados aquellos que sean marca blanca
+            // de un comercio diferente al seleccionado en la lista abierta.
+            // Si la lista abierta no tiene un comercio, se muestran todos los productos buscados
+
+            // Pedimos el comercio de la lista abierta
+            String idListaAbierta;
+            int idComercio =
+                    ( ( idListaAbierta = Preferencias.getListaAbiertaId( getContext() )) == null ) ?
+                            1 :  nombreCompraController
+                            .getById(idListaAbierta)
+                            .getComercio();
+
+            Log.d("LDLC","productos buscados sin filtrar marca blanca: "+ productosBuscados.size());
+
+            // Sólo filtramos la marca blanca si el comercio es diferente de 1
+            if( idComercio != 1 ) {
+                productosBuscados = marcaBlancaController
+                        .filtrarMarcaBlanca(
+                                productosBuscados,
+                                idComercio
+                        );
+            }
+            Log.d("LDLC","productos buscados con filtro de marca blanca: "+ productosBuscados.size());
+
+            productoData.addAll(productosBuscados);
+
+            // Notificamos el cambio al adaptador
+            adaptadorProductos.notifyDataSetChanged();
+
+        } else {
+            Toast.makeText(getContext(), "Mínimo 3 caracteres", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    /**
+     * Busca un producto a través del código de barras y lo muestra.
+     * El código de barras es el id de ProductoEntity
+     *
+     * @param barCode código de barras buscado
+     */
+    @SuppressLint("NotifyDataSetChanged")
+    private void search(String barCode) {
+        // Obtenemos el objeto
+        ProductoEntity producto = ProductoController.getById(barCode, getContext());
+
+        // Añadimos el objeto a la lista de productos que se pasa al adaptador
+        productoData.clear();
+        productoData.add(producto);
+
+        // Notificamos el cambio al adaptador
+        adaptadorProductos.notifyDataSetChanged();
     }
 
 }

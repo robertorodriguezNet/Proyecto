@@ -65,39 +65,6 @@ public class ProductoController {
 
 
     /**
-     * Obtener el último precio de un producto en un comercio dados
-     *
-     * @param idProducto producto buscado
-     * @param idComercio en que el que se busca
-     * @param context    contexto
-     * @return precio del producto buscado
-     */
-    public static float getUltimoPrecio(String idProducto, int idComercio, Context context) {
-
-        // Obtnemos todas las compras del producto
-        // ordenadas por fecha descendentes
-        ArrayList<CompraEntity> compras = new CompraRepository(context)
-                .getAllByProducto(idProducto);
-
-
-        // Obtener todas las compras del comercio,
-        // ordenadas descendentes
-        ArrayList<String> nombreCompras = new NombreCompraRepository(context)
-                .getAllByIdComercio(idComercio);
-
-        // Recorremos en los productos para buscar si se compró en comercio
-        for (CompraEntity compra : compras) {
-            if (nombreCompras.contains(compra.getFecha())) {
-                // Este es el último producto comprado en el comercio buscado
-                return compra.getPrecio();
-            }
-        }
-
-        return 0.0f;
-
-    }
-
-    /**
      * Devuelve la colección completa de productos
      *
      * @return colección de productos
@@ -109,6 +76,8 @@ public class ProductoController {
     /**
      * Devuelve la colección completa de productos que contienen el texto
      *
+     * @param texto texto buscado, puede estar vacío
+     * @param context el contexto
      * @return colección de productos
      */
     public static ArrayList<ProductoEntity> getAll(String texto, Context context) {
@@ -169,6 +138,40 @@ public class ProductoController {
     public static float getUltimoPrecio(String idProducto, Context context) {
         String idCompraActual = Preferencias.getListaAbiertaId(context);
         return new CompraRepository(context).getUltimoPrecio(idProducto, idCompraActual);
+    }
+
+
+    /**
+     * Obtener el último precio de un producto en un comercio dados
+     *
+     * @param idProducto producto buscado
+     * @param idComercio en que el que se busca
+     * @param context    contexto
+     * @return precio del producto buscado
+     */
+    public static float getUltimoPrecio(String idProducto, int idComercio, Context context) {
+
+        // Obtnemos todas las compras del producto
+        // ordenadas por fecha descendentes
+        ArrayList<CompraEntity> compras = new CompraRepository(context)
+                .getAllByProducto(idProducto);
+
+
+        // Obtener todas las compras del comercio,
+        // ordenadas descendentes
+        ArrayList<String> nombreCompras = new NombreCompraRepository(context)
+                .getAllByIdComercio(idComercio);
+
+        // Recorremos en los productos para buscar si se compró en comercio
+        for (CompraEntity compra : compras) {
+            if (nombreCompras.contains(compra.getFecha())) {
+                // Este es el último producto comprado en el comercio buscado
+                return compra.getPrecio();
+            }
+        }
+
+        return 0.0f;
+
     }
 
 

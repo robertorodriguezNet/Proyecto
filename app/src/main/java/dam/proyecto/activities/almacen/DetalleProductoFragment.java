@@ -505,8 +505,6 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
                     productoController.getIdAutomatico( getContext() ) :
                     tv_codigoDeBarras.getText().toString();
 
-            Log.d("LDLC","id del producto recibido: " + id);
-
             // Obtenemos el id de la marca
             // Si la marca no existe, se guarda y se obtiene el id
             String marca = tv_marca.getText().toString();
@@ -560,6 +558,13 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             }
 
             // Después de guardar el producto, vamos a sociarle las etiquetas
+            // Es posible que se guarde un producto sin indicar nada más que
+            // la denominación, por lo que no se almacenaría ninguna etiqueta.
+
+            // No aseguramos de que haya, al menos, una etiqueta
+            if( text_tags.getText().toString().isEmpty() ){
+                addTagDesdeDenominacion();
+            }
             asociarTagsAlProducto(id);
 
 
