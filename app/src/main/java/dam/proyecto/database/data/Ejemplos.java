@@ -51,9 +51,9 @@ public class Ejemplos {
 //            cargarComercio();
             cargarMedidas();
 //            cargarCompraEntitys();
-//            cargarMarcas();
+            cargarMarcas();
 //            cargarTagsProductoEntity();
-//            cargarOfertaEntity();
+            cargarOfertaEntity();
 //            cargarMarcaBlanca();
 
             Preferencias.setDatosCargados(true, activity );

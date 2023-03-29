@@ -64,8 +64,6 @@ import dam.proyecto.utilities.Words;
  */
 public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
-    private final String HEAD = "DetalleProductoFragment";
-
     // Cámara
     private ActivityResultLauncher<ScanOptions> barcodeLauncher;
 
@@ -700,14 +698,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         text_tags.setText(texto);
 
         // Guardar el tag en la base de datos, recibimos un id
-        int idTag = tagController.insert(tag.trim());
+        tagController.insert(tag.trim());
 
         // Insertar el tag en la lista
         etiquetaList.add(tag.trim());
-
-        Toast.makeText(context,
-                "Guardado: " + tag + "(" + idTag + ")",
-                Toast.LENGTH_SHORT).show();
 
     }
 
@@ -720,13 +714,11 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     @Nullable
     private View.OnFocusChangeListener addTagDesdeDenominacion() {
 
-        String denominacion = tv_denominacion.getText().toString();
-
-        Log.i("LDLC", "DetalleProductoFragment.addTagDesdeDenominación" +
-                "\ndenominación: " + denominacion);
-
         // Separamos la denominación por los espacios en blanco
-        String[] palabras = denominacion.split(" ");
+        String[] palabras = tv_denominacion
+                .getText()
+                .toString()
+                .split(" ");
 
         // Para cada palabra
         for (String palabra : palabras) {

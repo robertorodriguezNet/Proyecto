@@ -20,6 +20,7 @@ public class MedidaData {
             new MedidaEntity("k", "Kilos"),
             new MedidaEntity("l", "Litros"),
             new MedidaEntity("g", "granel"),
+            new MedidaEntity("m", "metros"),
     };
 
     public static List<MedidaEntity> getData(){
