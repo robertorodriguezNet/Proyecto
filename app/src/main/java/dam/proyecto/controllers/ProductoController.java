@@ -5,6 +5,7 @@ import static dam.proyecto.Config.CODIGO_DE_BARRAS_LENGTH;
 import static dam.proyecto.Config.PRODUCTO_DENOMINACION_MIN_LENGTH;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 
@@ -140,6 +141,23 @@ public class ProductoController {
 
 
     /**
+     * Devuelve un a cadena de texto con un código de barras válido
+     *
+     * @param context contecto
+     * @return el nuevo código de barras
+     */
+    public String getIdAutomatico(Context context) {
+        // Pedir al repositorio el último id
+        String id = new ProductoRepository(context).getUltimoIdAutomatico();
+
+        if(id == null){
+            return "1000000000001";
+        }
+        // Devolver el valor incremetado
+        return incrementarValor( id );
+    }
+
+    /**
      * Devuelve el último precio registrado pero, si devilvemos el último precio, éste será
      * el que se acabe de guardar al crear la lista.
      * Se debe devolver el último, descartando el actual.
@@ -151,6 +169,22 @@ public class ProductoController {
     public static float getUltimoPrecio(String idProducto, Context context) {
         String idCompraActual = Preferencias.getListaAbiertaId(context);
         return new CompraRepository(context).getUltimoPrecio(idProducto, idCompraActual);
+    }
+
+
+    /**
+     * Recibe un valor numérico en formato String y lo devuelve incrementado en 1
+     *
+     * @param idStr El valor que se debe icrementar
+     * @return el valor incrementado
+     */
+    private static String incrementarValor(String idStr) {
+
+        // Debemos obtener un valor numérico válido y lo incrementamos
+        Long idL = Long.valueOf(idStr);
+        idL++;
+
+        return String.valueOf(idL);
     }
 
     /**
@@ -251,7 +285,7 @@ public class ProductoController {
     /**
      * Actualiza un producto
      *
-     * @param objeto producto que se actualiza
+     * @param objeto  producto que se actualiza
      * @param context contexto
      */
     public static void update(ProductoEntity objeto, Context context) {

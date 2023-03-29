@@ -34,68 +34,6 @@ public class ProductoRepository extends Repositorio {
     }
 
     /**
-     * Devuelve un listado completo de los registros.
-     * @return listado compde registros
-     */
-    public ArrayList<ProductoEntity> getAll(){
-        return (ArrayList<ProductoEntity>) DAO.getAll();
-    }
-
-    /**
-     * Devuelve la denominación de un producto a partir del id
-     * @param id el id buscado
-     * @return denominación
-     */
-    public String getDenominacionProducto( String id ){
-        try {
-            ProductoEntity producto = DAO
-                    .findById(id);
-            return producto.getDenominacion();
-        }catch ( Exception e ){
-            return "";
-        }
-    }
-
-    /**
-     * Devuelve un id automático válido.
-     * Los id's automáticos comienzan con
-     * PROBLEMA:
-     *      los códigos de barra tienen 13 dígitos, demasiados para un Long.
-     *      Como el id automático comienza por 1, no podemos convertir el String en número.
-     * SOLUCIÓN:
-     *      Antes de validar el String como Long, hay que dividirlo.
-     *
-     * @return el id generado
-     */
-    public String getIdAutomatico(){
-
-        // Obtenemos todos los productos cuyo id comience por 1
-        ArrayList<ProductoEntity> list = ( ArrayList<ProductoEntity> ) db
-                .productoDao()
-                .getAutomaticId();
-
-        // Devolvemos el id incrementado
-        return incrementarValor( getMaxId( list ) );
-    }
-
-    /**
-     * Devuelve el valor más alto del campo id de la colección de productos.
-     * @param list la colección de productos n la que buscar
-     * @return el valor más alto del campo id
-     */
-    private String getMaxId( ArrayList<ProductoEntity> list){
-
-        // Queremos ordenar la lista de mayor a menor por el campo "id"
-        // Para ello debemos sobre escribir el método compare de la clase Collections
-        // dentro de collection.sort
-        list.sort((pe1, pe2) -> Long.valueOf(pe2.getId()).compareTo(Long.valueOf(pe1.getId())));
-
-        return list.get( 0 ).getId();
-    }
-
-
-
-    /**
      * Elimina el producto de la base de datos a partir de su id
      * @param id buscado para ser eliminado
      */
@@ -116,6 +54,14 @@ public class ProductoRepository extends Repositorio {
     }
 
     /**
+     * Devuelve un listado completo de los registros.
+     * @return listado compde registros
+     */
+    public ArrayList<ProductoEntity> getAll(){
+        return (ArrayList<ProductoEntity>) DAO.getAll();
+    }
+
+    /**
      * Devuelve un producto a través del id
      * @param id id del producto
      * @return el producto buscado
@@ -123,6 +69,46 @@ public class ProductoRepository extends Repositorio {
     public ProductoEntity getById( String id ){
         return DAO.findById( id );
     }
+
+    /**
+     * Devuelve la denominación de un producto a partir del id
+     * @param id el id buscado
+     * @return denominación
+     */
+    public String getDenominacionProducto( String id ){
+        try {
+            ProductoEntity producto = DAO
+                    .findById(id);
+            return producto.getDenominacion();
+        }catch ( Exception e ){
+            return "";
+        }
+    }
+
+    /**
+     * Devuelve el valor más alto del campo id de la colección de productos.
+     * @param list la colección de productos n la que buscar
+     * @return el valor más alto del campo id
+     */
+    private String getMaxId( ArrayList<ProductoEntity> list){
+
+        // Queremos ordenar la lista de mayor a menor por el campo "id"
+        // Para ello debemos sobre escribir el método compare de la clase Collections
+        // dentro de collection.sort
+        list.sort((pe1, pe2) -> Long.valueOf(pe2.getId()).compareTo(Long.valueOf(pe1.getId())));
+
+        return list.get( 0 ).getId();
+    }
+
+    /**
+     * Devuelve el último id que se ha generado de forma automática.
+     * Los id generados de forma automática tienen un id de 13 dígitos
+     * y comienzan por 1.
+     * @return el último id.
+     */
+    public String getUltimoIdAutomatico(){
+        return DAO.getUltimoIdAutomatico();
+   }
 
 
     /**
@@ -132,19 +118,6 @@ public class ProductoRepository extends Repositorio {
         DAO.insertAll( data );
     }
 
-    /**
-     * Recibe un valor numérico en formato String y lo devuelve incrementado en 1
-     * @param idStr El valor que se debe icrementar
-     * @return el valor incrementado
-     */
-    private static String incrementarValor( String idStr ){
-
-        // Debemos obtener un valor numérico válido y lo incrementamos
-        Long idL = Long.valueOf( idStr );
-        idL++;
-
-        return String.valueOf( idL );
-    }
 
     /**
      * Inserta un producto en la base de datos

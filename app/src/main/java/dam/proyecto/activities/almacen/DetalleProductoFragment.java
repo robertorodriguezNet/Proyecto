@@ -112,6 +112,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     MedidaRepository medidaRepository;
     MarcaController marcaController;
     ProductoRepository productoRepository;
+    ProductoController productoController;
     TagController tagController;
     TagProductoController tagProductoController;
 
@@ -166,6 +167,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         medidaRepository = new MedidaRepository(context);
         marcaController = new MarcaController(context);
         productoRepository = new ProductoRepository(context);
+        productoController = new ProductoController();
         tagController = new TagController(context);
         tagProductoController = new TagProductoController(context);
 
@@ -203,10 +205,6 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      * Inicilizar los componentes de la interfaz
      */
     private void inicializarComponentes(View view) {
-
-        Log.d("LDLC", "DetalleProductoFragment.inicializarComponentes\n" +
-                "Código de barras recibido: " + codigoDeBarras);
-
 
         // Añadimos el código de barras si lo tenemos
         tv_codigoDeBarras = view.findViewById(R.id.aep_inp_codigo);
@@ -353,19 +351,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      */
     public void guardar() {
 
-        StringBuilder log = new StringBuilder(HEAD + ".guardar()");
-
         // Si es un producto nuevo, nos quedamos en el formulario
         guardarProducto();
 
         if (productoEditando == null) {
-            log.append("\nLlamada a limpiar(), permanecer en el formulario");
             limpiar();
         } else {
-            log.append("\nLlamada a cancelar(), salir del formulario");
             cancelar();
         }
-        Log.i("LDLC", log.toString());
 
     }
 
@@ -509,7 +502,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
             // Si el código de barras está vacío, debemos obtener uno
             String id = (tv_codigoDeBarras.getText().toString().isEmpty()) ?
-                    productoRepository.getIdAutomatico() : tv_codigoDeBarras.getText().toString();
+                    productoController.getIdAutomatico( getContext() ) :
+                    tv_codigoDeBarras.getText().toString();
+
+            Log.d("LDLC","id del producto recibido: " + id);
 
             // Obtenemos el id de la marca
             // Si la marca no existe, se guarda y se obtiene el id

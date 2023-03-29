@@ -27,8 +27,12 @@ public interface ProductoDao {
     @Query("SELECT * FROM productos WHERE id = :id")
     ProductoEntity findById(String id);
 
+    @Deprecated
     @Query("SELECT * FROM productos WHERE id LIKE '1%'")
     List<ProductoEntity> getAutomaticId();
+
+    @Query("SELECT id FROM productos WHERE id LIKE '1%' ORDER BY id DESC LIMIT 1")
+    String getUltimoIdAutomatico();
 
     // UPDATE ------------------------------------
     @Update

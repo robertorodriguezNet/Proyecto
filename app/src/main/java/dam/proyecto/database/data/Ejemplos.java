@@ -45,16 +45,16 @@ public class Ejemplos {
         if (!Preferencias.isDatosCargados(  activity )) {
             Log.d(TAG, "Ejemplos.class: llamada a cargarDatos");
 
-            cargarProductos();
-            cargarNombreCompra();
-            cargarTag();
-            cargarComercio();
+//            cargarProductos();
+//            cargarNombreCompra();
+//            cargarTag();
+//            cargarComercio();
             cargarMedidas();
-            cargarCompraEntitys();
-            cargarMarcas();
-            cargarTagsProductoEntity();
-            cargarOfertaEntity();
-            cargarMarcaBlanca();
+//            cargarCompraEntitys();
+//            cargarMarcas();
+//            cargarTagsProductoEntity();
+//            cargarOfertaEntity();
+//            cargarMarcaBlanca();
 
             Preferencias.setDatosCargados(true, activity );
         }
