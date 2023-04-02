@@ -1,6 +1,8 @@
 # Proyecto
 Lista de la compra
 
+Revisión room: cambiar el uso de los controladores por ViewModel
+
 Apliación que gestiona los precios de los productos que se compran habitualmente.
 La aplicación muestra una lista de la compra (cada lista nueva es almacenada y puede ser reutilizada)
 en la cual los precios pueden obtenerse a partir del último precio conocido.
