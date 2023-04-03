@@ -80,7 +80,6 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
 
         // Obtenemos la preferencia
         String compraId =  Preferencias.getListaAbiertaId(this);
-        Log.d(TAG, "Preferencia recuperada: " + compraId );
 
         // La preferencia existe: cargamos la vista
         if ( compraId  != null ){

@@ -200,6 +200,431 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     }
 
     /**
+     * Método que guarda una etiqueta en la base de datos.
+     * Aunque la etiqueta se guarda en la tabla "tag", no se asocia al producto.
+     * La etiqueta es añadida al campo de texto muestra las etiquetas.
+     */
+    private void addTag() {
+
+        // Texto que se va a guardar
+        String tag = tv_etiqueta.getText().toString().trim();
+        String normal = Words.normalizar(tag);
+        addTag(normal);
+
+    }
+
+    /**
+     * Método que guarda una etiqueta en la base de datos.
+     * Aunque la etiqueta se guarda en la tabla "tag", no se asocia al producto.
+     * La etiqueta es añadida al campo de texto muestra las etiquetas.
+     *
+     * @param tag que se guarda
+     */
+    private void addTag(String tag) {
+
+        // Caja de texto en la que se muestran las etiquetas
+        String texto = text_tags.getText().toString();
+
+        btn_addTag.setEnabled(false);
+        tv_etiqueta.setText("");
+        tv_etiqueta.setHint("nuevo tag");
+
+        texto += tag + ",";
+
+        text_tags.setText(texto);
+
+        // Guardar el tag en la base de datos, recibimos un id
+        tagController.insert(tag.trim());
+
+        // Insertar el tag en la lista
+        etiquetaList.add(tag.trim());
+
+    }
+
+    /**
+     * Utiliza la denominación como etiqueta.
+     * El método es llamado cuando el input denominación pierde el foco
+     *
+     * @return null al perder el foco
+     */
+    @Nullable
+    private View.OnFocusChangeListener addTagDesdeDenominacion() {
+
+        // Separamos la denominación por los espacios en blanco
+        String[] palabras = tv_denominacion
+                .getText()
+                .toString()
+                .split(" ");
+
+        // Para cada palabra
+        for (String palabra : palabras) {
+            String p = Words.normalizar(palabra); //Normalizar la palabra (minúsculas y sin tilde)
+            addTag(p);
+        }
+        return null;
+    }
+
+    /**
+     * Después de cada pulsación, evaluamos el formulario.
+     * Este método evalúa el código de barras y la denominación, pero no muestra los errores, tan
+     * solo los evalúa para poder activar los botones.
+     *
+     * @param editable componente que queremos cambiar
+     */
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+        // Comprobar el campo de tag, si tiene al menos 3 caracteres, se habilita
+        if (tv_etiqueta.getText().toString().length() >= 3) {
+            btn_addTag.setEnabled(true);
+        }
+
+        // Si hay datos introducidos
+        if (hayDatosIntroducidos()) {
+
+            habilitarBtnLimpiar(true);                               // Habilitar el botón limipar
+
+            // El código de barras y la denominación son válidas
+            int errorCB = validarCodigoDeBarras(
+                    tv_codigoDeBarras.getText().toString(),
+                    productoEditando != null,
+                    context);
+            int errorD = validarDenominacion(tv_denominacion.getText().toString());
+
+            habilitarBtnGuardar((errorCB < 0) && (errorD < 0));
+
+        } else {
+            habilitarBtnLimpiar(false);
+        }
+
+    }
+
+    /**
+     * Asocia las etiquetas al producto.
+     * Las etiquetas están registradas en text_tags
+     */
+    private void asociarTagsAlProducto(String idProducto) {
+
+        // Obtener un array con las etiquetas a partir del campo de texto
+        String[] tags = text_tags.getText().toString().split(",");
+
+        // Recorrer las etiquetas y asociarlas al producto
+        for (String tag : tags) {
+            int idTag = tagController.getIdByName(tag.trim());
+            tagProductoController.insert(
+                    idProducto,
+                    idTag
+            );
+        }
+
+    }
+
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    public void cancelar() {
+        navegador.setVisibility(View.VISIBLE);
+
+        // Le damos las dimensiones correctas
+        FragmentContainerView contenedor = getActivity().findViewById(R.id.almacenContenedor);
+        ViewGroup.LayoutParams params = contenedor.getLayoutParams();
+        params.height = heightVista;
+        contenedor.setLayoutParams(params);
+
+        getActivity()
+                .getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.almacenContenedor, new ListaProductosFragment())
+                .commit();
+    }
+
+    /**
+     * Carga el producto que se está editando.
+     *
+     * @param producto que se quiere cargar
+     */
+    private void cargarProducto(ProductoEntity producto) {
+
+        // El controlador de las compras es necesario para obtener
+        // el listado de compras del producto
+        CompraController compraController = new CompraController(context);
+
+        try {
+
+            // Obtener las etiquetas que le corresponden
+            // La lista se inicializa aquí porque tan solo se carga si se
+            // está editando un producto
+            tagProductoList = tagProductoController.getNombres(producto.getId());
+            StringBuilder tagString = new StringBuilder();
+            for (String tag : tagProductoList) {
+                tagString.append(tag).append(",");
+            }
+            text_tags.setText(tagString);
+
+            tv_codigoDeBarras.setText(producto.getId());
+            tv_denominacion.setText(producto.getDenominacion());
+
+            // Cargar la imagen con Glide
+            String path = PATH_PRODUCTS_THUMB + producto.getId() + ".jpg";
+            // Si la imagen no es nula, la cargamos
+            Glide.with(this)
+                    .load(path)
+                    .into(img_miniatura);
+
+            String marca = marcaController.getNameById(producto.getMarca());
+            tv_marca.setText(marca);
+
+            tv_unidades.setText(String.valueOf(producto.getUnidades()));
+            tv_cantidad.setText(String.valueOf(producto.getCantidad()));
+
+            // El spinner debe recibir un entero indicando la posición en la colección
+            spn_medida.setSelection(getPosicionMedida());
+
+            // Mostramos las compras del producto
+            // Le pedimos el listado al controlador de las compras
+
+            // Listado de la comparativa
+            relacionDeCompras = compraController.getVistaCompraByProducto(producto.getId());
+            VistaCompraAdapter adapter = new VistaCompraAdapter(context,
+                    R.layout.item_vista_compra,
+                    relacionDeCompras);
+            listaComparativa.setAdapter(adapter);
+            listaComparativa.setOnItemClickListener((adapterView, view, position, id) -> {
+                VistaCompra compra = relacionDeCompras.get(position);
+                // Abrimos la lista
+                Preferencias.setListaAbiertaId(compra.fecha, getContext());
+                startActivity(new Intent(getContext(), ListaActivity.class));
+            });
+
+            habilitarBtnEliminar(true);
+            habilitarBtnGuardar(true);
+
+        } catch (Exception e) {
+            Log.e("LDLC", "DetalleProductoFragment.cargarProducto id : " +
+                    producto.getId() + "\n" + e.getMessage());
+
+        }
+
+    }
+
+    /**
+     * Método que desactiva los botones de la vista.
+     */
+    private void desactivarBotonera() {
+
+        for (Button boton : botonera) {
+            boton.setEnabled(false);
+            boton.setClickable(false);
+            boton.setTextColor(getResources()
+                    .getColor(R.color.Gris, context.getTheme()));
+            boton.setAlpha(BOTON_DESACTIVADO_ALPHA);
+        }
+
+    }
+
+    /**
+     * Elimina un producto de la base de datos a partir del v id.
+     * El producto podría haber sido modificado, por lo que, en lugar
+     * de enviar el objeto, enviamos el id y que el controlador lo
+     * elimine.
+     */
+    public void eliminar() {
+        productoRepository
+                .deleteById(
+                        tv_codigoDeBarras
+                                .getText()
+                                .toString()
+                );
+        cancelar();
+    }
+
+    /**
+     * Devuelve la posción que ocupa la medida en la colección.
+     *
+     * @return posición buscada
+     */
+    private int getPosicionMedida() {
+        int index = 0;
+        String m = productoEditando.getMedida();
+
+        // medidaList contiene la colección de medidas que se ha cargado en el spinner
+        while (index < medidaList.size()) {
+            if (medidaList.get(index).getId().equals(m)) {
+                return index;
+            }
+            index++;
+        }
+
+        return index;
+    }
+
+    /**
+     * Este método guarda el producto que se está editando.
+     * Los datos para crear el producto se obtienen directamente del formualario.
+     */
+    private void guardarProducto() {
+
+        try {
+
+            // Si el código de barras está vacío, debemos obtener uno
+            String id = (tv_codigoDeBarras.getText().toString().isEmpty()) ?
+                    productoController.getIdAutomatico(getContext()) :
+                    tv_codigoDeBarras.getText().toString();
+
+            // Obtenemos el id de la marca
+            // Si la marca no existe, se guarda y se obtiene el id
+            String marca = tv_marca.getText().toString();
+            int marcaInt = marcaController.getIdByName(marca);
+
+            // Nos aseguramos de que las unidades y la cantidad tengan contenido
+            String uStr = tv_unidades.getText().toString();
+            int unidades = (uStr.isEmpty()) ? 0 : Integer.parseInt(uStr);
+
+            String cStr = tv_cantidad.getText().toString();
+            float cantidad = (cStr.isEmpty()) ? 0 : Float.parseFloat(cStr);
+
+            // En la medida tenemos el índice que ocupa en el spinner, no el id
+            int medidaInt = (int) spn_medida.getSelectedItemId();
+            String medida = medidaList.get(medidaInt).getId();
+
+            if (medida.equals("g")) {
+                unidades = 1;
+                cantidad = 1;
+            }
+
+
+            // Si estamos editando, se actualiza el producto, si no
+            // se inserta uno nuevo
+            if (productoEditando != null) {
+
+                // El id no se modifica
+
+                // Nos aseguramos de capitalizar la denominación
+                productoEditando.setDenominacion(
+                        capitalizar(
+                                tv_denominacion
+                                        .getText()
+                                        .toString()
+                        )
+                );
+                productoEditando.setMarca(marcaInt);
+                productoEditando.setUnidades(unidades);
+                productoEditando.setMedida(medida);
+                productoEditando.setCantidad(cantidad);
+
+                ProductoController.update(productoEditando, context);
+
+
+            } else {
+                // Es un producto nuevo
+                ProductoController.insertProducto(
+                        id,
+                        tv_denominacion.getText().toString(),
+                        marcaInt,
+                        unidades,
+                        medida,
+                        cantidad,
+                        context
+                );
+            }
+
+            // Después de guardar el producto, vamos a sociarle las etiquetas
+            // Es posible que se guarde un producto sin indicar nada más que
+            // la denominación, por lo que no se almacenaría ninguna etiqueta.
+
+            // No aseguramos de que haya, al menos, una etiqueta
+            if (text_tags.getText().toString().isEmpty()) {
+                addTagDesdeDenominacion();
+            }
+            asociarTagsAlProducto(id);
+
+
+        } catch (Exception e) {
+
+            Log.e("LDLC", "DetalleProductoFragment.guardarProducto" +
+                    "\nError: " + e.getMessage());
+        }
+
+    }
+
+
+    /**
+     * Acción para guardar un producto.
+     */
+    public void guardar() {
+
+        // Si es un producto nuevo, nos quedamos en el formulario
+        guardarProducto();
+
+        if (productoEditando == null) {
+            limpiar();
+        } else {
+            cancelar();
+        }
+
+    }
+
+    /**
+     * Habilita o deshabilita el botón para limpiar el formulario
+     */
+    private void habilitarBtnLimpiar(boolean habilitar) {
+        btn_limpiar.setClickable(habilitar);
+        btn_limpiar.setEnabled(habilitar);
+        btn_limpiar
+                .setTextColor((habilitar) ?
+                        getResources().getColor(R.color.IconoAzul, context.getTheme()) :
+                        getResources().getColor(R.color.Gris, context.getTheme())
+                );
+        btn_limpiar.setAlpha((habilitar) ? 1 : BOTON_DESACTIVADO_ALPHA);
+    }
+
+    /**
+     * Habilita el botón para guardar el producto
+     */
+    private void habilitarBtnGuardar(boolean habilitar) {
+        btn_guardar.setClickable(habilitar);
+        btn_guardar.setEnabled(habilitar);
+        btn_guardar
+                .setTextColor((habilitar) ?
+                        getResources().getColor(R.color.green_700, context.getTheme()) :
+                        getResources().getColor(R.color.Gris, context.getTheme())
+                );
+        btn_guardar.setAlpha((habilitar) ? 1 : BOTON_DESACTIVADO_ALPHA);
+    }
+
+
+    /**
+     * Habilita el botón para ELIMINAR el producto
+     */
+    private void habilitarBtnEliminar(boolean habilitar) {
+        btn_eliminar.setClickable(habilitar);
+        btn_eliminar.setEnabled(habilitar);
+        btn_eliminar
+                .setTextColor((habilitar) ?
+                        getResources().getColor(R.color.error, context.getTheme()) :
+                        getResources().getColor(R.color.Gris, context.getTheme())
+                );
+        btn_eliminar.setAlpha((habilitar) ? 1 : BOTON_DESACTIVADO_ALPHA);
+    }
+
+    /**
+     * Método para comprobar si se han introducido datos en el formulario.
+     *
+     * @return true si los datos están completos
+     */
+    private boolean hayDatosIntroducidos() {
+        return !tv_codigoDeBarras.getText().toString().isEmpty() ||
+                !tv_denominacion.getText().toString().isEmpty() ||
+                !tv_marca.getText().toString().isEmpty() ||
+                !tv_unidades.getText().toString().isEmpty() ||
+                !tv_cantidad.getText().toString().isEmpty();
+    }
+
+
+    /**
      * Inicilizar los componentes de la interfaz
      */
     private void inicializarComponentes(View view) {
@@ -286,24 +711,20 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     }
 
-    /* ****************************************************************************************** */
-    /* ** ACCIONES PARA LOS BOTONES ************************************************************* */
-    /* ****************************************************************************************** */
 
-    public void cancelar() {
-        navegador.setVisibility(View.VISIBLE);
+    /**
+     * Inserta el código devuelto por la librería del lector.
+     * Si el producto existe, lo carga.     *
+     *
+     * @param contents el contenido en texto
+     */
+    private void insertarCodigo(String contents) {
 
-        // Le damos las dimensiones correctas
-        FragmentContainerView contenedor = getActivity().findViewById(R.id.almacenContenedor);
-        ViewGroup.LayoutParams params = contenedor.getLayoutParams();
-        params.height = heightVista;
-        contenedor.setLayoutParams(params);
-
-        getActivity()
-                .getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.almacenContenedor, new ListaProductosFragment())
-                .commit();
+        if (ProductoController.exists(contents, getContext())) {
+            cargarProducto(ProductoController.getById(contents, getContext()));
+        } else {
+            tv_codigoDeBarras.setText(contents);
+        }
     }
 
     /**
@@ -331,420 +752,9 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         desactivarBotonera();
     }
 
-    /**
-     * Elimina un producto de la base de datos a partir del v id.
-     * El producto podría haber sido modificado, por lo que, en lugar
-     * de enviar el objeto, enviamos el id y que el controlador lo
-     * elimine.
-     */
-    public void eliminar() {
-        String id = tv_codigoDeBarras.getText().toString();
-//        Log.d("LDLC", "Borrar: " + id );
-        productoRepository.deleteById(id);
-        cancelar();
-    }
-
-    /**
-     * Acción para guardar un producto.
-     */
-    public void guardar() {
-
-        // Si es un producto nuevo, nos quedamos en el formulario
-        guardarProducto();
-
-        if (productoEditando == null) {
-            limpiar();
-        } else {
-            cancelar();
-        }
-
-    }
-
-    /* ****************************************************************************************** */
-    /* ** INTERFAZ PARA EL OYENTE DE LOS EDIT TEXT ******************************************* ** */
-    /* ****************************************************************************************** */
-    @Override
-    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
 
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-    }
-
-    /**
-     * Después de cada pulsación, evaluamos el formulario.
-     * Este método evalúa el código de barras y la denominación, pero no muestra los errores, tan
-     * solo los evalúa para poder activar los botones.
-     *
-     * @param editable componente que queremos cambiar
-     */
-    @Override
-    public void afterTextChanged(Editable editable) {
-
-        // Comprobar el campo de tag, si tiene al menos 3 caracteres, se habilita
-        if (tv_etiqueta.getText().toString().length() >= 3) {
-            btn_addTag.setEnabled(true);
-        }
-
-        // Si hay datos introducidos
-        if (hayDatosIntroducidos()) {
-
-            habilitarBtnLimpiar(true);                               // Habilitar el botón limipar
-
-            // El código de barras y la denominación son válidas
-            int errorCB = validarCodigoDeBarras(
-                    tv_codigoDeBarras.getText().toString(),
-                    productoEditando != null,
-                    context);
-            int errorD = validarDenominacion(tv_denominacion.getText().toString());
-
-            habilitarBtnGuardar((errorCB < 0) && (errorD < 0));
-
-        } else {
-            habilitarBtnLimpiar(false);
-        }
-
-    }
-
-
-    /* ****************************************************************************************** */
-    /* ** HABILITAR / DESHABILITAR BOTONERA  ************************************************* ** */
-    /* ****************************************************************************************** */
-
-    /**
-     * Habilita o deshabilita el botón para limpiar el formulario
-     */
-    private void habilitarBtnLimpiar(boolean habilitar) {
-        btn_limpiar.setClickable(habilitar);
-        btn_limpiar.setEnabled(habilitar);
-        btn_limpiar
-                .setTextColor((habilitar) ?
-                        getResources().getColor(R.color.IconoAzul, context.getTheme()) :
-                        getResources().getColor(R.color.Gris, context.getTheme())
-                );
-        btn_limpiar.setAlpha((habilitar) ? 1 : BOTON_DESACTIVADO_ALPHA);
-    }
-
-    /**
-     * Habilita el botón para guardar el producto
-     */
-    private void habilitarBtnGuardar(boolean habilitar) {
-        btn_guardar.setClickable(habilitar);
-        btn_guardar.setEnabled(habilitar);
-        btn_guardar
-                .setTextColor((habilitar) ?
-                        getResources().getColor(R.color.green_700, context.getTheme()) :
-                        getResources().getColor(R.color.Gris, context.getTheme())
-                );
-        btn_guardar.setAlpha((habilitar) ? 1 : BOTON_DESACTIVADO_ALPHA);
-    }
-
-
-    /**
-     * Habilita el botón para ELIMINAR el producto
-     */
-    private void habilitarBtnEliminar(boolean habilitar) {
-        btn_eliminar.setClickable(habilitar);
-        btn_eliminar.setEnabled(habilitar);
-        btn_eliminar
-                .setTextColor((habilitar) ?
-                        getResources().getColor(R.color.error, context.getTheme()) :
-                        getResources().getColor(R.color.Gris, context.getTheme())
-                );
-        btn_eliminar.setAlpha((habilitar) ? 1 : BOTON_DESACTIVADO_ALPHA);
-    }
-
-
-
-    /* ****************************************************************************************** */
-    /* ** MÉTODOS AUXILIARES  **************************************************************** ** */
-    /* ****************************************************************************************** */
-
-    /**
-     * Método que desactiva los botones de la vista.
-     */
-    private void desactivarBotonera() {
-
-        for (Button boton : botonera) {
-            boton.setEnabled(false);
-            boton.setClickable(false);
-            boton.setTextColor(getResources()
-                    .getColor(R.color.Gris, context.getTheme()));
-            boton.setAlpha(BOTON_DESACTIVADO_ALPHA);
-        }
-
-    }
-
-    /**
-     * Método para comprobar si se han introducido datos en el formulario.
-     *
-     * @return true si los datos están completos
-     */
-    private boolean hayDatosIntroducidos() {
-        return !tv_codigoDeBarras.getText().toString().isEmpty() ||
-                !tv_denominacion.getText().toString().isEmpty() ||
-                !tv_marca.getText().toString().isEmpty() ||
-                !tv_unidades.getText().toString().isEmpty() ||
-                !tv_cantidad.getText().toString().isEmpty();
-    }
-
-    /**
-     * Este método guarda el producto que se está editando.
-     * Los datos para crear el producto se obtienen directamente del formualario.
-     */
-    private void guardarProducto() {
-
-        try {
-
-            // Si el código de barras está vacío, debemos obtener uno
-            String id = (tv_codigoDeBarras.getText().toString().isEmpty()) ?
-                    productoController.getIdAutomatico( getContext() ) :
-                    tv_codigoDeBarras.getText().toString();
-
-            // Obtenemos el id de la marca
-            // Si la marca no existe, se guarda y se obtiene el id
-            String marca = tv_marca.getText().toString();
-            int marcaInt = marcaController.getIdByName(marca);
-
-            // Nos aseguramos de que las unidades y la cantidad tengan contenido
-            String uStr = tv_unidades.getText().toString();
-            int unidades = (uStr.isEmpty()) ? 0 : Integer.parseInt(uStr);
-
-            String cStr = tv_cantidad.getText().toString();
-            float cantidad = (cStr.isEmpty()) ? 0 : Float.parseFloat(cStr);
-
-            // En la medida tenemos el índice que ocupa en el spinner, no el id
-            int medidaInt = (int) spn_medida.getSelectedItemId();
-            String medida = medidaList.get(medidaInt).getId();
-
-
-            // Si estamos editando, se actualiza el producto, si no
-            // se inserta uno nuevo
-            if (productoEditando != null) {
-
-                // El id no se modifica
-
-                // Nos aseguramos de capitalizar la denominación
-                productoEditando.setDenominacion(
-                        capitalizar(
-                                tv_denominacion
-                                        .getText()
-                                        .toString()
-                        )
-                );
-                productoEditando.setMarca(marcaInt);
-                productoEditando.setUnidades(unidades);
-                productoEditando.setMedida(medida);
-                productoEditando.setCantidad(cantidad);
-
-                ProductoController.update(productoEditando, context);
-
-
-            } else {
-                // Es un producto nuevo
-                ProductoController.insertProducto(
-                        id,
-                        tv_denominacion.getText().toString(),
-                        marcaInt,
-                        unidades,
-                        medida,
-                        cantidad,
-                        context
-                );
-            }
-
-            // Después de guardar el producto, vamos a sociarle las etiquetas
-            // Es posible que se guarde un producto sin indicar nada más que
-            // la denominación, por lo que no se almacenaría ninguna etiqueta.
-
-            // No aseguramos de que haya, al menos, una etiqueta
-            if( text_tags.getText().toString().isEmpty() ){
-                addTagDesdeDenominacion();
-            }
-            asociarTagsAlProducto(id);
-
-
-        } catch (Exception e) {
-
-            Log.e("LDLC", "DetalleProductoFragment.guardarProducto" +
-                    "\nError: " + e.getMessage());
-        }
-
-    }
-
-    /**
-     * Carga el producto que se está editando.
-     *
-     * @param producto que se quiere cargar
-     */
-    private void cargarProducto(ProductoEntity producto) {
-
-        // El controlador de las compras es necesario para obtener
-        // el listado de compras del producto
-        CompraController compraController = new CompraController(context);
-
-        try {
-
-            // Obtener las etiquetas que le corresponden
-            // La lista se inicializa aquí porque tan solo se carga si se
-            // está editando un producto
-            tagProductoList = tagProductoController.getNombres(producto.getId());
-            StringBuilder tagString = new StringBuilder();
-            for (String tag : tagProductoList) {
-                tagString.append(tag).append(",");
-            }
-            text_tags.setText(tagString);
-
-            tv_codigoDeBarras.setText(producto.getId());
-            tv_denominacion.setText(producto.getDenominacion());
-
-            // Cargar la imagen con Glide
-            String path = PATH_PRODUCTS_THUMB + producto.getId() + ".jpg";
-            // Si la imagen no es nula, la cargamos
-            Glide.with(this)
-                    .load(path)
-                    .into(img_miniatura);
-
-            String marca = marcaController.getNameById(producto.getMarca());
-            tv_marca.setText(marca);
-
-            tv_unidades.setText(String.valueOf(producto.getUnidades()));
-            tv_cantidad.setText(String.valueOf(producto.getCantidad()));
-
-            // El spinner debe recibir un entero indicando la posición en la colección
-            spn_medida.setSelection(getPosicionMedida());
-
-            // Mostramos las compras del producto
-            // Le pedimos el listado al controlador de las compras
-
-            // Listado de la comparativa
-            relacionDeCompras = compraController.getVistaCompraByProducto(producto.getId());
-            VistaCompraAdapter adapter = new VistaCompraAdapter(context,
-                    R.layout.item_vista_compra,
-                    relacionDeCompras);
-            listaComparativa.setAdapter(adapter);
-            listaComparativa.setOnItemClickListener((adapterView, view, position, id) -> {
-                VistaCompra compra = relacionDeCompras.get(position);
-                // Abrimos la lista
-                Preferencias.setListaAbiertaId(compra.fecha, getContext());
-                startActivity(new Intent(getContext(), ListaActivity.class));
-            });
-
-            habilitarBtnEliminar(true);
-            habilitarBtnGuardar(true);
-
-        } catch (Exception e) {
-            Log.e("LDLC", "DetalleProductoFragment.cargarProducto id : " +
-                    producto.getId() + "\n" + e.getMessage());
-
-        }
-
-    }
-
-    /**
-     * Devuelve la posción que ocupa la medida en la colección.
-     *
-     * @return posición buscada
-     */
-    private int getPosicionMedida() {
-        int index = 0;
-        String m = productoEditando.getMedida();
-
-        // medidaList contiene la colección de medidas que se ha cargado en el spinner
-        while (index < medidaList.size()) {
-            if (medidaList.get(index).getId().equals(m)) {
-                return index;
-            }
-            index++;
-        }
-
-        return index;
-    }
-
-    /**
-     * Método que guarda una etiqueta en la base de datos.
-     * Aunque la etiqueta se guarda en la tabla "tag", no se asocia al producto.
-     * La etiqueta es añadida al campo de texto muestra las etiquetas.
-     */
-    private void addTag() {
-
-        // Texto que se va a guardar
-        String tag = tv_etiqueta.getText().toString().trim();
-        String normal = Words.normalizar(tag);
-        addTag(normal);
-
-    }
-
-    /**
-     * Método que guarda una etiqueta en la base de datos.
-     * Aunque la etiqueta se guarda en la tabla "tag", no se asocia al producto.
-     * La etiqueta es añadida al campo de texto muestra las etiquetas.
-     *
-     * @param tag que se guarda
-     */
-    private void addTag(String tag) {
-
-        // Caja de texto en la que se muestran las etiquetas
-        String texto = text_tags.getText().toString();
-
-        btn_addTag.setEnabled(false);
-        tv_etiqueta.setText("");
-        tv_etiqueta.setHint("nuevo tag");
-
-        texto += tag + ",";
-
-        text_tags.setText(texto);
-
-        // Guardar el tag en la base de datos, recibimos un id
-        tagController.insert(tag.trim());
-
-        // Insertar el tag en la lista
-        etiquetaList.add(tag.trim());
-
-    }
-
-    /**
-     * Utiliza la denominación como etiqueta.
-     * El método es llamado cuando el input denominación pierde el foco
-     *
-     * @return null al perder el foco
-     */
-    @Nullable
-    private View.OnFocusChangeListener addTagDesdeDenominacion() {
-
-        // Separamos la denominación por los espacios en blanco
-        String[] palabras = tv_denominacion
-                .getText()
-                .toString()
-                .split(" ");
-
-        // Para cada palabra
-        for (String palabra : palabras) {
-            String p = Words.normalizar(palabra); //Normalizar la palabra (minúsculas y sin tilde)
-            addTag(p);
-        }
-        return null;
-    }
-
-    /**
-     * Asocia las etiquetas al producto.
-     * Las etiquetas están registradas en text_tags
-     */
-    private void asociarTagsAlProducto(String idProducto) {
-
-        // Obtener un array con las etiquetas a partir del campo de texto
-        String[] tags = text_tags.getText().toString().split(",");
-
-        // Recorrer las etiquetas y asociarlas al producto
-        for (String tag : tags) {
-            int idTag = tagController.getIdByName(tag.trim());
-            tagProductoController.insert(
-                    idProducto,
-                    idTag
-            );
-        }
 
     }
 
@@ -763,21 +773,6 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
         options.setBarcodeImageEnabled(false);
         barcodeLauncher.launch(options);
 
-    }
-
-    /**
-     * Inserta el código devuelto por la librería del lector.
-     * Si el producto existe, lo carga.     *
-     *
-     * @param contents el contenido en texto
-     */
-    private void insertarCodigo(String contents) {
-
-        if (ProductoController.exists(contents, getContext())) {
-            cargarProducto(ProductoController.getById(contents, getContext()));
-        } else {
-            tv_codigoDeBarras.setText(contents);
-        }
     }
 
 

@@ -86,21 +86,6 @@ public class ProductoRepository extends Repositorio {
     }
 
     /**
-     * Devuelve el valor más alto del campo id de la colección de productos.
-     * @param list la colección de productos n la que buscar
-     * @return el valor más alto del campo id
-     */
-    private String getMaxId( ArrayList<ProductoEntity> list){
-
-        // Queremos ordenar la lista de mayor a menor por el campo "id"
-        // Para ello debemos sobre escribir el método compare de la clase Collections
-        // dentro de collection.sort
-        list.sort((pe1, pe2) -> Long.valueOf(pe2.getId()).compareTo(Long.valueOf(pe1.getId())));
-
-        return list.get( 0 ).getId();
-    }
-
-    /**
      * Devuelve el último id que se ha generado de forma automática.
      * Los id generados de forma automática tienen un id de 13 dígitos
      * y comienzan por 1.
