@@ -35,6 +35,16 @@ public class NombreCompraController {
         REPOSITORY.clear();
     }
 
+
+    /**
+     * Elimina la compra de la base de datos
+     *
+     * @param compra que se debe eliminar
+     */
+    public void delete(NombreCompraEntity compra) {
+        REPOSITORY.delete(compra);
+    }
+
     /**
      * Comprueba si un id existe
      *

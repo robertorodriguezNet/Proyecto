@@ -173,8 +173,8 @@ public class ComprasActivity extends AppCompatActivity {
         }
 
         // 3.- Borrar la compra de la base de datos
-        NombreCompraRepository repository = new NombreCompraRepository(this);
-        repository.delete(compra);
+        NombreCompraController controller = new NombreCompraController(this);
+        controller.delete(compra);
 
         // 4.- Informar al adptador del cambio
         adaptadorCompras.notifyDataSetChanged();
