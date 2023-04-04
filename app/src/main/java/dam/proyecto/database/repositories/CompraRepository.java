@@ -28,9 +28,6 @@ public class CompraRepository extends Repositorio {
         this.DAO = db.compraDao();
     }
 
-    public ArrayList<CompraEntity> getAll(){
-        return (ArrayList<CompraEntity>) DAO.getAll();
-    }
 
     /**
      * Borra los datos de la tabla
@@ -46,12 +43,8 @@ public class CompraRepository extends Repositorio {
         DAO.delete( compra );
     }
 
-    /**
-     * Actualiza una compra
-     * @param compra que se quiere actualizar
-     */
-    public void update( CompraEntity compra ){
-        DAO.update( compra );
+    public ArrayList<CompraEntity> getAll(){
+        return (ArrayList<CompraEntity>) DAO.getAll();
     }
 
     /**
@@ -140,11 +133,19 @@ public class CompraRepository extends Repositorio {
         DAO.insertAll( data );
     }
 
-
     @Override
     @NonNull
     public String toString() {
         return super.toString();
+    }
+
+
+    /**
+     * Actualiza una compra
+     * @param compra que se quiere actualizar
+     */
+    public void update( CompraEntity compra ){
+        DAO.update( compra );
     }
 
     /**

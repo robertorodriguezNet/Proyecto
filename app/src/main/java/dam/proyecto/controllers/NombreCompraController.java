@@ -46,6 +46,26 @@ public class NombreCompraController {
         return objeto != null;
     }
 
+
+    /**
+     * Comprueba si existe un nombre de la compra en la base de datos.
+     * El nombre de la compra puede estar repetido, pero no el id
+     *
+     * @param id el id buscado
+     * @return true | false si existe o no el nombre de la compra
+     */
+    public boolean existsIdDeLaCompra(String id) {
+        NombreCompraEntity objeto = REPOSITORY
+                .findById(id);
+        return objeto != null;
+    }
+
+    public boolean existsNombreDeLaCompra(String id) {
+        NombreCompraEntity objeto = REPOSITORY
+                .findById(id);
+        return objeto != null;
+    }
+
     /**
      * Devuelve un listado completo de los registros.
      *
@@ -75,6 +95,16 @@ public class NombreCompraController {
     public void insert(String id, String nombre, int comercio) {
         REPOSITORY.insert(new NombreCompraEntity(id, nombre, comercio));
     }
+
+    /**
+     * Inserta un objeto en la base de datos
+     *
+     * @param objeto que se debe insertar
+     */
+    public void insert(NombreCompraEntity objeto) {
+        REPOSITORY.insert(objeto);
+    }
+
 
     /**
      * Comprueba si el id recibido está libre.

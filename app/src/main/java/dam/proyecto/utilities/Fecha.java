@@ -34,36 +34,6 @@ public class Fecha {
         return strDia + "," + strFecha + " " + hh + ":" + mm;
     }
 
-    /**
-     * Devuelve una cadena de texto con el nombre que se le asignará por
-     * defecto a una nueva compra.
-     * @return una cadena de texto con formato yyMMddhhmm
-     */
-    public static String getNuevaFecha(){
-
-        String formato = "yyMMddHHmm";
-        Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat( formato );
-
-        return sdf.format( date );
-
-    }
-
-    /**
-     * Devuelve una cadena de texto con el nombre que se le asignará por
-     * defecto a una nueva compra.
-     * Este método incrementa en 1 el valor de la fecha.
-     * @id es la fehca que hay que incrementar
-     * @return una cadena de texto con formato yyMMddhhmm
-     */
-    public static String getNuevaFecha( String id ){
-
-        int m = Integer.parseInt( id.substring(8,10));
-        m++;
-
-        return id.substring(0,8) + String.format("%02d", Integer.parseInt(String.valueOf( m )));
-
-    }
 
     /**
      * Obtener el formato correctode la fecha.
@@ -112,6 +82,37 @@ public class Fecha {
         }catch (Exception e){
             return false;
         }
+
+    }
+
+    /**
+     * Devuelve una cadena de texto con el nombre que se le asignará por
+     * defecto a una nueva compra.
+     * @return una cadena de texto con formato yyMMddhhmm
+     */
+    public static String getNuevaFecha(){
+
+        String formato = "yyMMddHHmm";
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat sdf = new SimpleDateFormat( formato );
+
+        return sdf.format( date );
+
+    }
+
+    /**
+     * Devuelve una cadena de texto con el nombre que se le asignará por
+     * defecto a una nueva compra.
+     * Este método incrementa en 1 el valor de la fecha.
+     * @id es la fehca que hay que incrementar
+     * @return una cadena de texto con formato yyMMddhhmm
+     */
+    public static String getNuevaFecha( String id ){
+
+        int m = Integer.parseInt( id.substring(8,10));
+        m++;
+
+        return id.substring(0,8) + String.format("%02d", Integer.parseInt(String.valueOf( m )));
 
     }
 }

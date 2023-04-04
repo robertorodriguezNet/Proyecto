@@ -135,7 +135,11 @@ public class ListaListaFragment extends Fragment {
 
 
             // Nombre de la compra
-            lblNombreDeLaCompra.setText(nombreCompra.getNombre());
+            String nombre = nombreCompra.getNombre();
+            if(nombre.length() >= 13){
+                lblNombreDeLaCompra.setTextSize(14);
+            }
+            lblNombreDeLaCompra.setText(nombre);
 
             // Botón para compartir la lista
             btnShare.setOnClickListener(view1 -> compartir());

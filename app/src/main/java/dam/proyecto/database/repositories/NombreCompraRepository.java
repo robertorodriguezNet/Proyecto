@@ -43,27 +43,6 @@ public class NombreCompraRepository extends Repositorio {
     }
 
     /**
-     * Comprueba si existe un nombre de la compra en la base de datos.
-     * El nombre de la compra puede estar repetido, pero no el id
-     *
-     * @param id el id buscado
-     * @return true | false si existe o no el nombre de la compra
-     */
-    public boolean existsIdDeLaCompra(String id) {
-        NombreCompraEntity objeto = db
-                .nombreCompraDao()
-                .findById(id);
-        return objeto != null;
-    }
-
-    public boolean existsNombreDeLaCompra(String id) {
-        NombreCompraEntity objeto = db
-                .nombreCompraDao()
-                .findById(id);
-        return objeto != null;
-    }
-
-    /**
      * Devuelve un objeto a partir del id
      *
      * @param id buscado

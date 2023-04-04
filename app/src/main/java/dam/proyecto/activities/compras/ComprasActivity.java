@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
@@ -231,7 +230,7 @@ public class ComprasActivity extends AppCompatActivity {
     private String crearCompra(boolean abrir) {
 
         // Crear una instancia del repositorio de NombreCompra
-        NombreCompraRepository repository = new NombreCompraRepository(this);
+        NombreCompraController controller = new NombreCompraController( this );
 
         // Obtenemos el id para la nueva lista
         String id = Fecha.getNuevaFecha();
@@ -241,7 +240,7 @@ public class ComprasActivity extends AppCompatActivity {
 
         // 1.- Comprobamos si el id ya existe
         // Comprobamos si el nombre ya existe
-        if (!repository.existsIdDeLaCompra(id)) {
+        if (!controller.existsIdDeLaCompra(id)) {
 
             // El id no existe
 
@@ -254,7 +253,7 @@ public class ComprasActivity extends AppCompatActivity {
 
             // 2.- Lo guardamos en la base de datos en la
             // posición 0 para que se muestre al inicio
-            repository.insert(compra);
+            controller.insert(compra);
 
             // 3.- Abrimos la lista
             if (abrir) {
@@ -356,9 +355,7 @@ public class ComprasActivity extends AppCompatActivity {
     public void editarCompra(NombreCompraEntity compra) {
 
         // Abrimos la lista
-        Log.d("PREF", "ComprasActivity.borrarCompra() - editar listaAbiertaId: " + compra.getId());
         Preferencias.setListaAbiertaId(compra.getId(), this);
-        Log.d("PREF", "ComprasActivity.borrarCompra() - preferencia guardada: " + Preferencias.getListaAbiertaId(this));
         startActivity(new Intent(this, ListaActivity.class));
     }
 
