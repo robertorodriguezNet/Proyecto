@@ -196,19 +196,30 @@ public class ComprasActivity extends AppCompatActivity {
         NombreCompraController ncc = new NombreCompraController(this);
         CompraController cc = new CompraController(this);
 
-        // Comprobar que el id esté libre (el controlador comprueba que sea válido)
-        if (ncc.isIdLibre(idNuevo)) {
 
-            // Iniciamos el proceso
+        // El cambio se lo pedimos al controlador de NombreCompra
+        // El controlador se encarga de comprobar que los id's existan
+        // cambiarId devuelve true si el cambio se ha llevado a cabo
+        if (ncc.cambiarId(idAnterior, idNuevo)) {
 
-            // Cambiar el id del objeto NombreCompra
-            ncc.updateId(idAnterior, idNuevo);
-
-            // Ahora hay que cambiar la fecha de CompraEntity que tengan idAnterior como fecha
+            // El cambio se ha realizado correctamente
+            // Ahora hay que cambiar la fecha de CompraEntity que tengan idAnterior como fecha.
             cc.updateFecha(idAnterior, idNuevo);
 
             // Recargar la lista
             adaptadorCompras.notifyDataSetChanged();
+
+
+            // Si hemos cambiado el id de la compra correctamente, y esta compra
+            // estaba siendo editada, el id de la lista abierta aún se mantienen
+            // como la lista anterior.
+            // Hay que comprobar si el id de la lista abierta es el mismo de la
+            // lista anterior y ,si lo es, actualizarlo
+            if(Preferencias.getListaAbiertaId( this).equals(idAnterior) ){
+                Preferencias.setListaAbiertaId(idNuevo, this);
+            }
+            // Recargar la actividad
+            startActivity(new Intent(this, ComprasActivity.class));
 
         } else {
             Toast.makeText(this, "El id no es válido", Toast.LENGTH_SHORT).show();
@@ -230,7 +241,7 @@ public class ComprasActivity extends AppCompatActivity {
     private String crearCompra(boolean abrir) {
 
         // Crear una instancia del repositorio de NombreCompra
-        NombreCompraController controller = new NombreCompraController( this );
+        NombreCompraController controller = new NombreCompraController(this);
 
         // Obtenemos el id para la nueva lista
         String id = Fecha.getNuevaFecha();

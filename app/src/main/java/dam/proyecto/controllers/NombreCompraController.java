@@ -29,6 +29,50 @@ public class NombreCompraController {
     }
 
     /**
+     * Método que cambia el nombre de un registro de NombreCompra.
+     *
+     * @param idAnterior id el objeto buscado
+     * @param idNuevo id nuevo
+     * @return true si el cambio se ha realizado de forma correcta
+     */
+    public boolean cambiarId(String idAnterior, String idNuevo) {
+
+        // Devuelve false si la operación no puede empezar
+        // porque existe el id nuevo o no existe el anterior
+        if( existsId( idNuevo ) || !existsId( idAnterior )){
+            return false;
+        }
+
+        // Comenzamos la operación, si se captura un error, se devuelve false
+        try{
+
+            // Primero obtenemos el objeto anterior
+            NombreCompraEntity anterior = REPOSITORY.getById(idAnterior);
+
+            // Creamos un nuevo objeto con los datos del anterior, excepto el id
+            // Nombre:
+            NombreCompraEntity nuevo = new NombreCompraEntity(
+                    idNuevo,
+                    (anterior.getNombre().equals( idAnterior ) ) ? idNuevo : anterior.getNombre(),
+                    anterior.getComercio()
+            );
+
+            // Eliminamos el anterior
+            REPOSITORY.delete( anterior );
+
+            // Insertamos el nuevo
+            REPOSITORY.insert( nuevo );
+
+            return existsNombreDeLaCompra( nuevo.getId() );
+
+        }catch (Exception e){
+            Toast.makeText(CONTEXT, "Error al cambiar el nombre", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+    }
+
+    /**
      * Borra los datos de la tabla
      */
     public void clear() {
@@ -82,7 +126,7 @@ public class NombreCompraController {
      * @return listado de objetos
      */
     public ArrayList<NombreCompraEntity> getAll() {
-        return (ArrayList<NombreCompraEntity>) REPOSITORY.getAll();
+        return REPOSITORY.getAll();
     }
 
     /**
@@ -142,7 +186,7 @@ public class NombreCompraController {
 
 
         // Nos aseguramos de que tenga la longitud adecuada
-        Pattern pattern = Pattern.compile("[0-9]+");
+        Pattern pattern = Pattern.compile("\\d+");
         cadenaCorrecta = (id.length() == 10) && (pattern.matcher(id).matches());
 
         // Solo si la longitud es correcta
@@ -175,9 +219,9 @@ public class NombreCompraController {
      * @param idAnterior el id que se quiere actualizar
      * @param idNuevo    el id nuevo.
      */
-    public void updateId(String idAnterior, String idNuevo) {
+    public void updateId(String idAnterior, String idNuevo, boolean cambiarNombre) {
         Toast.makeText(CONTEXT, "Valido " + isIdLibre(idNuevo), Toast.LENGTH_SHORT).show();
-        REPOSITORY.updateId(idAnterior, idNuevo, isIdLibre(idNuevo));
+        REPOSITORY.updateId(idAnterior, idNuevo, isIdLibre(idNuevo), cambiarNombre);
     }
 
 

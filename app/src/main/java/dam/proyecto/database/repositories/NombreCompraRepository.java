@@ -40,6 +40,8 @@ public class NombreCompraRepository extends Repositorio {
      */
     public void delete(NombreCompraEntity compra) {
         DAO.delete(compra);
+
+        Log.d("LDLC", "Se ha eliminado el objeto");
     }
 
     /**
@@ -101,6 +103,8 @@ public class NombreCompraRepository extends Repositorio {
      * @param objeto que se debe insertar
      */
     public void insert(NombreCompraEntity objeto) {
+
+        Log.d("LDLC", "Se ha insertado el objeto");
         DAO.insert(objeto);
     }
 
@@ -121,14 +125,24 @@ public class NombreCompraRepository extends Repositorio {
      * Actualiza el id de un NombreCompra.
      * Se exige que el id esté validado.
      *
-     * @param idAnterior el id que se quiere actualizar
-     * @param idNuevo    el id nuevo.
+     * @param idAnterior    el id que se quiere actualizar.
+     * @param idNuevo       el id nuevo.
+     * @param valido        indica si el valor de del id nuevo es válido.
+     *                      Debe ser proporcionado por el método que lo invoque.
+     * @param cambiarNombre especifica si ha de cambiarse el nombre y escribir el mismo que el id.
      */
-    public void updateId(String idAnterior, String idNuevo, boolean valido) {
+    public void updateId(String idAnterior, String idNuevo, boolean valido, boolean cambiarNombre) {
         if (valido) {
-//            Log.d("LDLC","Actualizar el id. Es válido");
-            DAO.updateId(idAnterior, idNuevo);
+            if (cambiarNombre) {
+                DAO.updateId(idAnterior, idNuevo, idNuevo);
+                Log.d("LDLC","Repository, cambiar nombre: \n" + idNuevo);
+
+            }else{
+                DAO.updateId(idAnterior, idNuevo);
+                Log.d("LDLC","Repository, sin cambio de nombre");
+            }
         }
+
     }
 
 

@@ -50,8 +50,6 @@ public class ListaListaFragment extends Fragment {
     private Context context;
 
     private ListaListener oyente;
-    private ListaController listaController;                    // Controlador para la lista abierta
-
     private Bundle argumentos;                           // Argumentos que puede recibir el fragment
 
     // Componentes
@@ -107,15 +105,12 @@ public class ListaListaFragment extends Fragment {
         // Solo si la compra no es nula
         if (idCompra != null) {
 
-            // Obtenemos un controlador para la lista
-            listaController = new ListaController(context);
-
             // Cargar los datos de los comercios
             comercioRespository = new ComercioRespository(context);
             dataComercio = comercioRespository.getAll();
 
             // Cargar los productos
-            dataProductos = listaController.getListaProductos();
+            dataProductos = new ListaController(context).getListaProductos();
 
             // repositorio para el nombre de la compra
             nombreCompraRepository = new NombreCompraRepository(context);
