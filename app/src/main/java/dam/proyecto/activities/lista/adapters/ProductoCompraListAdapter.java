@@ -4,7 +4,6 @@ import static dam.proyecto.Config.PATH_PRODUCTS_THUMB;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,15 +22,14 @@ import dam.proyecto.R;
 import dam.proyecto.activities.lista.listeners.ListaListener;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
-import dam.proyecto.database.repositories.ProductoRepository;
 
 /**
  * Adaptador para cargar los producto de una compra en su lista de productos.
  * NO SE USA PARA LA TABLA, solo para ListView
  *
  * @author Roberto Rodríguez Jiménez
- * @since 25/01/2023
  * @version 2023.01.25
+ * @since 25/01/2023
  */
 public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
 
@@ -41,7 +39,6 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
 
     private final ListaListener oyente;
 
-    private final String opcionDePrecio;                       // Tipo de precio que se va a mostrar
     /**
      * Cosntructor
      *
@@ -52,8 +49,8 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
     public ProductoCompraListAdapter(Context context,
                                      int vistaItem,
                                      List<CompraEntity> data,
-                                     ListaListener oyente,
-                                     String opcionDePrecio) {
+                                     ListaListener oyente
+    ) {
 
         super(context, vistaItem, data);
 
@@ -63,16 +60,14 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
 
         this.oyente = oyente;
 
-        this.opcionDePrecio = opcionDePrecio;
-
     }
 
     /**
      * Se ejecuta cada vez que se lee un elemento de la colección
      *
-     * @param position posición del elemento en la colección
+     * @param position    posición del elemento en la colección
      * @param convertView vista
-     * @param parent contenedor padre
+     * @param parent      contenedor padre
      * @return la vista generada
      */
     @SuppressLint("DefaultLocale")
@@ -89,11 +84,11 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         CompraEntity actual = data.get(position);
 
         // Obtener la denominación del producto
-        String denominacion = new ProductoRepository( CONTEXT )
-                                            .getDenominacionProducto(actual.getProducto());
+        String denominacion = ProductoController
+                .getDenominacionProducto(actual.getProducto(), CONTEXT);
 
         // Obtener los componentes de la interfaz
-        ImageView miniatura = view.findViewById( R.id.pci_img_miniatura);
+        ImageView miniatura = view.findViewById(R.id.pci_img_miniatura);
         TextView producto = view.findViewById(R.id.pci_tv_producto);
         TextView ud = view.findViewById(R.id.pci_tv_unidadesCompradas);
         TextView precio = view.findViewById(R.id.pci_tv_precioUniodad);
@@ -118,12 +113,6 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         producto.setText(denominacion);
         float cantidadF = actual.getCantidad();
         float precioF = actual.getPrecio();
-        if( opcionDePrecio.equals("global")){
-            precioF = ProductoController.getUltimoPrecio( actual.getProducto(), CONTEXT);
-            Log.d("LDLC", "Obteniendo precio global de " + actual.getProducto()
-            + " precio: " + precioF);
-
-        }
 
         float total = cantidadF * precioF;
 
@@ -131,10 +120,10 @@ public class ProductoCompraListAdapter extends ArrayAdapter<CompraEntity> {
         precio.setText(String.format("%.02f", precioF));
         pagado.setText(String.format("%.02f", total));
 
-        view.setOnClickListener( v -> oyente.onProductoCompradoClick( actual ));
+        view.setOnClickListener(v -> oyente.onProductoCompradoClick(actual));
 
-        view.setOnLongClickListener( v -> {
-            oyente.onProductoCompradoLongClick( actual );
+        view.setOnLongClickListener(v -> {
+            oyente.onProductoCompradoLongClick(actual);
             return true;
         });
 

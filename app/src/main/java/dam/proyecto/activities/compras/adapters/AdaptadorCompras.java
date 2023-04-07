@@ -17,6 +17,7 @@ import java.util.List;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.compras.listener.ListenerCompras;
+import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.database.entity.NombreCompraEntity;
 import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.utilities.Fecha;
@@ -91,7 +92,7 @@ public class AdaptadorCompras extends ArrayAdapter<NombreCompraEntity> {
         }
 
         // Obtener el comercio a partir del id
-        String strComercio = new ComercioRespository(CONTEXT)
+        String strComercio = new ComercioController(CONTEXT)
                 .getNombreComercio(actual.getComercio());
 
         // Seteamos los datos

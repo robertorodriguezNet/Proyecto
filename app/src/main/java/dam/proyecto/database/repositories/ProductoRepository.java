@@ -71,21 +71,6 @@ public class ProductoRepository extends Repositorio {
     }
 
     /**
-     * Devuelve la denominación de un producto a partir del id
-     * @param id el id buscado
-     * @return denominación
-     */
-    public String getDenominacionProducto( String id ){
-        try {
-            ProductoEntity producto = DAO
-                    .findById(id);
-            return producto.getDenominacion();
-        }catch ( Exception e ){
-            return "";
-        }
-    }
-
-    /**
      * Devuelve el último id que se ha generado de forma automática.
      * Los id generados de forma automática tienen un id de 13 dígitos
      * y comienzan por 1.

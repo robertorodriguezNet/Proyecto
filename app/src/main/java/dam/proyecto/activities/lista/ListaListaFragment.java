@@ -39,17 +39,15 @@ import dam.proyecto.utilities.Preferencias;
 
 
 /**
- *
  * @author Roberto Rodríguez
- * @since 11/02/2023
  * @version 2023.03.23
+ * @since 11/02/2023
  */
 public class ListaListaFragment extends Fragment {
 
     private Context context;
 
     private ListaListener oyente;
-    private Bundle argumentos;                           // Argumentos que puede recibir el fragment
 
     // Componentes
     TextView lblNombreDeLaCompra;
@@ -65,7 +63,7 @@ public class ListaListaFragment extends Fragment {
     NombreCompraEntity nombreCompra;                            // Es la compra que se está editando
     // Repositorios
     ComercioController comercioController;
-//    NombreCompraRepository nombreCompraRepository;
+    //    NombreCompraRepository nombreCompraRepository;
     NombreCompraController nombreCompraController;
 
     ArrayList<ComercioEntity> dataComercio;                // Colección de comercios para el spinner
@@ -82,9 +80,6 @@ public class ListaListaFragment extends Fragment {
         if (navegador != null) {
             navegador.setVisibility(View.VISIBLE);
         }
-
-        // Obtener los argumentos, si es que los hay
-        argumentos = getArguments();
 
     }
 
@@ -106,14 +101,14 @@ public class ListaListaFragment extends Fragment {
         if (idCompra != null) {
 
             // Cargar los datos de los comercios
-            comercioController = new ComercioController( context );
+            comercioController = new ComercioController(context);
             dataComercio = comercioController.getAll();
 
             // Cargar los productos
             dataProductos = new ListaController(context).getListaProductos();
 
             // controlador para el nombre de la compra
-            nombreCompraController = new NombreCompraController( context );
+            nombreCompraController = new NombreCompraController(context);
 
             // Obtener el objeto Nombre de la compra.
             // En NombreCompraEntity se establece el comercio
@@ -131,7 +126,7 @@ public class ListaListaFragment extends Fragment {
 
             // Nombre de la compra
             String nombre = nombreCompra.getNombre();
-            if(nombre.length() >= 13){
+            if (nombre.length() >= 13) {
                 lblNombreDeLaCompra.setTextSize(14);
             }
             lblNombreDeLaCompra.setText(nombre);
@@ -140,7 +135,7 @@ public class ListaListaFragment extends Fragment {
             btnShare.setOnClickListener(view1 -> compartir());
 
             // Botón para mostrar diferentes precios
-            btnPrecio.setOnClickListener( v -> oyente.compararComercios() );
+            btnPrecio.setOnClickListener(v -> oyente.compararComercios());
 
             // Botón salir
             btnSalir.setOnClickListener(view12 -> salir());
@@ -156,8 +151,8 @@ public class ListaListaFragment extends Fragment {
             ProductoCompraListAdapter adapterLista = new ProductoCompraListAdapter(view.getContext(),
                     R.layout.producto_compra_item,
                     dataProductos,
-                    oyente,
-                    (argumentos == null) ? "actual" : argumentos.getString("opcion"));
+                    oyente
+            );
             listView.setAdapter(adapterLista);
 
             // Escribimos el total

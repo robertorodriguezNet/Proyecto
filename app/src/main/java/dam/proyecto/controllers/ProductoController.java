@@ -110,6 +110,21 @@ public class ProductoController {
 
 
     /**
+     * Devuelve la denominación de un producto a partir del id
+     * @param id el id buscado
+     * @return denominación
+     */
+    public static String getDenominacionProducto( String id, Context context ){
+        try {
+            ProductoEntity producto = new ProductoRepository(context)
+                    .getById( id );
+            return producto.getDenominacion();
+        }catch ( Exception e ){
+            return "";
+        }
+    }
+
+    /**
      * Devuelve un a cadena de texto con un código de barras válido
      *
      * @param context contecto
