@@ -28,18 +28,17 @@ import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.adapters.ProductoCompraListAdapter;
 import dam.proyecto.activities.lista.listeners.ListaListener;
+import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.ListaController;
+import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.ComercioEntity;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.NombreCompraEntity;
-import dam.proyecto.database.repositories.ComercioRespository;
-import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.utilities.Preferencias;
 
 
 /**
- * Controlador para Producto
  *
  * @author Roberto Rodríguez
  * @since 11/02/2023
@@ -65,8 +64,9 @@ public class ListaListaFragment extends Fragment {
     // NombreCompraEntity
     NombreCompraEntity nombreCompra;                            // Es la compra que se está editando
     // Repositorios
-    ComercioRespository comercioRespository;
-    NombreCompraRepository nombreCompraRepository;
+    ComercioController comercioController;
+//    NombreCompraRepository nombreCompraRepository;
+    NombreCompraController nombreCompraController;
 
     ArrayList<ComercioEntity> dataComercio;                // Colección de comercios para el spinner
     ArrayList<CompraEntity> dataProductos;                    // Colección de productos de la compra
@@ -106,19 +106,19 @@ public class ListaListaFragment extends Fragment {
         if (idCompra != null) {
 
             // Cargar los datos de los comercios
-            comercioRespository = new ComercioRespository(context);
-            dataComercio = comercioRespository.getAll();
+            comercioController = new ComercioController( context );
+            dataComercio = comercioController.getAll();
 
             // Cargar los productos
             dataProductos = new ListaController(context).getListaProductos();
 
-            // repositorio para el nombre de la compra
-            nombreCompraRepository = new NombreCompraRepository(context);
+            // controlador para el nombre de la compra
+            nombreCompraController = new NombreCompraController( context );
 
             // Obtener el objeto Nombre de la compra.
             // En NombreCompraEntity se establece el comercio
             // Inicilizar el NombreDeLaCompra
-            nombreCompra = nombreCompraRepository.getById(idCompra);
+            nombreCompra = nombreCompraController.getById(idCompra);
 
             // Inicializar componente
             lblNombreDeLaCompra = view.findViewById(R.id.fla_tv_nombreCompra);
@@ -176,7 +176,7 @@ public class ListaListaFragment extends Fragment {
     private void actualizarCompra() {
         // Obtnemos el comercio directamente del spinner
         nombreCompra.setComercio(((ComercioEntity) spinner.getSelectedItem()).getId());
-        nombreCompraRepository.update(nombreCompra);
+        nombreCompraController.update(nombreCompra);
     }
 
     /**
@@ -253,7 +253,7 @@ public class ListaListaFragment extends Fragment {
     private int getSpinnerId() {
         // Establecer el ítem por defecto
         // Obtener el nombre del comercio
-        String nComercio = comercioRespository
+        String nComercio = comercioController
                 .getNombreComercio(
                         nombreCompra.getComercio()
                 );

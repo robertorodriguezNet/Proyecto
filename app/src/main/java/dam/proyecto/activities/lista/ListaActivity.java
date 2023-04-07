@@ -4,7 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import dam.proyecto.R;
@@ -30,13 +30,12 @@ import dam.proyecto.utilities.Preferencias;
  * @version 2023.02.17
  * @since 17/02/2023
  */
-public class ListaActivity extends AppCompatActivity implements ListaListener {
-
-    private final String TAG = "LIST";
+public class  ListaActivity extends AppCompatActivity implements ListaListener {
 
     ActivityListaBinding bindingLista;
     ListaController listaController;                                      // Controlador de la lista
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -83,7 +82,6 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
 
         // La preferencia existe: cargamos la vista
         if ( compraId  != null ){
-            Log.d(TAG, "No hay preferencia y nos vamos a compras" );
             setContentView(view);
         } else {
             abrirCompras();
@@ -103,12 +101,7 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
         AlertDialog.Builder builder = new AlertDialog.Builder( this );
         View v = inflater.inflate( R.layout.alert_lista_vacia, null );
 
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                irACompras();
-            }
-        });
+        builder.setPositiveButton("Aceptar", (dialogInterface, i) -> irACompras());
         builder.setView( v );
 
         AlertDialog dialog = builder.create();
@@ -151,7 +144,7 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
 
     /**
      * Un producto comprado recibe un LongClick para ser borrado.
-     * @param compra
+     * @param compra que se quiere borrar
      */
     @Override
     public void onProductoCompradoLongClick(CompraEntity compra) {
@@ -163,12 +156,7 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
         AlertDialog.Builder builder = new AlertDialog.Builder( this );
         builder.setTitle( "Borrar producto");
         builder.setMessage( "¿Borrar " + producto.getDenominacion() + "?" );
-        builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
-                elimiarProductoDeLaCompra( compra );
-            }
-        });
+        builder.setPositiveButton("Aceptar", (dialogInterface, i) -> elimiarProductoDeLaCompra( compra ));
         builder.setNegativeButton( "Cancelar", null );
         builder.create();
         builder.show();
@@ -177,7 +165,7 @@ public class ListaActivity extends AppCompatActivity implements ListaListener {
 
     /**
      * Elimina un producto de la lista de la compra que se está editanco
-     * @param compra
+     * @param compra producto que se quiere borrar
      */
     private void elimiarProductoDeLaCompra( CompraEntity compra){
 

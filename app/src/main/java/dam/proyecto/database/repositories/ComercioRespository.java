@@ -79,15 +79,6 @@ public class ComercioRespository extends Repositorio {
     }
 
     /**
-     * Devuelve el nombre del comercio con el id recibido
-     * @param id del comercio buscado
-     * @return String el nombre del comercio
-     */
-    public String getNombreComercio( int id ){
-        return dao.findById( id ).getName();
-    }
-
-    /**
      * Inserta un comercio en la base de datos
      * @param objeto que se inserta
      */

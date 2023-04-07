@@ -28,8 +28,9 @@ public class ListaController {
     private String idLista;                                                // id de la lista abierta
     private int idComercio;                                                    // id del comercio
 
-    private CompraRepository compraRepository;
-    private ComercioRespository comercioRespository;
+//    private CompraRepository compraRepository;
+    private CompraController compraController;
+    private ComercioController comercioController;
 
     /**
      * Constructor
@@ -44,8 +45,9 @@ public class ListaController {
         // Obtener el id del comercio
         this.idComercio = new NombreCompraRepository( context ).getIdComercio( idLista );
 
-        this.compraRepository = new CompraRepository( context );
-        this.comercioRespository = new ComercioRespository( context );
+//        this.compraRepository = new CompraRepository( context );
+        this.compraController = new CompraController( context );
+        this.comercioController = new ComercioController( context );
     }
 
     /**
@@ -70,7 +72,7 @@ public class ListaController {
      * @return
      */
     public String getComercio(){
-        return comercioRespository.getNombreComercio( idComercio );
+        return comercioController.getNombreComercio( idComercio );
     }
 
     /**
@@ -96,7 +98,7 @@ public class ListaController {
         // se lo pedimos al controlador de la compra, que puede sobrecargar el constructor
         CompraEntity compra = compraController.newCompra( producto, idLista, precio);
 
-        compraRepository.insert( compra );
+        compraController.insert( compra );
 
     }
 
@@ -105,11 +107,11 @@ public class ListaController {
      * @return
      */
     public ArrayList<CompraEntity> getListaProductos(){
-        return compraRepository.getProductosByFecha( idLista );
+        return compraController.getProductosByFecha( idLista );
     }
 
     public void delete( CompraEntity compra ){
-        compraRepository.delete( compra );
+        compraController.delete( compra );
     }
 
 }

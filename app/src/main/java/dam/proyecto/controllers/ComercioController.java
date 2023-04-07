@@ -130,6 +130,17 @@ public class ComercioController {
         return id;
     }
 
+
+
+    /**
+     * Devuelve el nombre del comercio con el id recibido
+     * @param id del comercio buscado
+     * @return String el nombre del comercio
+     */
+    public String getNombreComercio( int id ){
+        return REPOSITORY.findById( id ).getName();
+    }
+
     /**
      * Inserta un comercio a partir del nombre
      * @param name nombre del comercio

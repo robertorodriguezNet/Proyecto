@@ -49,6 +49,14 @@ public class CompraController {
         REPOSITORY.clear();
     }
 
+
+    /**
+     * Borrar un registro de la compra
+     */
+    public void delete( CompraEntity compra ){
+        REPOSITORY.delete( compra );
+    }
+
     /**
      * Devuelve la colección de objetos completa
      *
