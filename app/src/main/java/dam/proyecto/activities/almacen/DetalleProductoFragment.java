@@ -85,13 +85,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
     private ListView listaComparativa;                      // Para mostrar las compras del producto
 
-    // Botones
-    private ImageButton btn_qr;  // Botón para capturar el Código de barras
-    private Button btn_addTag,
-            btn_cancelar,
-            btn_limpiar,
-            btn_eliminar,
-            btn_guardar;
+    private Button btn_addTag;
+    private Button btn_limpiar;
+    private Button btn_eliminar;
+    private Button btn_guardar;
 
     // Array con los botones que son modificables
     private ArrayList<Button> botonera;
@@ -102,8 +99,6 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
     private ArrayList<String> marcaList;                                      // Colección de marcas
     private ArrayList<String> etiquetaList;                                  // Listado de etiquetas
 
-    // Datos relacionados con el producto
-    private ArrayList<String> tagProductoList;      // Etiquetas que se corresponden con el producto
     private ArrayList<VistaCompra> relacionDeCompras;            // Relación de compras del producto
 
     // Repositorios
@@ -357,7 +352,9 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
             // Obtener las etiquetas que le corresponden
             // La lista se inicializa aquí porque tan solo se carga si se
             // está editando un producto
-            tagProductoList = tagProductoController.getNombres(producto.getId());
+            // Datos relacionados con el producto
+            // Etiquetas que se corresponden con el producto
+            ArrayList<String> tagProductoList = tagProductoController.getNombres(producto.getId());
             StringBuilder tagString = new StringBuilder();
             for (String tag : tagProductoList) {
                 tagString.append(tag).append(",");
@@ -481,20 +478,14 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
             // Nos aseguramos de que las unidades y la cantidad tengan contenido
             String uStr = tv_unidades.getText().toString();
-            int unidades = (uStr.isEmpty()) ? 0 : Integer.parseInt(uStr);
+            int unidades = (uStr.isEmpty()) ? 1 : Integer.parseInt(uStr);
 
             String cStr = tv_cantidad.getText().toString();
-            float cantidad = (cStr.isEmpty()) ? 0 : Float.parseFloat(cStr);
+            float cantidad = (cStr.isEmpty()) ? 1 : Float.parseFloat(cStr);
 
             // En la medida tenemos el índice que ocupa en el spinner, no el id
             int medidaInt = (int) spn_medida.getSelectedItemId();
             String medida = medidaList.get(medidaInt).getId();
-
-            if (medida.equals("g")) {
-                unidades = 1;
-                cantidad = 1;
-            }
-
 
             // Si estamos editando, se actualiza el producto, si no
             // se inserta uno nuevo
@@ -645,7 +636,9 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
         img_miniatura = view.findViewById(R.id.fdp_img_miniatura);
 
-        btn_qr = view.findViewById(R.id.fdp_btn_qr);
+        // Botones
+        // Botón para capturar el Código de barras
+        ImageButton btn_qr = view.findViewById(R.id.fdp_btn_qr);
         btn_qr.setOnClickListener(v -> scanear());
         btn_addTag = view.findViewById(R.id.fdp_btn_tagOK);
         btn_addTag.setOnClickListener(v -> addTag());
@@ -695,7 +688,7 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
 
         // Botonera
-        btn_cancelar = view.findViewById(R.id.aep_btn_cancelar);
+        Button btn_cancelar = view.findViewById(R.id.aep_btn_cancelar);
         btn_limpiar = view.findViewById(R.id.aep_btn_limpiar);
         btn_eliminar = view.findViewById(R.id.aep_btn_eliminar);
         btn_guardar = view.findViewById(R.id.aep_btn_guardar);
