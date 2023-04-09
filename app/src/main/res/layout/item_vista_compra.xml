@@ -37,7 +37,7 @@
         android:hint="00-00-0000"
         android:padding="4dp"
         android:text=""
-        android:textAlignment="center"
+        android:textAlignment="textEnd"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/ivc_tv_precio"
         app:layout_constraintTop_toTopOf="parent" />

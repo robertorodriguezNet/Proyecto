@@ -1,5 +1,4 @@
 package dam.proyecto.activities.producto;
-
 import android.content.Context;
 import android.os.Bundle;
 
@@ -33,23 +32,14 @@ import dam.proyecto.database.relaciones.VistaCompra;
  */
 public class ProductoComparativaFragment extends Fragment {
 
-    private Context context;
-
     // Controladores
     private TagProductoController tagProductoController;
 
     // Datos referentes al producto
-    private String idCompra;         // id de la compra que se está editando (el producto comprrado)
-    private CompraEntity compra;                       // Compra realizada y la que se está editando
     private ProductoEntity producto;                                            // Producto comprado
     private ArrayList<VistaCompra> relacionDeCompras;   // Listado de todas las compras del producto
     private ArrayList<VistaCompra> relacionDeRelacionados;     // Listado los productos relacionados
 
-    // Componentes de la UI
-    private TextView tvCompra;
-    private TextView tituloRelacionados;
-    private ListView listaComparativa;              // Contenedor para el listdado de la comparativa
-    private ListView listaOtros;                  // Lista para mostrar otros productos relacionados
 
     // -- FUNCIONES --------------------------------------------------------------------------------
 
@@ -69,8 +59,14 @@ public class ProductoComparativaFragment extends Fragment {
 
         getDatos();                  // Cargar los datos necesarios para poder cargar la información
 
+        // Componentes de la UI
+        TextView tvCompra;
+        TextView tituloRelacionados;
+        ListView listaComparativa;              // Contenedor para el listdado de la comparativa
+        ListView listaOtros;                  // Lista para mostrar otros productos relacionados
+
         View view = inflater.inflate(R.layout.fragment_producto_comparativa, container, false);
-        context = view.getContext();
+        Context context = view.getContext();
 
         tvCompra = (TextView) view.findViewById(R.id.fpc_tv_producto);
         tvCompra.setText(producto.getDenominacion());
@@ -79,7 +75,7 @@ public class ProductoComparativaFragment extends Fragment {
 
         // Listado de la comparativa
         listaComparativa = (ListView) view.findViewById(R.id.fpc_lv_comparativa);
-        VistaCompraAdapter adapter = new VistaCompraAdapter(context,
+        VistaCompraAdapter adapter = new VistaCompraAdapter( view.getContext(),
                 R.layout.item_vista_compra,
                 relacionDeCompras);
         listaComparativa.setAdapter(adapter);
@@ -92,7 +88,7 @@ public class ProductoComparativaFragment extends Fragment {
         listaOtros.setAdapter(adapterOtros);
 
         // Al título de los productos relacionados le añadimos el tag
-        addTagAlTitulo();
+        addTagAlTitulo( tituloRelacionados );
 
         return view;
     }
@@ -103,29 +99,31 @@ public class ProductoComparativaFragment extends Fragment {
     private void getDatos() {
 
         CompraController compraController = new CompraController(getContext());
-        idCompra = getArguments().getString("id");
 
-        // A partir de la compra podemos obtener los datos del producto
-        compra = compraController.getById(idCompra);
-        producto = ProductoController.getById(compra.getProducto(), context);
+        if (getArguments() != null) {
 
-        // Pedimos al controlador de las compras un listado de cada una de las compras
-        // del producto pasado como argumento.
-        relacionDeCompras = compraController.getVistaCompraByProducto(producto.getId());
+            // A partir de la compra podemos obtener los datos del producto
+            CompraEntity compra = compraController.getById(getArguments().getString("id"));
+            producto = ProductoController.getById(compra.getProducto(), getContext());
 
-        // Listado de la comparativa de productos relacionados
-        // Pedimos el primer tag del producto
-        tagProductoController = new TagProductoController(getContext());
-        relacionDeRelacionados = compraController.getVistaCompraByTag(
-                tagProductoController.getTagMasImportante( producto.getId() )
-        );
+            // Pedimos al controlador de las compras un listado de cada una de las compras
+            // del producto pasado como argumento.
+            relacionDeCompras = compraController.getVistaCompraByProducto(producto.getId());
+
+            // Listado de la comparativa de productos relacionados
+            // Pedimos el primer tag del producto
+            tagProductoController = new TagProductoController(getContext());
+            relacionDeRelacionados = compraController.getVistaCompraByTag(
+                    tagProductoController.getTagMasImportante(producto.getId())
+            );
+        }
 
     }
 
     /**
      * Añadir al título de los productos relacionados el tag de ralación
      */
-    private void addTagAlTitulo(){
+    private void addTagAlTitulo( TextView tituloRelacionados){
 
         int idTag = tagProductoController.getTagMasImportante( producto.getId() );
 

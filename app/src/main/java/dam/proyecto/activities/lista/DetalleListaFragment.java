@@ -1,6 +1,5 @@
 package dam.proyecto.activities.lista;
 
-import android.content.Context;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -26,9 +25,6 @@ public class DetalleListaFragment extends Fragment {
     // Componentes UI
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
-    private ProductoViewPagerAdapter adapter;
-
-    private Context context;
 
     public DetalleListaFragment() {
         // Required empty public constructor
@@ -39,13 +35,12 @@ public class DetalleListaFragment extends Fragment {
         super.onCreate(savedInstanceState);
 
         // Deshabilitamos el bottom menu
-        BottomNavigationView navegador = getActivity().findViewById( R.id.navegador );
-        navegador.setVisibility( View.INVISIBLE );
+        BottomNavigationView navegador = getActivity().findViewById(R.id.navegador);
+        navegador.setVisibility(View.INVISIBLE);
         // Hay que redimensionar el contenedor
         FragmentContainerView contenedor = getActivity().findViewById(R.id.listaContenedor);
         ViewGroup.LayoutParams params = contenedor.getLayoutParams();
         params.height = WindowManager.LayoutParams.MATCH_PARENT;
-//        contenedor.setBackgroundColor(ContextCompat.getColor(getContext(), R.color.Gris));
         contenedor.setLayoutParams(params);
     }
 
@@ -54,16 +49,18 @@ public class DetalleListaFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_detalle_lista, container, false);
-        context = view.getContext();
 
-        String idCompra =  getArguments().getString( "id" );
+        String idCompra = getArguments().getString("id");
 
         // Inicializar componentes
-        tabLayout = view.findViewById( R.id.ap_tly_tabLayout );
-        viewPager2 = view.findViewById( R.id.ap_vp_viewPager );
-        adapter = new ProductoViewPagerAdapter((FragmentActivity) context, idCompra );
+        tabLayout = view.findViewById(R.id.ap_tly_tabLayout);
+        viewPager2 = view.findViewById(R.id.ap_vp_viewPager);
 
-        viewPager2.setAdapter( adapter );
+        viewPager2.setAdapter(
+                new ProductoViewPagerAdapter(
+                        (FragmentActivity) view.getContext(),
+                        idCompra)
+        );
 
         // Oyente para el TabLayout
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
@@ -74,7 +71,7 @@ public class DetalleListaFragment extends Fragment {
              */
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
-                viewPager2.setCurrentItem( tab.getPosition() );
+                viewPager2.setCurrentItem(tab.getPosition());
             }
 
             @Override
@@ -93,7 +90,7 @@ public class DetalleListaFragment extends Fragment {
             @Override
             public void onPageSelected(int position) {
                 super.onPageSelected(position);
-                tabLayout.getTabAt( position ).select();
+                tabLayout.getTabAt(position).select();
             }
         });
 

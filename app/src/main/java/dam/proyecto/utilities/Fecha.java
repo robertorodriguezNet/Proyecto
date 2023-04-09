@@ -60,6 +60,23 @@ public class Fecha {
     }
 
     /**
+     * Esta función sobrecarga getFechaFormateada para permitir devolver
+     * el formato del año en dos dígitos
+     * @param f la fecha en formato aammddhhmm
+     * @param corta true si queremos el año en dos dígitos
+     * @return la fehca con formato dd - mes(3 carac.) - [aaaa | aa]
+     */
+    public static String getFechaFormateada( String f, boolean corta ){
+        String fecha = getFechaFormateada(f);
+        if(corta){
+            String nuevaFecha = fecha.substring(0, fecha.length() -4);
+            String anho = fecha.substring(fecha.length()-2);
+            fecha = nuevaFecha + anho;
+        }
+        return fecha;
+    }
+
+    /**
      * valida una fecha con formato dd/mm/aaaa
      * @param dd día
      * @param mm mes
