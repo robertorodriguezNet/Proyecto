@@ -1,14 +1,17 @@
 package dam.proyecto.utilities;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 public class Fecha {
+
+    public static final Locale es_ES = new Locale("es", "ES") ;
 
     /**
      * Devuelve la fecha normalizada
@@ -17,7 +20,7 @@ public class Fecha {
      */
     public static String getFecha( String f ) throws ParseException {
 
-        SimpleDateFormat sdf = new SimpleDateFormat( "dd-MM-yyyy" );
+        SimpleDateFormat sdf = new SimpleDateFormat( "dd-MM-yyyy", es_ES );
 
         String yy = "20" + f.substring(0,2);
         String MM = f.substring(2,4);
@@ -88,7 +91,7 @@ public class Fecha {
         try{
 
             // Formato de fecha (dia/mes/año)
-            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy", es_ES);
             sdf.setLenient(false);
 
             sdf.parse( dd + "/" + mm + "/" + yyyy);
@@ -109,9 +112,8 @@ public class Fecha {
      */
     public static String getNuevaFecha(){
 
-        String formato = "yyMMddHHmm";
         Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat sdf = new SimpleDateFormat( formato );
+        SimpleDateFormat sdf = new SimpleDateFormat( "yyMMddHHmm", es_ES );
 
         return sdf.format( date );
 
@@ -121,10 +123,11 @@ public class Fecha {
      * Devuelve una cadena de texto con el nombre que se le asignará por
      * defecto a una nueva compra.
      * Este método incrementa en 1 el valor de la fecha.
-     * @id es la fehca que hay que incrementar
+     * @param id es la fehca que hay que incrementar
      * @return una cadena de texto con formato yyMMddhhmm
      */
-    public static String getNuevaFecha( String id ){
+    @SuppressLint("DefaultLocale")
+    public static String getNuevaFecha(String id ){
 
         int m = Integer.parseInt( id.substring(8,10));
         m++;

@@ -1,5 +1,6 @@
 package dam.proyecto.activities.producto.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,13 +30,13 @@ import dam.proyecto.utilities.Fecha;
  */
 public class OtrosAdapter extends ArrayAdapter<VistaCompra> {
 
-    private Context context;
-    private int vistaItem;                                            // Layout que dibuja cada ítem
-    private List<VistaCompra> data;                                            // Colección de datos
+    private final Context CONTEXT;
+    private final int VISTA_ITEM;                                            // Layout que dibuja cada ítem
+    private final List<VistaCompra> DATA;                                            // Colección de datos
 
     /**
      * Constructor
-     * @param context
+     * @param context contexto
      * @param vistaItem layout que dibuja cada registro
      * @param data los datos
      */
@@ -45,27 +46,27 @@ public class OtrosAdapter extends ArrayAdapter<VistaCompra> {
 
         super(context, vistaItem, data);
 
-        this.data = data;
-        this.vistaItem = vistaItem;
-        this.context = context;
+        this.DATA = data;
+        this.VISTA_ITEM = vistaItem;
+        this.CONTEXT = context;
 
     }
 
     /**
      * Método que se ejecuta para elemento del listdao de datos
-     * @param position
-     * @param convertView
-     * @param parent
-     * @return
+     * @param  position que ocupa el registro en la colección
+     * @param convertView vista
+     * @param parent elemento que contiene la vista
+     * @return vista
      */
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
 
-        View view = LayoutInflater.from(context).inflate(vistaItem, parent, false);
+        @SuppressLint("ViewHolder") View view = LayoutInflater.from(CONTEXT).inflate(VISTA_ITEM, parent, false);
 
         // Objeto actual
-        VistaCompra actual = data.get(position);
+        VistaCompra actual = DATA.get(position);
 
         // Componentes de la interfaz
         TextView denominacion = view.findViewById(R.id.ilo_tv_denominacion);
@@ -77,7 +78,7 @@ public class OtrosAdapter extends ArrayAdapter<VistaCompra> {
         String strComercio = actual.name.toLowerCase();
         String strPrecio = actual.precioMedido.replace(".",",") +
                 " €/" + actual.medida;
-        String strFecha = getFecha(actual.fecha );
+        String strFecha = Fecha.getFechaFormateada(actual.fecha );
 
         Log.d("LDLC", actual.toString());
 
@@ -88,30 +89,6 @@ public class OtrosAdapter extends ArrayAdapter<VistaCompra> {
         fecha.setText(strFecha);
 
         return view;
-    }
-
-    /**
-     * Obtener el formato correctode la fecha.
-     * @param f
-     * @return
-     */
-    private String getFecha( String f ){
-
-        try{
-            String fecha = Fecha.getFecha( f );
-
-            // Eliminamos el día
-            String[] data = fecha.split(",");
-            fecha = data[1];
-
-            // Eliminamos la hora
-            data = fecha.split(" ");
-            fecha = data[0] + " " + data[1] + " " + data[2];
-
-            return fecha;
-        }catch ( Exception e){
-            return f;
-        }
     }
 
 }

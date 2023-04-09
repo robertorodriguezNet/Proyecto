@@ -1,5 +1,7 @@
 package dam.proyecto.database.relaciones;
 
+import androidx.annotation.NonNull;
+
 /**
  * Devuelve
  * ----------------------------------------------
@@ -26,6 +28,7 @@ public class VistaCompra {
      public String medida;
      public String fecha;
 
+     @NonNull
      @Override
      public String toString() {
           return "VistaCompra{" +
