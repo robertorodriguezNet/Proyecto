@@ -127,14 +127,6 @@ public class ProductoComparativaFragment extends Fragment {
      */
     private void addTagAlTitulo(){
 
-        CompraController compraController = new CompraController(getContext());
-        idCompra = getArguments().getString("id");
-
-        // A partir de la compra podemos obtener los datos del producto
-        compra = compraController.getById(idCompra);
-        producto = ProductoController.getById(compra.getProducto(), context);
-
-        tagProductoController = new TagProductoController(getContext());
         int idTag = tagProductoController.getTagMasImportante( producto.getId() );
 
         TagController tc = new TagController( getContext() );

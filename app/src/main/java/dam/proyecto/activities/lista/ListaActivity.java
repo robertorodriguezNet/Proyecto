@@ -19,9 +19,9 @@ import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.listeners.ListaListener;
 import dam.proyecto.controllers.ListaController;
+import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
-import dam.proyecto.database.repositories.ProductoRepository;
 import dam.proyecto.databinding.ActivityListaBinding;
 import dam.proyecto.utilities.Preferencias;
 
@@ -128,8 +128,6 @@ public class  ListaActivity extends AppCompatActivity implements ListaListener {
     @Override
     public void onProductoCompradoClick( CompraEntity compra ) {
 
-        Log.d("LDLC", "ListaActivity llamando a Detalle: " + compra.getId() );
-
         Fragment fragment = new DetalleListaFragment();
         Bundle bundle = new Bundle();
         bundle.putString( "id", compra.getId() );
@@ -149,8 +147,10 @@ public class  ListaActivity extends AppCompatActivity implements ListaListener {
     @Override
     public void onProductoCompradoLongClick(CompraEntity compra) {
 
-        ProductoEntity producto = new ProductoRepository( this )
-                    .getById(compra.getProducto()
+        ProductoEntity producto = ProductoController
+                    .getById(
+                            compra.getProducto(),
+                            this
                 );
 
         AlertDialog.Builder builder = new AlertDialog.Builder( this );
@@ -175,7 +175,7 @@ public class  ListaActivity extends AppCompatActivity implements ListaListener {
         // Recargamos el fragment
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace( R.id.listaContenedor, new ListaListaFragment() )
+                .replace( R.id.listaContenedor, new   Fragment() )
                 .commit();
 
     }

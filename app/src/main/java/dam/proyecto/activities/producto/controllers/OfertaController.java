@@ -64,6 +64,7 @@ public class OfertaController {
      */
     public HashMap<String, Float> get3x2(float cantidadf, float preciof) {
 
+        Log.d("LDLC", "Oferta: 3x2, cantidad: " + cantidadf + " precio: " + preciof);
 
         // Solo puede aplicarse a cantidades divisibles por 3
         // Para obtener el número de productos sobre los cuales aplicar el

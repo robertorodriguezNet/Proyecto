@@ -25,6 +25,7 @@ import dam.proyecto.activities.producto.controllers.OfertaController;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.controllers.MedidaController;
+import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.MedidaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
@@ -305,7 +306,7 @@ public class ProductoInfoFragment extends Fragment {
      */
     private void cargarDatos() {
         compra = compraController.getById(idCompra);
-        producto = productoRepository.getById(compra.getProducto());
+        producto = ProductoController.getById(compra.getProducto(), context);
         medida = medidaController.getById(producto.getMedida());
     }
 
@@ -356,7 +357,6 @@ public class ProductoInfoFragment extends Fragment {
      */
     private void iniciliazarRepositorios() {
         compraController = new CompraController(context);
-        productoRepository = new ProductoRepository(context);
         marcaController = new MarcaController(context);
         medidaController = new MedidaController(context);
     }

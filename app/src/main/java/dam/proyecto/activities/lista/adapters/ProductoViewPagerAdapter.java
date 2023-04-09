@@ -1,7 +1,6 @@
 package dam.proyecto.activities.lista.adapters;
 
 import android.os.Bundle;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -22,19 +21,16 @@ import dam.proyecto.activities.producto.ProductoInfoFragment;
  */
 public class ProductoViewPagerAdapter extends FragmentStateAdapter {
 
-    private String idCompra;
+    private final String ID_COMPRA;
 
     /**
      * Constructor
      *
-     * @param fragmentActivity
+     * @param fragmentActivity fragment
      */
     public ProductoViewPagerAdapter(@NonNull FragmentActivity fragmentActivity, String idCompra) {
         super(fragmentActivity);
-
-        this.idCompra = idCompra;
-
-        Log.d("LDLC", "PageAdapter idCompra: " + this.idCompra);
+        this.ID_COMPRA = idCompra;
     }
 
     /**
@@ -49,7 +45,7 @@ public class ProductoViewPagerAdapter extends FragmentStateAdapter {
 
         // Hay que crear un Bundle para pasar los datos a cada fragment
         Bundle bundle = new Bundle();
-        bundle.putString("id", idCompra);
+        bundle.putString("id", ID_COMPRA);
 
         Fragment fragment;
 
@@ -74,7 +70,7 @@ public class ProductoViewPagerAdapter extends FragmentStateAdapter {
     /**
      * Indicamos que hay 3 tabs
      *
-     * @return
+     * @return número de tabs que se cargan
      */
     @Override
     public int getItemCount() {
