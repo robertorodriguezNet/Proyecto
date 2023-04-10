@@ -175,7 +175,7 @@ public class  ListaActivity extends AppCompatActivity implements ListaListener {
         // Recargamos el fragment
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace( R.id.listaContenedor, new   Fragment() )
+                .replace( R.id.listaContenedor, new ListaListaFragment() )
                 .commit();
 
     }
