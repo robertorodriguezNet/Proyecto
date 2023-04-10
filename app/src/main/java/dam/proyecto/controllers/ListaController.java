@@ -102,16 +102,16 @@ public class ListaController {
 
     }
 
+    public void delete( CompraEntity compra ){
+        compraController.delete( compra );
+    }
+
     /**
      * Devuelve los productos asociados a la fecha de la lista abierta
      * @return
      */
     public ArrayList<CompraEntity> getListaProductos(){
         return compraController.getProductosByFecha( idLista );
-    }
-
-    public void delete( CompraEntity compra ){
-        compraController.delete( compra );
     }
 
 }

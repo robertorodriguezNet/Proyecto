@@ -163,6 +163,16 @@ public class  ListaActivity extends AppCompatActivity implements ListaListener {
 
     }
 
+    @Override
+    public void compararComercios(){
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace( R.id.listaContenedor, new ComparativaComerciosFragment() )
+                .commit();
+
+    }
+
     /**
      * Elimina un producto de la lista de la compra que se está editanco
      * @param compra producto que se quiere borrar
@@ -180,13 +190,4 @@ public class  ListaActivity extends AppCompatActivity implements ListaListener {
 
     }
 
-    @Override
-    public void compararComercios(){
-
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace( R.id.listaContenedor, new ComparativaComerciosFragment() )
-                .commit();
-
-    }
 }
