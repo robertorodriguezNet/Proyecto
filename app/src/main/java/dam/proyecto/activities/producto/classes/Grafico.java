@@ -73,35 +73,6 @@ public class Grafico extends View {
 
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        origenX = marginLeft;
-        origenY = getMeasuredHeight() - marginBottom;
-
-//        canvas.drawColor( Color.GRAY);
-
-        dibujarBase(canvas);
-        dibujarVerticales(canvas);
-        dibujarHorizontales(canvas);
-
-    }
-
-    /**
-     * Método público para recibir los datos
-     *
-     * @param datos los datos
-     */
-    public void setDatos(ArrayList<GraficoData> datos) {
-
-        // Los datos vienen en orden descendente, es decir,
-        // las compras más nuevas, las primeras, pero necesitamos
-        // leerlas al revés.
-        this.datos = datos;
-        Collections.reverse( this.datos);
-    }
-
     /**
      * Dibuja la base del gráfico
      *
@@ -115,7 +86,9 @@ public class Grafico extends View {
         paint.setStrokeWidth(8);
 
         // Ejes ------------------------------------------------------------------------------------
+        // Horizontal
         canvas.drawLine(origenX, origenY, getMeasuredWidth() - marginRight, origenY, paint);
+        // Vertical
         canvas.drawLine(marginLeft, marginTop, origenX, origenY, paint);
 
         dibujarIntervalosX(canvas);
@@ -123,6 +96,44 @@ public class Grafico extends View {
         dibujarLeyendaX(canvas);
         dibujarLeyendaY(canvas);
     }
+
+
+
+    /**
+     * Dibuja los puntos de la gráfica
+     * @param canvas el lienzo
+     */
+    @SuppressLint("DefaultLocale")
+    private void dibujarHorizontales(Canvas canvas ) {
+
+        // Inicializamos los precios
+        float precioAlto = 0.0f;
+        float precioBajo = precioAlto;
+
+        // Buscar el precio más alto y el más bajo
+        for (GraficoData d : datos) {
+
+            float precio = Float.parseFloat( d.getDataY() );
+
+            if( precio >= precioAlto ){
+                precioAlto = precio;
+            }
+
+            if( (precio <= precioBajo) || (precioBajo == 0) ){
+                precioBajo = precio;
+            }
+
+        }
+
+        // Los precios tope se obtienen sumando o restando al alto
+        // y bajo la diferencia entre ellos
+        float topeAlto = precioAlto;
+        float topeBajo = precioBajo;
+
+        dibujarPuntos( canvas, topeAlto, topeBajo );
+
+    }
+
 
     /**
      * Dibuja la línea de intervalos del ejeX
@@ -137,7 +148,7 @@ public class Grafico extends View {
 
         // Dividir el ancho entre los registros
         float ancho = getMeasuredWidth() - marginRight - marginLeft;
-        float intervalo = (int) Math.floor(ancho / (datos.size() + 1));
+        float intervalo = (int) Math.floor(ancho / (datos.size() - 1));
 
         // Al intervalo hay que restarle los 5 de ancho de la marca
         float[] espacio = {5, (intervalo -5)};
@@ -150,54 +161,6 @@ public class Grafico extends View {
 
     }
 
-    /**
-     * Dibuja una línea vertica para cada una de las fechas (registros).
-     *
-     * @param canvas el lienzo
-     */
-    private void dibujarVerticales(Canvas canvas) {
-
-        // Dividir el ancho entre los registros
-        float ancho = getMeasuredWidth() - marginRight - marginLeft;
-        float intervalo = (int) Math.floor(ancho / (datos.size() + 1));
-        float pos = intervalo + marginLeft;
-
-        for (GraficoData d : datos) {
-            canvas.drawLine(pos, origenY, pos, marginTop, getPaintPunteado());
-            pos += intervalo;
-        }
-
-    }
-
-
-    /**
-     * Método que dibuja el pie del gráfico
-     *
-     * @param canvas el lienzo
-     */
-    private void dibujarPie(Canvas canvas) {
-
-        Paint paint = new Paint();
-        paint.setTextSize(40);
-        paint.setAntiAlias( true );
-        paint.setTextAlign(Paint.Align.RIGHT);
-
-        // Dividir el ancho entre los registros
-        float ancho = getMeasuredWidth() - marginRight - marginLeft;
-        float intervalo = (int) Math.floor(ancho / (datos.size() + 1));
-        float pos = intervalo;
-        for( GraficoData d : datos ){
-
-            String fecha = Fecha.getFechaFormateada( d.getDataX() );
-            canvas.save();
-            canvas.rotate(-60, pos+100, origenY+50 );
-            canvas.drawText( fecha, pos+100, origenY+50, paint);
-            canvas.restore();
-
-            pos += intervalo;
-        }
-
-    }
 
     /**
      * Dibuja la leyenda del eje X
@@ -225,44 +188,35 @@ public class Grafico extends View {
         canvas.drawText( "PRECIO (€)", 0, 70, leyenda);
     }
 
+
+
     /**
-     * Dibuja los puntos de la gráfica
+     * Método que dibuja el pie del gráfico
+     *
      * @param canvas el lienzo
      */
-    @SuppressLint("DefaultLocale")
-    private void dibujarHorizontales(Canvas canvas ) {
-
-        float precioAlto = 0.0f;
-        float precioBajo = precioAlto;
-
-        // Buscar el precio más alto y el más bajo
-        for (GraficoData d : datos) {
-
-            float precio = Float.parseFloat( d.getDataY() );
-
-            if( precio >= precioAlto ){
-                precioAlto = precio;
-            }
-
-            if( (precio <= precioBajo) || (precioBajo == 0) ){
-                precioBajo = precio;
-            }
-
-        }
-
-        // Los precios tope se obtienen sumando o restando al alto
-        // y bajo la diferencia entre ellos
-        float topeAlto = precioAlto + ( precioAlto - precioBajo );
-        float topeBajo = precioBajo - ( precioAlto - precioBajo );
+    private void dibujarPie(Canvas canvas) {
 
         Paint paint = new Paint();
-        paint.setTextSize(40);
-        paint.setTextAlign( Paint.Align.LEFT);
+        paint.setTextSize(36);
+        paint.setAntiAlias( true );
+        paint.setTextAlign(Paint.Align.RIGHT);
 
-        canvas.drawText( String.format("%.02f", topeAlto), 5, (marginTop + 20),  paint);
-        canvas.drawText( String.format("%.02f", topeBajo), 5, origenY,  paint);
+        // Dividir el ancho entre los registros
+        float ancho = getMeasuredWidth() - marginRight - marginLeft;
+        float intervalo = (int) Math.floor(ancho / (datos.size() - 1));
+//        float pos = intervalo;
+        float pos = origenX;
+        for( GraficoData d : datos ){
 
-        dibujarPuntos( canvas, topeAlto, topeBajo );
+            String fecha = Fecha.getFechaFormateada( d.getDataX() );
+            canvas.save();
+            canvas.rotate(-90, pos+18, origenY+50 );
+            canvas.drawText( fecha, pos+18, origenY+50, paint);
+            canvas.restore();
+
+            pos += intervalo;
+        }
 
     }
 
@@ -279,8 +233,8 @@ public class Grafico extends View {
 
         // Dividir el ancho entre los registros
         float ancho = getMeasuredWidth() - marginRight - marginLeft;
-        float intervalo = (int) Math.floor(ancho / (datos.size() + 1));
-        float x = intervalo + marginLeft;
+        float intervalo = (int) Math.floor(ancho / (datos.size() -1));
+        float x = origenX;
 
         for (GraficoData d : datos) {
             float y = getPosY( Float.parseFloat( d.getDataY() ), topeAlto, topeBajo );
@@ -301,8 +255,6 @@ public class Grafico extends View {
                 canvas.drawLine(anteriorX,anteriorY,x,y,paint);
             }
 
-            Log.d("LDLC","Posición: " + datos.indexOf(d));
-
             // Guardar los nuevo valores
             anteriorX = x;
             anteriorY = y;
@@ -312,26 +264,37 @@ public class Grafico extends View {
 
     }
 
+
     /**
-     * Devuelve la posición y de cada punto
-     * @param precio del proucto
-     * @param topeAlto el precio más alto calculado
-     * @param topeBajo el precio más bajo calculado
-     * @return la posición y
+     * Dibuja una línea vertica para cada una de las fechas (registros).
+     *
+     * @param canvas el lienzo
      */
-    private float getPosY( float precio, float topeAlto, float topeBajo ){
+    private void dibujarVerticales(Canvas canvas) {
 
-        // topeAlto se dibuja en margonTop + 20
-        // topeBajo se dibuja en origenY
+        // Dividir el ancho entre los registros
+        float ancho = getMeasuredWidth() - marginRight - marginLeft;
+        float intervalo = (int) Math.floor(ancho / (datos.size() - 1));
+        float pos = origenX;
 
-        float rango = origenY - (marginTop -20);            // Rango de valores válidos para dibujar
-        float centimos = (topeAlto - topeBajo)*100;      // Céntimos de diferencia entre el máx y y el min
-        float paso = rango / centimos;                             // Valor para cada cétimo
+        for (GraficoData d : datos) {
+            canvas.drawLine(pos, origenY, pos, marginTop, getPaintPunteado());
+            pos += intervalo;
+        }
 
-        // Calcular Y
-        // La diferencia entre el mínimo y el precio
-        float dif = precio - topeBajo;
-        return origenY - ( (dif*100) * paso );
+    }
+
+    /**
+     *
+     */
+    private Paint getPaintPrecio(){
+
+        Paint paint = new Paint();
+        paint.setTextSize(40);
+        paint.setAntiAlias( true );
+
+        return paint;
+
     }
 
     /**
@@ -353,17 +316,58 @@ public class Grafico extends View {
 
     }
 
+
     /**
-     *
+     * Devuelve la posición y de cada punto
+     * @param precio del proucto
+     * @param topeAlto el precio más alto calculado
+     * @param topeBajo el precio más bajo calculado
+     * @return la posición y
      */
-    private Paint getPaintPrecio(){
+    private float getPosY( float precio, float topeAlto, float topeBajo ){
 
-        Paint paint = new Paint();
-        paint.setTextSize(40);
-        paint.setAntiAlias( true );
+        // topeAlto se dibuja en margonTop + 20
+        // topeBajo se dibuja en origenY
 
-        return paint;
+        float rango = origenY - (marginTop -20);            // Rango de valores válidos para dibujar
+        float centimos = (topeAlto - topeBajo)*100;      // Céntimos de diferencia entre el máx y y el min
+        float paso = rango / centimos;                             // Valor para cada céntimo
 
+        // Calcular Y
+        // La diferencia entre el mínimo y el precio
+        float dif = precio - topeBajo;
+        return origenY - ( (dif*100) * paso );
+    }
+
+
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+
+        origenX = marginLeft;
+        origenY = getMeasuredHeight() - marginBottom;
+
+//        canvas.drawColor( Color.GRAY);
+
+        dibujarBase(canvas);
+        dibujarVerticales(canvas);
+        dibujarHorizontales(canvas);
+
+    }
+
+    /**
+     * Método público para recibir los datos
+     *
+     * @param datos los datos
+     */
+    public void setDatos(ArrayList<GraficoData> datos) {
+
+        // Los datos vienen en orden descendente, es decir,
+        // las compras más nuevas, las primeras, pero necesitamos
+        // leerlas al revés.
+        this.datos = datos;
+        Collections.reverse( this.datos);
     }
 
 }
