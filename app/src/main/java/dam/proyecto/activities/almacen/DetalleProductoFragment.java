@@ -511,9 +511,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
 
             } else {
                 // Es un producto nuevo
+                // La primera letra de la denominación, en mayúscula
                 ProductoController.insertProducto(
                         id,
-                        tv_denominacion.getText().toString(),
+                        Words.capitalizar( tv_denominacion.getText().toString() ),
                         marcaInt,
                         unidades,
                         medida,
