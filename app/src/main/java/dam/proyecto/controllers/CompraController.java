@@ -8,14 +8,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 import dam.proyecto.activities.lista.clases.ComercioDiferente;
 import dam.proyecto.database.entity.CompraEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.relaciones.VistaCompra;
 import dam.proyecto.database.repositories.CompraRepository;
-import dam.proyecto.database.repositories.NombreCompraRepository;
 import dam.proyecto.database.repositories.VistaCompraRepository;
 import dam.proyecto.utilities.Fecha;
 
@@ -199,9 +197,9 @@ public class CompraController {
      * @return id del comercio en el que se ha hecho la compra
      */
     public String getNombreComercioByCompra(String idCompra) {
-        NombreCompraRepository nombreCompraRepository =
-                new NombreCompraRepository(CONTEXT);
-        return nombreCompraRepository.getNombreComercioByCompra(idCompra);
+        NombreCompraController nombreCompraController =
+                new NombreCompraController(CONTEXT);
+        return nombreCompraController.getNombreComercioByCompra(idCompra);
     }
 
 
@@ -253,7 +251,6 @@ public class CompraController {
                     + "\nComercio: " + comercio);
 
             // El precio se da por unidad de medida
-
             HashMap<String, String> mapa = new HashMap<>();
             mapa.put("precio", String.format("%.02f", compra.getPrecio()));
             mapa.put("precioM", String.format("%.02f", compra.getPrecioMedido()) +

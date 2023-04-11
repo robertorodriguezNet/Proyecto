@@ -139,6 +139,11 @@ public class NombreCompraController {
         return REPOSITORY.getById(id);
     }
 
+
+    public String getNombreComercioByCompra(String idCompra) {
+        return REPOSITORY.getNombreComercioByCompra(idCompra);
+    }
+
     /**
      * Inserta un nuevo registro
      *
