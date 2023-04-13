@@ -19,6 +19,7 @@ import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.adapters.AdaptadorCompras;
 import dam.proyecto.activities.compras.listener.ListenerCompras;
 import dam.proyecto.activities.lista.ListaActivity;
+import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.NombreCompraController;
 import dam.proyecto.database.entity.CompraEntity;
@@ -261,6 +262,14 @@ public class ComprasActivity extends AppCompatActivity {
             // Creamos el objeto NombreCompra
             // Por defecto se crea el comercio 1 -> ""
             NombreCompraEntity compra = new NombreCompraEntity(id, nombreDeLaLista, 1);
+
+            // ¡¡¡OJO!! --- Puede ser que el comercio 1 aún no exista.
+            // Si el comercio 1 no existe, cuando se cargue la lista se arroja un
+            // error al crear el spinner de los comercios
+            ComercioController cc = new ComercioController( this );
+            if( !cc.existsComercio(1)){
+                cc.insert("");
+            }
 
             // 2.- Lo guardamos en la base de datos en la
             // posición 0 para que se muestre al inicio
