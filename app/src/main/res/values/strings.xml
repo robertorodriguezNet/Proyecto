@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Lista de la compra</string>
     <string name="app_author">Roberto Rodríguez Jiménez</string>
-    <string name="app_version">v1.2023.03.28</string>
+    <string name="app_version">v1.2023.04.10</string>
 
     <string name="title_activity_almacen">Almacén</string>
     <string name="title_activity_lista">Lista abierta</string>
@@ -117,6 +117,7 @@
     <string name="str_otros_productos">Productos relacionados con </string>
     <string name="acp_str_titulo">COMERCIOS CON MEJORES PRECIOS</string>
     <string name="acp_str_btnSalir">SALIR</string>
+    <string name="ac_str_img_crearCompra">Botón para crear la compra</string>
 
     <string-array name="opciones_precio">
         <item>Actual</item>

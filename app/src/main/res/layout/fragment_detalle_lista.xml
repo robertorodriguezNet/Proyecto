@@ -35,7 +35,6 @@
         android:layout_height="match_parent"
         android:layout_below="@id/ap_tly_tabLayout"
         android:layout_marginTop="40dp"
-        android:padding="8dp"
-        />
+        android:padding="8dp" />
 
 </FrameLayout>

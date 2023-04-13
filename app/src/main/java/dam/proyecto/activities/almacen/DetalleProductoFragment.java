@@ -200,12 +200,10 @@ public class DetalleProductoFragment extends Fragment implements TextWatcher {
      * La etiqueta es añadida al campo de texto muestra las etiquetas.
      */
     private void addTag() {
-
         // Texto que se va a guardar
         String tag = tv_etiqueta.getText().toString().trim();
         String normal = Words.normalizar(tag);
         addTag(normal);
-
     }
 
     /**

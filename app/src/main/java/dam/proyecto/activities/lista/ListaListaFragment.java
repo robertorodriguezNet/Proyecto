@@ -1,5 +1,8 @@
 package dam.proyecto.activities.lista;
 
+import static dam.proyecto.utilities.Words.formatearPrecio;
+import static dam.proyecto.utilities.Words.recortarTexto;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
@@ -18,8 +21,10 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -68,8 +73,6 @@ public class ListaListaFragment extends Fragment {
 
     ArrayList<ComercioEntity> dataComercio;                // Colección de comercios para el spinner
     ArrayList<CompraEntity> dataProductos;                    // Colección de productos de la compra
-
-    float totalTicket;                       // Declaramos esta variable para poder usarla en lambda
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -160,7 +163,7 @@ public class ListaListaFragment extends Fragment {
             total.setText(String.format("%.02f", getTotalCompra()));
 
         }
-
+        
         return view;
     }
 
@@ -184,19 +187,14 @@ public class ListaListaFragment extends Fragment {
         sendIntent.putExtra(Intent.EXTRA_TEXT, getListaParaCompratir());
         sendIntent.setType("text/plain");
         sendIntent.setPackage("com.whatsapp");
-        startActivity(sendIntent);
 
-    }
+        try{
+            startActivity(sendIntent);
+        }catch ( android.content.ActivityNotFoundException ex){
+            ex.printStackTrace();
+            Toast.makeText(context, "No se ha encontrado WathsApp", Toast.LENGTH_SHORT).show();
+        }
 
-    /**
-     * Devuelve el precio con una longitud de 3 enteros y 2 decimales
-     *
-     * @param precio el precio
-     * @return el precio formateado
-     */
-    @SuppressLint("DefaultLocale")
-    private String formatearPrecio(float precio) {
-        return String.format("%.02f", precio);
     }
 
     /**
@@ -208,32 +206,31 @@ public class ListaListaFragment extends Fragment {
     private String getListaParaCompratir() {
 
         StringBuilder lista = new StringBuilder();
-        totalTicket = 0f;
+        float totalTicket = 0f;
 
-        dataProductos.forEach(p -> {
-                    lista.append(
-                                    recortarTexto(
-                                            ProductoController
-                                                    .getById(p.getProducto(), getContext())
-                                                    .getDenominacion(),
-                                            18
-                                    )
+        for( CompraEntity p : dataProductos ){
+            lista.append(
+                            recortarTexto(
+                                    ProductoController
+                                            .getById(p.getProducto(), getContext())
+                                            .getDenominacion(),
+                                    18
                             )
-                            .append("\n")
-                            .append(formatearPrecio(p.getCantidad()))
-                            .append(" x ")
-                            .append(formatearPrecio(p.getPrecio()))
-                            .append(" = ")
-                            .append(formatearPrecio(p.getPagado()))
-                            .append("\n-----------------------------\n");
+                    )
+                    .append("\n")
+                    .append(formatearPrecio(p.getCantidad()))
+                    .append(" x ")
+                    .append(formatearPrecio(p.getPrecio()))
+                    .append(" = ")
+                    .append(formatearPrecio(p.getPagado()))
+                    .append("\n-----------------------------\n");
 
-                    totalTicket += p.getPagado();
-                }
-        );
+            totalTicket += p.getPagado();
+        }
 
         lista
                 .append("TOTAL: ......... ")
-                .append(totalTicket);
+                .append( formatearPrecio( totalTicket ) );
 
         return lista.toString();
 
@@ -324,15 +321,6 @@ public class ListaListaFragment extends Fragment {
         oyente = null;
     }
 
-    /**
-     * Devuelve la cadena de texto recortada
-     *
-     * @param texto que se quiere recortar
-     * @return el texto recortado
-     */
-    public String recortarTexto(String texto, int longitud) {
-        return (texto.length() <= longitud) ? texto : texto.substring(0, longitud);
-    }
 
     /**
      * Salimos de la lista de la compra hacia Compras.

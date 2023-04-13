@@ -1,5 +1,7 @@
 package dam.proyecto.utilities;
 
+import android.annotation.SuppressLint;
+
 import java.text.Normalizer;
 import java.util.Locale;
 
@@ -47,6 +49,29 @@ public class Words {
      */
     public static String capitalizar( String texto ){
         return texto.substring(0,1).toUpperCase() + texto.substring(1);
+    }
+
+    /**
+     * Devuelve un float que representa el precio en un
+     * String con dos decimales.
+     *
+     * @param precio el precio
+     * @return el precio formateado
+     */
+    @SuppressLint("DefaultLocale")
+    public static String formatearPrecio(float precio) {
+        return String.format("%.02f", precio);
+    }
+
+
+    /**
+     * Devuelve la cadena de texto recortada
+     *
+     * @param texto que se quiere recortar
+     * @return el texto recortado
+     */
+    public static String recortarTexto(String texto, int longitud) {
+        return (texto.length() <= longitud) ? texto : texto.substring(0, longitud);
     }
 
 }

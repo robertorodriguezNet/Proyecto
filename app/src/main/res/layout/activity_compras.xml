@@ -29,7 +29,8 @@
                 android:hint="Escribe un nombre"
                 android:inputType="text"
                 android:minHeight="48dp"
-                android:text="" />
+                android:text=""
+                tools:ignore="Autofill,HardcodedText" />
 
             <ImageView
                 android:id="@+id/ac_img_crearCompra"
@@ -37,7 +38,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_weight="1"
-                android:src="@drawable/ic_baseline_check_48" />
+                android:contentDescription="@string/ac_str_img_crearCompra"
+                android:src="@drawable/ic_baseline_check_48"
+                tools:ignore="ImageContrastCheck" />
 
 
         </LinearLayout>
