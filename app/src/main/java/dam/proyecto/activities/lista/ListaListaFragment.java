@@ -24,7 +24,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 
@@ -163,7 +162,7 @@ public class ListaListaFragment extends Fragment {
             total.setText(String.format("%.02f", getTotalCompra()));
 
         }
-        
+
         return view;
     }
 
@@ -188,9 +187,9 @@ public class ListaListaFragment extends Fragment {
         sendIntent.setType("text/plain");
         sendIntent.setPackage("com.whatsapp");
 
-        try{
+        try {
             startActivity(sendIntent);
-        }catch ( android.content.ActivityNotFoundException ex){
+        } catch (android.content.ActivityNotFoundException ex) {
             ex.printStackTrace();
             Toast.makeText(context, "No se ha encontrado WathsApp", Toast.LENGTH_SHORT).show();
         }
@@ -209,28 +208,28 @@ public class ListaListaFragment extends Fragment {
         float totalTicket = 0f;
 
         // Recorremos la lista de productos y los añadimos al mensaje
-        for( CompraEntity p : dataProductos ){
+        for (CompraEntity p : dataProductos) {
 
             // Si el producto no ha sido borrado
-            if(ProductoController.exists(p.getProducto(),getContext())){
-            lista.append(
-                            recortarTexto(
-                                    ProductoController
-                                            .getById(p.getProducto(), getContext())
-                                            .getDenominacion(),
-                                    18
-                            )
-                    )
-                    .append("\n")
-                    .append(formatearPrecio(p.getCantidad()))
-                    .append(" x ")
-                    .append(formatearPrecio(p.getPrecio()))
-                    .append(" = ")
-                    .append(formatearPrecio(p.getPagado()))
-                    .append("\n-----------------------------\n");
+            if (ProductoController.exists(p.getProducto(), getContext())) {
+                lista.append(
+                                recortarTexto(
+                                        ProductoController
+                                                .getById(p.getProducto(), getContext())
+                                                .getDenominacion(),
+                                        18
+                                )
+                        )
+                        .append("\n")
+                        .append(formatearPrecio(p.getCantidad()))
+                        .append(" x ")
+                        .append(formatearPrecio(p.getPrecio()))
+                        .append(" = ")
+                        .append(formatearPrecio(p.getPagado()))
+                        .append("\n-----------------------------\n");
 
-            totalTicket += p.getPagado();
-            }else{
+                totalTicket += p.getPagado();
+            } else {
                 // El producto ha sido borrado
                 lista.append("(Producto borrado)")
                         .append("\n-----------------------------\n");
@@ -239,7 +238,7 @@ public class ListaListaFragment extends Fragment {
 
         lista
                 .append("TOTAL: ......... ")
-                .append( formatearPrecio( totalTicket ) );
+                .append(formatearPrecio(totalTicket));
 
         return lista.toString();
 
