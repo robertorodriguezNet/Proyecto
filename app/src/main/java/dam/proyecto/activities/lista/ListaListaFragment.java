@@ -208,7 +208,11 @@ public class ListaListaFragment extends Fragment {
         StringBuilder lista = new StringBuilder();
         float totalTicket = 0f;
 
+        // Recorremos la lista de productos y los añadimos al mensaje
         for( CompraEntity p : dataProductos ){
+
+            // Si el producto no ha sido borrado
+            if(ProductoController.exists(p.getProducto(),getContext())){
             lista.append(
                             recortarTexto(
                                     ProductoController
@@ -226,6 +230,11 @@ public class ListaListaFragment extends Fragment {
                     .append("\n-----------------------------\n");
 
             totalTicket += p.getPagado();
+            }else{
+                // El producto ha sido borrado
+                lista.append("(Producto borrado)")
+                        .append("\n-----------------------------\n");
+            }
         }
 
         lista
