@@ -56,6 +56,25 @@ public class CompraController {
     }
 
     /**
+     * Método que comprueba si existe una compra
+     * @param id de la compra buscada
+     * @return true si la compra existe
+     */
+    public boolean existsCompra( String id ){
+        CompraEntity compra = REPOSITORY.getById(id);
+        return compra != null;
+    }
+
+    /**
+     * Método que comprueba si existe una compra
+     * @param compra buscada
+     * @return true si la compra existe
+     */
+    public boolean existsCompra( CompraEntity compra ){
+        return  existsCompra(compra.getId());
+    }
+
+    /**
      * Devuelve la colección de objetos completa
      *
      * @return la colección de objetos

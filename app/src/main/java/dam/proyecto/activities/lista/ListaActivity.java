@@ -18,6 +18,7 @@ import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.listeners.ListaListener;
+import dam.proyecto.controllers.CompraController;
 import dam.proyecto.controllers.ListaController;
 import dam.proyecto.controllers.ProductoController;
 import dam.proyecto.database.entity.CompraEntity;
@@ -128,15 +129,25 @@ public class  ListaActivity extends AppCompatActivity implements ListaListener {
     @Override
     public void onProductoCompradoClick( CompraEntity compra ) {
 
-        Fragment fragment = new DetalleListaFragment();
-        Bundle bundle = new Bundle();
-        bundle.putString( "id", compra.getId() );
-        fragment.setArguments( bundle );
+        // Comprobar que el producto exista
+        if(ProductoController.exists(compra.getProducto(), this)){
+            Fragment fragment = new DetalleListaFragment();
+            Bundle bundle = new Bundle();
+            bundle.putString("id", compra.getId());
+            fragment.setArguments(bundle);
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.listaContenedor, fragment )
-                .commit();
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.listaContenedor, fragment)
+                    .commit();
+        }else{
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle( "Producto borrado");
+            builder.setMessage("El producto seleccionado fue borrado");
+            builder.setPositiveButton( "Aceptar", null);
+            builder.create();
+            builder.show();
+        }
 
     }
 

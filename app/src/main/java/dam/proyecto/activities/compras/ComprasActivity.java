@@ -170,7 +170,6 @@ public class ComprasActivity extends AppCompatActivity {
         String compraPreferencias = Preferencias.getListaAbiertaId(this);
         if ((compraPreferencias != null) && (compraPreferencias.equals(compra.getId()))) {
             Preferencias.setListaAbiertaId(null, this);
-            Toast.makeText(this, "Esta compra se está editando", Toast.LENGTH_SHORT).show();
         }
 
         // 3.- Borrar la compra de la base de datos
