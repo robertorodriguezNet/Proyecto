@@ -11,12 +11,18 @@ import android.view.View;
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.AlmacenActivity;
-import dam.proyecto.activities.ayuda.fragments.AyudaAgregarProductoFragment;
-import dam.proyecto.activities.ayuda.fragments.AyudaCrearListaFragment;
-import dam.proyecto.activities.ayuda.fragments.AyudaEliminarListaFragment;
-import dam.proyecto.activities.ayuda.fragments.AyudaEliminarProductoFragment;
 import dam.proyecto.activities.ayuda.fragments.AyudaListaFragment;
-import dam.proyecto.activities.ayuda.fragments.AyudaVacioFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaAbrirFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaAgregarFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaAplicarOfertaFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaCompararOtrosFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaCompartirFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaCompraPreciosFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaCrearFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaEditarPrecioFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaEliminarFragment;
+import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaEvolucionPrecioFragment;
+import dam.proyecto.activities.ayuda.fragments.otros.AyudaOtrosVacioFragment;
 import dam.proyecto.activities.ayuda.listeners.AyudaListener;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
@@ -38,7 +44,7 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener {
         ayudaBinding.navegador.setSelectedItemId(R.id.itInicio);
 
         // Floating Button para volver
-        ayudaBinding.ayudaVolver.setOnClickListener(this::cargarFragment);
+        ayudaBinding.ayudaVolver.setOnClickListener(this::cargarAyuda);
 
         // Oyente para el navegador
         ayudaBinding.navegador.setOnItemSelectedListener(item -> {
@@ -68,33 +74,48 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener {
 
     @SuppressLint("NonConstantResourceId")
     @Override
-    public void cargarFragment(View view) {
+    public void cargarAyuda(View view) {
 
-//        Fragment fragment;
-//
-//        switch (view.getId()) {
-//            case R.id.fc_tv_crearLista:
-//                fragment = new AyudaCrearListaFragment();
-//                break;
-//            case R.id.fc_tv_eliminarLista:
-//                fragment = new AyudaEliminarListaFragment();
-//                break;
-//            case R.id.fc_tv_agregarProducto:
-//                fragment = new AyudaAgregarProductoFragment();
-//                break;
-//            case R.id.fc_tv_eliminarProducto:
-//                fragment = new AyudaEliminarProductoFragment();
-//                break;
-//            case R.id.fa_fab_addProductoAlmacen:
-//                fragment = new AyudaListaFragment();
-//                break;
-//            default:
-//                fragment = new AyudaVacioFragment();
-//        }
-//
-//        getSupportFragmentManager()
-//                .beginTransaction()
-//                .replace(R.id.ayudaContenedor, fragment)
-//                .commit();
+        Fragment fragment;
+
+        switch (view.getId()) {
+            case R.id.ayudaListaCrear:
+                fragment = new AyudaListaCrearFragment();
+                break;
+            case R.id.ayudaListaAbrir:
+                fragment = new AyudaListaAbrirFragment();
+                break;
+            case R.id.ayudaListaAnadir:
+                fragment = new AyudaListaAgregarFragment();
+                break;
+            case R.id.ayudaListaEliminar:
+                fragment = new AyudaListaEliminarFragment();
+                break;
+            case R.id.ayudaListaEditar:
+                fragment = new AyudaListaEditarPrecioFragment();
+                break;
+            case R.id.ayudaListaOfertas:
+                fragment = new AyudaListaAplicarOfertaFragment();
+                break;
+            case R.id.ayudaListaComparaPrecios:
+                fragment = new AyudaListaCompraPreciosFragment();
+                break;
+            case R.id.ayudaListaEvolucionPrecio:
+                fragment = new AyudaListaEvolucionPrecioFragment();
+                break;
+            case R.id.ayudaListaCompararOtros:
+                fragment = new AyudaListaCompararOtrosFragment();
+                break;
+            case R.id.ayudaListaCompartrir:
+                fragment = new AyudaListaCompartirFragment();
+                break;
+            default:
+                fragment = new AyudaOtrosVacioFragment();
+        }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.ayudaContenedor, fragment)
+                .commit();
     }
 }
