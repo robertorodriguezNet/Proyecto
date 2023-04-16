@@ -17,11 +17,17 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="31">
         <activity
+            android:name=".activities.ayuda.AyudaActivity"
+            android:exported="false"
+            android:label="Ayuda"/>
+        <activity
             android:name=".activities.ContactoActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Lista de la compra - Contacto"/>
         <activity
             android:name=".activities.AcercaDeActivity"
-            android:exported="false" />
+            android:exported="false"
+            android:label="Lista de la compra - Acerca de..."/>
         <activity
             android:name=".activities.marcablanca.MarcaBlancaActivity"
             android:exported="false"

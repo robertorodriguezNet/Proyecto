@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,6 +17,7 @@ import android.widget.Toast;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
+import dam.proyecto.activities.ayuda.AyudaActivity;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
 import dam.proyecto.activities.marcablanca.MarcaBlancaActivity;
@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Cargamos los datos de ejemplo
         // Hay que pasarle el contexto
-        Log.d("BD", "MainActivity.class: antes de cargar datos");
         Ejemplos.cargarDatos(this, this);
 
         // Obtener la vista mediante ViewBinding
@@ -110,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
                 editarMarcaBlanca();
                 break;
             case R.id.mp_it_ayuda:
-                Toast.makeText(this, "ayuda", Toast.LENGTH_SHORT).show();
+                startActivity( new Intent( this, AyudaActivity.class ));
                 break;
             case R.id.mp_it_comercio:
                 abrirComercio();
