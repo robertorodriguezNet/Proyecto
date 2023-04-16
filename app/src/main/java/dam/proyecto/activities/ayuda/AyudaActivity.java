@@ -12,6 +12,13 @@ import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.AlmacenActivity;
 import dam.proyecto.activities.ayuda.fragments.AyudaListaFragment;
+import dam.proyecto.activities.ayuda.fragments.almacen.AyudaAlmacenAgregarFragment;
+import dam.proyecto.activities.ayuda.fragments.almacen.AyudaAlmacenEditarFragment;
+import dam.proyecto.activities.ayuda.fragments.almacen.AyudaAlmacenEliminarFragment;
+import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasCrearFragment;
+import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasDuplicarFragment;
+import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasEliminarFragment;
+import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasModificarFragment;
 import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaAbrirFragment;
 import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaAgregarFragment;
 import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaAplicarOfertaFragment;
@@ -108,6 +115,27 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener {
                 break;
             case R.id.ayudaListaCompartrir:
                 fragment = new AyudaListaCompartirFragment();
+                break;
+            case R.id.ayudaComprasCrear:
+                fragment = new AyudaComprasCrearFragment();
+                break;
+            case R.id.ayudaComprasModificar:
+                fragment = new AyudaComprasModificarFragment();
+                break;
+            case R.id.ayudaComprasDuplicar:
+                fragment = new AyudaComprasDuplicarFragment();
+                break;
+            case R.id.ayudaComprasBorrar:
+                fragment = new AyudaComprasEliminarFragment();
+                break;
+            case R.id.ayudaAlmacenAgregar:
+                fragment = new AyudaAlmacenAgregarFragment();
+                break;
+            case R.id.ayudaAlmacenEditar:
+                fragment = new AyudaAlmacenEditarFragment();
+                break;
+            case R.id.ayudaAlmacenEliminar:
+                fragment = new AyudaAlmacenEliminarFragment();
                 break;
             default:
                 fragment = new AyudaOtrosVacioFragment();
