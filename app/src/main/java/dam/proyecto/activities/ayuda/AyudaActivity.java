@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.TextView;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
@@ -17,7 +16,6 @@ import dam.proyecto.activities.ayuda.fragments.AyudaListaFragment;
 import dam.proyecto.activities.ayuda.fragments.almacen.AyudaAlmacenAgregarFragment;
 import dam.proyecto.activities.ayuda.fragments.almacen.AyudaAlmacenEditarFragment;
 import dam.proyecto.activities.ayuda.fragments.almacen.AyudaAlmacenEliminarFragment;
-import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasCrearFragment;
 import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasDuplicarFragment;
 import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasEliminarFragment;
 import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasModificarFragment;
@@ -91,6 +89,7 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener, V
 
         switch (view.getId()) {
             case R.id.ayudaListaCrear:
+            case R.id.ayudaComprasCrear:
                 fragment = new AyudaListaCrearFragment();
                 break;
             case R.id.ayudaListaAbrir:
@@ -119,9 +118,6 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener, V
                 break;
             case R.id.ayudaListaCompartrir:
                 fragment = new AyudaListaCompartirFragment();
-                break;
-            case R.id.ayudaComprasCrear:
-                fragment = new AyudaComprasCrearFragment();
                 break;
             case R.id.ayudaComprasModificar:
                 fragment = new AyudaComprasModificarFragment();
@@ -154,7 +150,7 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener, V
     @Override
     public void onClick(View view) {
 
-        if( view.getId() == ayudaBinding.ayudaVolver.getId() ){
+        if (view.getId() == ayudaBinding.ayudaVolver.getId()) {
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.ayudaContenedor, new AyudaListaFragment())

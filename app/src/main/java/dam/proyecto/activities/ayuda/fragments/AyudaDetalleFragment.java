@@ -1,4 +1,4 @@
-package dam.proyecto.activities.ayuda.fragments.compras;
+package dam.proyecto.activities.ayuda.fragments;
 
 import android.os.Bundle;
 
@@ -12,10 +12,10 @@ import dam.proyecto.R;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link AyudaComprasCrearFragment#newInstance} factory method to
+ * Use the {@link AyudaDetalleFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class AyudaComprasCrearFragment extends Fragment {
+public class AyudaDetalleFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -26,7 +26,7 @@ public class AyudaComprasCrearFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public AyudaComprasCrearFragment() {
+    public AyudaDetalleFragment() {
         // Required empty public constructor
     }
 
@@ -36,11 +36,11 @@ public class AyudaComprasCrearFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment AyudaComprasCrearFragment.
+     * @return A new instance of fragment AyudaDetalleFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static AyudaComprasCrearFragment newInstance(String param1, String param2) {
-        AyudaComprasCrearFragment fragment = new AyudaComprasCrearFragment();
+    public static AyudaDetalleFragment newInstance(String param1, String param2) {
+        AyudaDetalleFragment fragment = new AyudaDetalleFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -61,6 +61,6 @@ public class AyudaComprasCrearFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ayuda_compras_crear, container, false);
+        return inflater.inflate(R.layout.fragment_ayuda_detalle, container, false);
     }
 }
