@@ -6,7 +6,9 @@ import androidx.fragment.app.Fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.TextView;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
@@ -35,9 +37,11 @@ import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
 import dam.proyecto.databinding.ActivityAyudaBinding;
 
-public class AyudaActivity extends AppCompatActivity implements AyudaListener {
+public class AyudaActivity extends AppCompatActivity implements AyudaListener, View.OnClickListener {
 
     ActivityAyudaBinding ayudaBinding;
+
+    AyudaListener oyente;
 
     @SuppressLint("NonConstantResourceId")
     @Override
@@ -51,8 +55,7 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener {
         ayudaBinding.navegador.setSelectedItemId(R.id.itInicio);
 
         // Floating Button para volver
-        ayudaBinding.ayudaVolver.setOnClickListener(this::cargarAyuda);
-
+        ayudaBinding.ayudaVolver.setOnClickListener(this);
         // Oyente para el navegador
         ayudaBinding.navegador.setOnItemSelectedListener(item -> {
                     switch (item.getItemId()) {
@@ -79,9 +82,10 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener {
 
     }
 
-    @SuppressLint("NonConstantResourceId")
     @Override
     public void cargarAyuda(View view) {
+
+        Log.d("LDLC", "VISTA: " + view.toString());
 
         Fragment fragment;
 
@@ -145,5 +149,17 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener {
                 .beginTransaction()
                 .replace(R.id.ayudaContenedor, fragment)
                 .commit();
+    }
+
+    @Override
+    public void onClick(View view) {
+
+        if( view.getId() == ayudaBinding.ayudaVolver.getId() ){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.ayudaContenedor, new AyudaListaFragment())
+                    .commit();
+        }
+
     }
 }
