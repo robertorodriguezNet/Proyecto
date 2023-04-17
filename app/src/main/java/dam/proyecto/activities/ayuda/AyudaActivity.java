@@ -64,9 +64,7 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener, V
 
     @Override
     public void cargarAyuda(View view) {
-
-        Log.d("LDLC", "VISTA: " + view.toString());
-
+        
         Fragment fragment = new AyudaDetalleFragment();
         Bundle bundle = new Bundle();
 
