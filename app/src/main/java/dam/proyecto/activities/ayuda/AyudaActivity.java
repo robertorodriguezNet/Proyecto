@@ -12,24 +12,6 @@ import android.view.View;
 import dam.proyecto.R;
 import dam.proyecto.activities.MainActivity;
 import dam.proyecto.activities.almacen.AlmacenActivity;
-import dam.proyecto.activities.ayuda.fragments.AyudaListaFragment;
-import dam.proyecto.activities.ayuda.fragments.almacen.AyudaAlmacenAgregarFragment;
-import dam.proyecto.activities.ayuda.fragments.almacen.AyudaAlmacenEditarFragment;
-import dam.proyecto.activities.ayuda.fragments.almacen.AyudaAlmacenEliminarFragment;
-import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasDuplicarFragment;
-import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasEliminarFragment;
-import dam.proyecto.activities.ayuda.fragments.compras.AyudaComprasModificarFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaAbrirFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaAgregarFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaAplicarOfertaFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaCompararOtrosFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaCompartirFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaCompraPreciosFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaCrearFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaEditarPrecioFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaEliminarFragment;
-import dam.proyecto.activities.ayuda.fragments.lista.AyudaListaEvolucionPrecioFragment;
-import dam.proyecto.activities.ayuda.fragments.otros.AyudaOtrosVacioFragment;
 import dam.proyecto.activities.ayuda.listeners.AyudaListener;
 import dam.proyecto.activities.compras.ComprasActivity;
 import dam.proyecto.activities.lista.ListaActivity;
@@ -85,62 +67,92 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener, V
 
         Log.d("LDLC", "VISTA: " + view.toString());
 
-        Fragment fragment;
+        Fragment fragment = new AyudaDetalleFragment();
+        Bundle bundle = new Bundle();
+
+        String file = "nodisponible";
+        String title = "Ayuda no disponible";
 
         switch (view.getId()) {
             case R.id.ayudaListaCrear:
             case R.id.ayudaComprasCrear:
-                fragment = new AyudaListaCrearFragment();
+                file = "ayuda_lista_crear";
+                title = "Crear una nueva lista";
                 break;
             case R.id.ayudaListaAbrir:
-                fragment = new AyudaListaAbrirFragment();
+                file = "ayuda_lista_abrir";
+                title = "Abrir una lista de la compra";
                 break;
             case R.id.ayudaListaAnadir:
-                fragment = new AyudaListaAgregarFragment();
+                file = "ayuda_lista_agregar";
+                title = "Agregar un producto a la lista";
                 break;
             case R.id.ayudaListaEliminar:
-                fragment = new AyudaListaEliminarFragment();
+                file = "ayuda_lista_eliminar";
+                title = "Eliminar un producto de la lista";
                 break;
             case R.id.ayudaListaEditar:
-                fragment = new AyudaListaEditarPrecioFragment();
+                file = "ayuda_lista_editar";
+                title = "Editar cantidad y precio";
                 break;
             case R.id.ayudaListaOfertas:
-                fragment = new AyudaListaAplicarOfertaFragment();
+                file = "ayuda_lista_ofertas";
+                title = "Aplicar ofertas";
                 break;
             case R.id.ayudaListaComparaPrecios:
-                fragment = new AyudaListaCompraPreciosFragment();
+                file = "ayuda_lista_comparar_precios";
+                title = "Comparar lista en otros comercios";
                 break;
             case R.id.ayudaListaEvolucionPrecio:
-                fragment = new AyudaListaEvolucionPrecioFragment();
+                file = "ayuda_lista_evolucion";
+                title = "Evolución del precio";
                 break;
             case R.id.ayudaListaCompararOtros:
-                fragment = new AyudaListaCompararOtrosFragment();
+                file = "ayuda_lista_comparar_otros";
+                title = "Comparar lista en otros comercios";
                 break;
             case R.id.ayudaListaCompartrir:
-                fragment = new AyudaListaCompartirFragment();
+                file = "ayuda_lista_compartir";
+                title = "Compartir una lista";
                 break;
             case R.id.ayudaComprasModificar:
-                fragment = new AyudaComprasModificarFragment();
+                file = "ayuda_compras_modificar";
+                title = "Cambiar la fecha de una compra";
                 break;
             case R.id.ayudaComprasDuplicar:
-                fragment = new AyudaComprasDuplicarFragment();
+                file = "ayuda_compras_duplicar";
+                title = "Duplicar una compra";
                 break;
             case R.id.ayudaComprasBorrar:
-                fragment = new AyudaComprasEliminarFragment();
+                file = "ayuda_compras_eliminar";
+                title = "Eliminar una compra";
                 break;
             case R.id.ayudaAlmacenAgregar:
-                fragment = new AyudaAlmacenAgregarFragment();
+                file = "ayuda_almacen_agregar";
+                title = "Agregar un producto al almacén";
                 break;
             case R.id.ayudaAlmacenEditar:
-                fragment = new AyudaAlmacenEditarFragment();
+                file = "ayuda_almacen_editar";
+                title = "Editar un producto";
                 break;
             case R.id.ayudaAlmacenEliminar:
-                fragment = new AyudaAlmacenEliminarFragment();
+                file = "ayuda_almacen_eliminar";
+                title = "Eliminar un producto del almacén";
+                break;
+            case R.id.ayudaOtrosCrearComercio:
+                file = "ayuda_otros_crear_comercio";
+                title = "Crear un comercio";
+                break;
+            case R.id.ayudaOtrosAsociar:
+                file = "ayuda_otros_asociar";
+                title = "Asociar un comercio a una marca";
                 break;
             default:
-                fragment = new AyudaOtrosVacioFragment();
         }
 
+        bundle.putString("file",file);
+        bundle.putString("title",title);
+        fragment.setArguments( bundle );
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.ayudaContenedor, fragment)
