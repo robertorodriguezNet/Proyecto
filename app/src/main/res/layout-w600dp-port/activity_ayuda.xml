@@ -26,7 +26,7 @@
         android:layout_marginTop="4dp"
         android:layout_marginBottom="4dp"
         android:text=""
-        android:background="@color/black"
+        android:background="@color/green_500"
         app:layout_constraintEnd_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/ayudaContenedorLista"
         app:layout_constraintBottom_toTopOf="@id/ayudaContenedorDetalleTabletPortrait"
