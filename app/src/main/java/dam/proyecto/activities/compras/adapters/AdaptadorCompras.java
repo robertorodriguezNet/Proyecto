@@ -19,7 +19,6 @@ import dam.proyecto.R;
 import dam.proyecto.activities.compras.listener.ListenerCompras;
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.database.entity.NombreCompraEntity;
-import dam.proyecto.database.repositories.ComercioRespository;
 import dam.proyecto.utilities.Fecha;
 
 /**
@@ -76,11 +75,11 @@ public class AdaptadorCompras extends ArrayAdapter<NombreCompraEntity> {
         NombreCompraEntity actual = DATA.get(position);
 
         // Obtener los componentes de la interfaz
-        TextView fecha = (TextView) view.findViewById(R.id.cli_tv_fecha);
-        TextView nombre = (TextView) view.findViewById(R.id.cli_tv_nombre);
-        TextView comercio = (TextView) view.findViewById(R.id.cli_tv_comercio);
-        ImageView copyIcon = (ImageView) view.findViewById(R.id.cli_img_copy);
-        ImageView deleteIcon = (ImageView) view.findViewById(R.id.cli_img_delete);
+        TextView fecha = view.findViewById(R.id.cli_tv_fecha);
+        TextView nombre = view.findViewById(R.id.cli_tv_nombre);
+        TextView comercio = view.findViewById(R.id.cli_tv_comercio);
+        ImageView copyIcon = view.findViewById(R.id.cli_img_copy);
+        ImageView deleteIcon =  view.findViewById(R.id.cli_img_delete);
 
         // Formatear la fecha
         String formatFecha;
@@ -115,13 +114,20 @@ public class AdaptadorCompras extends ArrayAdapter<NombreCompraEntity> {
         });
 
 
-        // Asignamos un oyente al icono de borrar
-        copyIcon.setOnClickListener(v -> {
-            if (null != OYENTE) {
-                OYENTE.cli_img_copyOnClik(actual);
-            }
+        // Asignamos un oyente al icono de duplicar
+        // El icono debe estar desactivado si el id que se va a generar
+        // para la nueva compra coincide con el id actual
+        if (actual.getId().equals(Fecha.getNuevaFecha())) {
+            copyIcon.setAlpha(0.0f);
+            copyIcon.setClickable(false);
+        } else {
+            copyIcon.setOnClickListener(v -> {
+                if (null != OYENTE) {
+                    OYENTE.cli_img_copyOnClik(actual);
+                }
 
-        });
+            });
+        }
 
         // Asignamos un oyente al icono de borrar
         deleteIcon.setOnClickListener(v -> {

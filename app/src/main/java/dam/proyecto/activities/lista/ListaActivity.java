@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import android.annotation.SuppressLint;
+import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 
 import dam.proyecto.R;
@@ -40,6 +41,8 @@ public class  ListaActivity extends AppCompatActivity implements ListaListener {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         // Obtener la vista mediante ViewBinding
         bindingLista = ActivityListaBinding.inflate(getLayoutInflater());

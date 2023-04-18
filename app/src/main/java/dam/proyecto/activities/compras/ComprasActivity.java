@@ -324,12 +324,13 @@ public class ComprasActivity extends AppCompatActivity {
           .- String nombre: el mismo texto que el id
           .- int comercio:  1, corresponde a comercio en blanco
          */
+        // Al crear la compra nueva, recibimos el id
         String idCompraNueva = crearCompra(false);
 
         // En este punto la compra copia está creada y aparece en el listado
 
         // La compra está creada y se muestra
-        // Obtenemos la compra copia
+        // Obtenemos la compra copia a partir del id que recibimos al crear la compra
         NombreCompraEntity compraCopia = nombreCompraController.getById(idCompraNueva);
 
         // Establecer el comercio de la compra copia

@@ -5,7 +5,6 @@ import static dam.proyecto.Config.CODIGO_DE_BARRAS_LENGTH;
 import static dam.proyecto.Config.PRODUCTO_DENOMINACION_MIN_LENGTH;
 
 import android.content.Context;
-import android.util.Log;
 
 import java.util.ArrayList;
 
