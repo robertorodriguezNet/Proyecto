@@ -7,15 +7,27 @@
     android:layout_height="match_parent">
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/ayudaContenedor"
+        android:id="@+id/ayudaContenedorLista"
         android:name="dam.proyecto.activities.ayuda.AyudaListaFragment"
-        android:layout_width="match_parent"
+        android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/ayudaContenedorDetalleMovilLandscape"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/navegador"
         tools:layout="@layout/fragment_ayuda_lista"
+        />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/ayudaContenedorDetalleMovilLandscape"
+        android:name="dam.proyecto.activities.ayuda.AyudaDetalleFragment"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/ayudaContenedorLista"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/navegador"
+        tools:layout="@layout/fragment_ayuda_detalle"
         />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -24,7 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginBottom="24dp"
-        android:clickable="true"
+        android:clickable="false"
+        android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/navegador"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_baseline_exit_to_app_64"
@@ -34,7 +47,7 @@
         android:id="@+id/navegador"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/ayudaContenedor"
+        app:layout_constraintTop_toBottomOf="@id/ayudaContenedorLista"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

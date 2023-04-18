@@ -29,6 +29,9 @@ public class AyudaDetalleFragment extends Fragment {
         if (getArguments() != null) {
             file = getArguments().getString("file");
             title = getArguments().getString("title");
+        }else{
+            file = "blanco";
+            title = "";
         }
     }
 

@@ -1,7 +1,9 @@
 package dam.proyecto.activities.ayuda;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentContainerView;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -34,8 +36,11 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener, V
 
         ayudaBinding.navegador.setSelectedItemId(R.id.itInicio);
 
-        // Floating Button para volver
-        ayudaBinding.ayudaVolver.setOnClickListener(this);
+        // Botón "Volver"
+        if( getScreenMode().equals( "movil_portrait")){
+            ayudaBinding.ayudaVolver.setOnClickListener(this);
+        }
+
         // Oyente para el navegador
         ayudaBinding.navegador.setOnItemSelectedListener(item -> {
                     switch (item.getItemId()) {
@@ -64,7 +69,8 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener, V
 
     @Override
     public void cargarAyuda(View view) {
-        
+
+        // Fragment que se carga de inicio en el fragment detalle
         Fragment fragment = new AyudaDetalleFragment();
         Bundle bundle = new Bundle();
 
@@ -151,10 +157,43 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener, V
         bundle.putString("file",file);
         bundle.putString("title",title);
         fragment.setArguments( bundle );
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.ayudaContenedor, fragment)
-                .commit();
+
+        if( getScreenMode().equals("movil_landscape")){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.ayudaContenedorDetalleMovilLandscape, fragment)
+                    .commit();
+        }else if( getScreenMode().equals("tablet_portrait")){
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.ayudaContenedorDetalleTabletPortrait, fragment)
+                    .commit();
+        }else{
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.ayudaContenedor, fragment)
+                    .commit();
+        }
+
+    }
+
+    /**
+     * Devuelve el modo de pantalla
+     * @return el modo de mantalla
+     */
+    private String getScreenMode() {
+
+        String modo = "movil_portrait";
+
+        FragmentContainerView movilLandscape = (FragmentContainerView) findViewById(R.id.ayudaContenedorDetalleMovilLandscape);
+        FragmentContainerView tabletPortrait = (FragmentContainerView) findViewById(R.id.ayudaContenedorDetalleTabletPortrait);
+        if( movilLandscape != null  ){
+            modo = "movil_landscape";
+        }else if( tabletPortrait != null ){
+            modo = "tablet_portrait";
+        }
+
+        return modo;
     }
 
     @Override
