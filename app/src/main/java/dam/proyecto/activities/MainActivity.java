@@ -3,8 +3,10 @@ package dam.proyecto.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.MenuCompat;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
@@ -88,6 +91,10 @@ public class MainActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_principal, menu);
+
+        // Visualizar los separadores del menú
+        MenuCompat.setGroupDividerEnabled(menu,true);
+
         return true;
     }
 
@@ -124,8 +131,11 @@ public class MainActivity extends AppCompatActivity {
             case R.id.mp_it_exportarEjemplos:
                 ExportarEjemplos.exportar(this);
                 break;
-            case R.id.mp_it_importrEjemplos:
-                ImportarEjemplos.importar(this);
+            case R.id.mp_it_importarProductos:
+                ImportarEjemplos.importar(this, false);
+                break;
+            case R.id.mp_it_importarTodo:
+                confirmarCargarTodosLosDatos();
                 break;
 
         }
@@ -150,6 +160,27 @@ public class MainActivity extends AppCompatActivity {
         builder.setPositiveButton("Aceptar", (dialogInterface, i) -> {
             ComercioController controller = new ComercioController(getApplicationContext());
             controller.addComercio(input.getText().toString());
+        });
+
+        builder.create();
+        builder.show();
+
+    }
+
+    private void confirmarCargarTodosLosDatos(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Precaución");
+        builder.setMessage("Se van a cargar los datos de ejemplo desde la base de datos remota.\n\n" +
+                "Estos datos son reales, pero reemplazarán a los datos del dispositivo.\n\n" +
+                "Si continúa, se perderán los datos locales.");
+        builder.setNegativeButton("Cancelar",null);
+        builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener(){
+
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                ImportarEjemplos.importar(getApplicationContext(), true);
+            }
         });
 
         builder.create();

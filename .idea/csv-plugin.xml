@@ -3,7 +3,42 @@
   <component name="CsvFileAttributes">
     <option name="attributeMap">
       <map>
+        <entry key="C:\Users\Roberto\AppData\Local\Google\AndroidStudio2022.1\device-explorer\samsung-sm_g991b-R5CRC05GMTN\data\data\dam.proyecto\files\ComercioEntity.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\Roberto\AppData\Local\Google\AndroidStudio2022.1\device-explorer\samsung-sm_g991b-R5CRC05GMTN\data\data\dam.proyecto\files\CompraEntity.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\Roberto\AppData\Local\Google\AndroidStudio2022.1\device-explorer\samsung-sm_g991b-R5CRC05GMTN\data\data\dam.proyecto\files\MarcaEntity.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
         <entry key="C:\Users\Roberto\AppData\Local\Google\AndroidStudio2022.1\device-explorer\samsung-sm_g991b-R5CRC05GMTN\data\data\dam.proyecto\files\ProductoEntity.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\Roberto\AppData\Local\Google\AndroidStudio2022.1\device-explorer\samsung-sm_g991b-R5CRC05GMTN\data\data\dam.proyecto\files\TagEntity.csv">
+          <value>
+            <Attribute>
+              <option name="separator" value="," />
+            </Attribute>
+          </value>
+        </entry>
+        <entry key="C:\Users\Roberto\AppData\Local\Google\AndroidStudio2022.1\device-explorer\samsung-sm_g991b-R5CRC05GMTN\data\data\dam.proyecto\files\TagsProductoEntity.csv">
           <value>
             <Attribute>
               <option name="separator" value="," />

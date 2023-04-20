@@ -1,44 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/mp_it_comercio"
-        android:icon="@drawable/ic_baseline_storefront_24"
-        android:title="@string/mp_str_it_comercio"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/mp_it_marcaBlanca"
-        android:icon="@drawable/ic_baseline_rtt_24"
-        android:title="@string/mp_str_it_marcaBlanca"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/mp_it_ayuda"
-        android:icon="@drawable/ic_baseline_help_outline_24"
-        android:title="@string/mp_str_it_ayuda"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/mp_it_acercade"
-        android:icon="@drawable/ic_baseline_info_24"
-        android:title="@string/mp_str_it_acercade"
-        app:showAsAction="ifRoom" />
-    <item
-        android:id="@+id/mp_it_exportarBD"
-        android:icon="@drawable/ic_baseline_import_export_24"
-        android:title="@string/mp_str_it_exportarBD" />
-    <item
-        android:id="@+id/mp_it_impoprtarBD"
-        android:icon="@drawable/ic_baseline_import_export_24"
-        android:title="@string/mp_str_it_importarDB" />
+    <group android:id="@+id/mp_grupo1">
+        <item
+            android:id="@+id/mp_it_comercio"
+            android:icon="@drawable/ic_baseline_storefront_24"
+            android:title="@string/mp_str_it_comercio"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/mp_it_marcaBlanca"
+            android:icon="@drawable/ic_baseline_rtt_24"
+            android:title="@string/mp_str_it_marcaBlanca"
+            app:showAsAction="ifRoom" />
+    </group>
 
-    <item
-        android:id="@+id/mp_it_exportarEjemplos"
-        android:icon="@drawable/ic_baseline_import_export_24"
-        android:title="@string/mp_str_it_exportarEjemplos" />
+    <group android:id="@+id/mp_grupo2">
+        <item
+            android:id="@+id/mp_it_ayuda"
+            android:icon="@drawable/ic_baseline_help_outline_24"
+            android:title="@string/mp_str_it_ayuda"
+            app:showAsAction="ifRoom" />
+        <item
+            android:id="@+id/mp_it_acercade"
+            android:icon="@drawable/ic_baseline_info_24"
+            android:title="@string/mp_str_it_acercade"
+            app:showAsAction="ifRoom" />
+    </group>
 
-    <item
-        android:id="@+id/mp_it_importrEjemplos"
-        android:icon="@drawable/ic_baseline_import_export_24"
-        android:title="@string/mp_str_it_cargar" />
+    <group android:id="@+id/mp_grupo3">
+        <item
+            android:id="@+id/mp_it_exportarBD"
+            android:icon="@drawable/ic_baseline_import_export_24"
+            android:title="@string/mp_str_it_exportarBD" />
+        <item
+            android:id="@+id/mp_it_impoprtarBD"
+            android:icon="@drawable/ic_baseline_import_export_24"
+            android:title="@string/mp_str_it_importarDB" />
+    </group>
 
+    <group android:id="@+id/mp_grupo4">
+        <item
+            android:id="@+id/mp_it_exportarEjemplos"
+            android:icon="@drawable/ic_baseline_import_export_24"
+            android:title="@string/mp_str_it_exportarEjemplos" />
+
+        <item
+            android:id="@+id/mp_it_importarProductos"
+            android:icon="@drawable/ic_baseline_import_export_24"
+            android:title="@string/mp_str_it_cargar" />
+
+        <item
+            android:id="@+id/mp_it_importarTodo"
+            android:icon="@drawable/ic_baseline_import_export_24"
+            android:title="@string/mp_str_it_datosCompletos" />
+    </group>
 </menu>

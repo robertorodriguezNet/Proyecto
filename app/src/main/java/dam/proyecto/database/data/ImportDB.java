@@ -145,7 +145,7 @@ public class ImportDB {
      * El id de la compra no se importa porque se genera de forma
      * automática al crearse el objeto.
      */
-    private static void importarCompraEntity() {
+    public static void importarCompraEntity() {
 
         String file = "CompraEntity.csv";
         CompraController controller = new CompraController(context);
@@ -176,10 +176,15 @@ public class ImportDB {
         }
     }
 
+    public static void importarCompraEntity(Context c){
+        context = c;
+        importarCompraEntity();
+    }
+
     /**
      * Importa la entidad NombreCompraEntity.
      */
-    private static void importarNombreCompraEntity() {
+    public static void importarNombreCompraEntity() {
 
         String file = "NombreCompraEntity.csv";
         NombreCompraController controller = new NombreCompraController(context);
@@ -205,12 +210,16 @@ public class ImportDB {
                     + e.getMessage());
         }
     }
+    public static void importarNombreCompraEntity(Context c) {
+        context = c;
+        importarNombreCompraEntity();
+    }
 
-    /**
-     * Importa la entidad TagEntity.
-     * El id no es auto-increment
-     */
-    private static void importarTagEntity() {
+        /**
+         * Importa la entidad TagEntity.
+         * El id no es auto-increment
+         */
+    public static void importarTagEntity() {
 
         String file = "TagEntity.csv";
         TagController controller = new TagController(context);
@@ -235,12 +244,16 @@ public class ImportDB {
                     + e.getMessage());
         }
     }
+    public static void importarTagEntity(Context c) {
+        context = c;
+        importarTagEntity();
+    }
 
-    /**
-     * Importa la entidad ComercioEntity.
-     * El id no es auto-increment
-     */
-    private static void importarComercioEntity() {
+        /**
+         * Importa la entidad ComercioEntity.
+         * El id no es auto-increment
+         */
+    public static void importarComercioEntity() {
 
         String file = "ComercioEntity.csv";
         ComercioController controller = new ComercioController(context);
@@ -265,13 +278,17 @@ public class ImportDB {
                     + e.getMessage());
         }
     }
+    public static void importarComercioEntity( Context c) {
+        context = c;
+        importarComercioEntity();
+    }
 
 
     /**
      * Importa la entidad TagEntity.
      * El id no es auto-increment
      */
-    private static void importarProductoTagEntity() {
+    public static void importarProductoTagEntity() {
 
         String file = "TagsProductoEntity.csv";
         TagProductoController controller = new TagProductoController(context);
@@ -298,11 +315,16 @@ public class ImportDB {
         }
     }
 
-    /**
-     * Importa la entidad MarcaEntity.
-     * El id no es auto-increment
-     */
-    private static void importarMarcaEntity() {
+    public static void importarProductoTagEntity(Context c) {
+        context = c;
+        importarProductoTagEntity();
+    }
+
+        /**
+         * Importa la entidad MarcaEntity.
+         * El id no es auto-increment
+         */
+    public static void importarMarcaEntity() {
 
         String file = "MarcaEntity.csv";
         MarcaController controller = new MarcaController(context);
@@ -332,11 +354,16 @@ public class ImportDB {
         }
     }
 
+    public static void importarMarcaEntity(Context c){
+        context = c;
+        importarMarcaEntity();
+    }
+
     /**
      * Importa la entidad MedidaEntity.
      * El id no es auto-increment
      */
-    private static void importarMedidaEntity() {
+    public static void importarMedidaEntity() {
 
         String file = "MedidaEntity.csv";
         MedidaController controller = new MedidaController(context);
@@ -366,11 +393,16 @@ public class ImportDB {
         }
     }
 
-    /**
-     * Importa la entidad MedidaEntity.
-     * El id no es auto-increment
-     */
-    private static void importarOfertaEntity() {
+    public static void importarMedidaEntity(Context c) {
+        context = c;
+        importarMedidaEntity();
+    }
+
+        /**
+         * Importa la entidad MedidaEntity.
+         * El id no es auto-increment
+         */
+    public static void importarOfertaEntity() {
 
         String file = "OfertaEntity.csv";
         OfertaController controller = new OfertaController(context);
@@ -395,12 +427,16 @@ public class ImportDB {
                     + e.getMessage());
         }
     }
+    public static void importarOfertaEntity(Context c){
+        context = c;
+        importarOfertaEntity();
+    }
 
     /**
      * Importa la entidad MedidaEntity.
      * El id no es auto-increment
      */
-    private static void importarMarcaBlancaEntity() {
+    public static void importarMarcaBlancaEntity() {
 
         String file = "MarcaBlancaEntity.csv";
         MarcaBlancaController controller = new MarcaBlancaController(context);
@@ -425,6 +461,11 @@ public class ImportDB {
             Log.e("LDLC", "Error al importar OfertaEntity:\n"
                     + e.getMessage());
         }
+    }
+
+    public static void importarMarcaBlancaEntity( Context c){
+        context = c;
+        importarMarcaBlancaEntity();
     }
 
 }
