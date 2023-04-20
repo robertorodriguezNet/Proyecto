@@ -12,9 +12,9 @@ import java.sql.Statement;
 
 /**
  * Importa los datos de ejemplo que hay en la base de datos remota.
- * <p>
- * Hace uso de la clase ExportDB.grabarDB(file, data) para crear los csv.
- * <p>
+ *
+ * En lugar de crear archivos csv, debe insertarlos en la base de datos
+ *
  * https://youtu.be/APd0nYeEr5U
  * 1.44  Descargar driver MariaDB JDBC
  * https://mariadb.com/kb/en/java-connector-using-gradle/
@@ -24,6 +24,63 @@ public class ImportarEjemplos {
     private static Connection connection;
 
     public static void importar(Context context) {
+
+        StrictMode.ThreadPolicy policy = new StrictMode
+                .ThreadPolicy
+                .Builder()
+                .permitAll()
+                .build();
+        StrictMode.setThreadPolicy(policy);
+
+        connection = null;
+        Statement statement = null;
+        try {
+
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://hl1166.dinaserver.com:3306/ldlc", "ldlc", "LDLC@0wq79s"
+            );
+
+            // Importar los productos
+            statement = connection.createStatement();
+
+            // Grabamos el archivo csv
+            ExportDB.grabar(
+                    "ProductoEntity.csv",
+                    getProductos(
+                            statement.executeQuery("SELECT * FROM Productos")
+                    ),
+                    context);
+
+            // Importar los productos desde el archivo csv
+            ImportDB.importarProductoEntity( context );
+
+        } catch (Exception e) {
+            Log.d("LDLC", "Error en la conexión: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
+
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+                // Do nothing
+            }
+
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    public static void importar_OFF(Context context) {
 
         StrictMode.ThreadPolicy policy = new StrictMode
                 .ThreadPolicy

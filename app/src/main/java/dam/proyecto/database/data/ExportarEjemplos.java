@@ -1,11 +1,13 @@
 package dam.proyecto.database.data;
 
 import android.content.Context;
+import android.os.StrictMode;
 import android.util.Log;
-import android.widget.Toast;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 
 import dam.proyecto.controllers.ComercioController;
@@ -34,32 +36,62 @@ import dam.proyecto.database.entity.TagsProductoEntity;
  */
 public class ExportarEjemplos {
 
-    private static StringBuilder sql;
+    public static void exportar(Context context) {
 
-    private static Context context;
+        StrictMode.ThreadPolicy policy = new StrictMode
+                .ThreadPolicy
+                .Builder()
+                .permitAll()
+                .build();
+        StrictMode.setThreadPolicy(policy);
 
-    public static void exportar(Context c) {
+        Connection connection = null;
+        Statement statement = null;
+        try {
 
-        context = c;
+            Class.forName("com.mysql.jdbc.Driver").newInstance();
+            connection = DriverManager.getConnection(
+                    "jdbc:mysql://hl1166.dinaserver.com:3306/ldlc", "ldlc", "LDLC@0wq79s"
+            );
+            statement = connection.createStatement();
 
-        sql = new StringBuilder();
-        sql
-                .append(getComercio())
-                .append(getCompra())
-                .append(getMarca())
-                .append(getMarcaBlanca())
-                .append(getMedida())
-                .append(getNombreCompra())
-                .append(getOferta())
-                .append(getProductos())
-                .append(getTag())
-                .append(getTagsProducto())
+            // Vaciamos las tablas
+            vaciarTablas( statement);
 
-        ;
+            // Insertar datos en las tablas
+            insertComercio(statement, context);
+            insertCompra(statement, context);
+            insertMarca(statement, context);
+            insertMarcaBlanca(statement, context);
+            insertMedida(statement, context);
+            insertNombreCompra(statement, context);
+            insertOferta(statement, context);
+            insertProductos(statement, context);
+            insertTag(statement, context);
+            insertTagsProducto(statement, context);
 
-        grabar(sql.toString());
+        } catch (Exception e) {
+            Log.d("LDLC", "Error en la conexión: " + e.getMessage());
+            e.printStackTrace();
+        } finally {
 
-//        Log.d("LDLC", sql.toString());
+            try {
+                if (statement != null) {
+                    statement.close();
+                }
+            } catch (Exception e) {
+                // Do nothing
+            }
+
+            try {
+                if (connection != null) {
+                    connection.close();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
 
     }
 
@@ -69,93 +101,74 @@ public class ExportarEjemplos {
 
     }
 
-    private static String getComercio() {
+    private static void insertComercio(Statement statement, Context context) throws SQLException {
 
         // Obtenemos todos los objetos de ComercioEntity
         ComercioController controller = new ComercioController(context);
         ArrayList<ComercioEntity> resultado = controller.getAll();
 
-        StringBuilder consulta = new StringBuilder();
-
         for (ComercioEntity r : resultado) {
             String columnas = ("id,name");
             String valores = r.getId() + ",'" + r.getName() + "'";
-            consulta.append(
-                            getConsulta("Comercio",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("Comercio",
+                    columnas,
+                    valores
+            ) );
         }
-
-        return consulta.toString();
-
     }
 
-    private static String getCompra() {
+    private static void insertCompra(Statement statement, Context context) throws SQLException {
 
         // Obtenemos todos los objetos de ComercioEntity
         CompraController controller = new CompraController(context);
         ArrayList<CompraEntity> resultado = controller.getAll();
 
-        StringBuilder consulta = new StringBuilder();
-
         for (CompraEntity r : resultado) {
             String columnas = ("id,producto,fecha,precio,cantidad,pagado,precioMedido,oferta");
+
+            // PrecioMedido podría aparecer como "Infinity"
+            float precioMedio = (r.getPrecioMedido() >= 1000000f)? 0.0f : r.getPrecioMedido();
+
             String valores = r.getId() + "," +
                     "'" + r.getProducto() + "'," +
                     "'" + r.getFecha() + "'," +
                     r.getPrecio() + "," +
                     r.getCantidad() + "," +
                     r.getPagado() + "," +
-                    r.getPrecioMedido() + "," +
+                    precioMedio + "," +
                     r.getOferta();
 
-            consulta.append(
-                            getConsulta("Compra",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("Compra",
+                    columnas,
+                    valores
+            ) );
         }
-
-        return consulta.toString();
 
     }
 
-    private static String getMarca() {
+    private static void insertMarca(Statement statement, Context context) throws SQLException {
 
         // Obtenemos todos los objetos de ComercioEntity
         MarcaController controller = new MarcaController(context);
         ArrayList<MarcaEntity> resultado = controller.getAll();
 
-        StringBuilder consulta = new StringBuilder();
-
         for (MarcaEntity r : resultado) {
             String columnas = ("id,name");
             String valores = r.getId() + ",'" + r.getName().replace("'", "\\'") + "'";
-            consulta.append(
-                            getConsulta("Marca",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("Marca",
+                    columnas,
+                    valores
+            ) );
         }
 
-        return consulta.toString();
     }
 
 
-    private static String getMarcaBlanca() {
+    private static void insertMarcaBlanca(Statement statement, Context context) throws SQLException {
 
         // Obtenemos todos los objetos de ComercioEntity
         MarcaBlancaController controller = new MarcaBlancaController(context);
         ArrayList<MarcaBlancaEntity> resultado = controller.getAll();
-
-        StringBuilder consulta = new StringBuilder();
 
         for (MarcaBlancaEntity r : resultado) {
             String columnas = ("id,marca,comercio");
@@ -163,50 +176,37 @@ public class ExportarEjemplos {
                     r.getMarca() + "," +
                     r.getComercio();
 
-            consulta.append(
-                            getConsulta("MarcaBlanca",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("MarcaBlanca",
+                    columnas,
+                    valores
+            ) );
         }
 
-        return consulta.toString();
     }
 
-    private static String getMedida() {
+    private static void insertMedida(Statement statement, Context context) throws SQLException{
 
         // Obtenemos todos los objetos de ComercioEntity
         MedidaController controller = new MedidaController(context);
         ArrayList<MedidaEntity> resultado = controller.getAll();
 
-        StringBuilder consulta = new StringBuilder();
-
         for (MedidaEntity r : resultado) {
             String columnas = ("id,description");
             String valores = "'" + r.getId() + "','" + r.getDescription() + "'";
-            consulta.append(
-                            getConsulta("Medida",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("Medida",
+                    columnas,
+                    valores
+            ) );
         }
-
-        return consulta.toString();
 
     }
 
 
-    private static String getNombreCompra() {
+    private static void insertNombreCompra(Statement statement, Context context) throws SQLException {
 
         // Obtenemos todos los objetos de ComercioEntity
         NombreCompraController controller = new NombreCompraController(context);
         ArrayList<NombreCompraEntity> resultado = controller.getAll();
-
-        StringBuilder consulta = new StringBuilder();
 
         for (NombreCompraEntity r : resultado) {
             String columnas = ("id,nombre,comercio");
@@ -214,50 +214,36 @@ public class ExportarEjemplos {
                     "'" + r.getNombre() + "'," +
                     r.getComercio();
 
-            consulta.append(
-                            getConsulta("Nombrecompra",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("Nombrecompra",
+                    columnas,
+                    valores
+            ) );
         }
-
-        return consulta.toString();
 
     }
 
-    private static String getOferta() {
+    private static void insertOferta(Statement statement, Context context) throws SQLException {
 
         // Obtenemos todos los objetos de ComercioEntity
         OfertaController controller = new OfertaController(context);
         ArrayList<OfertaEntity> resultado = controller.getAll();
 
-        StringBuilder consulta = new StringBuilder();
-
         for (OfertaEntity r : resultado) {
             String columnas = ("abbr,texto");
             String valores = "'" + r.getAbbr() + "','" + r.getTexto() + "'";
-            consulta.append(
-                            getConsulta("Oferta",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("Oferta",
+                    columnas,
+                    valores
+            ) );
         }
-
-        return consulta.toString();
 
     }
 
 
-    private static String getProductos() {
+    private static void insertProductos(Statement statement, Context context) throws SQLException {
 
         // Obtenemos todos los objetos
         ArrayList<ProductoEntity> resultado = ProductoController.getAll(context);
-
-        StringBuilder consulta = new StringBuilder();
 
         for (ProductoEntity r : resultado) {
             String columnas = ("id,denominacion,marca,unidades,medida,cantidad");
@@ -268,87 +254,60 @@ public class ExportarEjemplos {
                     "'" + r.getMedida() + "'," +
                     r.getCantidad();
 
-            consulta.append(
-                            getConsulta("Productos",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("Productos",
+                    columnas,
+                    valores
+            ) );
         }
-
-        return consulta.toString();
     }
 
-    private static String getTag() {
+    private static void insertTag(Statement statement, Context context) throws SQLException {
 
         // Obtenemos todos los objetos de ComercioEntity
         TagController controller = new TagController(context);
         ArrayList<TagEntity> resultado = controller.getAll();
 
-        StringBuilder consulta = new StringBuilder();
-
         for (TagEntity r : resultado) {
             String columnas = ("id,name");
             String valores = r.getId() + ",'" + r.getName() + "'";
-            consulta.append(
-                            getConsulta("Tag",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("Tag",
+                    columnas,
+                    valores
+            ) );
         }
-
-        return consulta.toString();
 
     }
 
-    private static String getTagsProducto() {
+    private static void insertTagsProducto(Statement statement, Context context) throws SQLException {
 
         // Obtenemos todos los objetos de ComercioEntity
         TagProductoController controller = new TagProductoController(context);
         ArrayList<TagsProductoEntity> resultado = controller.getAll();
 
-        StringBuilder consulta = new StringBuilder();
-
         for (TagsProductoEntity r : resultado) {
             String columnas = ("id,producto,tag");
             String valores = r.getId() + ",'" + r.getProducto() + "'," + r.getTag();
-            consulta.append(
-                            getConsulta("TagsProducto",
-                                    columnas.toString(),
-                                    valores.toString()
-                            )
-                    )
-                    .append("\n");
+            statement.execute( getConsulta("TagsProducto",
+                    columnas,
+                    valores
+            ) );
         }
-
-        return consulta.toString();
 
     }
 
-    private static void grabar( String sql ){
-        OutputStreamWriter osr = null;
-        try{
-            osr = new OutputStreamWriter(
-                    context.openFileOutput("ldlc.sql", Context.MODE_PRIVATE)
-            );
 
-            osr.write(sql);
-            osr.flush();
+    private static void vaciarTablas(Statement statement) throws SQLException {
 
-        }catch (IOException e) {
-            Toast.makeText(context, "No se pudo crear el archivo LDLC.SQL", Toast.LENGTH_SHORT).show();
-        } finally {
-            if (osr != null) {
-                try {
-                    osr.close();
-                } catch (Exception e) {
-                    Toast.makeText(context, "Error al cerrar el fulujo de datos", Toast.LENGTH_SHORT).show();
-                }
-            }
-        }
+        statement.executeQuery("TRUNCATE Comercio");
+        statement.executeQuery("TRUNCATE Compra");
+        statement.executeQuery("TRUNCATE Marca");
+        statement.executeQuery("TRUNCATE MarcaBlanca");
+        statement.executeQuery("TRUNCATE Medida");
+        statement.executeQuery("TRUNCATE Nombrecompra");
+        statement.executeQuery("TRUNCATE Oferta");
+        statement.executeQuery("TRUNCATE Productos");
+        statement.executeQuery("TRUNCATE Tag");
+        statement.executeQuery("TRUNCATE TagsProducto");
 
     }
 
