@@ -118,6 +118,8 @@
     <string name="acp_str_titulo">COMERCIOS CON MEJORES PRECIOS</string>
     <string name="acp_str_btnSalir">SALIR</string>
     <string name="ac_str_img_crearCompra">Botón para crear la compra</string>
+    <string name="mp_str_it_cargar">Cargar Productos</string>
+    <string name="mp_str_it_exportarEjemplos">Exportar ejemplos</string>
 
     <string-array name="opciones_precio">
         <item>Actual</item>

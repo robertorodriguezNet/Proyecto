@@ -59,7 +59,7 @@ public class ExportDB {
      * @param file archivo en es que se va a escribir
      * @param data datos que se escribirán en el arcivo
      */
-    private static void grabar(String file, String data) {
+    public static void grabar(String file, String data) {
         OutputStreamWriter osr = null;
         try {
             osr = new OutputStreamWriter(
@@ -81,11 +81,16 @@ public class ExportDB {
         }
     }
 
+    public static void grabar(String file, String data, Context c) {
+        context = c;
+        grabar(file, data);
+    }
+
     private static void exportarComercioEntity() {
         ComercioController controller = new ComercioController(context);
 
         StringBuilder code = new StringBuilder();
-        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+        controller.getAll().forEach(objeto -> code.append(objeto.getId())
                 .append(",")
                 .append(objeto.getName())
                 .append("\n"));
@@ -98,7 +103,7 @@ public class ExportDB {
         NombreCompraController controller = new NombreCompraController(context);
 
         StringBuilder code = new StringBuilder();
-        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+        controller.getAll().forEach(objeto -> code.append(objeto.getId())
                 .append(",")
                 .append(objeto.getNombre())
                 .append(",")
@@ -116,7 +121,7 @@ public class ExportDB {
         TagController controller = new TagController(context);
 
         StringBuilder code = new StringBuilder();
-        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+        controller.getAll().forEach(objeto -> code.append(objeto.getId())
                 .append(",")
                 .append(objeto.getName())
                 .append("\n"));
@@ -132,21 +137,21 @@ public class ExportDB {
         CompraController controller = new CompraController(context);
 
         StringBuilder code = new StringBuilder();
-        controller.getAll().forEach( objeto ->code.append(objeto.getProducto())
-                        .append(",")
-                        .append(objeto.getFecha())
-                        .append(",")
-                        .append(objeto.getCantidad())
-                        .append(",")
-                        .append(objeto.getPagado())
-                        .append(",")
-                        .append(objeto.getPrecio())
-                        .append(",")
-                        .append(objeto.getPrecioMedido())
-                        .append(",")
-                        .append(objeto.getOferta())
-                        .append("\n")
-                );
+        controller.getAll().forEach(objeto -> code.append(objeto.getProducto())
+                .append(",")
+                .append(objeto.getFecha())
+                .append(",")
+                .append(objeto.getCantidad())
+                .append(",")
+                .append(objeto.getPagado())
+                .append(",")
+                .append(objeto.getPrecio())
+                .append(",")
+                .append(objeto.getPrecioMedido())
+                .append(",")
+                .append(objeto.getOferta())
+                .append("\n")
+        );
 
         grabar("CompraEntity.csv", code.toString());
     }
@@ -164,26 +169,26 @@ public class ExportDB {
                     .append(objeto.getComercio())
                     .append("\n");
         }
-        grabar("MarcaBlancaEntity.csv", code.toString() );
+        grabar("MarcaBlancaEntity.csv", code.toString());
     }
 
     private static void exportarMarcaEntity() {
         MarcaController controller = new MarcaController(context);
 
         StringBuilder code = new StringBuilder();
-        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+        controller.getAll().forEach(objeto -> code.append(objeto.getId())
                 .append(",")
                 .append(objeto.getName())
                 .append("\n"));
 
-        grabar("MarcaEntity.csv", code.toString() );
+        grabar("MarcaEntity.csv", code.toString());
     }
 
     private static void exportarMedidaEntity() {
         MedidaController controller = new MedidaController(context);
 
         StringBuilder code = new StringBuilder();
-        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+        controller.getAll().forEach(objeto -> code.append(objeto.getId())
                 .append(",")
                 .append(objeto.getDescription())
                 .append("\n"));
@@ -202,7 +207,7 @@ public class ExportDB {
         ProductoRepository controller = new ProductoRepository(context);
 
         StringBuilder code = new StringBuilder();
-        controller.getAll().forEach( objeto -> code.append(objeto.getId())
+        controller.getAll().forEach(objeto -> code.append(objeto.getId())
                 .append(",")
                 .append(objeto.getDenominacion())
                 .append(",")
@@ -222,7 +227,7 @@ public class ExportDB {
         TagProductoController controller = new TagProductoController(context);
 
         StringBuilder code = new StringBuilder();
-        controller.getAll().forEach( objeto -> code.append( objeto.getId() )
+        controller.getAll().forEach(objeto -> code.append(objeto.getId())
                 .append(",")
                 .append(objeto.getProducto())
                 .append(",")
@@ -236,7 +241,7 @@ public class ExportDB {
         OfertaController controller = new OfertaController(context);
 
         StringBuilder code = new StringBuilder();
-        controller.getAll().forEach( objeto -> code.append(objeto.getAbbr())
+        controller.getAll().forEach(objeto -> code.append(objeto.getAbbr())
                 .append(",")
                 .append(objeto.getTexto())
                 .append("\n"));

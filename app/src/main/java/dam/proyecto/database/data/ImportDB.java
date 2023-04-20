@@ -98,35 +98,46 @@ public class ImportDB {
     /**
      * Importa el contenido del fichero con los registros guardados.
      */
-    private static void importarProductoEntity() {
+    public static void importarProductoEntity() {
 
         String file = "ProductoEntity.csv";
 
         try {
 
             // Borrar los datos
-            ProductoController.clear(context);
+            //ProductoController.clear(context);
 
             // Cada línea leída es un ProductoEntity
-            getRegistros(file).forEach( v -> {
+            getRegistros(file).forEach(v -> {
                 String[] data = v.split(",");
                 // Pedimos al controlador de productos que lo guarde
-                ProductoController.insertProducto(
-                        data[0],
-                        data[1],
-                        Integer.parseInt(data[2]),
-                        Integer.parseInt(data[3]),
-                        data[4],
-                        Float.parseFloat(data[5]),
-                        context
-                );
-            }) ;
+                if(!ProductoController.exists(data[0],context)){
+                    ProductoController.insertProducto(
+                            data[0],
+                            data[1],
+                            Integer.parseInt(data[2]),
+                            Integer.parseInt(data[3]),
+                            data[4],
+                            Float.parseFloat(data[5]),
+                            context
+                    );
+                }
+            });
 
         } catch (Exception e) {
             Toast.makeText(context, "Error al leer ProductoEntity", Toast.LENGTH_SHORT).show();
             Log.e("LDLC", "Error al importar productos:\n"
                     + e.getMessage());
         }
+    }
+
+    /**
+     * Importa el contenido del fichero con los registros guardados.
+     * NO se borran los datos y se comprueba si el producto
+     */
+    public static void importarProductoEntity(Context c) {
+        context = c;
+        importarProductoEntity();
     }
 
     /**

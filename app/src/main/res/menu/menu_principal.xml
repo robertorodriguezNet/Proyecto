@@ -31,4 +31,14 @@
         android:icon="@drawable/ic_baseline_import_export_24"
         android:title="@string/mp_str_it_importarDB" />
 
+    <item
+        android:id="@+id/mp_it_exportarEjemplos"
+        android:icon="@drawable/ic_baseline_import_export_24"
+        android:title="@string/mp_str_it_exportarEjemplos" />
+
+    <item
+        android:id="@+id/mp_it_importrEjemplos"
+        android:icon="@drawable/ic_baseline_import_export_24"
+        android:title="@string/mp_str_it_cargar" />
+
 </menu>

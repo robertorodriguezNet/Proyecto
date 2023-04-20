@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.AlmacenActivity;
@@ -24,7 +23,9 @@ import dam.proyecto.activities.marcablanca.MarcaBlancaActivity;
 import dam.proyecto.controllers.ComercioController;
 import dam.proyecto.database.data.Ejemplos;
 import dam.proyecto.database.data.ExportDB;
+import dam.proyecto.database.data.ExportarEjemplos;
 import dam.proyecto.database.data.ImportDB;
+import dam.proyecto.database.data.ImportarEjemplos;
 import dam.proyecto.databinding.ActivityMainBinding;
 
 
@@ -103,13 +104,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.mp_it_acercade:
-                startActivity( new Intent( this, AcercaDeActivity.class ));
+                startActivity(new Intent(this, AcercaDeActivity.class));
                 break;
             case R.id.mp_it_marcaBlanca:
                 editarMarcaBlanca();
                 break;
             case R.id.mp_it_ayuda:
-                startActivity( new Intent( this, AyudaActivity.class ));
+                startActivity(new Intent(this, AyudaActivity.class));
                 break;
             case R.id.mp_it_comercio:
                 abrirComercio();
@@ -119,6 +120,12 @@ public class MainActivity extends AppCompatActivity {
                 break;
             case R.id.mp_it_impoprtarBD:
                 ImportDB.importDB(this);
+                break;
+            case R.id.mp_it_exportarEjemplos:
+                ExportarEjemplos.exportar(this);
+                break;
+            case R.id.mp_it_importrEjemplos:
+                ImportarEjemplos.importar(this);
                 break;
 
         }
@@ -153,8 +160,8 @@ public class MainActivity extends AppCompatActivity {
     /**
      * Carga la actividad para editar las marcas blancas
      */
-    private void editarMarcaBlanca(){
-        startActivity( new Intent( this,  MarcaBlancaActivity.class ) );
+    private void editarMarcaBlanca() {
+        startActivity(new Intent(this, MarcaBlancaActivity.class));
     }
 
 }
