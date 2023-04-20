@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -129,7 +130,8 @@ public class MainActivity extends AppCompatActivity {
                 ImportDB.importDB(this);
                 break;
             case R.id.mp_it_exportarEjemplos:
-                ExportarEjemplos.exportar(this);
+                validarUsuario();
+//                ExportarEjemplos.exportar(this);
                 break;
             case R.id.mp_it_importarProductos:
                 ImportarEjemplos.importar(this, false);
@@ -193,6 +195,30 @@ public class MainActivity extends AppCompatActivity {
      */
     private void editarMarcaBlanca() {
         startActivity(new Intent(this, MarcaBlancaActivity.class));
+    }
+
+    private void validarUsuario(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Operación restringida");
+        final EditText input = new EditText( this );
+        builder.setView( input );
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                if( input.getText().toString().equals("LDLC@0wq79s")){
+                    ExportarEjemplos.exportar( MainActivity.this );
+                }else{
+                    Toast.makeText(MainActivity.this, "No tienes permiso", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        builder.setNegativeButton("Cancel", null);
+
+        builder.create();
+        builder.show();
     }
 
 }
