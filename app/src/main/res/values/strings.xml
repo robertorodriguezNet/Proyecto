@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Lista de la compra</string>
     <string name="app_author">Roberto Rodríguez Jiménez</string>
-    <string name="app_version">v1.1.2023.04.18</string>
+    <string name="app_version">v1.1.2023.04.20</string>
 
     <string name="title_activity_almacen">Almacén</string>
     <string name="title_activity_lista">Lista abierta</string>
