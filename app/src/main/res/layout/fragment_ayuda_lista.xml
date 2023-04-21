@@ -246,6 +246,51 @@
                 android:textColor="@color/black" />
 
             <TextView
+                android:id="@+id/ayudaTituloCopiasDatos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="8dp"
+                android:paddingTop="4dp"
+                android:paddingBottom="4dp"
+                android:text="Copias de datos"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/ayudaGuardarCopia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="24dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="Guardar una copia de los datos"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/ayudaRecuperarCopia"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="24dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="Recuperar una copia de los datos"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/ayudaIportarEjemplos"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="24dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="Importar datos de ejemplo"
+                android:textColor="@color/black" />
+
+            <TextView
                 android:id="@+id/ayudaTituloOtros"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

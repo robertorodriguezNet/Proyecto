@@ -174,7 +174,7 @@ public class MainActivity extends AppCompatActivity {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Precaución");
         builder.setMessage("Se van a cargar los datos de ejemplo desde la base de datos remota.\n\n" +
-                "Estos datos son reales, pero reemplazarán a los datos del dispositivo.\n\n" +
+                "Estos datos son reales, pero reemplazarán a los datos del dispositivo, excepto los productos.\n\n" +
                 "Si continúa, se perderán los datos locales.");
         builder.setNegativeButton("Cancelar",null);
         builder.setPositiveButton("Continuar", new DialogInterface.OnClickListener(){

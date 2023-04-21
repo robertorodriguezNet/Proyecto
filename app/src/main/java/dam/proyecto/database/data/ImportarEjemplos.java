@@ -52,7 +52,8 @@ public class ImportarEjemplos {
 
             // Importar los datos
             importarProductos(statement, context, total);
-            
+
+            // Si, además, queremos el resto de datos
             if(total){
                 importarMarcas(statement,context);
                 importarComercio(statement,context);

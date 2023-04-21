@@ -62,6 +62,9 @@ public class AyudaListaFragment extends Fragment {
         enlaces.add(view.findViewById(R.id.ayudaAlmacenEliminar));
         enlaces.add(view.findViewById(R.id.ayudaOtrosCrearComercio));
         enlaces.add(view.findViewById(R.id.ayudaOtrosAsociar));
+        enlaces.add(view.findViewById(R.id.ayudaGuardarCopia));
+        enlaces.add(view.findViewById(R.id.ayudaRecuperarCopia));
+        enlaces.add(view.findViewById(R.id.ayudaIportarEjemplos));
 
         // Recorrer los enlaces y agregar el oyente
         enlaces.forEach(e -> e.setOnClickListener(v -> oyente.cargarAyuda(e)));
