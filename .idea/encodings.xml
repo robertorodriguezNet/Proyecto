@@ -2,5 +2,10 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/app/src/main/assets/ayuda_almacen_editar.htm" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/ayuda_compras_duplicar.htm" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/ayuda_compras_eliminar.htm" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/ayuda_compras_modificar.htm" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/ayuda_lista_abrir.htm" charset="windows-1252" />
+    <file url="file://$PROJECT_DIR$/app/src/main/assets/ayuda_lista_agregar.htm" charset="windows-1252" />
   </component>
 </project>
