@@ -46,7 +46,8 @@
         <activity
             android:name=".activities.almacen.AlmacenActivity"
             android:exported="false"
-            android:label="@string/title_activity_almacen">
+            android:label="@string/title_activity_almacen"
+            android:windowSoftInputMode="adjustPan">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />

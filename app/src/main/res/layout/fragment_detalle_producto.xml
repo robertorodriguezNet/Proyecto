@@ -241,12 +241,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/view" />
+        app:layout_constraintTop_toBottomOf="@+id/view"
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/aep_btn_cancelar"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="64dp"
         android:backgroundTint="@color/white"
         android:paddingLeft="4dp"
         android:paddingRight="4dp"
@@ -256,6 +257,7 @@
         app:icon="@drawable/ic_baseline_exit_to_app_24"
         app:iconGravity="top"
         app:iconTint="@color/OrangeRed"
+        app:layout_constraintTop_toBottomOf="@id/fdp_lv_comprasRelacionadas"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/aep_btn_limpiar"
         app:layout_constraintStart_toStartOf="parent"
@@ -264,7 +266,7 @@
     <com.google.android.material.button.MaterialButton
         android:id="@+id/aep_btn_limpiar"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="64dp"
         android:alpha="0.3"
         android:backgroundTint="@color/white"
         android:clickable="false"
@@ -280,12 +282,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/aep_btn_eliminar"
         app:layout_constraintStart_toEndOf="@id/aep_btn_cancelar"
- />
+        app:layout_constraintTop_toBottomOf="@id/fdp_lv_comprasRelacionadas"
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/aep_btn_eliminar"
         android:layout_width="wrap_content"
-        android:layout_height="0dp"
+        android:layout_height="64dp"
         android:alpha="0.3"
         android:backgroundTint="@color/white"
         android:clickable="false"
@@ -301,12 +304,13 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@id/aep_btn_guardar"
         app:layout_constraintStart_toEndOf="@+id/aep_btn_limpiar"
- />
+        app:layout_constraintTop_toBottomOf="@id/fdp_lv_comprasRelacionadas"
+        app:layout_constraintVertical_bias="1.0" />
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/aep_btn_guardar"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="64dp"
         android:alpha="0.3"
         android:backgroundTint="@color/white"
         android:clickable="false"
@@ -322,7 +326,8 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/aep_btn_eliminar"
-  />
+        app:layout_constraintTop_toBottomOf="@id/fdp_lv_comprasRelacionadas"
+        app:layout_constraintVertical_bias="1.0" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
