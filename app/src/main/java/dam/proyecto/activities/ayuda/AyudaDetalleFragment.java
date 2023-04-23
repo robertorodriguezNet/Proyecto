@@ -32,7 +32,7 @@ public class AyudaDetalleFragment extends Fragment {
         if (getArguments() != null) {
             file = getArguments().getString("file");
             title = getArguments().getString("title");
-        }else{
+        } else {
             file = "blanco";
             title = "";
         }
@@ -41,35 +41,56 @@ public class AyudaDetalleFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_ayuda_detalle, container, false);
 
-        if(title.contains("Vídeo")){
+        int lauyout = (title.contains("(Vídeo)")) ?
+                R.layout.fragment_ayuda_video : R.layout.fragment_ayuda_detalle;
 
-            view = inflater.inflate(R.layout.fragment_ayuda_video, container, false);
+        View view = inflater.inflate(lauyout, container, false);
 
+        TextView titulo = view.findViewById(R.id.ayuda_detalle_titulo);
+        titulo.setText(title);
 
-            // http://robertorodriguez.net/ldlc/videotutoriales/CargarEjemplos.mp4
-            TextView titulo = view.findViewById(R.id.ayuda_detalle_titulo);
-            titulo.setText(title);
-
+        if(lauyout == R.layout.fragment_ayuda_video ){
             Uri uri = Uri.parse("http://robertorodriguez.net/ldlc/videotutoriales/" + file + ".mp4");
             VideoView contenido = (VideoView) view.findViewById(R.id.ayuda_detalle_contenido);
-            contenido.setMediaController( new MediaController(getContext()));
+            contenido.setMediaController(new MediaController(getContext()));
             contenido.setVideoURI(uri);
             contenido.requestFocus();
             contenido.start();
-
-
-        }else {
-            TextView titulo = view.findViewById(R.id.ayuda_detalle_titulo);
-            titulo.setText(title);
-
-            // file:///android_asset/ayuda_almacen_agregar.htm
+        }else{
             WebView contenido = (WebView) view.findViewById(R.id.ayuda_detalle_contenido);
             contenido.loadUrl("file:///android_asset/" + file + ".htm");
             contenido.setWebViewClient(new WebViewClient());
         }
+
+//        View view = inflater.inflate(R.layout.fragment_ayuda_detalle, container, false);
+//
+//        if(title.contains("Vídeo")){
+//
+//            view = inflater.inflate(R.layout.fragment_ayuda_video, container, false);
+//
+//
+//            // http://robertorodriguez.net/ldlc/videotutoriales/CargarEjemplos.mp4
+//            TextView titulo = view.findViewById(R.id.ayuda_detalle_titulo);
+//            titulo.setText(title);
+//
+//            Uri uri = Uri.parse("http://robertorodriguez.net/ldlc/videotutoriales/" + file + ".mp4");
+//            VideoView contenido = (VideoView) view.findViewById(R.id.ayuda_detalle_contenido);
+//            contenido.setMediaController( new MediaController(getContext()));
+//            contenido.setVideoURI(uri);
+//            contenido.requestFocus();
+//            contenido.start();
+//
+//
+//        }else {
+//            TextView titulo = view.findViewById(R.id.ayuda_detalle_titulo);
+//            titulo.setText(title);
+//
+//            // file:///android_asset/ayuda_almacen_agregar.htm
+//            WebView contenido = (WebView) view.findViewById(R.id.ayuda_detalle_contenido);
+//            contenido.loadUrl("file:///android_asset/" + file + ".htm");
+//            contenido.setWebViewClient(new WebViewClient());
+//        }
         return view;
     }
 }
