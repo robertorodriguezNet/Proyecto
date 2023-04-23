@@ -157,9 +157,17 @@ public class AyudaActivity extends AppCompatActivity implements AyudaListener, V
                 file = "recuperar_copia";
                 title = "Recuperar una copia de los datos";
                 break;
+            case R.id.ayudaCopiasVideo:
+                file = "GuardarYRecuperarDatos";
+                title = "Guardar y recuperar datos (Vídeo)";
+                break;
             case R.id.ayudaIportarEjemplos:
                 file = "importar_ejemplos";
                 title = "Importar datos de ejemplo";
+                break;
+            case R.id.ayudaIportarEjemplosVideo:
+                file = "CargarEjemplos";
+                title = "Importar datos de ejemplo (Vídeo)";
                 break;
             default:
         }

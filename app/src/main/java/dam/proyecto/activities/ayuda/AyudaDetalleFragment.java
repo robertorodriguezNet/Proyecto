@@ -1,5 +1,6 @@
 package dam.proyecto.activities.ayuda;
 
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -9,7 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.MediaController;
 import android.widget.TextView;
+import android.widget.VideoView;
 
 import dam.proyecto.R;
 
@@ -41,14 +44,32 @@ public class AyudaDetalleFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_ayuda_detalle, container, false);
 
-        TextView titulo = view.findViewById(R.id.ayuda_detalle_titulo);
-        titulo.setText(title);
+        if(title.contains("Vídeo")){
 
-        // file:///android_asset/ayuda_almacen_agregar.htm
-        WebView contenido = (WebView) view.findViewById(R.id.ayuda_detalle_contenido);
-        contenido.loadUrl("file:///android_asset/" + file + ".htm");
-        contenido.setWebViewClient( new WebViewClient() );
+            view = inflater.inflate(R.layout.fragment_ayuda_video, container, false);
 
+
+            // http://robertorodriguez.net/ldlc/videotutoriales/CargarEjemplos.mp4
+            TextView titulo = view.findViewById(R.id.ayuda_detalle_titulo);
+            titulo.setText(title);
+
+            Uri uri = Uri.parse("http://robertorodriguez.net/ldlc/videotutoriales/" + file + ".mp4");
+            VideoView contenido = (VideoView) view.findViewById(R.id.ayuda_detalle_contenido);
+            contenido.setMediaController( new MediaController(getContext()));
+            contenido.setVideoURI(uri);
+            contenido.requestFocus();
+            contenido.start();
+
+
+        }else {
+            TextView titulo = view.findViewById(R.id.ayuda_detalle_titulo);
+            titulo.setText(title);
+
+            // file:///android_asset/ayuda_almacen_agregar.htm
+            WebView contenido = (WebView) view.findViewById(R.id.ayuda_detalle_contenido);
+            contenido.loadUrl("file:///android_asset/" + file + ".htm");
+            contenido.setWebViewClient(new WebViewClient());
+        }
         return view;
     }
 }

@@ -280,6 +280,17 @@
                 android:textColor="@color/black" />
 
             <TextView
+                android:id="@+id/ayudaCopiasVideo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="24dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="Guardar y recuperar datos (vídeo)"
+                android:textColor="@color/black" />
+
+            <TextView
                 android:id="@+id/ayudaIportarEjemplos"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -288,6 +299,17 @@
                 android:paddingEnd="8dp"
                 android:paddingBottom="4dp"
                 android:text="Importar datos de ejemplo"
+                android:textColor="@color/black" />
+
+            <TextView
+                android:id="@+id/ayudaIportarEjemplosVideo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingStart="24dp"
+                android:paddingTop="4dp"
+                android:paddingEnd="8dp"
+                android:paddingBottom="4dp"
+                android:text="Importar datos de ejemplo (Vídeo)"
                 android:textColor="@color/black" />
 
             <TextView
