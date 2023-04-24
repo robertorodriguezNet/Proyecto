@@ -9,6 +9,7 @@ import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -208,7 +209,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if( input.getText().toString().equals("LDLC@0wq79s")){
-                    ExportarEjemplos.exportar( MainActivity.this );
+                    new HiloExportarDatos().start();
                 }else{
                     Toast.makeText(MainActivity.this, "No tienes permiso", Toast.LENGTH_SHORT).show();
                 }
@@ -219,6 +220,25 @@ public class MainActivity extends AppCompatActivity {
 
         builder.create();
         builder.show();
+    }
+
+    class HiloExportarDatos extends Thread{
+
+        @Override
+        public void run() {
+            try {
+                ExportarEjemplos.exportar( MainActivity.this );
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this, "Carga de datos correcta", Toast.LENGTH_SHORT).show();
+                    }
+                });
+            }catch (Exception e){
+                Log.e("LDLC","Error al ejecutar el hilo de la exportación de datos.");
+            }
+
+        }
     }
 
 }
