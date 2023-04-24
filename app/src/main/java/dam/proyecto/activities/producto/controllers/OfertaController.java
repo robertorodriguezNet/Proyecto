@@ -129,7 +129,7 @@ public class OfertaController {
         productosOfertables = (float) Math.floor(cantidadf / 2);
         resto = (cantidadf % 2);
 
-        total = ((preciof + ((preciof * 70) / 100)) * productosOfertables) + (preciof * resto);
+        total = ((preciof + ((preciof * 30) / 100)) * productosOfertables) + (preciof * resto);
 
         mapa = new HashMap<>();
         mapa.put("precioMedio", (total / cantidadf) / PRODUCTO.getCantidad());
