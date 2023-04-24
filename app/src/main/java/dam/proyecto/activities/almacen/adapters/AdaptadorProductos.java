@@ -25,6 +25,7 @@ import dam.proyecto.controllers.CompraController;
 import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.MarcaRepository;
+import dam.proyecto.utilities.Words;
 
 /**
  * @author Roberto Rodríguez Jiménez
@@ -132,8 +133,8 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
 
         // Atributos del ViewHolder, han de ser, como mínimo los mismo de la clase de la
         // colección, solo los que se quieran mostrar
-        ImageView imagen;                                          // Muestra la imagen del producto
-        TextView denominacion, marca;                          // Muestra la denominación y la marca
+        ImageView imagen;
+        TextView denominacion, marca, cantidad, medida;
 
         // TextView de los últimos precios
         TextView ultimoPrecio, ultimaFecha, ultimoComercio, ultimoPrecioM;
@@ -151,6 +152,8 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             imagen = itemView.findViewById(R.id.ala_img_miniatura);
             denominacion = itemView.findViewById(R.id.ala_tv_donominacion);
             marca = itemView.findViewById(R.id.ala_tv_marca);
+            cantidad = itemView.findViewById(R.id.ala_tv_cantidad);
+            medida = itemView.findViewById(R.id.ala_tv_medida);
 
             ultimaFecha = itemView.findViewById(R.id.ala_tv_fecha);
             ultimoComercio = itemView.findViewById(R.id.ala_tv_comercio);
@@ -178,6 +181,8 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
             denominacion.setText(producto.getDenominacion());
 //            marca.setText( String.valueOf( producto.getMarca() ) );
             marca.setText(DATA_MARCA.get(producto.getMarca() - 1).getName());
+            cantidad.setText(Words.formatearPrecio(producto.getCantidad()));
+            medida.setText( producto.getMedida() );
 
             // Debemos obtener la última compra del producto,
             // OJO, puede que no haya compra del producto

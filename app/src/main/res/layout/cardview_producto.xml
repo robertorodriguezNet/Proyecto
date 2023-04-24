@@ -48,10 +48,35 @@
             android:text="Marca"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@id/ala_img_miniatura"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/ala_tv_cantidad"
             app:layout_constraintStart_toEndOf="@id/ala_img_miniatura"
             app:layout_constraintTop_toBottomOf="@+id/ala_tv_donominacion"
             app:layout_constraintVertical_bias="1.0" />
+
+        <TextView
+            android:id="@+id/ala_tv_cantidad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="1000"
+            android:textAlignment="textEnd"
+            android:paddingEnd="8dp"
+            app:layout_constraintStart_toEndOf="@id/ala_tv_marca"
+            app:layout_constraintTop_toTopOf="@id/ala_tv_marca"
+            app:layout_constraintBottom_toBottomOf="@id/ala_tv_marca"
+            app:layout_constraintEnd_toEndOf="@id/ala_tv_medida"
+            />
+
+        <TextView
+            android:id="@+id/ala_tv_medida"
+            android:layout_width="30dp"
+            android:layout_height="wrap_content"
+            android:text="U"
+            android:textAlignment="textStart"
+            app:layout_constraintStart_toEndOf="@id/ala_tv_cantidad"
+            app:layout_constraintTop_toTopOf="@id/ala_tv_marca"
+            app:layout_constraintBottom_toBottomOf="@id/ala_tv_marca"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
 
         <androidx.constraintlayout.widget.Guideline
             android:id="@+id/ala_guiaH"
