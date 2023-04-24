@@ -16,6 +16,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -182,7 +183,9 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
-                ImportarEjemplos.importar(getApplicationContext(), true);
+                bindingMain.progressBar.setVisibility(View.VISIBLE);
+                new HiloImportarEjemplos().start();
+//                ImportarEjemplos.importar(getApplicationContext(), true);
             }
         });
 
@@ -209,6 +212,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 if( input.getText().toString().equals("LDLC@0wq79s")){
+                    bindingMain.progressBar.setVisibility(View.VISIBLE);
                     new HiloExportarDatos().start();
                 }else{
                     Toast.makeText(MainActivity.this, "No tienes permiso", Toast.LENGTH_SHORT).show();
@@ -222,6 +226,31 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
 
+    class HiloImportarEjemplos extends Thread{
+        @Override
+        public void run() {
+
+            try{
+                ImportarEjemplos.importar( MainActivity.this, true );
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        bindingMain.progressBar.setVisibility(View.INVISIBLE);
+                        Toast.makeText(MainActivity.this, "Datos importados correctamente", Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+
+            }catch (Exception e){
+                Log.e("LDLC","Error al ejecutar el hilo de la importación de datos de ejemplo.");
+            }
+
+        }
+    }
+
+    /**
+     * Genera un hilo para exportar la base de datos al servidor remoto.
+     */
     class HiloExportarDatos extends Thread{
 
         @Override
@@ -231,6 +260,7 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
+                        bindingMain.progressBar.setVisibility(View.INVISIBLE);
                         Toast.makeText(MainActivity.this, "Carga de datos correcta", Toast.LENGTH_SHORT).show();
                     }
                 });
