@@ -179,7 +179,6 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
 
             // Obtener la denominación y la marca
             denominacion.setText(producto.getDenominacion());
-//            marca.setText( String.valueOf( producto.getMarca() ) );
             marca.setText(DATA_MARCA.get(producto.getMarca() - 1).getName());
             cantidad.setText(Words.formatearPrecio(producto.getCantidad()));
             medida.setText( producto.getMedida() );
