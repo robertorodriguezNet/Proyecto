@@ -29,6 +29,7 @@ public class AcercaDeActivity extends AppCompatActivity implements View.OnClickL
         binding.aboutMail.setOnClickListener(this);
         binding.aboutGithub.setOnClickListener(this);
         binding.aboutSalir.setOnClickListener(this);
+        binding.aboutDocumentacion.setOnClickListener(this);
 
     }
 
@@ -55,6 +56,14 @@ public class AcercaDeActivity extends AppCompatActivity implements View.OnClickL
                         new Intent(
                                 Intent.ACTION_VIEW,
                                 Uri.parse("https://robertorodriguez.net")
+                        )
+                );
+                break;
+            case R.id.about_documentacion:
+                startActivity(
+                        new Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse("https://robertorodriguez.net/ldlc")
                         )
                 );
                 break;
