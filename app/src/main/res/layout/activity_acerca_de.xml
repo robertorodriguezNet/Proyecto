@@ -91,11 +91,12 @@
         android:id="@+id/about_img_github"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:srcCompat="@drawable/github"
+        app:layout_constraintBottom_toBottomOf="@id/about_github"
+        app:layout_constraintEnd_toStartOf="@id/about_github"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/about_github"
-        app:layout_constraintBottom_toBottomOf="@id/about_github"
-        app:layout_constraintEnd_toStartOf="@id/about_github"/>
+        app:srcCompat="@drawable/github" />
 
     <TextView
         android:id="@+id/about_github"
@@ -113,11 +114,12 @@
         android:id="@+id/about_img_documentacion"
         android:layout_width="24dp"
         android:layout_height="24dp"
-        app:srcCompat="@drawable/portada"
+        app:layout_constraintBottom_toBottomOf="@id/about_documentacion"
+        app:layout_constraintEnd_toStartOf="@id/about_documentacion"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/about_documentacion"
-        app:layout_constraintBottom_toBottomOf="@id/about_documentacion"
-        app:layout_constraintEnd_toStartOf="@id/about_documentacion"/>
+        app:srcCompat="@drawable/portada" />
 
     <TextView
         android:id="@+id/about_documentacion"
@@ -125,7 +127,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Documentacion"
+        android:text="Documentación"
         android:textColor="@color/black"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/about_img_github"

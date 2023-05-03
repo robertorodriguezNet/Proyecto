@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import dam.proyecto.R;
 import dam.proyecto.activities.almacen.listeners.AlmacenListener;
 import dam.proyecto.controllers.CompraController;
+import dam.proyecto.controllers.MarcaController;
 import dam.proyecto.database.entity.MarcaEntity;
 import dam.proyecto.database.entity.ProductoEntity;
 import dam.proyecto.database.repositories.MarcaRepository;
@@ -36,8 +37,6 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
 
     // Datos
     private final ArrayList<ProductoEntity> DATA_PRODUCTOS;                           // Colección de datos
-    private final ArrayList<MarcaEntity> DATA_MARCA;                                 // Colección de marcas
-
     private final Context CONTEXT;
 
     // Oyentes
@@ -56,7 +55,6 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
         this.LISTENER = listener;
 
         this.DATA_PRODUCTOS = dataProductos;                               // Datos con los productos
-        this.DATA_MARCA = new MarcaRepository(context).getAll();            // Datos con las marcas
 
     }
 
@@ -179,7 +177,7 @@ public class AdaptadorProductos extends RecyclerView.Adapter<AdaptadorProductos.
 
             // Obtener la denominación y la marca
             denominacion.setText(producto.getDenominacion());
-            marca.setText(DATA_MARCA.get(producto.getMarca() - 1).getName());
+            marca.setText( new MarcaController(CONTEXT).getNameById(producto.getMarca()));
             cantidad.setText(Words.formatearPrecio(producto.getCantidad()));
             medida.setText( producto.getMedida() );
 
