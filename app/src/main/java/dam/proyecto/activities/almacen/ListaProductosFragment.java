@@ -277,11 +277,16 @@ public class ListaProductosFragment extends Fragment {
 
             // Pedimos el comercio de la lista abierta
             String idListaAbierta;
-            int idComercio =
-                    ( ( idListaAbierta = Preferencias.getListaAbiertaId( getContext() )) == null ) ?
-                            1 :  nombreCompraController
-                            .getById(idListaAbierta)
-                            .getComercio();
+
+            int idComercio = 1;
+            try {
+                idComercio = ((idListaAbierta = Preferencias.getListaAbiertaId(getContext())) == null) ?
+                        1 : nombreCompraController
+                        .getById(idListaAbierta)
+                        .getComercio();
+            }catch (Exception e){
+                idComercio = 1;
+            }
 
             Log.d("LDLC","productos buscados sin filtrar marca blanca: "+ productosBuscados.size());
 

@@ -156,7 +156,11 @@ public class ComercioController {
      * @return String el nombre del comercio o 1 si es nulo
      */
     public String getNombreComercio(int id) {
-        return REPOSITORY.findById(id).getName();
+        try {
+            return REPOSITORY.findById(id).getName();
+        }catch(Exception e){
+            return REPOSITORY.findById(1).getName();
+        }
     }
 
     /**
