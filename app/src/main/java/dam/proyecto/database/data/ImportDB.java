@@ -161,12 +161,20 @@ public class ImportDB {
                 controller.insert(
                         data[0],
                         data[1],
-                        Float.parseFloat(data[2]),
                         Float.parseFloat(data[3]),
                         Float.parseFloat(data[4]),
+                        Float.parseFloat(data[2]),
                         Float.parseFloat(data[5]),
                         Integer.parseInt(data[6])
                 );
+
+                Log.d("LDLC", data[0] + " - " +
+                        data[1] + " - " +
+                        Float.parseFloat(data[4])+ " - " +
+                        Float.parseFloat(data[3])+ " - " +
+                        Float.parseFloat(data[2])+ " - " +
+                        Float.parseFloat(data[5])+ " - " +
+                        Integer.parseInt(data[6]));
             });
 
         } catch (Exception e) {
