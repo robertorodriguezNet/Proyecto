@@ -14,7 +14,7 @@ import java.sql.Statement;
 /**
  * Importa los datos de ejemplo que hay en la base de datos remota.
  *
- * En lugar de crear archivos csv, debe insertarlos en la base de datos
+ * En lugar de crear archivos csv, debe insertarlos en la base de datos.
  *
  * https://youtu.be/APd0nYeEr5U
  * 1.44  Descargar driver MariaDB JDBC

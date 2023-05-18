@@ -144,6 +144,7 @@ public class ImportDB {
      * Importa la entidad CompraEntity.
      * El id de la compra no se importa porque se genera de forma
      * automática al crearse el objeto.
+     * Ojo al orden en la que se crea el objeto CompraEntity
      */
     public static void importarCompraEntity() {
 
